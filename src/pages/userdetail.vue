@@ -7,21 +7,21 @@
         <tr>
           <td>
             <div class="base-info" style="padding:30px 0px 50px 0px;font-size:14px;">
-              <div style="display: flex">
+              <div style="display: flex;font-size:18px;">
                 <label>用户名称：</label>
-                <label>XXXXXXXX</label>
+                <label>{{baseinfo.name}}</label>
                 <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
                 <label>信用评级：</label>
-                <label>XXXXXXXX</label>
+                <label>{{baseinfo.level}}</label>
                 <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
                 <label >手机号：</label>
-                <label>XXXXXXXX</label>
+                <label>{{baseinfo.tel}}</label>
                 <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
                 <label>邮箱：</label>
-                <label>XXXXXXX</label>
+                <label>{{baseinfo.email}}</label>
                 <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
                 <label>借款状态：</label>
-                <label>XXXXXXX</label>
+                <label>{{baseinfo.state}}</label>
               </div>
             </div>
             <div class="details" style="border: 1px solid lightgrey;">
@@ -107,13 +107,18 @@
         }
       }
     },
-    /*mounted:{
-      /!*show(){
-        //this.$route.params.name
-        /!*console.log(this.$route.userdetail.passData);*!/
-      }*!/
-    },*/
+    mounted:function () {
+      //this.show()
+      this.baseinfo.name=this.$route.params.username
+      this.baseinfo.level=this.$route.params.level
+      this.baseinfo.tel=this.$route.params.tel
+      this.baseinfo.email=this.$route.params.email
+      this.baseinfo.state=this.$route.params.state
+    },
     methods:{
+      show(){
+        console.log(this.$route.params)
+      },
       handleClick(tab, event) {
         console.log(tab, event);
       },
