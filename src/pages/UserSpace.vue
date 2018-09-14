@@ -121,63 +121,6 @@
           </el-col>
         </el-row>
       </div>
-      <el-row :gutter="36">
-        <!--<el-col :span="12">-->
-          <!--<el-card shadow="always" class="mycard card_A">-->
-            <!--<p>累积总收益</p>-->
-            <!--<span>5566.27</span> 元-->
-          <!--</el-card>-->
-        <!--</el-col>-->
-        <!--<el-col :span="12">-->
-          <!--<el-card shadow="always" class="mycard card_B">-->
-            <!--<el-row :gutter="2">-->
-              <!--<el-col :span="8">-->
-                <!--<el-progress type="circle" :percentage="37" width="81"></el-progress>-->
-              <!--</el-col>-->
-              <!--<el-col :span="16">-->
-                <!--<p>待收回利息<span> 375.40</span> 元</p>-->
-                <!--<p>已收回 37%</p>-->
-              <!--</el-col>-->
-            <!--</el-row>-->
-          <!--</el-card>-->
-        <!--</el-col>-->
-      </el-row>
-      <el-row :gutter="36">
-        <!--<el-col :span="6">-->
-          <!--<el-card shadow="always" class="mycard card_B">-->
-            <!--<p>冻结金额</p>-->
-            <!--<span>0</span> 元-->
-          <!--</el-card>-->
-        <!--</el-col>-->
-        <!--<el-col :span="6">-->
-          <!--<el-card shadow="always" class="mycard card_B">-->
-            <!--<p>投标次数</p>-->
-            <!--<span>0</span> 次-->
-          <!--</el-card>-->
-        <!--</el-col>-->
-        <!--<el-col :span="6">-->
-          <!--<el-card shadow="always" class="mycard card_B">-->
-            <!--<p>待回收金额</p>-->
-            <!--<span>0</span> 元-->
-          <!--</el-card>-->
-        <!--</el-col>-->
-        <!--<el-col :span="6">-->
-          <!--<el-card shadow="always" class="mycard card_B">-->
-            <!--<p>信用评级-->
-              <!--&lt;!&ndash;很尴尬，写了后竟然不对齐&ndash;&gt;-->
-              <!--&lt;!&ndash;<el-popover&ndash;&gt;-->
-                <!--&lt;!&ndash;placement="top"&ndash;&gt;-->
-                <!--&lt;!&ndash;title="评级规则"&ndash;&gt;-->
-                <!--&lt;!&ndash;width="200"&ndash;&gt;-->
-                <!--&lt;!&ndash;trigger="hover"&ndash;&gt;-->
-                <!--&lt;!&ndash;content="财务信息评级占比	70%,非财务信息评级占比	30%">&ndash;&gt;-->
-                <!--&lt;!&ndash;<i class="el-icon-question" slot="reference" style="font-size: 12px"></i>&ndash;&gt;-->
-              <!--&lt;!&ndash;</el-popover>&ndash;&gt;-->
-            <!--</p>-->
-            <!--<span>76</span> 分-->
-          <!--</el-card>-->
-        <!--</el-col>-->
-      </el-row>
     </div>
     <br/><br/>
     <div id="user_financial">
@@ -240,24 +183,6 @@
       <vue-event-calendar :events="demoEvents" title="提示"  @monthChanged="" @dayChanged=""></vue-event-calendar>
     </div>
     <hr/>
-    <div id="user_remaintodo">
-      <!--<el-row :gutter="36">-->
-        <!--<el-col :span="12">-->
-          <!--<el-card shadow="always" class="mycard card_C">-->
-            <!--<p>待收:0.00 元</p>-->
-            <!--<p>已收:0.00 元</p>-->
-          <!--</el-card>-->
-        <!--</el-col>-->
-        <!--<el-col :span="12">-->
-          <!--<el-card shadow="always" class="mycard card_C">-->
-            <!--<p>待还:0.00 元</p>-->
-            <!--<p>已还:0.00 元</p>-->
-          <!--</el-card>-->
-        <!--</el-col>-->
-      <!--</el-row>-->
-    </div>
-
-
   </personalCenter>
 </template>
 
@@ -267,6 +192,28 @@
   export default {
     name:"userspace",
     components: {personalCenter},
+    mounted() {
+      this.getOverview();
+    },
+    methods:{
+      getOverview(){
+        console.log("用户总览");
+        this.$axios.get('/profile/investAndLoan', {
+          captial:{
+            amountToCover: '856',
+            progress: '37'
+          },
+        })
+          .then(function (response) {
+            console.log(response);
+            alert("SUCCESS");
+          })
+          .catch(function (response) {
+            console.log(response);
+            alert("ERROR")
+          });
+      }
+    },
     data () {
       var time = new Date();
       var hours = time.getHours();
