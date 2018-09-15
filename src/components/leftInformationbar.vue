@@ -26,8 +26,6 @@
       </el-menu-item-group>
     </el-submenu>
   </el-menu>
-
-
 </template>
 
 <script>
