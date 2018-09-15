@@ -197,20 +197,22 @@
         }
       },
       mounted: function () {
-        this.target_id = this.$route.params.id;
+        //this.target_id = this.$route.params.id;
         //console.log(this.$route.params.id)
         //this.target_id=this.$route.params.id;
-        this.getInvestmentDetail();
+        this.getInvestmentDetail(this.$route.params.id);
       },
       methods: {
-        getInvestmentDetail(){
+        getInvestmentDetail(id){
           var _this = this;
           this.$axios.get('/loan/details',{
             params:{
-              targetId : 1
+              targetId : id
             }
           }).then(function (response) {
-            console.log("response:"+response.data)
+            //console.log("response:"+response.data)
+            var data = response.data
+
           }).catch(function (error) {
             console.log("error:"+error)
           });
