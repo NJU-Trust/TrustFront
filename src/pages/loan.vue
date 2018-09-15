@@ -1,7 +1,6 @@
 <template>
     <div id="app">
       <navi></navi>
-
       <el-form class="back">
 
         <div>
@@ -553,10 +552,10 @@
             user: '',
             region: '',
             textarea1:'',
-            layer1:false,
-            layer2:false,
-            layer3:false,
-            layer4:false,
+            layer1:true,
+            layer2:true,
+            layer3:true,
+            layer4:true,
           },
           form3:{
             money:'',
@@ -594,7 +593,7 @@
           usage_radio: 3,
           textarea2:'',
 
-          layer:'',
+          layer:'ONE',
 
           options: [{
             value: 'shop',
@@ -702,10 +701,11 @@
 <style scoped>
 
     .back{
-      margin-top: 10px;
+      min-height: 1200px;
       width: 100%;
       display:flex;
-      padding-bottom: 50px;
+      background-image: url("../../static/pic/loanBack.jpg");
+      background-size:100% 100%;
     }
 
     .sheet{
