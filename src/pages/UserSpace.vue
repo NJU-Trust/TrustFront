@@ -197,16 +197,16 @@
     },
     methods:{
       getOverview(){
-        alert("用户总览");
+        // alert("用户总览");
         console.log("用户总览");
         this.$axios.get('/profile/investAndLoan')
           .then(function (response) {
             console.log(response);
-            alert("success");
+            // alert("success");
           })
           .catch(function (response) {
             console.log(response);
-            alert("error")
+            // alert("error")
           });
       }
     },

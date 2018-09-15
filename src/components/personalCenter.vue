@@ -79,7 +79,7 @@
 <style scoped>
 
   #personalCenter{
-    background-image: url("../../static/pic/userSpace.png");
+    background-image: url("../../static/pic/userSpace2.png");
   }
 
   div.myspace{
