@@ -14,52 +14,52 @@
               <div class="form">
               <el-form :inline="true" label-width="100px">
                 <el-form-item label="标的分类" class="form_item">
-                  <el-dropdown class="dropdown">
+                  <el-dropdown class="dropdown" @command="handleSmallCommand">
                     <el-button type="primary" plain>
                       购物<i class="el-icon-arrow-down el-icon--right"></i>
                     </el-button>
                     <el-dropdown-menu slot="dropdown">
-                      <el-dropdown-item>鞋帽服饰</el-dropdown-item>
-                      <el-dropdown-item>生活用品</el-dropdown-item>
-                      <el-dropdown-item>护肤美妆</el-dropdown-item>
-                      <el-dropdown-item>游戏动漫</el-dropdown-item>
-                      <el-dropdown-item>电子产品</el-dropdown-item>
+                      <el-dropdown-item command="鞋帽服饰">鞋帽服饰</el-dropdown-item>
+                      <el-dropdown-item command="生活用品">生活用品</el-dropdown-item>
+                      <el-dropdown-item command="护肤美妆">护肤美妆</el-dropdown-item>
+                      <el-dropdown-item command="游戏动漫">游戏动漫</el-dropdown-item>
+                      <el-dropdown-item command="电子产品">电子产品</el-dropdown-item>
                     </el-dropdown-menu>
                   </el-dropdown>
-                  <el-dropdown class="dropdown">
+                  <el-dropdown class="dropdown" @command="handleSmallCommand">
                     <el-button type="primary" plain>
                       学习<i class="el-icon-arrow-down el-icon--right"></i>
                     </el-button>
-                    <el-dropdown-menu slot="dropdown">
-                      <el-dropdown-item>学习用品</el-dropdown-item>
-                      <el-dropdown-item>书籍报刊</el-dropdown-item>
-                      <el-dropdown-item>培训考证</el-dropdown-item>
-                      <el-dropdown-item>校际交换</el-dropdown-item>
+                    <el-dropdown-menu slot="dropdown" >
+                      <el-dropdown-item command="学习用品">学习用品</el-dropdown-item>
+                      <el-dropdown-item command="书籍报刊">书籍报刊</el-dropdown-item>
+                      <el-dropdown-item command="培训考证">培训考证</el-dropdown-item>
+                      <el-dropdown-item command="校际交换">校际交换</el-dropdown-item>
                     </el-dropdown-menu>
                   </el-dropdown>
-                  <el-dropdown class="dropdown">
+                  <el-dropdown class="dropdown" @command="handleSmallCommand">
                     <el-button type="primary" plain>
                       娱乐<i class="el-icon-arrow-down el-icon--right"></i>
                     </el-button>
-                    <el-dropdown-menu slot="dropdown">
-                      <el-dropdown-item>聚餐轰趴</el-dropdown-item>
-                      <el-dropdown-item>运动健身</el-dropdown-item>
-                      <el-dropdown-item>观看演出</el-dropdown-item>
-                      <el-dropdown-item>外出旅游</el-dropdown-item>
+                    <el-dropdown-menu slot="dropdown" >
+                      <el-dropdown-item command="聚餐轰趴">聚餐轰趴</el-dropdown-item>
+                      <el-dropdown-item command="运动健身">运动健身</el-dropdown-item>
+                      <el-dropdown-item command="观看演出">观看演出</el-dropdown-item>
+                      <el-dropdown-item command="外出旅游">外出旅游</el-dropdown-item>
                     </el-dropdown-menu>
                   </el-dropdown>
-                  <el-dropdown class="dropdown">
+                  <el-dropdown class="dropdown" @command="handleSmallCommand">
                     <el-button type="primary" plain>
                       医疗<i class="el-icon-arrow-down el-icon--right"></i>
                     </el-button>
                     <el-dropdown-menu slot="dropdown">
-                      <el-dropdown-item>诊断治疗</el-dropdown-item>
-                      <el-dropdown-item>保健养生</el-dropdown-item>
+                      <el-dropdown-item command="诊断治疗">诊断治疗</el-dropdown-item>
+                      <el-dropdown-item command="保健养生">保健养生</el-dropdown-item>
                     </el-dropdown-menu>
                   </el-dropdown>
                 </el-form-item>
                 <el-form-item label="用户信用等级" class="form_item">
-                    <el-select multiple placeholder="请选择">
+                    <el-select v-model="smallUserRating" multiple placeholder="请选择">
                       <el-option
                         v-for="item in options"
                         :key="item.value"
@@ -69,12 +69,12 @@
                     </el-select>
                   </el-form-item>
                 <el-form-item label="利率" class="form_item">
-                    <input type="number" class="selectInput" style="width:70px;"/>
+                    <input type="number" v-model="smallInterestDown" class="selectInput" style="width:70px;"/>
                     <p style="display: inline;margin-left:5px;margin-right:5px;">-</p>
-                    <input type="number" class="selectInput" style="width:70px;"/>
+                    <input type="number" v-model="smallInterestUp" class="selectInput" style="width:70px;"/>
                   </el-form-item>
                 <el-form-item label="项目风险评级" class="form_item">
-                    <el-select multiple placeholder="请选择">
+                    <el-select v-model="smallTargetRating" multiple placeholder="请选择">
                       <el-option
                         v-for="item in options"
                         :key="item.value"
@@ -84,20 +84,23 @@
                     </el-select>
                   </el-form-item>
                 <el-form-item label="投资金额" class="form_item">
-                    <input type="number" class="selectInput" style="width:100px;"/>
+                    <input type="number" v-model="smallInvestDown"  class="selectInput" style="width:100px;"/>
                     <p style="display: inline;margin-left:5px;margin-right:5px;">-</p>
-                    <input type="number" class="selectInput" style="width:100px;"/>
+                    <input type="number" v-model="smallInvestUp" class="selectInput" style="width:100px;"/>
                   </el-form-item>
                 <el-form-item label="还款期限" class="form_item">
-                  <input type="number" class="selectInput" style="width:83px;"/>
+                  <input type="number" v-model="smallDayDown" class="selectInput" style="width:83px;"/>
                   <p style="display: inline;margin-left:5px;margin-right:5px;">-</p>
-                  <input type="number" class="selectInput" style="width:83px;"/>
+                  <input type="number" v-model="smallDayUp" class="selectInput" style="width:83px;"/>
                   <p style="display: inline;margin-left:5px;margin-right:5px;">天</p>
                 </el-form-item>
                 <el-form-item label="开始时间" class="form_item">
-                  <input type="date" class="selectInput" style="width:120px;"/>
+                  <input type="date" v-model="smallDateDown" class="selectInput" style="width:120px;"/>
                   <p style="display: inline;margin-left:5px;margin-right:5px;">-</p>
-                  <input type="date" class="selectInput" style="width:120px;"/>
+                  <input type="date" v-model="smallDateUp" class="selectInput" style="width:120px;"/>
+                </el-form-item>
+                <el-form-item style="float: right;margin-right: 30px;">
+                  <el-button type="primary" @click="small_fil">过滤</el-button>
                 </el-form-item>
               </el-form>
               </div>
@@ -109,7 +112,7 @@
                   <el-radio-button label="用户信用分数"></el-radio-button>
                   <el-radio-button label="项目风险评级"></el-radio-button>
                 </el-radio-group>
-                <div>
+                <div style="float: right;width: 170px;">
                   <el-autocomplete
                     popper-class="my-autocomplete"
                     placeholder="请输入内容" >
@@ -128,58 +131,62 @@
                 v-for="item in investInformation"
                 v-bind:investList="item"
                 v-bind:key="item.id"
-              ></invest-list>
+              ></invest-list>\
+              <el-pagination style="margin-left: 32%"
+                layout="prev, pager, next"
+                :total="50">
+              </el-pagination>
             </el-tab-pane>
             <el-tab-pane label="转让中">
               <div class="form">
                 <el-form :inline="true" label-width="100px">
                   <el-form-item label="标的分类" class="form_item">
-                    <el-dropdown class="dropdown">
+                    <el-dropdown class="dropdown" @command="handleLargeCommand">
                       <el-button type="primary" plain>
                         购物<i class="el-icon-arrow-down el-icon--right"></i>
                       </el-button>
                       <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item>鞋帽服饰</el-dropdown-item>
-                        <el-dropdown-item>生活用品</el-dropdown-item>
-                        <el-dropdown-item>护肤美妆</el-dropdown-item>
-                        <el-dropdown-item>游戏动漫</el-dropdown-item>
-                        <el-dropdown-item>电子产品</el-dropdown-item>
+                        <el-dropdown-item command="鞋帽服饰">鞋帽服饰</el-dropdown-item>
+                        <el-dropdown-item command="生活用品">生活用品</el-dropdown-item>
+                        <el-dropdown-item command="护肤美妆">护肤美妆</el-dropdown-item>
+                        <el-dropdown-item command="游戏动漫">游戏动漫</el-dropdown-item>
+                        <el-dropdown-item command="电子产品">电子产品</el-dropdown-item>
                       </el-dropdown-menu>
                     </el-dropdown>
-                    <el-dropdown class="dropdown">
+                    <el-dropdown class="dropdown" @command="handleLargeCommand">
                       <el-button type="primary" plain>
                         学习<i class="el-icon-arrow-down el-icon--right"></i>
                       </el-button>
-                      <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item>学习用品</el-dropdown-item>
-                        <el-dropdown-item>书籍报刊</el-dropdown-item>
-                        <el-dropdown-item>培训考证</el-dropdown-item>
-                        <el-dropdown-item>校际交换</el-dropdown-item>
+                      <el-dropdown-menu slot="dropdown" >
+                        <el-dropdown-item command="学习用品">学习用品</el-dropdown-item>
+                        <el-dropdown-item command="书籍报刊">书籍报刊</el-dropdown-item>
+                        <el-dropdown-item command="培训考证">培训考证</el-dropdown-item>
+                        <el-dropdown-item command="校际交换">校际交换</el-dropdown-item>
                       </el-dropdown-menu>
                     </el-dropdown>
-                    <el-dropdown class="dropdown">
+                    <el-dropdown class="dropdown" @command="handleLargeCommand">
                       <el-button type="primary" plain>
                         娱乐<i class="el-icon-arrow-down el-icon--right"></i>
                       </el-button>
-                      <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item>聚餐轰趴</el-dropdown-item>
-                        <el-dropdown-item>运动健身</el-dropdown-item>
-                        <el-dropdown-item>观看演出</el-dropdown-item>
-                        <el-dropdown-item>外出旅游</el-dropdown-item>
+                      <el-dropdown-menu slot="dropdown" >
+                        <el-dropdown-item command="聚餐轰趴">聚餐轰趴</el-dropdown-item>
+                        <el-dropdown-item command="运动健身">运动健身</el-dropdown-item>
+                        <el-dropdown-item command="观看演出">观看演出</el-dropdown-item>
+                        <el-dropdown-item command="外出旅游">外出旅游</el-dropdown-item>
                       </el-dropdown-menu>
                     </el-dropdown>
-                    <el-dropdown class="dropdown">
+                    <el-dropdown class="dropdown" @command="handleLargeCommand">
                       <el-button type="primary" plain>
                         医疗<i class="el-icon-arrow-down el-icon--right"></i>
                       </el-button>
                       <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item>诊断治疗</el-dropdown-item>
-                        <el-dropdown-item>保健养生</el-dropdown-item>
+                        <el-dropdown-item command="诊断治疗">诊断治疗</el-dropdown-item>
+                        <el-dropdown-item command="保健养生">保健养生</el-dropdown-item>
                       </el-dropdown-menu>
                     </el-dropdown>
                   </el-form-item>
                   <el-form-item label="用户信用等级" class="form_item">
-                    <el-select multiple placeholder="请选择">
+                    <el-select v-model="largeUserRating" multiple placeholder="请选择">
                       <el-option
                         v-for="item in options"
                         :key="item.value"
@@ -189,12 +196,12 @@
                     </el-select>
                   </el-form-item>
                   <el-form-item label="利率" class="form_item">
-                    <input type="number" class="selectInput" style="width:70px;"/>
+                    <input v-model="largeInterestDown" type="number" class="selectInput" style="width:70px;"/>
                     <p style="display: inline;margin-left:5px;margin-right:5px;">-</p>
-                    <input type="number" class="selectInput" style="width:70px;"/>
+                    <input v-model="largeInterestUp" type="number" class="selectInput" style="width:70px;"/>
                   </el-form-item>
                   <el-form-item label="项目风险评级" class="form_item">
-                    <el-select multiple placeholder="请选择">
+                    <el-select v-model="largeTargetRating" multiple placeholder="请选择">
                       <el-option
                         v-for="item in options"
                         :key="item.value"
@@ -204,20 +211,20 @@
                     </el-select>
                   </el-form-item>
                   <el-form-item label="投资金额" class="form_item">
-                    <input type="number" class="selectInput" style="width:100px;"/>
+                    <input v-model="largeInterestDown" type="number" class="selectInput" style="width:100px;"/>
                     <p style="display: inline;margin-left:5px;margin-right:5px;">-</p>
-                    <input type="number" class="selectInput" style="width:100px;"/>
+                    <input v-model="largeInterestUp" type="number" class="selectInput" style="width:100px;"/>
                   </el-form-item>
                   <el-form-item label="还款期限" class="form_item">
-                    <input type="number" class="selectInput" style="width:83px;"/>
+                    <input v-model="largeDayDown" type="number" class="selectInput" style="width:83px;"/>
                     <p style="display: inline;margin-left:5px;margin-right:5px;">-</p>
-                    <input type="number" class="selectInput" style="width:83px;"/>
+                    <input v-model="largeDayUp" type="number" class="selectInput" style="width:83px;"/>
                     <p style="display: inline;margin-left:5px;margin-right:5px;">天</p>
                   </el-form-item>
                   <el-form-item label="开始时间" class="form_item">
-                    <input type="date" class="selectInput" style="width:120px;"/>
+                    <input v-model="largeDateDown" type="date" class="selectInput" style="width:120px;"/>
                     <p style="display: inline;margin-left:5px;margin-right:5px;">-</p>
-                    <input type="date" class="selectInput" style="width:120px;"/>
+                    <input v-model="largeDateUp" type="date" class="selectInput" style="width:120px;"/>
                   </el-form-item>
                 </el-form>
               </div>
@@ -229,10 +236,11 @@
                   <el-radio-button label="用户信用分数"></el-radio-button>
                   <el-radio-button label="项目风险评级"></el-radio-button>
                 </el-radio-group>
-                <div>
+                <div style="float: right;width: 170px;">
                   <el-autocomplete
                     popper-class="my-autocomplete"
-                    placeholder="请输入内容" >
+                    placeholder="请输入内容"
+                    >
                     <i class="el-icon-edit el-input__icon"
                        slot="suffix"
                        @click="handleIconClick">
@@ -323,10 +331,10 @@
   export default {
     name: "invest",
     components:{navi, footerBar, rightBar,investList,ProjectList,investList2},
-    mounted() {
+    mounted: function(){
       this.drawRadar();
     },
-    data(){
+    data: function(){
       return{
         /* 未成交数据*/
         investInformation: [
@@ -361,12 +369,95 @@
         },
         /*单选按钮默认值及样式*/
         value_radio: '标的金额',
+        /*分类信息*/
+        fundUse: [ '鞋帽服饰', '生活用品', '护肤美妆', '游戏动漫', '电子产品', '学习用品', '书籍报刊', '培训考证', '校际交换',
+        '聚餐轰趴', '运动健身', '观看演出', '外出旅游', '诊断治疗', '保健养生'],
+        fundUse2: [ '鞋帽服饰', '生活用品', '护肤美妆', '游戏动漫', '电子产品', '学习用品', '书籍报刊', '培训考证', '校际交换',
+          '聚餐轰趴', '运动健身', '观看演出', '外出旅游', '诊断治疗', '保健养生'],
+        /*选择信息*/
+        options: [
+          { label: 'AA', value: 5},
+          { label: 'A', value: 4},
+          { label: 'B', value: 3},
+          { label: 'C', value: 2},
+          { label: 'D', value: 1}
+        ],
+        /*评级信息*/
+        smallTargetRating: [],
+        largeTargetRating: [],
+        smallUserRating: [],
+        largeUserRating: [],
+        /*数字信息*/
+        smallInterestDown: 0,
+        smallInterestUp: 100,
+        largeInterestDown: 0,
+        largeInterestUp: 100,
+        smallInvestDown: 0,
+        smallInvestUp: null,
+        largeInvestDown: 0,
+        largeInvestUp: null,
+        smallDayDown: 0,
+        smallDayUp: null,
+        largeDayDown: 0,
+        largeDayUp: null,
+        smallDateDown: null,
+        smallDateUp: null,
+        largeDateDown: null,
+        largeDateUp: null,
       };
     },
     beforeCreate:function(){
       localStorage.route = "#invest";
     },
     methods:{
+      /*过滤*/
+      small_fil() {
+        let self = this;
+        this.$axios.post("/loan/smallTargetList", {
+            page: 0,
+            size: 10,
+            sort: 'money.asc',
+            money: [self.smallInvestDown, self.smallInvestUp],
+            time: [self.smallDateDown, self.smallDateUp],
+            interestRate: [self.smallInterestDown, self.smallInterestUp],
+            repaymentDuration: [self.smallDateDown, self.smallDayUp],
+            userCreditRating: self.smallUserRating,
+            targetRating: self.smallTargetRating,
+            useOfFunds: self.fundUse
+        })
+          .then(res => { console.log(res)})
+          .catch(e => {console.log(e)})
+      },
+      // large_fil() {
+      //   let self = this;
+      //   this.$axios.post("/loan/smallTargetList", {
+      //     page: 0,
+      //     size: 10,
+      //     sort: 'money.asc',
+      //     money: [self.smallInvestDown, self.smallInvestUp],
+      //     time: [self.smallDateDown, self.smallDateUp],
+      //     interestRate: [self.smallInterestDown, self.smallInterestUp],
+      //     repaymentDuration: [self.smallDateDown, self.smallDayUp],
+      //     userCreditRating: self.smallUserRating,
+      //     targetRating: self.smallTargetRating,
+      //     useOfFunds: self.fundUse
+      //   })
+      //     .then(res => { console.log(res)})
+      //     .catch(e => {console.log(e)})
+      // },
+      handleIconClick() {
+
+      },
+      /*更改小分类*/
+      handleSmallCommand(command) {
+        this.fundUse = [];
+        this.fundUse.push(command);
+      },
+      /*更改小分类*/
+      handleLargeCommand(command) {
+        this.fundUse2 = [];
+        this.fundUse2.push(command);
+      },
       /* 绘制雷达图*/
       drawRadar() {
         let myChart = echarts.init(document.getElementById('myradar'),'infographic')
