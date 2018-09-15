@@ -710,7 +710,7 @@
 
     .sheet{
       margin-top: 40px;
-      margin-left:18%;
+      margin-left:24%;
 
     }
 
