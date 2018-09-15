@@ -21,9 +21,11 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    user: {},
+    user: {
+
+    },
     token: null,
-    title: '',
+    title: ''
   },
   mutations: {
     [types.LOGIN]: (state, data) => {

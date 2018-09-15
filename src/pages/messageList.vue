@@ -155,8 +155,6 @@
 <style scoped>
   .container {
     width:100%;
-    background: #D9F3FB
-  ;
     /*background-image:url('/static/pic/messageBackground.png');*/
     /*background-size: cover;*/
     /*background-attachment:fixed;*/
@@ -175,7 +173,6 @@
     box-shadow: 0 1px 6px 0 rgba(0, 0, 0, .12),
     0 1px 6px 0 rgba(0, 0, 0, .12);
     border-radius: 3px;
-    margin-top: 69px;
   }
 
   .el-card{

@@ -5,19 +5,23 @@
       <right-bar></right-bar>
     </div>
     <el-form class="back">
-      <div class="left">
-        <div class="left_label look_label" @click="change11">
-          后台数据统计—基础数据
-        </div>
-        <div class="left_label ask_label" @click="change22">
-          后台数据统计—违约信息
-        </div>
-      </div>
+      <el-menu class="my_menu">
+        <el-menu-item @click="change11">后台统计--基础数据</el-menu-item>
+        <el-menu-item @click="change22">后台统计--违约信息</el-menu-item>
+      </el-menu>
+      <!--<div class="left">-->
+        <!--<div class="left_label look_label" @click="change11">-->
+          <!--后台数据统计—基础数据-->
+        <!--</div>-->
+        <!--<div class="left_label ask_label" @click="change22">-->
+          <!--后台数据统计—违约信息-->
+        <!--</div>-->
+      <!--</div>-->
 
-      <div id="basic_data" style="margin-top: 100px; display: none;">
+      <div id="basic_data" style="margin-top: 30px; display: none;">
         <el-table
           :data="tableData"
-          style="margin-left: 30%">
+          style="margin-left: 10%">
           <el-table-column
             prop="total"
             label="总额"
@@ -53,10 +57,10 @@
         </el-table>
 
       </div>
-      <div id="default_info" style="margin-top: 100px;">
+      <div id="default_info" style="margin-top: 30px;">
         <el-table
           :data="tableData2"
-          style="margin-left: 30%">
+          style="margin-left: 10%">
           <el-table-column
             prop="default_name1"
             label="违约统计"
@@ -239,6 +243,11 @@
     padding-top: 20px;
     position: fixed;
   }
+  .my_menu{
+  //active-text-color:#409EFF;
+    height: auto;
+    margin-top: 30px;
 
+  }
 
 </style>

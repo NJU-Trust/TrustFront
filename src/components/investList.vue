@@ -3,23 +3,18 @@
     <div style="height:130px;text-align: center;">
       <el-row :gutter="20">
         <el-col :span="6">
-          <!--<div style="display: inline;float: left;margin: 0;padding: 0">-->
-            <!--<p class="text">{{investList.range}}</p>-->
-            <!--<div class="triangle-topleft">-->
-            <!--</div>-->
-          <!--</div>-->
-          <div class="grid-content bg-purple" style="margin-left:20%;">
+          <div style="display: inline;float: left;margin: -2px;padding: 0">
+            <p class="text">{{investList.range}}</p>
+            <div class="triangle-topleft">
+            </div>
+          </div>
+          <div class="grid-content bg-purple" style="margin-left:30%;">
             <div style="margin-top:10%;">
               <p class="month" style="display: inline;">Profit : </p>
               <p class="profit" style="display: inline;">{{investList.profit}}</p>
               <p class="month" >/ per year</p>
-              <el-rate
-                value="3.7"
-                disabled
-                show-score
-                text-color="#ff9900"
-                score-template="{value}">
-              </el-rate>
+              <p style="font-size:10px;display: inline-block;">标的编号：</p>
+              <p style="display: inline-block;font-weight:800;">{{investList.id}}</p>
             </div>
           </div>
         </el-col>
@@ -34,12 +29,6 @@
             <vm-progress :percentage="investList.finishProgress * 100"  :text-inside="true" :stroke-width="18" strokeColor="info" :striped="true">
               {{investList.finishProgress * 100}}%
             </vm-progress>
-            <!--<div class="progress round-conner">-->
-              <!--<div class="curRate round-conner" :style="'width:'+ investList.finishProgress * 100 +'%;'">-->
-                <!--<p>{{investList.finishProgress * 100}}%</p>-->
-              <!--</div>-->
-              <!--<div style="display:inline;"></div>-->
-            <!--</div>-->
           </div>
         </el-col>
         <el-col :span="6">
@@ -82,12 +71,13 @@
     display: block;
     position:absolute;
     z-index:100;
+    margin-left:3px;
   }
   .triangle-topleft{
     width: 0;
     height: 0;
     border-top: 80px solid #F37B55;
-    border-right: 110px solid transparent;
+    border-right: 100px solid transparent;
     display: block;
     position:absolute;
     z-index:10;

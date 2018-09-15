@@ -9,24 +9,30 @@
             <li><a id="object" href="/subjectManage" style="width: 120px">标的管理</a></li>
             <li><a id="user" style="width: 120px" href="/usermanage">用户管理</a></li>
             <li><a id="statistics" href="/backAdminData" style="width: 120px">数据统计</a></li>
-            <li id="last" style="float: right;"><a id="signup" href="/signup">注册</a></li>
-            <li id="secondLast" style="float: right;"><a id="login" href="/login">登录</a></li>
+            <el-dropdown style="float:right;position: relative;">
+              <span>
+                <avatar username="default" src="/static/pic/person-flat.png"></avatar></span>
+              <el-dropdown-menu slot="dropdown">
+                <a href="\userSpace"><el-dropdown-item>用户模式</el-dropdown-item></a>
+                <a href="\subjectManage"><el-dropdown-item>管理模式</el-dropdown-item></a>
+                <a href="\EnterVerify"><el-dropdown-item>审核模式</el-dropdown-item></a>
+                <el-dropdown-item v-on:click="logout">退出登录</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+            <li id="last" style="float: right;min-width: 8%;"><a id="signup" href="/signup">注册</a></li>
+            <li id="secondLast" style="float: right;min-width: 8%;"><a id="login" href="/login">登录</a></li>
           </ul>
         </div>
       </div>
     </nav>
-    <div id="manageAccount">
-      <button style="background-color: lightskyblue">用户模式</button>
-      <a href="/adminObjects" id="admin"><button>管理模式</button></a>
-      <a href="/EnterVerify" id="examine"><button>审核模式</button></a>
-      <button v-on:click="logout">退出</button>
-    </div>
   </div>
 </template>
 
 <script>
-    export default {
+  import Avatar from "vue-avatar/src/Avatar";
+  export default {
       name: "adminNavi",
+      components: { Avatar },
       mounted: function () {
         $(localStorage.route).css("color","dodgerblue");
         // if(localStorage.route=="#homepage"){
@@ -108,18 +114,6 @@
               }
             }
           );
-
-          var photo = document.createElement('img');
-          photo.id="photo";
-          photo.className = 'photo';
-          photo.src = localStorage.photoSrc;
-          document.getElementById('last').appendChild(photo);
-          photo.onmouseover=function(e){
-            $("#manageAccount").css('display','inherit');
-            $(navi).mouseleave(function (e) {
-              $("#manageAccount").css('display','none');
-            })
-          }
         }
       },
       methods: {
