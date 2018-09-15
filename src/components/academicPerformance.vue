@@ -11,8 +11,14 @@
           <p>Trust作为贴心的校园金融助手，将您的在校表现纳入我们的信用评价体系，旨在为您提供全面而精准的服务。</p>
           <p>美好校园生活，Trust伴您成就卓越之旅！</p><br/>
           <!--<img class="img-responsive" src="../../static/pic/perform.png">-->
-          <p>从雷达图中可以看出</p>
-          <p>您的校园表现评分高于用户平均水平</p>
+          <div v-if="aboveAverage">
+            <p>从雷达图中可以看出</p>
+            <p>您的校园表现评分高于用户平均水平</p>
+          </div>
+          <div v-if="!aboveAverage">
+            <p>从雷达图中可以看出</p>
+            <p>您的校园表现评分低于于用户平均水平</p>
+          </div>
         </div>
       </el-col>
     </el-row>
@@ -210,7 +216,7 @@
   export default {
     name: "academicPerformance",
     data(){
-
+      var aboveAverage;
       return{
         user:{
           schoolClass: '985',
@@ -241,14 +247,31 @@
           library: null,
           cheating: null,
           indentNull: '&nbsp&nbsp',
+          aboveAverage: '',
         }
       }
     },
     mounted() {
       this.drawRadar();
       this.drawGraph();
+      this.getSchool();
     },
     methods: {
+      getSchool() {
+        console.log("校园表现");
+        this.$axios.get('/profile/campusPerformence')
+          .then(function (response) {
+            console.log("success");
+            console.log(response);
+            console.log(response.data.aboveAverage);
+            this.aboveAverage = response.data.aboveAverage;
+            // alert("success");
+          })
+          .catch(function (response) {
+            console.log(response);
+            // alert("error")
+          });
+      },
       drawRadar() {
         // 基于准备好的dom，初始化echarts实例
         let myChart = echarts.init(document.getElementById('myradar'), 'infographic')
