@@ -1,8 +1,7 @@
 <template>
   <div class="UserList">
     <adminNavi></adminNavi>
-    <!--<img src="/static/pic/Investing.png" class="img-responsive"
-         alt="Cinque Terre" style="opacity:0.7;top: 0;z-index: -1;width:100%;height: 650px">-->
+
     <div style="position: relative;padding: 60px 0px;height:600px;">
       <el-table :data="subjects"
                 height="500"

@@ -4,7 +4,7 @@
     class="my_menu"
     active-text-color="#ffd04b"
     router="true">
-    <el-submenu index="1" style="background-color:#e5e9f2">
+    <el-submenu index="1" style="background-color:#f5f5f5">
       <template slot="title">
         <i class="el-icon-bell"></i>
         <span ><strong>与我相关</strong></span>
@@ -15,7 +15,7 @@
         <el-menu-item index="/notice/mesdone">已经完成</el-menu-item>
       </el-menu-item-group>
     </el-submenu>
-    <el-submenu index="1" style="background-color:#e5e9f2">
+    <el-submenu index="1" style="background-color:#f5f5f5">
       <template slot="title">
         <i class="el-icon-menu"></i>
         <span><strong>消息集散</strong></span>

@@ -10,25 +10,24 @@
           <h2 class="myspace">个人中心</h2>
           <p style="color: #777777;">欢迎访问个人中心, 您的Trust您做主!</p>
         </div>
-        <br/>
       </div>
     </div>
     <!--background-color: #D9F3FB-->
     <div style="padding: 0;position: relative; min-height: 800px;">
       <div class="container-fluid">
         <div class="row">
-          <div style="height: 50px">
+          <div style="height: 30px">
             <!--纯粹占个位置。。-->
           </div>
           <div>
             <el-row :gutter="0">
-              <el-col :span="6">
+              <el-col :span="7">
                 <div id="UserBar">
                   <left-user-bar v-if="isStudent"></left-user-bar>
                   <left-alumni-bar v-if="!isStudent"></left-alumni-bar>
                 </div>
               </el-col>
-              <el-col :span="18" id="mainbody">
+              <el-col :span="17" id="mainbody">
                 <div class="panel-group">
                   <div class="panel panel-default" id="mainpanel" style="min-height: 650px">
                     <div class="panel-heading">
@@ -81,7 +80,7 @@
 
   div.myspace{
     /*个人中心*/
-    text-indent: 4.5%;
+    text-indent: 6.3%;
     color: black;
     background-color: white;
     margin: 0px;
@@ -99,8 +98,8 @@
   }
 
   #UserBar{
-    margin-left: 8%;
-    margin-right: 8%;
+    margin-left: 21.6%;
+    margin-right: 12%;
     box-shadow:
       0 1px 6px 0 rgba(0,0,0, .12),
       0 1px 6px 0 rgba(0,0,0, .12);

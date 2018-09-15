@@ -1,27 +1,40 @@
 <template>
-  <div class="leftsidenav">
-    <div class="left_menus">
-      <p class="left_head" style="margin-top: 10px"><b>个人信息</b></p><hr/>
-      <ul class="left_ul">
-        <li><a id="leftOV" href="/UserSpace" @click="setA">账户总览</a></li>
-        <li><a id="leftBI"  href="/UserSpace/BasicInformation" >基本信息</a></li>
-      </ul>
-      <hr/>
-    </div>
-    <div class="left_menus">
-      <p class="left_head"><b>投资管理</b></p><hr/>
-      <ul class="left_ul">
-        <li><a id="leftII" href="/UserSpace/InvestInformation">项目信息</a></li>
-        <li><a id="leftIE" href="/UserSpace/InvestEarnings">投资统计</a></li>
-      </ul>
-      <hr/>
-    </div>
-    <div class="left_menus">
-      <p class="left_head"><b>信用验证</b></p><hr/>
-      <ul class="left_ul">
-        <li><a id="leftNC" href="/UserSpace/NormalCheck" @click="setB">身份验证</a></li>
-      </ul>
-    </div>
+  <div>
+    <el-menu
+      default-active="2"
+      class="el-menu-vertical-demo"
+      style="height: auto"
+      router="true">
+      <el-submenu index="1" style="background-color:#f5f5f5">
+        <template slot="title">
+          <i class="el-icon-location-outline"></i>
+          <span>个人信息</span>
+        </template>
+        <el-menu-item-group>
+          <el-menu-item index="/UserSpace">账户总览</el-menu-item>
+          <el-menu-item index="/UserSpace/BasicInformation">基本信息</el-menu-item>
+        </el-menu-item-group>
+      </el-submenu>
+      <el-submenu index="2" style="background-color:#f5f5f5">
+        <template slot="title">
+          <i class="el-icon-menu"></i>
+          <span>投资管理</span>
+        </template>
+        <el-menu-item-group>
+          <el-menu-item index="/UserSpace/InvestInformation">项目信息</el-menu-item>
+          <el-menu-item index="/UserSpace/InvestEarnings">投资统计</el-menu-item>
+        </el-menu-item-group>
+      </el-submenu>
+      <el-submenu index="3" style="background-color:#f5f5f5">
+        <template slot="title">
+          <i class="el-icon-location"></i>
+          <span>信用验证</span>
+        </template>
+        <el-menu-item-group>
+          <el-menu-item index="/UserSpace/NormalCheck">身份验证</el-menu-item>
+        </el-menu-item-group>
+      </el-submenu>
+    </el-menu>
   </div>
 </template>
 
