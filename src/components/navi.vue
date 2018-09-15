@@ -1,6 +1,7 @@
 <template>
   <div class="whole" id="navi" style="width:100%;">
     <a href="/"><img src="/static/pic/logo3_blue.png" id="naviLogo" class="img-responsive logo" alt="Cinque Terre"></a>
+    <img id="remindPoint" src="/static/pic/redPoint.png" style="position: absolute;width:8px;right: 12.6%;top:17px;z-index: 2;display: none">
 
     <nav class="navbar navbar-inverse wholeNav">
       <div class="container-fluid" style="width: 100%">
@@ -18,13 +19,14 @@
               <el-dropdown-menu slot="dropdown">
                 <a href="\userSpace"><el-dropdown-item>用户模式</el-dropdown-item></a>
                 <a href="\subjectManage"><el-dropdown-item>管理模式</el-dropdown-item></a>
-                <a href="\EnterVerify"><el-dropdown-item>审核模式</el-dropdown-item></a>
                 <el-dropdown-item v-on:click="logout">退出登录</el-dropdown-item>
 
               </el-dropdown-menu>
             </el-dropdown>
             <li id="last" style="float: right;min-width: 8%;"><a id="signup" href="/signup">注册</a></li>
-            <li id="secondLast" style="float: right;min-width: 8%;"><a id="login" href="/login">登录</a></li>
+            <li id="secondLast" style="float: right;min-width: 8%;">
+              <a id="login" href="/login">登录</a>
+            </li>
           </ul>
         </div>
       </div>
@@ -45,7 +47,6 @@
     inject:['reload'],
     name: 'navi',
     mounted: function () {
-      $(localStorage.route).css("color","dodgerblue");
       if(localStorage.route=="#homepage"){
         document.getElementById("naviLogo").src="/static/pic/logo3.png";
       }
@@ -75,6 +76,9 @@
         newLi.style.cssFloat = 'right';
         $('#nav').append(newLi);
         newLi.appendChild(personalCenter);
+
+        $(localStorage.route).css("color","dodgerblue");
+
         var message = document.createElement('img');
         message.className = 'message';
         message.id = 'message';
@@ -87,8 +91,9 @@
         mes.style.paddingTop="12px";
         document.getElementById('secondLast').appendChild(mes);
         document.getElementById('secondLast').style.marginRight="-5%";
+        //localStorage.ifUnread=1;
         if (localStorage.ifUnread==1){
-          message.src = '/static/pic/message_yellow.png';
+          $('#remindPoint').css('display','inherit');
         }
         $('#last').hover(
           function(){
@@ -115,11 +120,7 @@
             message.src = '/static/pic/message_blue.png';
           },
           function(){
-            if(localStorage.ifUnread==1){
-              message.src = '/static/pic/message_yellow.png';
-            }else{
-              message.src = '/static/pic/message_white.png';
-            }
+            message.src = '/static/pic/message_white.png';
           }
         );
         // var photo = document.createElement('img');
@@ -171,7 +172,7 @@
   #naviLogo{
     max-width: 9%;
     display: inline-block;
-    margin-left: 6%;
+    margin-left: 5%;
     margin-top: -48px;
     position: relative;
   }

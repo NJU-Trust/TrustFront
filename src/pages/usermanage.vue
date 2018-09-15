@@ -224,6 +224,9 @@
       },
     },*/
     // computed properties
+    beforeCreate:function(){
+      localStorage.route='#usermanage'
+    },
     mounted:function(){
       this.initial();
       for(var i=0;i<this.users.length;i++){

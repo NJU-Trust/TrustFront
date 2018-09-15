@@ -55,7 +55,7 @@
     name: "investList2",
     methods: {
       showDetails(){
-        window.location.href='/DoInvesting';
+        this.$router.push({name:'DoInvesting',params:{id:this.investList.id}})
       }
     },
     props:['investList'],

@@ -13,7 +13,7 @@
             <el-tab-pane label="未成交">
               <div class="form">
               <el-form :inline="true" label-width="100px">
-                <el-form-item label="标的分类">
+                <el-form-item label="标的分类" class="form_item">
                   <el-dropdown class="dropdown">
                     <el-button type="primary" plain>
                       购物<i class="el-icon-arrow-down el-icon--right"></i>
@@ -58,7 +58,7 @@
                     </el-dropdown-menu>
                   </el-dropdown>
                 </el-form-item>
-                <el-form-item label="用户信用等级">
+                <el-form-item label="用户信用等级" class="form_item">
                     <el-select multiple placeholder="请选择">
                       <el-option
                         v-for="item in options"
@@ -68,12 +68,12 @@
                       </el-option>
                     </el-select>
                   </el-form-item>
-                <el-form-item label="利率">
+                <el-form-item label="利率" class="form_item">
                     <input type="number" class="selectInput" style="width:70px;"/>
                     <p style="display: inline;margin-left:5px;margin-right:5px;">-</p>
                     <input type="number" class="selectInput" style="width:70px;"/>
                   </el-form-item>
-                <el-form-item label="项目风险评级">
+                <el-form-item label="项目风险评级" class="form_item">
                     <el-select multiple placeholder="请选择">
                       <el-option
                         v-for="item in options"
@@ -83,18 +83,18 @@
                       </el-option>
                     </el-select>
                   </el-form-item>
-                <el-form-item label="投资金额">
+                <el-form-item label="投资金额" class="form_item">
                     <input type="number" class="selectInput" style="width:100px;"/>
                     <p style="display: inline;margin-left:5px;margin-right:5px;">-</p>
                     <input type="number" class="selectInput" style="width:100px;"/>
                   </el-form-item>
-                <el-form-item label="还款期限">
+                <el-form-item label="还款期限" class="form_item">
                   <input type="number" class="selectInput" style="width:83px;"/>
                   <p style="display: inline;margin-left:5px;margin-right:5px;">-</p>
                   <input type="number" class="selectInput" style="width:83px;"/>
                   <p style="display: inline;margin-left:5px;margin-right:5px;">天</p>
                 </el-form-item>
-                <el-form-item label="开始时间">
+                <el-form-item label="开始时间" class="form_item">
                   <input type="date" class="selectInput" style="width:120px;"/>
                   <p style="display: inline;margin-left:5px;margin-right:5px;">-</p>
                   <input type="date" class="selectInput" style="width:120px;"/>
@@ -133,7 +133,7 @@
             <el-tab-pane label="转让中">
               <div class="form">
                 <el-form :inline="true" label-width="100px">
-                  <el-form-item label="标的分类">
+                  <el-form-item label="标的分类" class="form_item">
                     <el-dropdown class="dropdown">
                       <el-button type="primary" plain>
                         购物<i class="el-icon-arrow-down el-icon--right"></i>
@@ -178,7 +178,7 @@
                       </el-dropdown-menu>
                     </el-dropdown>
                   </el-form-item>
-                  <el-form-item label="用户信用等级">
+                  <el-form-item label="用户信用等级" class="form_item">
                     <el-select multiple placeholder="请选择">
                       <el-option
                         v-for="item in options"
@@ -188,12 +188,12 @@
                       </el-option>
                     </el-select>
                   </el-form-item>
-                  <el-form-item label="利率">
+                  <el-form-item label="利率" class="form_item">
                     <input type="number" class="selectInput" style="width:70px;"/>
                     <p style="display: inline;margin-left:5px;margin-right:5px;">-</p>
                     <input type="number" class="selectInput" style="width:70px;"/>
                   </el-form-item>
-                  <el-form-item label="项目风险评级">
+                  <el-form-item label="项目风险评级" class="form_item">
                     <el-select multiple placeholder="请选择">
                       <el-option
                         v-for="item in options"
@@ -203,18 +203,18 @@
                       </el-option>
                     </el-select>
                   </el-form-item>
-                  <el-form-item label="投资金额">
+                  <el-form-item label="投资金额" class="form_item">
                     <input type="number" class="selectInput" style="width:100px;"/>
                     <p style="display: inline;margin-left:5px;margin-right:5px;">-</p>
                     <input type="number" class="selectInput" style="width:100px;"/>
                   </el-form-item>
-                  <el-form-item label="还款期限">
+                  <el-form-item label="还款期限" class="form_item">
                     <input type="number" class="selectInput" style="width:83px;"/>
                     <p style="display: inline;margin-left:5px;margin-right:5px;">-</p>
                     <input type="number" class="selectInput" style="width:83px;"/>
                     <p style="display: inline;margin-left:5px;margin-right:5px;">天</p>
                   </el-form-item>
-                  <el-form-item label="开始时间">
+                  <el-form-item label="开始时间" class="form_item">
                     <input type="date" class="selectInput" style="width:120px;"/>
                     <p style="display: inline;margin-left:5px;margin-right:5px;">-</p>
                     <input type="date" class="selectInput" style="width:120px;"/>
@@ -435,5 +435,8 @@
     padding-top: 20px;
     padding-left: 20px;
     border:0.5px #c7defa solid;
+  }
+  .form_item {
+    margin-bottom: 14px;
   }
 </style>

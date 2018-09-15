@@ -53,12 +53,13 @@
 <script>
   export default {
     name: "projectList",
+    props:['investList'],
     methods: {
       showDetails(){
-        window.location.href='/DoInvesting';
+        //console.log(this.investList.id)
+        this.$router.push({name:'DoInvesting',params:{id:this.investList.id}})
       }
     },
-    props:['investList'],
 
   }
 </script>

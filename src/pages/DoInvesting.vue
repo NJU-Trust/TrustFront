@@ -49,13 +49,13 @@
               <div class="block">
                 <el-slider
                   v-model="num1"
-                  max=5000
+                  :max="10000"
                   :format-tooltip="formatTooltip"
                   show-input>
                 </el-slider>
               </div>
               <br/>
-              <el-button type="primary" round="true">我要投资</el-button>
+              <el-button type="primary" round>我要投资</el-button>
             </div>
             <!--<div style="padding:10px 40px 0px 0px">-->
             <!--<el-input-number v-model="num1" @change="handleChange" :min="1"label="描述文字"></el-input-number>-->
@@ -267,6 +267,11 @@
           //产品概要
           InvestInfo:"XXXXXXXXXXXX",
         }
+      },
+      mounted: function () {
+        this.target_id = this.$route.params.id
+        //console.log(this.$route.params.id)
+        //this.target_id=this.$route.params.id;
       },
       methods: {
         formatTooltip(val) {
