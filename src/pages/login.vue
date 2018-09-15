@@ -6,9 +6,9 @@
 
       <el-card class="box-card loginbody">
         <h3 style="float: top;" align="center">登录</h3>
-        <el-input id="account" class="loginInput" style="margin-top: 6%;" placeholder="账户/邮箱"></el-input>
-        <el-input id="password" type="password" class="loginInput" style="margin-top: 8%;" align="center" placeholder="请输入密码"></el-input><br>
-        <el-checkbox id="remember" style="margin-top: 3%;margin-left: 8%"></el-checkbox>
+        <el-input id="account" class="loginInput" style="margin-top: 6%;" placeholder="账户/邮箱/手机号" v-model="account"></el-input>
+        <el-input id="password" v-model="password" type="password" class="loginInput" style="margin-top: 8%;" align="center" placeholder="请输入密码"></el-input><br>
+        <el-checkbox id="remember" v-model="remember" style="margin-top: 3%;margin-left: 8%"></el-checkbox>
         <p style="display: inline;">记住密码</p>
         <a href="/findPassword" style="float: right;margin-right: 8%;display: inline;margin-top: 3%">忘记密码？</a>
         <el-button type="primary" id="login" v-on:click="login()" round>登录</el-button>
@@ -41,6 +41,19 @@
     export default {
       name: "login",
       components: {footerBar},
+      data() {
+        return {
+          remember: JSON.parse(localStorage.ifRemember),
+          account: localStorage.rememberAccount,
+          password: ''
+        };
+      },
+      mounted: function(){
+        if(this.remember){
+          this.password=localStorage.rememberPW;
+        }
+
+      },
       methods: {
         login: function () {
           var ac=document.getElementById('account').value;
@@ -48,15 +61,17 @@
           this.$axios.post('/user/signin', {"username": ac, "password": pw}).then(
             res => {
               store.commit(types.LOGIN, res.data['accessToken']);
-              if(res.data.result==true){
-                localStorage.ifLogin=1;
-                localStorage.ifUnread=res.data.ifUnread;
-                localStorage.photoSrc=res.data.photoSrc;
-                localStorage.account=ac;
-                this.$router.replace('/');
-              }else{
-                alert("账户或密码错误");
+              console.log(res);
+              localStorage.rememberAccount=ac;
+              localStorage.ifRemember=this.remember;
+              if(this.remember){
+                localStorage.rememberPW=pw;
               }
+              localStorage.ifLogin=1;
+              // localStorage.ifUnread=res.data.ifUnread;
+              // localStorage.photoSrc=res.data.photoSrc;
+              localStorage.account=ac;
+              this.$router.replace('/')
             }).catch(err => {
             console.log(err)
           });
@@ -85,7 +100,7 @@
 
   .loginbody{
     width: 32%;
-    height: 360px;
+    height: 370px;
     position: relative;
     margin: auto;
     right: 100px;

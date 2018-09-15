@@ -16,7 +16,7 @@
               <el-dropdown-menu slot="dropdown">
                 <a href="\userSpace"><el-dropdown-item>用户模式</el-dropdown-item></a>
                 <a href="\subjectManage"><el-dropdown-item>管理模式</el-dropdown-item></a>
-                <el-dropdown-item v-on:click="logout">退出登录</el-dropdown-item>
+                <el-dropdown-item v-on:click="logout()">退出登录</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
             <li id="last" style="float: right;min-width: 8%;"><a id="signup" href="/signup">注册</a></li>

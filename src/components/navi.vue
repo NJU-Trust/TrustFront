@@ -12,14 +12,14 @@
             <li><a id="trade" href="/trade">南大鱼塘</a></li>
             <li><a id="notice" href="/notice">失物/寻物</a></li>
             <li><a id="guide" href="/guide">平台指南</a></li>
-            <el-dropdown style="float:right;position: relative;">
+            <el-dropdown v-if="ifLogin" style="float:right;position: relative;">
               <span>
                 <avatar username="default" src="/static/pic/person-flat.png"></avatar>
               </span>
               <el-dropdown-menu slot="dropdown">
                 <a href="\userSpace"><el-dropdown-item>用户模式</el-dropdown-item></a>
                 <a href="\subjectManage"><el-dropdown-item>管理模式</el-dropdown-item></a>
-                <el-dropdown-item v-on:click="logout">退出登录</el-dropdown-item>
+                <a v-on:click="logout()"><el-dropdown-item>退出登录</el-dropdown-item></a>
 
               </el-dropdown-menu>
             </el-dropdown>
@@ -46,6 +46,11 @@
     components: {Avatar},
     inject:['reload'],
     name: 'navi',
+    data: {
+      return(){
+        ifLogin=localStorage.ifLogin
+      }
+    },
     mounted: function () {
       if(localStorage.route=="#homepage"){
         document.getElementById("naviLogo").src="/static/pic/logo3.png";
@@ -138,6 +143,7 @@
     },
     methods: {
       logout: function () {
+        alert('hhere');
         localStorage.ifLogin = 0;
         this.$router.replace("/");
         this.reload();
