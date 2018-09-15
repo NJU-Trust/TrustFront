@@ -1,7 +1,7 @@
 <template>
   <div style="width:100%;background-color: black;">
     <div id="insult" style="width: 100%;padding: 20px;">
-      <div class="insultSession" style="margin-left: 4%">
+      <div class="insultSession" style="margin-left: 5%">
         <h4>规则中心</h4>
         <a>借款规则</a>
         <a>投资规则</a>
@@ -33,9 +33,9 @@
       </div>
     </div>
     <div style="width: 100%;border-top: 1px solid #33333a;">
-      <img src="/static/pic/logo3.png" style="margin-left:4%;width:8%;padding-top: 10px">
+      <img src="/static/pic/logo3_blue.png" style="margin-left:6%;width:8%;padding-top: 10px">
       <span style="color: white;text-align: center;margin-left: 10px;font-size: 16px;vertical-align: -30%">让你的大学生活更美好</span>
-      <span style="color: white;text-align: center;font-size: 16px;float: right;padding-top: 10px;margin-right: 4%">NJU_Trust Team</span>
+      <span style="color: white;text-align: center;font-size: 16px;float: right;padding-top: 10px;margin-right: 6%">NJU_Trust Team</span>
     </div>
   </div>
 </template>
