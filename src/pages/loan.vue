@@ -14,9 +14,9 @@
 
                 <div style="margin-top: 20px;padding-top:15px;padding-left:5.5%;width: 860px">
                   <el-steps :active="active" style="width: 800px">
-                    <el-step class="test" title="项目信息" icon="el-icon-edit" align-center></el-step>
-                    <el-step title="信息披露" icon="el-icon-document" align-center></el-step>
-                    <el-step title="关于贷款" icon="el-icon-success" align-center></el-step>
+                    <el-step class="test" title="项目信息"  align-center></el-step>
+                    <el-step title="信息披露"  align-center></el-step>
+                    <el-step title="关于贷款"  align-center></el-step>
                   </el-steps>
                 </div>
 
