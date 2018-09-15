@@ -46,7 +46,8 @@
                             </div>
                           </div>
                           <el-button slot="reference">
-                            <img v-bind:src=latestmes[i-1].pic class="picbox" alt="User_pic" >
+                            <!--<img src="../../static/pic/testkey.png" class="picbox" alt="User_pic" >-->
+                           <img v-bind:src=latestmes[i-1].pic class="picbox" alt="User_pic" >
                           </el-button>
                         </el-popover>
                       </el-carousel-item>
@@ -370,10 +371,10 @@
       0 1px 6px 0 rgba(0,0,0, .12),
       0 1px 6px 0 rgba(0,0,0, .12);
     border-radius: 3px;
-    width:305px;
-    height:174px;
-    //margin-top:-2%;
-    //margin-left:-5%;
+    width:370px;
+    height:210px;
+    margin-top:-4%;
+    margin-left:-12%;
   }
 
   /*卡片样式*/
