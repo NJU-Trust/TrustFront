@@ -11,11 +11,11 @@
           <p>Trust作为贴心的校园金融助手，将您的在校表现纳入我们的信用评价体系，旨在为您提供全面而精准的服务。</p>
           <p>美好校园生活，Trust伴您成就卓越之旅！</p><br/>
           <!--<img class="img-responsive" src="../../static/pic/perform.png">-->
-          <div v-if="average">
+          <div v-if="aboveAverage">
             <p>从雷达图中可以看出</p>
             <p>您的校园表现评分高于用户平均水平</p>
           </div>
-          <div v-if="!average">
+          <div v-if="!aboveAverage">
             <p>从雷达图中可以看出</p>
             <p>您的校园表现评分低于于用户平均水平</p>
           </div>
@@ -216,7 +216,7 @@
   export default {
     name: "academicPerformance",
     data(){
-
+      var aboveAverage;
       return{
         user:{
           schoolClass: '985',
@@ -247,6 +247,7 @@
           library: null,
           cheating: null,
           indentNull: '&nbsp&nbsp',
+          aboveAverage: '',
         }
       }
     },
@@ -263,6 +264,7 @@
             console.log("success");
             console.log(response);
             console.log(response.data.aboveAverage);
+            this.aboveAverage = response.data.aboveAverage;
             // alert("success");
           })
           .catch(function (response) {
