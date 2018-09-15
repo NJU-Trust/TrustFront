@@ -7,7 +7,7 @@
         <el-row>
           <el-col :span="24">
             <el-menu
-              style="opacity: 0.7;min-width:400px;"
+              style="opacity: 0.7;min-width:320px;"
               default-active="1-1"
               class="el-menu-vertical-demo"
               @open="handleOpen"
