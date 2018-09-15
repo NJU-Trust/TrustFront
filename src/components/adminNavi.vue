@@ -34,7 +34,6 @@
       name: "adminNavi",
       components: { Avatar },
       mounted: function () {
-        $(localStorage.route).css("color","dodgerblue");
         if(localStorage.route=="#homepage"){
           document.getElementById("naviLogo").src="/static/pic/logo3.png";
         }
@@ -65,6 +64,8 @@
           newLi.style.cssFloat = 'right';
           $('#nav').append(newLi);
           newLi.appendChild(personalCenter);
+
+          $(localStorage.route).css("color","dodgerblue");
 
           var message = document.createElement('img');
           message.className = 'message';
