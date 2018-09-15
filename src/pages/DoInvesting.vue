@@ -200,7 +200,7 @@
         //this.target_id = this.$route.params.id;
         //console.log(this.$route.params.id)
         //this.target_id=this.$route.params.id;
-        this.getInvestmentDetail(this.$route.params.id);
+        this.getInvestmentDetail(Number(this.$route.params.id));
       },
       methods: {
         getInvestmentDetail(id){
