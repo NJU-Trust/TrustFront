@@ -57,82 +57,8 @@
               <br/>
               <el-button type="primary" round>我要投资</el-button>
             </div>
-            <!--<div style="padding:10px 40px 0px 0px">-->
-            <!--<el-input-number v-model="num1" @change="handleChange" :min="1"label="描述文字"></el-input-number>-->
-            <!--</div>-->
-            <!--<div style="padding:10px 40px 0px 0px">-->
-            <!--&lt;!&ndash;<el-button type="primary" round>{{DoInvest}}</el-button>&ndash;&gt;-->
-            <!---->
-            <!--</div>-->
         </el-col>
       </el-row>
-
-
-
-      <!--<div class="total" style="position:absolute;left:8%;top:20%;font-size:18px;width:300px;text-align:left;">-->
-        <!--<div style="color: white;text-align: center">-->
-          <!--<span style="color: aquamarine;font-size: 60px">{{percentage}}</span><label>%已完成</label>-->
-          <!--<br/>-->
-          <!--<vm-progress :percentage="percentage" :text-inside="true" :stroke-width="18" strokeColor="info" :striped="true">.</vm-progress>-->
-        <!--</div>-->
-
-      <!--</div>-->
-      <!--<div class="selfmoney" style="position:absolute;padding: 20px 20px 0px 600px; top:15%;font-size:20px;">-->
-        <!--<div style="padding:0px 30px 0px 0px;color: white;float: left; ">-->
-          <!--<countdown :time="2 * 24 * 60 * 60 * 1000">-->
-            <!--<template slot-scope="props">剩余时间：<span class="keypoint">{{ props.days }}</span> 天 <span class="keypoint">{{ props.hours }}</span> 小时 <span class="keypoint">{{ props.minutes }}</span> 分钟 <span class="keypoint">{{ props.seconds }}</span> 秒</template>-->
-          <!--</countdown>-->
-          <!--&lt;!&ndash;<label>剩余时间：{{leftTime}}</label>&ndash;&gt;-->
-          <!--<br>-->
-          <!--<label>还需投资：{{leftNeeds}} 元</label>-->
-          <!--<br/>-->
-          <!--<label>您的余额为：{{userMoney}} 元</label>-->
-          <!--<br/>-->
-          <!--<br/>-->
-          <!--<label>投资金额： </label>-->
-        <!--</div>-->
-        <!--&lt;!&ndash;<div style="padding:10px 40px 0px 0px">&ndash;&gt;-->
-        <!--&lt;!&ndash;<el-input-number v-model="num1" @change="handleChange" :min="1"label="描述文字"></el-input-number>&ndash;&gt;-->
-        <!--&lt;!&ndash;</div>&ndash;&gt;-->
-        <!--&lt;!&ndash;<div style="padding:10px 40px 0px 0px">&ndash;&gt;-->
-        <!--&lt;!&ndash;&lt;!&ndash;<el-button type="primary" round>{{DoInvest}}</el-button>&ndash;&gt;&ndash;&gt;-->
-        <!--&lt;!&ndash;&ndash;&gt;-->
-        <!--&lt;!&ndash;</div>&ndash;&gt;-->
-
-      <!--</div>-->
-      <!--<div style="position: absolute;left: 48%;width: 600px; top: 50%;">-->
-        <!--<div class="block">-->
-          <!--<el-slider-->
-            <!--v-model="num1"-->
-            <!--:format-tooltip="formatTooltip"-->
-            <!--show-input>-->
-          <!--</el-slider>-->
-        <!--</div>-->
-        <!--<br/>-->
-        <!--<el-button type="primary" round="true">我要投资</el-button>-->
-
-      <!--</div>-->
-      <!--&lt;!&ndash;<div  style="position: absolute;left: 70%;width: 600px; top: 65%;">&ndash;&gt;-->
-      <!--&lt;!&ndash;<div class="wrapper">&ndash;&gt;-->
-        <!--&lt;!&ndash;<a href="#" class="button">我要投资</a>&ndash;&gt;-->
-      <!--&lt;!&ndash;</div>&ndash;&gt;-->
-      <!--&lt;!&ndash;</div>&ndash;&gt;-->
-      <!--<div style="height:120px;width:100%;position:absolute;top:43%;">-->
-        <!--<div style="position:absolute;left:5%;padding:15px 0px 0px 0px;display: flex;text-align: center">-->
-          <!--<div style="padding:0px 40px 0px 0px">-->
-            <!--<span class="keypoint">{{revenueRate}}</span><label class="small"> %</label><br/>-->
-            <!--<label class="small">预期年化收益率</label>-->
-          <!--</div>-->
-          <!--<div style="padding:0px 40px 0px 0px">-->
-            <!--<span class="keypoint">{{lifeOfLoan}}</span><br/>-->
-            <!--<label class="small">借款期限</label>-->
-          <!--</div>-->
-          <!--<div style="padding:0px 40px 0px 0px">-->
-            <!--<span class="keypoint">{{totalLoan}}</span><label class="small"> 元</label><br/>-->
-            <!--<label class="small">总额度</label>-->
-          <!--</div>-->
-        <!--</div>-->
-      <!--</div>-->
     </div>
     <div style="display:flex;min-height:800px;border: 1px solid lightgrey;">
       <div class="market_out" style="height:100%;width:100%;">
@@ -212,7 +138,7 @@
         </el-tabs>
       </div>
     </div>
-
+    <footerBar></footerBar>
   </div>
 </template>
 
@@ -220,9 +146,10 @@
     import navi from '@/components/navi.vue';
     import rightBar from '@/components/rightBar.vue';
     import doInvestingLoanerInfo from '@/components/doInvestingLoanerInfo.vue';
+    import footerBar from '@/components/footerBar.vue';
     export default {
       name: "DoInvesting",
-      components:{navi,rightBar,doInvestingLoanerInfo},
+      components:{navi,rightBar,doInvestingLoanerInfo,footerBar},
       data(){
         return{
           tableData:[
@@ -270,11 +197,24 @@
         }
       },
       mounted: function () {
-        this.target_id = this.$route.params.id
+        this.target_id = this.$route.params.id;
         //console.log(this.$route.params.id)
         //this.target_id=this.$route.params.id;
+        this.getInvestmentDetail();
       },
       methods: {
+        getInvestmentDetail(){
+          var _this = this;
+          this.$axios.get('/loan/details',{
+            params:{
+              targetId : 1
+            }
+          }).then(function (response) {
+            console.log("response:"+response.data)
+          }).catch(function (error) {
+            console.log("error:"+error)
+          });
+        },
         formatTooltip(val) {
           return val;
         },
