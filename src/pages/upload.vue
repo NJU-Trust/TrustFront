@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div :style=back>
     <!--顶栏 -->
     <div class="col-xs-12 col-md-12" style="padding: 0;position: relative;background-color: black;">
       <navi style="position: relative"></navi>
@@ -98,10 +98,9 @@
     </div>
 
     <!--底栏-->
-    <div class="col-xs-12 col-md-12" style="padding: 0;position: relative;background-color: black;">
+    <div  style="padding: 0;position: relative;background-color: black;">
       <footer-bar></footer-bar>
     </div>
-
   </div>
 </template>
 
@@ -116,6 +115,13 @@
     components:{leftInformationbar, navi, footerBar, rightBar},
     data() {
       return {
+        back:{
+          backgroundImage:"url(" + require("../../static/pic/investListBack.jpg") + ")",
+          backgroundRepeat:"no-repeat",
+          backgroundAttachment:"fixed",
+          backgroundSize:"100% auto",
+          backgroundPosition: "0% 0%",
+        },
         sizeForm: {
           name: '',
           itemtype: '',
