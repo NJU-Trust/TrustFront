@@ -1,58 +1,60 @@
 <template>
-  <div id="personalCenter" style="width: 100%">
-    <div style="padding: 0;position: relative;background-color: black">
-      <navi style="position: relative"></navi>
-    </div>
+  <div :style=back>
+    <div id="personalCenter" style="width: 100%">
+      <div style="padding: 0;position: relative;background-color: black">
+        <navi style="position: relative"></navi>
+      </div>
 
-    <div style="padding: 0;position: relative;z-index: 1;width: 100%">
-      <div class="myspace">
-        <div>
-          <h2>个人中心</h2>
-          <p style="color: #777777;">欢迎访问个人中心, 您的Trust您做主!</p>
+      <div style="padding: 0;position: relative;z-index: 1;width: 100%">
+        <div class="myspace">
+          <div>
+            <h2>个人中心</h2>
+            <p style="color: #777777;">欢迎访问个人中心, 您的Trust您做主!</p>
+          </div>
         </div>
       </div>
-    </div>
-    <!--background-color: #D9F3FB-->
-    <div style="padding: 0;position: relative; min-height: 800px;width: 100%">
-      <div class="container-fluid" style="width: 100%;">
-        <div class="row" style="width: 100%">
-          <div style="height: 30px">
-            <!--纯粹占个位置。。-->
-          </div>
-          <div style="width: 95%;margin-left: 5%;">
-            <el-row :gutter="0">
-              <el-col :span="6">
-                <div id="UserBar" style="margin-left: 0">
-                  <left-user-bar v-if="isStudent"></left-user-bar>
-                  <left-alumni-bar v-if="!isStudent"></left-alumni-bar>
-                </div>
-              </el-col>
-              <el-col :span="18" id="mainbody">
-                <div class="panel-group">
-                  <div class="panel panel-default" id="mainpanel" style="min-height: 650px">
-                    <div class="panel-heading">
-                      <h4 class="panel-title" id="tmptitle">
-                        {{ paneltitle }}
-                      </h4>
-                    </div>
-                    <div>
-                      <div class="panel-body" id="maincontext">
-                        <div class="row placeholders">
-                          <slot></slot>
+      <!--background-color: #D9F3FB-->
+      <div style="padding: 0;position: relative; min-height: 800px;width: 100%">
+        <div class="container-fluid" style="width: 100%;">
+          <div class="row" style="width: 100%">
+            <div style="height: 30px">
+              <!--纯粹占个位置。。-->
+            </div>
+            <div style="width: 95%;margin-left: 5%;">
+              <el-row :gutter="0">
+                <el-col :span="6">
+                  <div id="UserBar" style="margin-left: 0">
+                    <left-user-bar v-if="isStudent"></left-user-bar>
+                    <left-alumni-bar v-if="!isStudent"></left-alumni-bar>
+                  </div>
+                </el-col>
+                <el-col :span="18" id="mainbody">
+                  <div class="panel-group">
+                    <div class="panel panel-default" id="mainpanel" style="min-height: 650px">
+                      <div class="panel-heading">
+                        <h4 class="panel-title" id="tmptitle">
+                          {{ paneltitle }}
+                        </h4>
+                      </div>
+                      <div>
+                        <div class="panel-body" id="maincontext">
+                          <div class="row placeholders">
+                            <slot></slot>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </el-col>
-            </el-row>
+                </el-col>
+              </el-row>
+            </div>
           </div>
         </div>
       </div>
+      <div class="col-xs-12 col-md-12" style="padding: 0;position: relative;background-color: black;">
+        <footer-bar></footer-bar>
+      </div>
     </div>
-    <div class="col-xs-12 col-md-12" style="padding: 0;position: relative;background-color: black;">
-    <footer-bar></footer-bar>
-  </div>
   </div>
 </template>
 
@@ -68,6 +70,13 @@
     components: {LeftAlumniBar, FooterBar, leftUserBar, navi},
     data(){
       return {
+        back:{
+          backgroundImage:"url(" + require("../../static/pic/investListBack.jpg") + ")",
+          backgroundRepeat:"no-repeat",
+          backgroundAttachment:"fixed",
+          backgroundSize:"100% auto",
+          backgroundPosition: "0% 0%",
+        },
         isStudent : true,
       }
     },
@@ -79,7 +88,8 @@
 <style scoped>
 
   #personalCenter{
-    background-image: url("../../static/pic/userSpace2.png");
+    /*background-image: url("../../static/pic/infoback.jpg");*/
+    /*background-size: 100%;*/
   }
 
   div.myspace{
