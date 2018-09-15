@@ -1,123 +1,112 @@
 <template>
   <div id="app">
-    <adminNavi></adminNavi>
+    <!--顶栏 -->
+    <div class="col-xs-12 col-md-12" style="padding: 0;position: relative;background-color: black;">
+      <adminNavi style="position: relative"></adminNavi>
+    </div>
+
+    <!--正文-->
+    <el-row>
+      <el-col span="24">
+        <div class="grid-content bg-purple-dark">
+          <div style="margin-top:5%;margin-left:8%;margin-right:8%;min-height:500px;">
+            <el-tabs type="border-card"
+                     :tab-position="left">
+              <el-tab-pane >
+                <span slot="label" style="font-size:19px;"><i class="el-icon-document"></i>&nbsp;&nbsp;基础数据</span>
+                <div class="sheet">
+                  <el-table
+                  :data="tableData">
+                  <el-table-column
+                    prop="total"
+                    label="总额"
+                    align="center">
+                  </el-table-column>
+                  <el-table-column
+                    prop="total_num"
+                    label=""
+                    align="center">
+                  </el-table-column>
+                  <el-table-column
+                    prop="average"
+                    label="人均统计">
+                  </el-table-column>
+                  <el-table-column
+                    prop="average_num"
+                    label="">
+                  </el-table-column>
+                  <el-table-column
+                    prop="other"
+                    label="其他统计">
+                  </el-table-column>
+                  <el-table-column
+                    prop="other_num"
+                    label="">
+                  </el-table-column>
+                </el-table>
+                </div>
+              </el-tab-pane>
+              <el-tab-pane >
+                <span slot="label" style="font-size:19px;"><i class="el-icon-minus"></i>&nbsp;&nbsp;违约信息</span>
+                <div  class="sheet">
+                  <el-table
+                  :data="tableData2">
+                  <el-table-column
+                    prop="default_name1"
+                    label="违约统计"
+                    align="center">
+                  </el-table-column>
+                  <el-table-column
+                    prop="default_num1"
+                    label=""
+                    align="center">
+                  </el-table-column>
+                  <el-table-column
+                    prop="default_name2"
+                    label="">
+                  </el-table-column>
+                  <el-table-column
+                    prop="default_num2"
+                    label="">
+                  </el-table-column>
+                  <el-table-column
+                    prop="default_name3"
+                    label="">
+                  </el-table-column>
+                  <el-table-column
+                    prop="default_num3"
+                    label="">
+                  </el-table-column>
+                </el-table>
+                </div>
+              </el-tab-pane>
+            </el-tabs>
+          </div>
+        </div>
+      </el-col>
+    </el-row>
+
+    <!--右边栏-->
     <div>
       <right-bar></right-bar>
     </div>
-    <el-form class="back">
-      <el-menu class="my_menu">
-        <el-menu-item @click="change11">后台统计--基础数据</el-menu-item>
-        <el-menu-item @click="change22">后台统计--违约信息</el-menu-item>
-      </el-menu>
-      <!--<div class="left">-->
-        <!--<div class="left_label look_label" @click="change11">-->
-          <!--后台数据统计—基础数据-->
-        <!--</div>-->
-        <!--<div class="left_label ask_label" @click="change22">-->
-          <!--后台数据统计—违约信息-->
-        <!--</div>-->
-      <!--</div>-->
 
-      <div id="basic_data" style="margin-top: 30px; display: none;">
-        <el-table
-          :data="tableData"
-          style="margin-left: 10%">
-          <el-table-column
-            prop="total"
-            label="总额"
-            width="140"
-            align="center">
-          </el-table-column>
-          <el-table-column
-            prop="total_num"
-            label=""
-            width="140"
-            align="center">
-          </el-table-column>
-          <el-table-column
-            prop="average"
-            label="人均统计"
-            width="140">
-          </el-table-column>
-          <el-table-column
-            prop="average_num"
-            label=""
-            width="140">
-          </el-table-column>
-          <el-table-column
-            prop="other"
-            label="其他统计"
-            width="200">
-          </el-table-column>
-          <el-table-column
-            prop="other_num"
-            label=""
-            width="140">
-          </el-table-column>
-        </el-table>
+    <!--底栏-->
+    <div class="col-xs-12 col-md-12" style="padding: 0;position: relative;background-color: black;">
+      <footer-bar></footer-bar>
+    </div>
 
-      </div>
-      <div id="default_info" style="margin-top: 30px;">
-        <el-table
-          :data="tableData2"
-          style="margin-left: 10%">
-          <el-table-column
-            prop="default_name1"
-            label="违约统计"
-            width="140"
-            align="center">
-          </el-table-column>
-          <el-table-column
-            prop="default_num1"
-            label=""
-            width="140"
-            align="center">
-          </el-table-column>
-          <el-table-column
-            prop="default_name2"
-            label=""
-            width="140">
-          </el-table-column>
-          <el-table-column
-            prop="default_num2"
-            label=""
-            width="140">
-          </el-table-column>
-          <el-table-column
-            prop="default_name3"
-            label=""
-            width="140">
-          </el-table-column>
-          <el-table-column
-            prop="default_num3"
-            label=""
-            width="140">
-          </el-table-column>
-        </el-table>
-      </div>
-
-    </el-form>
-    <footerBar style="float: bottom"></footerBar>
   </div>
-  <!--<footerBar style="float: bottom"></footerBar>-->
 </template>
 
 <script>
   import adminNavi from '@/components/adminNavi.vue';
-  import ElCard from "element-ui/packages/card/src/main";
   import footerBar from '@/components/footerBar.vue';
   import rightBar from '@/components/rightBar.vue';
-  import evaluate from '@/components/evaluate.vue';
 
   export default {
-    name: "backAdmin",
-    components:{
-      ElCard,
-      adminNavi,
-      footerBar,
-      rightBar,
-      evaluate
-    },
+    name: "backAdminData",
+    components:{ adminNavi, footerBar, rightBar},
     beforeCreate:function(){
       localStorage.route = "";
     },
@@ -206,48 +195,11 @@
 </script>
 
 <style scoped>
-
-  .left_label{
-    width:200px;
-    height:50px;
-    /*margin-top: 20px;*/
-    /* border: 1px black solid;*/
-    text-align:center;
-    padding-top: 17px;
-    font-size: 16px;
-  }
-
-  .look_label{
-    background-color: lightskyblue;
-    opacity:0.5;
-  }
-
-  .ask_label{
-    background-color: rgba(17, 17, 17, 0.17);
-    opacity:0.5;
-  }
-
-
-  .back{
-    /*background-color: rgba(173,216,230,0.5);*/
-    width: 100%;
-    /* height: 1700px;*/
-    display:flex;
-    margin-bottom: 50px;
-  }
-  .left{
-    /*border:1px black solid;*/
-    width:200px;
-    height: 150px;
-    margin-top: 120px;
-    padding-top: 20px;
-    position: fixed;
-  }
-  .my_menu{
-  //active-text-color:#409EFF;
-    height: auto;
-    margin-top: 30px;
+  .sheet{
+    margin-top: 5%;
+    margin-left:8%;
+    margin-right:8%;
+    margin-bottom: 5%;
 
   }
-
 </style>

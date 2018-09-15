@@ -140,8 +140,9 @@
           <el-tab-pane label="产品概要"
                         style="padding:60px 60px 10px 30px;font-size:18px;line-height: 30px;">
             <div style="display: flex;">
-                <div style="padding:5px;">
+                <div style="padding:25px 70px;">
                   <img src="../../static/pic/TOEFL.jpg" style="width:400px;"/>
+                  <br>
                   <label style="font-size:16px;font-style: oblique;text-align: center;font-weight: normal;color:grey">此图为用户上传的项目说明</label>
                   <br/>
                   <label>信用等级排序说明：</label>
@@ -155,7 +156,7 @@
                   <label>></label>
                   <label class="level">D</label>
                 </div>
-                <div style="padding:5px;width:500px;">
+                <div style="padding:25px 70px;width:500px;">
                   <el-card class="box-card" style="width:430px;">
                     <div slot="header" class="clearfix">
                       <strong><span style="font-size: 20px;">借款项目简介</span></strong>
