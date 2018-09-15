@@ -244,13 +244,7 @@
     },
     methods: {
       initial(){
-        this.getListLength().then(
-          console.log("listLength:"+this.listLength)
-        );
-
-        var pageNum=0;
-        this.getData(pageNum)
-        console.log("end: "+pageNum)
+        this.getListLength()
       },
       callback(initial) {
         this.initial_data = initial;
@@ -292,7 +286,12 @@
           }
         }).then(function (response) {
           var data = response.data
-          _this.listLength = Number(data);
+          var pageNum=0;
+          for(var i = 0; i < Number(data); i++){
+            _this.getData(pageNum)
+            pageNum = pageNum + 1
+          }
+          //console.log("end: "+pageNum)
         }).catch(function (error) {
           console.log("error:"+error)
         });
@@ -308,10 +307,10 @@
             type:"",
           }
         }).then(function (response) {
-          console.log(response)
+          //console.log(response)
           var data = response.data
           for(var i=0;i<data.length;i++){
-            console.log(data[i]);
+            //console.log(data[i]);
             _this.users.push({username:data[i].username, level:data[i].level, tel:data[i].tel, email:data[i].email, state:data[i].state})
           }
           }).catch(function (error) {
