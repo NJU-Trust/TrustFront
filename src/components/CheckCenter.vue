@@ -2,7 +2,7 @@
   <div>
     <!--顶栏-->
     <div class="col-xs-12 col-md-12" style="padding: 0;position: relative;background-color: black;">
-      <ExamineNavi style="position: relative"></ExamineNavi>
+      <adminNavi style="position: relative"></adminNavi>
     </div>
     <!--简介-->
     <div class="col-xs-12 col-md-12" style="padding: 0;position: relative;">
@@ -54,11 +54,11 @@
   import leftCheckBar from "../components/leftCheckBar";
   import footerBar from "../components/footerBar";
   import rightBar from "./leftAlumniBar";
-  import ExamineNavi from "./examineNavi";
+  import adminNavi from "./adminNavi";
 
   export default {
     name: "CheckCenter",
-    components: {ExamineNavi, leftCheckBar, footerBar,rightBar},
+    components: {adminNavi, leftCheckBar, footerBar,rightBar},
     props:['paneltitle']
 
   }
