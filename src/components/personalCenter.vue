@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="personalCenter">
     <div style="padding: 0;position: relative;background-color: black;">
       <navi style="position: relative"></navi>
     </div>
@@ -78,6 +78,10 @@
 
 <style scoped>
 
+  #personalCenter{
+    background-image: url("../../static/pic/userSpace.png");
+  }
+
   div.myspace{
     /*个人中心*/
     text-indent: 6.3%;
@@ -98,7 +102,7 @@
   }
 
   #UserBar{
-    margin-left: 21.6%;
+    margin-left: 20%;
     margin-right: 12%;
     box-shadow:
       0 1px 6px 0 rgba(0,0,0, .12),
