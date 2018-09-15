@@ -145,7 +145,7 @@
       },
       beforeCreate: function () {
         localStorage.route="#homepage";
-        localStorage.ifLogin=1;
+        //localStorage.ifLogin=1;
       },
       methods: {
         trustNow:function () {
