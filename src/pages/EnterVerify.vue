@@ -5,41 +5,32 @@
         :data="tableData"
         max-height="500"
         :default-sort = "{prop: 'time', order: 'descending'}"
-        style="width: 85%">
+        style="width: 100%">
         <el-table-column
           prop="time"
           label="提交时间"
-          sortable
-          width="200">
+          sortable>
         </el-table-column>
         <el-table-column
           prop="name"
-          label="用户名称"
-          width="200">
+          label="用户名称">
         </el-table-column>
         <el-table-column
           prop="state"
-          label="当前状态"
-          width="150">
+          label="当前状态">
           <template slot-scope="scope">
             <el-tag :type="scope.row.state | statusFilter">{{scope.row.state | formatStata}}</el-tag>
           </template>
         </el-table-column>
         <el-table-column
           prop="action"
-          label="操作"
-          width="150">
+          label="操作">
           <template slot-scope="scope">
             <router-link to="/userverify">
               <i class="el-icon-view"></i>
               <el-button  type="text">审核
               </el-button>
             </router-link>
-            <!--
-            <el-button
-              size="mini"
-              type="danger"
-              @click="handleDelete(scope.$index, scope.row)">删除</el-button>-->
           </template>
         </el-table-column>
       </el-table>
@@ -122,8 +113,8 @@
 <style scoped>
   .sheet{
     margin-top: 5%;
-    margin-left:15%;
-
+    margin-left:8%;
+    margin-right:8%;
   }
 </style>
 

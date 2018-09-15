@@ -5,34 +5,39 @@
         <el-table
           :data="tableData6"
           border
-          style="width: 95.6%">
+          style="width: 100%">
           <el-table-column
             prop="classify"
             label="条目类别"
             :filters="[{text: '证书或证明截图', value: '证书或证明截图'}, {text: '教务网截图', value: '教务网截图'},{text:'查找政府公示',value:'查找政府公示'},{text:'学生综合服务平台截图',value:'学生综合服务平台截图'},{text:'银行信息截图',value:'银行信息截图'},{text:'图书馆信息截图',value:'图书馆信息截图'}]"
-            :filter-method="filterHandler"
-            width="180">
+            :filter-method="filterHandler">
           </el-table-column>
           <el-table-column
             prop="name"
-            label="条目名称"
-            width="180">
+            label="条目名称">
           </el-table-column>
           <el-table-column
             prop="mess"
-            width="200"
             label="条目信息">
           </el-table-column>
           <el-table-column
-            width="200"
             label="条目证明">
             <template slot-scope="scope">
-              <img v-bind:src=scope.row.pics alt="pics" style="width:200px;height:200px;"/>
+              <!--<img src="../../static/pic/所在专业.png" alt="pics" style="overflow: hidden;" class="pic"/>-->
+                <el-popover
+                  placement="bottom-end"
+                  title="图片详情"
+                  trigger="hover">
+                  <img v-bind:src=scope.row.pics  alt="pics"  />
+                  <el-button slot="reference" style="margin:-6%;">
+                    <img v-bind:src=scope.row.pics alt="pics"  class="pic"/>
+                  </el-button>
+                </el-popover>
+                <!--<img v-bind:src=scope.row.pics alt="pics" style="max-width:200px;max-height:200px;overflow: hidden;"/>-->
             </template>
           </el-table-column>
           <el-table-column
-            label="操作"
-            width="100">
+            label="操作">
             <template slot-scope="scope">
               <div v-if="scope.row.state !== '审核通过' && scope.row.state !== '审核未通过'">
                 <el-button
@@ -54,10 +59,9 @@
       <br/>
       <br/>
       <br/>
-      <div>
+      <div style="margin-left:80%;">
         <el-button size="mini"
                    type="primary"
-                   style="position:relative;left:700px;"
                    @click="clear()"
         >审核其他用户
         </el-button>
@@ -321,9 +325,16 @@
 <style scoped>
   .sheet{
     margin-top: 5%;
-    margin-left:6%;
+    margin-left:8%;
+    margin-right:8%;
+  }
+  .pic{
+    max-width:200px;
   }
 </style>
 <style>
   #leftA { color: dodgerblue !important}
+  .popover{
+    background-color: red;
+  }
 </style>

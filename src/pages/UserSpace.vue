@@ -52,7 +52,7 @@
             <el-card shadow="always" class="mycard card_B">
               <el-row :gutter="2">
                 <el-col :span="8">
-                  <el-progress type="circle" :percentage= user.captial.progress width="81"></el-progress>
+                  <el-progress type="circle" :percentage= user.captial.progress width=81></el-progress>
                 </el-col>
                 <el-col :span="16">
                   <p>待收回本息 <span>{{ user.captial.amountToCover }}</span> 元</p>
@@ -64,7 +64,7 @@
             <el-card shadow="always" class="mycard card_B">
               <el-row :gutter="2">
                 <el-col :span="8">
-                  <el-progress type="circle" :percentage=user.interest.progress width="81"></el-progress>
+                  <el-progress type="circle" :percentage= user.interest.progress width=81></el-progress>
                 </el-col>
                 <el-col :span="16">
                   <p>待偿还本息 <span>{{ user.interest.amountToCove }}</span> 元</p>
@@ -97,7 +97,7 @@
             <el-card shadow="always" class="mycard card_B">
               <el-row :gutter="2">
                 <el-col :span="8">
-                  <el-progress type="circle" :percentage=user.captial.progress width="81"></el-progress>
+                  <el-progress type="circle" :percentage=user.captial.progress width=81></el-progress>
                 </el-col>
                 <el-col :span="16">
                   <p>待收回本息 <span>{{ user.captial.amountToCover }}</span> 元</p>
@@ -110,7 +110,7 @@
             <el-card shadow="always" class="mycard card_B">
               <el-row :gutter="2">
                 <el-col :span="8">
-                  <el-progress type="circle" :percentage=user.interest.progress width="81"></el-progress>
+                  <el-progress type="circle" :percentage=user.interest.progress width=81></el-progress>
                 </el-col>
                 <el-col :span="16">
                   <p>待偿还本息 <span>{{ user.interest.amountToCove }}</span> 元</p>
@@ -192,25 +192,21 @@
   export default {
     name:"userspace",
     components: {personalCenter},
-    mounted() {
+    mounted: function() {
       this.getOverview();
     },
     methods:{
       getOverview(){
+        alert("用户总览");
         console.log("用户总览");
-        this.$axios.get('/profile/investAndLoan', {
-          captial:{
-            amountToCover: '856',
-            progress: '37'
-          },
-        })
+        this.$axios.get('/profile/investAndLoan')
           .then(function (response) {
             console.log(response);
-            alert("SUCCESS");
+            alert("success");
           })
           .catch(function (response) {
             console.log(response);
-            alert("ERROR")
+            alert("error")
           });
       }
     },
@@ -231,11 +227,11 @@
           loanAmount: 19857,
           captial:{
             amountToCover: '856',
-            progress: '37'
+            progress: 37
           },
           interest:{
             amountToCove: '7263.33',
-            progress: '21'
+            progress: 21
           },
           credit:{
             points: 91,
@@ -296,14 +292,6 @@
           title: '已收款',
           desc: '您已在7月5日收款'
         }, ]
-      }
-    },
-    methods: {
-      monthChange (month) {
-        console.log(month)
-      },
-      dayChange (day) {
-        console.log(day)
       }
     },
     beforeCreate: function () {

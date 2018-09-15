@@ -211,6 +211,7 @@
             state:'',
           }
         ],
+        listLength:0,
 
       }
     },
@@ -224,6 +225,9 @@
       },
     },*/
     // computed properties
+    beforeCreate:function(){
+      localStorage.route='#usermanage'
+    },
     mounted:function(){
       this.initial();
       for(var i=0;i<this.users.length;i++){
@@ -240,10 +244,7 @@
     },
     methods: {
       initial(){
-        var pageNum=0;
-        this.getData(pageNum)
-        console.log("end: "+pageNum)
-
+        this.getListLength()
       },
       callback(initial) {
         this.initial_data = initial;
@@ -276,6 +277,26 @@
         this.passData.state = row.state;
         this.passData.email = row.email;
       },
+      getListLength:function(){
+        var _this = this;
+        this.$axios.get('/adminUser/manageLen',{
+          params:{
+            keyword: "",
+            type:"",
+          }
+        }).then(function (response) {
+          var data = response.data
+          var pageNum=0;
+          for(var i = 0; i < Number(data); i++){
+            _this.getData(pageNum)
+            pageNum = pageNum + 1
+          }
+          //console.log("end: "+pageNum)
+        }).catch(function (error) {
+          console.log("error:"+error)
+        });
+
+      },
       getData:function(pageNum){
         var _this = this;
         this.$axios.get('/adminUser/manage', {
@@ -286,10 +307,10 @@
             type:"",
           }
         }).then(function (response) {
-          console.log(response)
+          //console.log(response)
           var data = response.data
           for(var i=0;i<data.length;i++){
-            console.log(data[i]);
+            //console.log(data[i]);
             _this.users.push({username:data[i].username, level:data[i].level, tel:data[i].tel, email:data[i].email, state:data[i].state})
           }
           }).catch(function (error) {

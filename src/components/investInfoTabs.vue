@@ -90,7 +90,7 @@
               <el-table-column label="查看详情" align="center">
 
                 <template slot-scope="scope">
-                  <el-button size="mini"><a href="DoInvesting.vue">查看详情</a></el-button>
+                  <a href="/userSpace\checkInvest"><el-button size="mini">查看详情</el-button></a>
                 </template>
               </el-table-column>
             </el-table>
