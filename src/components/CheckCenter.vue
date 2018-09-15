@@ -13,37 +13,31 @@
     </div>
 
     <!--正文-->
-    <div style="background-color: #D9F3FB;">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-xs-12 col-sm-3 col-md-3" style="margin-top:50px;">
-            <left-check-bar></left-check-bar>
-          </div>
-          <div class="col-xs-12 col-sm-9 col-md-9" id ="mainbody" style="margin-top:50px;">
-            <div class="panel-group">
-              <div class="panel panel-default" id="mainpanel" style="min-height: 650px">
-                <div class="panel-heading">
-                  <h4 class="panel-title" id="tmptitle">
-                    {{ paneltitle }}
-                  </h4>
-                </div>
-                <div class="panel-body" id="maincontext">
-                    <div class="row placeholders">
-                      <slot></slot>
-                    </div>
-                  </div>
+    <el-row>
+      <el-col span="6">
+        <leftCheckBar></leftCheckBar>
+      </el-col>
+      <el-col span="18">
+        <div class="mesboxborder">
+          <div id="mainpanel" >
+            <div class="panel-heading">
+              <h4 class="panel-title" id="tmptitle">
+                {{ paneltitle }}
+              </h4>
+            </div>
+            <div class="panel-body">
+              <div class="row placeholders">
+                <slot></slot>
               </div>
             </div>
           </div>
-
         </div>
-      </div>
-    </div>
-
+      </el-col>
+    </el-row>
 
     <!--底栏-->
     <div class="col-xs-12 col-md-12" style="padding: 0;position: relative;background-color: black;">
-      <footerBar></footerBar>
+      <footer-bar></footer-bar>
     </div>
 
   </div>
@@ -65,6 +59,22 @@
 </script>
 
 <style scoped>
+  .mesboxborder{
+  //width:850px;
+    margin-right: 10%;
+    margin-left: 5%;
+    margin-top: 30px;
+    margin-bottom:5%;
+    min-height: 650px;
+    border-radius: 3px;
+    background:white;
+    border:1px solid #e4e4e4;
+    /*//height:80px;*/
+    box-shadow:
+      0 1px 6px 0 rgba(0,0,0, .12),
+      0 1px 6px 0 rgba(0,0,0, .12);
+  }
+
   div.myspace{
     /*个人中心*/
     text-indent: 4.5%;
@@ -84,15 +94,6 @@
     color: #505050;
   }
 
-  .panel-group{
-    box-shadow:
-      0 1px 6px 0 rgba(0,0,0, .12),
-      0 1px 6px 0 rgba(0,0,0, .12);
-    border-radius: 3px;
-    margin-right: 5.2%;
-
-  }
-
   #mainpanel .panel-heading
   {
     background-color: white;
@@ -110,12 +111,6 @@
     padding-left: 5px;
     padding-top: 5px;
     position: relative;
-  }
-
-  #maincontext {
-    //margin-left: 3em;
-    //margin-right: 3em;
-    height: max-content;
   }
 
 </style>

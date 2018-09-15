@@ -4,23 +4,19 @@
       <el-table
         :data="tableData"
         max-height="500"
-        :default-sort = "{prop: 'time', order: 'descending'}"
-        style="width:80%;margin-left:5%;">
+        :default-sort = "{prop: 'time', order: 'descending'}">
         <el-table-column
           prop="time"
           label="提交时间"
-          sortable
-          width="150">
+          sortable>
         </el-table-column>
         <el-table-column
           prop="name"
-          label="标的名称"
-          width="300">
+          label="标的名称">
         </el-table-column>
         <el-table-column
           prop="state"
-          label="当前状态"
-          width="150">
+          label="当前状态">
           <template slot-scope="scope">
             <el-tag :type="scope.row.state | statusFilter">{{scope.row.state | formatStata}}</el-tag>
           </template>
@@ -349,7 +345,7 @@
   .sheet{
     margin-top: 5%;
     margin-left:8%;
-
+    margin-right:8%;
   }
 </style>
 <style>
