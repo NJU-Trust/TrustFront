@@ -3,11 +3,11 @@
     <navi></navi>
     <img src="../../static/pic/guideBackground.jpg"  style="width:100%;min-height:1150px;opacity:0.3;position: absolute"/>
     <div style="position:relative;display:flex;width:100%;margin-top:8%;">
-      <div style="padding-left:8%;">
+      <div style="padding-left:5%;">
         <el-row>
           <el-col :span="24">
             <el-menu
-              style="opacity: 0.7"
+              style="opacity: 0.7;min-width:400px;"
               default-active="1-1"
               class="el-menu-vertical-demo"
               @open="handleOpen"
@@ -15,7 +15,7 @@
               <el-submenu index="1">
                 <template slot="title">
                   <i class="el-icon-location"></i>
-                  <span>关于我们</span>
+                  <span style="font-size: 18px;">关于我们</span>
                 </template>
                 <el-menu-item-group>
                   <el-menu-item index="1-1" @click="handleClick">平台定位</el-menu-item>
@@ -26,7 +26,7 @@
               <el-submenu index="2">
                 <template slot="title">
                   <i class="el-icon-document"></i>
-                  <span>使用指南</span>
+                  <span style="font-size: 18px;">使用指南</span>
                 </template>
                 <el-menu-item-group>
                   <el-menu-item index="2-1" @click="handleClick">注册账号</el-menu-item>
@@ -41,7 +41,7 @@
               <el-submenu index="3">
                 <template slot="title">
                   <i class="el-icon-setting"></i>
-                  <span>安全中心</span>
+                  <span style="font-size: 18px;">安全中心</span>
                 </template>
                 <el-menu-item-group>
                   <el-menu-item index="3-1" @click="handleClick">政策法规</el-menu-item>
@@ -459,6 +459,9 @@
         page3:true,
         page4:false,
       }
+    },
+    beforeCreate:function(){
+      localStorage.route='#guide'
     },
     methods: {
       changePage1(){
