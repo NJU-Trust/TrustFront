@@ -3,7 +3,7 @@
     <navi></navi>
     <img src="../../static/pic/guideBackground.jpg"  style="width:100%;min-height:1150px;opacity:0.3;position: absolute"/>
     <div style="position:relative;display:flex;width:100%;margin-top:8%;">
-      <div>
+      <div style="padding-left:8%;">
         <el-row>
           <el-col :span="24">
             <el-menu

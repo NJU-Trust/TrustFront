@@ -6,13 +6,13 @@
     <div style="width: 100%;text-align: center;">
     <el-form :inline="true">
       <el-form-item label="用户名称" style="padding:40px 40px 10px 40px;">
-        <el-input placeholder="请输入查询内容" style="width: 150px;" clearable></el-input>
+        <el-input placeholder="请输入查询内容" style="width: 150px;" clearable v-model="searchOption.name"></el-input>
       </el-form-item>
       <el-form-item label="电话" style="padding:40px 40px 10px 40px;">
-        <el-input placeholder="请输入查询内容"  clearable></el-input>
+        <el-input placeholder="请输入查询内容"  clearable v-model="searchOption.tel"></el-input>
       </el-form-item>
       <el-form-item label="邮箱" style="padding:40px 40px 10px 40px;">
-        <el-input placeholder="请输入查询内容" clearable></el-input>
+        <el-input placeholder="请输入查询内容" clearable v-model="searchOption.email"></el-input>
       </el-form-item>
     </el-form>
     <el-table :data="users"
@@ -82,7 +82,7 @@
 <script>
   import footerBar from '@/components/footerBar.vue';
   import adminNavi from '@/components/adminNavi.vue';
-  var mockUsers = [
+  /*var mockUsers = [
     {username: '王刚',state:'待还款',
     level: 'B',
     tel: '13258449922',
@@ -118,7 +118,7 @@
     {username: '王桐',state:'逾期',
       level: 'D',
       tel: '13211238753',
-      email: 'wangtong22@126.com',}];
+      email: 'wangtong22@126.com',}];*/
 /*  var STORAGE_KEY = 'users';
   var userStorage = {
     fetch: function () {
@@ -134,7 +134,45 @@
     components:{adminNavi,footerBar},
     data () {
       return {
-        users: mockUsers, // users 数据
+        initial_data: true,
+        saveUsers:[],
+        users: [
+          {username: '王刚',state:'待还款',
+            level: 'B',
+            tel: '13258449922',
+            email: '134456745@qq.com',},
+          {username: '李艺璇',state:'待还款',
+            level: 'A',
+            tel: '14423945566',
+            email: 'lyxnju@163.com',},
+          {username: '张一帆',state:'待还款',
+            level: 'C',
+            tel: '18628993345',
+            email: 'zyf12345@126.com',},
+          {username: '刘浩',state:'待还款',
+            level: 'B',
+            tel: '13293334853',
+            email: 'liuhao@126.com',},
+          {username: '吴欣怡',state:'待还款',
+            level: 'B',
+            tel: '18312348534',
+            email: 'xinyiwu12@163.com',},
+          {username: '陈文博',state:'无借款',
+            level: 'AA',
+            tel: '13329483758',
+            email: 'studywb@126.com',},
+          {username: '付贺然',state:'无借款',
+            level: 'C',
+            tel: '18756763899',
+            email: '865428373@qq.com',},
+          {username: '罗子俊',state:'无借款',
+            level: 'A',
+            tel: '18188829384',
+            email: 'lzjhappy1@163.com',},
+          {username: '王桐',state:'逾期',
+            level: 'D',
+            tel: '13211238753',
+            email: 'wangtong22@126.com',}], // users 数据
         /*selectedUsers: [], // 保存选中的 users 数组
         selectedUser: {}, // 选中 user*/
         /*input_username: '', // 过滤 username 的关键字
@@ -187,9 +225,40 @@
     },*/
     // computed properties
     mounted:function(){
-
+      this.initial();
+      for(var i=0;i<this.users.length;i++){
+        this.saveUsers.push(this.users[i]);
+      }
+    },
+    watch:{
+      searchOption:{
+        deep:true,
+        handler: function (val,oldVal) {
+          this.users = this.searchNewList(val.name,val.tel,val.email)
+        }
+      }
     },
     methods: {
+      initial(){
+        var pageNum=0;
+        this.getData(pageNum)
+        console.log("end: "+pageNum)
+
+      },
+      callback(initial) {
+        this.initial_data = initial;
+      },
+      searchNewList(name,tel,email){
+        let checkedUser = [];
+        for(var i=0;i<this.saveUsers.length;i++){
+          //console.log(this.saveUsers[i]);
+          if(this.saveUsers[i].username.indexOf(name)>=0 && this.saveUsers[i].tel.indexOf(tel)>=0 && this.saveUsers[i].email.indexOf(email)>=0){
+            checkedUser.push(this.saveUsers[i]);
+          }
+        }
+        //console.log(checkedUser)
+        return checkedUser;
+      },
       filterHandler(value, row, column) {
         const property = column['property'];
         return row[property] === value;
@@ -206,20 +275,25 @@
         this.passData.tel = row.tel;
         this.passData.state = row.state;
         this.passData.email = row.email;
-      }
-      ,
+      },
       getData:function(pageNum){
-        this.$axios.get('/AdminUser/manage', {
+        var _this = this;
+        this.$axios.get('/adminUser/manage', {
           params: {
             page:pageNum,
-            pageSize:20,
+            pageSize:10,
             keyword: "",
             type:"",
           }
         }).then(function (response) {
-
+          console.log(response)
+          var data = response.data
+          for(var i=0;i<data.length;i++){
+            console.log(data[i]);
+            _this.users.push({username:data[i].username, level:data[i].level, tel:data[i].tel, email:data[i].email, state:data[i].state})
+          }
           }).catch(function (error) {
-
+            console.log("error:"+error)
           });
       },
 

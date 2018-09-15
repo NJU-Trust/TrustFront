@@ -1,6 +1,6 @@
 <template>
   <div class="whole" id="navi" style="width:100%;">
-    <a href="/"><img src="/static/pic/logo3.png" id="naviLogo" class="img-responsive logo" alt="Cinque Terre"></a>
+    <a href="/"><img src="/static/pic/logo3_blue.png" id="naviLogo" class="img-responsive logo" alt="Cinque Terre"></a>
 
     <nav class="navbar navbar-inverse wholeNav">
       <div class="container-fluid" style="width: 100%">
@@ -46,9 +46,9 @@
     name: 'navi',
     mounted: function () {
       $(localStorage.route).css("color","dodgerblue");
-      // if(localStorage.route=="#homepage"){
-      //   document.getElementById("naviLogo").src="/static/pic/logo1_white.png";
-      // }
+      if(localStorage.route=="#homepage"){
+        document.getElementById("naviLogo").src="/static/pic/logo3.png";
+      }
       //localStorage.ifAdmin=0;
       var ifAdmin=localStorage.ifAdmin;
       if(ifAdmin==0){

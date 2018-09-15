@@ -30,7 +30,7 @@
     class="my_menu"
     active-text-color="#ffd04b"
     router="true">
-    <el-submenu index="1" style="background-color:#e5e9f2">
+    <el-submenu index="1" style="background-color:#f5f5f5">
       <template slot="title">
         <i class="el-icon-menu"></i>
         <span><strong>交易大厅</strong></span>
@@ -39,12 +39,12 @@
         <el-menu-item index="/trade">交易大厅</el-menu-item>
       </el-menu-item-group>
     </el-submenu>
-    <el-submenu index="1" style="background-color:#e5e9f2">
+    <el-submenu index="1" style="background-color:#f5f5f5">
       <template slot="title">
         <i class="el-icon-bell"></i>
         <span ><strong>我的闲置</strong></span>
       </template>
-      <el-menu-item-group >
+      <el-menu-item-group>
         <el-menu-item index="/trade/mine">闲置上传</el-menu-item>
         <el-menu-item index="/trade/going">正在进行</el-menu-item>
         <el-menu-item index="/trade/finished">成功交易</el-menu-item>
