@@ -18,7 +18,6 @@
               <el-dropdown-menu slot="dropdown">
                 <a href="\userSpace"><el-dropdown-item>用户模式</el-dropdown-item></a>
                 <a href="\subjectManage"><el-dropdown-item>管理模式</el-dropdown-item></a>
-                <a href="\EnterVerify"><el-dropdown-item>审核模式</el-dropdown-item></a>
                 <el-dropdown-item v-on:click="logout">退出登录</el-dropdown-item>
 
               </el-dropdown-menu>
@@ -171,7 +170,7 @@
   #naviLogo{
     max-width: 9%;
     display: inline-block;
-    margin-left: 6%;
+    margin-left: 5%;
     margin-top: -48px;
     position: relative;
   }
