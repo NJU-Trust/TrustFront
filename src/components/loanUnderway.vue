@@ -53,9 +53,9 @@
           align="center"
         >
           <template slot-scope="scope">
-            <el-button
+            <a href="/userSpace/repay"><el-button
               size="mini"
-              @click="">查看</el-button>
+              @click="">查看</el-button></a>
           </template>
         </el-table-column>
 

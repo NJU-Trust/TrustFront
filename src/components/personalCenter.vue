@@ -1,33 +1,33 @@
 <template>
-  <div>
-    <div style="padding: 0;position: relative;background-color: black;">
+  <div id="personalCenter" style="width: 100%">
+    <div style="padding: 0;position: relative;background-color: black">
       <navi style="position: relative"></navi>
     </div>
 
-    <div style="padding: 0;position: relative;z-index: 1">
+    <div style="padding: 0;position: relative;z-index: 1;width: 100%">
       <div class="myspace">
         <div>
-          <h2 class="myspace">个人中心</h2>
+          <h2>个人中心</h2>
           <p style="color: #777777;">欢迎访问个人中心, 您的Trust您做主!</p>
         </div>
       </div>
     </div>
     <!--background-color: #D9F3FB-->
-    <div style="padding: 0;position: relative; min-height: 800px;">
-      <div class="container-fluid">
-        <div class="row">
+    <div style="padding: 0;position: relative; min-height: 800px;width: 100%">
+      <div class="container-fluid" style="width: 100%;">
+        <div class="row" style="width: 100%">
           <div style="height: 30px">
             <!--纯粹占个位置。。-->
           </div>
-          <div>
+          <div style="width: 95%;margin-left: 5%;">
             <el-row :gutter="0">
-              <el-col :span="7">
-                <div id="UserBar">
+              <el-col :span="6">
+                <div id="UserBar" style="margin-left: 0">
                   <left-user-bar v-if="isStudent"></left-user-bar>
                   <left-alumni-bar v-if="!isStudent"></left-alumni-bar>
                 </div>
               </el-col>
-              <el-col :span="17" id="mainbody">
+              <el-col :span="18" id="mainbody">
                 <div class="panel-group">
                   <div class="panel panel-default" id="mainpanel" style="min-height: 650px">
                     <div class="panel-heading">
@@ -78,9 +78,13 @@
 
 <style scoped>
 
+  #personalCenter{
+    background-image: url("../../static/pic/userSpace.png");
+  }
+
   div.myspace{
     /*个人中心*/
-    text-indent: 6.3%;
+    /*text-indent: 6.3%;*/
     color: black;
     background-color: white;
     margin: 0px;
@@ -90,6 +94,7 @@
       0 1px 6px 0 rgba(0,0,0, .12),
       0 1px 6px 0 rgba(0,0,0, .12);
     border-radius: 3px;
+    padding-left: 5%;
   }
 
   .myspace p{
@@ -98,7 +103,7 @@
   }
 
   #UserBar{
-    margin-left: 21.6%;
+    margin-left: 20%;
     margin-right: 12%;
     box-shadow:
       0 1px 6px 0 rgba(0,0,0, .12),
@@ -111,8 +116,7 @@
       0 1px 6px 0 rgba(0,0,0, .12),
       0 1px 6px 0 rgba(0,0,0, .12);
     border-radius: 3px;
-    margin-right: 5.2%;
-
+    margin-right: 2.7%;
   }
 
   #mainpanel .panel-heading

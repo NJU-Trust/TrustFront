@@ -4,9 +4,9 @@
       default-active="2"
       class="el-menu-vertical-demo"
       router="true">
-      <el-submenu index="1" style="background-color:#f5f5f5">
+      <el-submenu index="1" class="bar-main">
         <template slot="title">
-          <i class="el-icon-location-outline"></i>
+          <i class="el-icon-location-outline bar-icon"></i>
           <span>个人信息</span>
         </template>
         <el-menu-item-group>
@@ -16,9 +16,9 @@
           <el-menu-item index="/UserSpace/BasicInformation">基本信息</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
-      <el-submenu index="2" style="background-color:#f5f5f5">
+      <el-submenu index="2" class="bar-main">
         <template slot="title">
-          <i class="el-icon-menu"></i>
+          <i class="el-icon-menu bar-icon"></i>
           <span>借款管理</span>
         </template>
         <el-menu-item-group>
@@ -26,19 +26,19 @@
           <el-menu-item index="/UserSpace/LoanStatistics">借款统计</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
-      <el-submenu index="3" style="background-color:#f5f5f5">
+      <el-submenu index="3" class="bar-main">
         <template slot="title">
-          <i class="el-icon-menu"></i>
+          <i class="el-icon-menu bar-icon"></i>
           <span>投资管理</span>
         </template>
-        <el-menu-item-group>
+        <el-menu-item-group class="bar-main">
           <el-menu-item index="/UserSpace/InvestInformation">项目信息</el-menu-item>
           <el-menu-item index="/UserSpace/InvestEarnings">投资统计</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
-      <el-submenu index="4" style="background-color:#f5f5f5">
+      <el-submenu index="4" class="bar-main">
         <template slot="title">
-          <i class="el-icon-location"></i>
+          <i class="el-icon-location bar-icon"></i>
           <span>信用验证</span>
         </template>
         <el-menu-item-group>
@@ -74,6 +74,15 @@
 
 <style scoped>
   /*----------左侧导航栏样式-------------*/
+
+  .bar-icon{
+    color: dodgerblue;
+  }
+
+  .bar-main{
+    /*background-color:ghostwhite;*/
+  }
+
   div.leftsidenav{
     background:white;
     border:1px solid #e4e4e4;

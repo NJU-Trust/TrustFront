@@ -107,6 +107,9 @@
         }
       }
     },
+    beforeCreate:function(){
+      localStorage.route='#userdetail'
+    },
     mounted:function () {
       //this.show()
       this.baseinfo.name=this.$route.params.username
