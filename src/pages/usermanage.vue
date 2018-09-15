@@ -211,6 +211,7 @@
             state:'',
           }
         ],
+        listLength:0,
 
       }
     },
@@ -243,10 +244,13 @@
     },
     methods: {
       initial(){
+        this.getListLength().then(
+          console.log("listLength:"+this.listLength)
+        );
+
         var pageNum=0;
         this.getData(pageNum)
         console.log("end: "+pageNum)
-
       },
       callback(initial) {
         this.initial_data = initial;
@@ -278,6 +282,21 @@
         this.passData.tel = row.tel;
         this.passData.state = row.state;
         this.passData.email = row.email;
+      },
+      getListLength:function(){
+        var _this = this;
+        this.$axios.get('/adminUser/manageLen',{
+          params:{
+            keyword: "",
+            type:"",
+          }
+        }).then(function (response) {
+          var data = response.data
+          _this.listLength = Number(data);
+        }).catch(function (error) {
+          console.log("error:"+error)
+        });
+
       },
       getData:function(pageNum){
         var _this = this;
