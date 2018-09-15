@@ -6,268 +6,276 @@
         <div>
           <right-bar></right-bar>
         </div>
+        <table style="margin:0 auto;">
+          <tbody>
+          <tr>
+            <td>
+              <div id="sheet" class="sheet">
 
-        <div id="sheet" class="sheet">
-
-          <div style="margin-top: 20px;padding-top:15px;padding-left:5.5%;width: 860px">
-            <el-steps :active="active" style="width: 800px">
-              <el-step class="test" title="项目信息" icon="el-icon-edit" align-center></el-step>
-              <el-step title="信息披露" icon="el-icon-document" align-center></el-step>
-              <el-step title="关于贷款" icon="el-icon-success" align-center></el-step>
-            </el-steps>
-          </div>
-
-          <div class="primary_panel" style="margin-top: 20px">
-
-            <el-form id="primary" ref="form1" :model="form1" label-width="100px" class="primary_info " >
-              <div class="title">基本信息</div>
-
-              <el-form-item label="项目名称">
-                <div>
-                  <el-input placeholder="请填写项目名称" v-model="form1.name"></el-input>
-                  <div style="color:red;font-size: 12px;">*项目名称不超过20字 例：2018年9月16号Jessie J演唱会</div>
+                <div style="margin-top: 20px;padding-top:15px;padding-left:5.5%;width: 860px">
+                  <el-steps :active="active" style="width: 800px">
+                    <el-step class="test" title="项目信息" icon="el-icon-edit" align-center></el-step>
+                    <el-step title="信息披露" icon="el-icon-document" align-center></el-step>
+                    <el-step title="关于贷款" icon="el-icon-success" align-center></el-step>
+                  </el-steps>
                 </div>
 
-              </el-form-item>
+                <div class="primary_panel" style="margin-top: 20px">
 
-             <el-form-item label="开始日期">
-               <div>
-                 <el-date-picker type="date" placeholder="选择开始日期" v-model="form1.date1" style="width: 100%;"></el-date-picker>
-                 <div style="color:red;font-size: 12px;">*标的审核通过后的发布时间</div>
-               </div>
+                  <el-form id="primary" ref="form1" :model="form1" label-width="100px" class="primary_info " >
+                    <div class="title">基本信息</div>
 
-              </el-form-item>
-              <el-form-item label="截止日期">
-                <div>
-                  <el-date-picker type="date" placeholder="选择截止日期" v-model="form1.date2" style="width: 100%;"></el-date-picker>
-                  <div style="color:red;font-size: 12px;">*标的发布后筹资结束时间</div>
-                </div>
+                    <el-form-item label="项目名称">
+                      <div>
+                        <el-input placeholder="请填写项目名称" v-model="form1.name"></el-input>
+                        <div style="color:red;font-size: 12px;">*项目名称不超过20字 例：2018年9月16号Jessie J演唱会</div>
+                      </div>
 
-              </el-form-item>
+                    </el-form-item>
 
-              <el-form-item label="最低达标率">
-                <div>
-                  <el-input placeholder="请填写项目最低达标率" v-model="form1.least_rate"></el-input>
-                  <div style="color:red;font-size: 12px;">*截止日期时，标的已筹金额占目标金额的最低比率</div>
-                </div>
+                    <el-form-item label="开始日期">
+                      <div>
+                        <el-date-picker type="date" placeholder="选择开始日期" v-model="form1.date1" style="width: 100%;"></el-date-picker>
+                        <div style="color:red;font-size: 12px;">*标的审核通过后的发布时间</div>
+                      </div>
 
-              </el-form-item>
+                    </el-form-item>
+                    <el-form-item label="截止日期">
+                      <div>
+                        <el-date-picker type="date" placeholder="选择截止日期" v-model="form1.date2" style="width: 100%;"></el-date-picker>
+                        <div style="color:red;font-size: 12px;">*标的发布后筹资结束时间</div>
+                      </div>
 
-              <hr>
+                    </el-form-item>
 
-              <div class="title">资金去向</div>
-              <el-form-item label="资金用途分类">
-                <el-cascader
-                  expand-trigger="hover"
-                  :options="options"
-                  v-model="selectedOptions2"
-                  @change="handleChange">
-                </el-cascader>
+                    <el-form-item label="最低达标率">
+                      <div>
+                        <el-input placeholder="请填写项目最低达标率" v-model="form1.least_rate"></el-input>
+                        <div style="color:red;font-size: 12px;">*截止日期时，标的已筹金额占目标金额的最低比率</div>
+                      </div>
 
-              </el-form-item>
+                    </el-form-item>
 
-              <el-form-item label="资金用途详述">
-                <div>
-                  <el-input
-                    type="textarea"
-                    :rows="4"
-                    placeholder="请输入内容"
-                    v-model="form2.textarea1">
-                  </el-input>
-                  <div style="color:red;font-size: 12px;">*不超过100字</div>
-                  <div>
-                    <el-button type="primary" size="small" style="margin-top: -10px">上传凭证<i class="el-icon-upload el-icon--right"></i></el-button>
-                  </div>
-                </div>
-              </el-form-item>
+                    <hr>
 
-            </el-form>
+                    <div class="title">资金去向</div>
+                    <el-form-item label="资金用途分类">
+                      <el-cascader
+                        expand-trigger="hover"
+                        :options="options"
+                        v-model="selectedOptions2"
+                        @change="handleChange">
+                      </el-cascader>
 
-            <el-form id="information" ref="form2" :model="form2" label-width="140px" class="primary_info" style="display: none">
-              <div class="title">信息披露层级</div>
+                    </el-form-item>
 
-              <el-form-item label="选择信息披露层级">
-                <el-button type="primary" plain @click="get_layer(4)">第四层级</el-button>&nbsp&nbsp>
-                <el-button type="primary" plain @click="get_layer(3)">第三层级</el-button>&nbsp&nbsp>
-                <el-button type="primary" plain @click="get_layer(2)">第二层级</el-button>&nbsp&nbsp>
-                <el-button type="primary" plain @click="get_layer(1)">第一层级</el-button>
-              </el-form-item>
+                    <el-form-item label="资金用途详述">
+                      <div>
+                        <el-input
+                          type="textarea"
+                          :rows="4"
+                          placeholder="请输入内容"
+                          v-model="form2.textarea1">
+                        </el-input>
+                        <div style="color:red;font-size: 12px;">*不超过100字</div>
+                        <div>
+                          <el-button type="primary" size="small" style="margin-top: -10px">上传凭证<i class="el-icon-upload el-icon--right"></i></el-button>
+                        </div>
+                      </div>
+                    </el-form-item>
 
-              <el-form style="width: 700px;">
+                  </el-form>
 
-                <div style="padding-left: 20px">
+                  <el-form id="information" ref="form2" :model="form2" label-width="140px" class="primary_info" style="display: none">
+                    <div class="title">信息披露层级</div>
 
-                  <el-form-item v-if="form2.layer4">
-                    <div>
-                      <el-button type="primary" size="mini">偿债能力</el-button>
-                      <el-button type="primary" size="mini">杠杆比例</el-button>
-                      <el-button type="primary" size="mini">消费比率</el-button>
-                      <el-button type="primary" size="mini">储蓄比率</el-button>
-                      <el-button type="primary" size="mini">刚性比率</el-button>
-                      <el-button type="primary" size="mini">恩格尔系数</el-button>
-                      <el-button type="primary" size="mini">资产负债率</el-button>
-                    </div>
-                   <div>
-                     <el-button type="primary" size="mini">受教育情况</el-button>
-                     <el-button type="primary" size="mini">信用评级指标</el-button>
-                     <el-button type="primary" size="mini">学生的经济来源</el-button>
-                     <el-button type="primary" size="mini">学生成绩</el-button>
-                   </div>
+                    <el-form-item label="选择信息披露层级">
+                      <el-button type="primary" plain @click="get_layer(4)">第四层级</el-button>&nbsp&nbsp>
+                      <el-button type="primary" plain @click="get_layer(3)">第三层级</el-button>&nbsp&nbsp>
+                      <el-button type="primary" plain @click="get_layer(2)">第二层级</el-button>&nbsp&nbsp>
+                      <el-button type="primary" plain @click="get_layer(1)">第一层级</el-button>
+                    </el-form-item>
 
+                    <el-form style="width: 700px;">
 
-                  </el-form-item>
+                      <div style="padding-left: 20px">
 
-                  <el-form-item v-if="form2.layer3&&form2.layer4">
-                    <div>
-                      <el-button type="success" size="mini">月收入</el-button>
-                      <el-button type="success" size="mini">月支出</el-button>
-                      <el-button type="success" size="mini">结余</el-button>
-                      <el-button type="success" size="mini">负债</el-button>
-                      <el-button type="success" size="mini">净资产</el-button>
-                      <el-button type="success" size="mini">总收入</el-button>
-                      <el-button type="success" size="mini">总支出</el-button>
-                      <el-button type="success" size="mini">刚性支出</el-button>
-                    </div>
-                    <div>
-                      <el-button type="success" size="mini">可调支出</el-button>
-                    </div>
+                        <el-form-item v-if="form2.layer4">
+                          <div>
+                            <el-button type="primary" size="mini">偿债能力</el-button>
+                            <el-button type="primary" size="mini">杠杆比例</el-button>
+                            <el-button type="primary" size="mini">消费比率</el-button>
+                            <el-button type="primary" size="mini">储蓄比率</el-button>
+                            <el-button type="primary" size="mini">刚性比率</el-button>
+                            <el-button type="primary" size="mini">恩格尔系数</el-button>
+                            <el-button type="primary" size="mini">资产负债率</el-button>
+                          </div>
+                          <div>
+                            <el-button type="primary" size="mini">受教育情况</el-button>
+                            <el-button type="primary" size="mini">信用评级指标</el-button>
+                            <el-button type="primary" size="mini">学生的经济来源</el-button>
+                            <el-button type="primary" size="mini">学生成绩</el-button>
+                          </div>
 
 
-                  </el-form-item>
+                        </el-form-item>
 
-                  <el-form-item v-if="form2.layer2&&form2.layer3&&form2.layer4">
-                    <div>
-                      <el-button type="info" size="mini">月投资额</el-button>
-                      <el-button type="info" size="mini">总投资额</el-button>
-                      <el-button type="info" size="mini">各支出占总支出比率</el-button>
-                      <el-button type="info" size="mini">各月支出占总支出比率</el-button>
-                      <el-button type="info" size="mini">奖学金情况</el-button>
-                    </div>
-                    <div>
-                      <el-button type="info" size="mini">科研竞赛获奖</el-button>
-                      <el-button type="info" size="mini">学生工作（社团等）</el-button>
-                      <el-button type="info" size="mini">志愿时长</el-button>
-                    </div>
-                  </el-form-item>
-
-                  <el-form-item v-if="form2.layer1&&form2.layer2&&form2.layer3&&form2.layer4">
-                    <el-button type="warning" size="mini">姓名</el-button>
-                    <el-button type="warning" size="mini">身份证号</el-button>
-                    <el-button type="warning" size="mini">月各支出</el-button>
-                    <el-button type="warning" size="mini">总各支出</el-button>
-                    <el-button type="warning" size="mini">月学习支出</el-button>
-                    <el-button type="warning" size="mini">总学习支出</el-button>
-                  </el-form-item>
-                </div>
-              </el-form>
+                        <el-form-item v-if="form2.layer3&&form2.layer4">
+                          <div>
+                            <el-button type="success" size="mini">月收入</el-button>
+                            <el-button type="success" size="mini">月支出</el-button>
+                            <el-button type="success" size="mini">结余</el-button>
+                            <el-button type="success" size="mini">负债</el-button>
+                            <el-button type="success" size="mini">净资产</el-button>
+                            <el-button type="success" size="mini">总收入</el-button>
+                            <el-button type="success" size="mini">总支出</el-button>
+                            <el-button type="success" size="mini">刚性支出</el-button>
+                          </div>
+                          <div>
+                            <el-button type="success" size="mini">可调支出</el-button>
+                          </div>
 
 
+                        </el-form-item>
 
-            </el-form>
+                        <el-form-item v-if="form2.layer2&&form2.layer3&&form2.layer4">
+                          <div>
+                            <el-button type="info" size="mini">月投资额</el-button>
+                            <el-button type="info" size="mini">总投资额</el-button>
+                            <el-button type="info" size="mini">各支出占总支出比率</el-button>
+                            <el-button type="info" size="mini">各月支出占总支出比率</el-button>
+                            <el-button type="info" size="mini">奖学金情况</el-button>
+                          </div>
+                          <div>
+                            <el-button type="info" size="mini">科研竞赛获奖</el-button>
+                            <el-button type="info" size="mini">学生工作（社团等）</el-button>
+                            <el-button type="info" size="mini">志愿时长</el-button>
+                          </div>
+                        </el-form-item>
 
-            <div id="test" style="display: flex">
-              <el-form id="small_loan" ref="form3" :model="form3" label-width="100px" class="primary_info" style="display: none">
-                <div class="title">关于贷款</div>
-                <el-form-item
-                  label="拆借金额"
-                  :rules="[
+                        <el-form-item v-if="form2.layer1&&form2.layer2&&form2.layer3&&form2.layer4">
+                          <el-button type="warning" size="mini">姓名</el-button>
+                          <el-button type="warning" size="mini">身份证号</el-button>
+                          <el-button type="warning" size="mini">月各支出</el-button>
+                          <el-button type="warning" size="mini">总各支出</el-button>
+                          <el-button type="warning" size="mini">月学习支出</el-button>
+                          <el-button type="warning" size="mini">总学习支出</el-button>
+                        </el-form-item>
+                      </div>
+                    </el-form>
+
+
+
+                  </el-form>
+
+                  <div id="test" style="display: flex">
+                    <el-form id="small_loan" ref="form3" :model="form3" label-width="100px" class="primary_info" style="display: none">
+                      <div class="title">关于贷款</div>
+                      <el-form-item
+                        label="拆借金额"
+                        :rules="[
       { required: true, message: '金额不能为空'},
       { type: 'number', message: '金额必须为数字值'}
     ]">
-                  <div>
-                    <el-input placeholder="请填写拆借金额" v-model="form3.money"></el-input>
-                    <div style="color:red;font-size: 12px;">*借款额度剩余{{limit}}</div>
+                        <div>
+                          <el-input placeholder="请填写拆借金额" v-model="form3.money"></el-input>
+                          <div style="color:red;font-size: 12px;">*借款额度剩余{{limit}}</div>
+                        </div>
+                      </el-form-item>
+                      <el-form-item label="还款期数">
+                        <div>
+                          <el-input placeholder="请填写还款期数(一期时长为一个月)" v-model="form3.period"></el-input>
+                          <div style="color:red;font-size: 12px;">*小额贷款最长期限为1年，建议范围为[{{form3.lowerPeriod}},{{form3.upperPeriod}}]</div>
+                        </div>
+
+                      </el-form-item>
+                      <el-form-item label="基准还款利率">
+                        <div>
+                          <el-input placeholder="请设置还款利率" v-model="form3.rate"></el-input>
+                          <div style="color:red;font-size: 12px;">*利率上下限为[{{form3.lowerRate}},{{form3.upperRate}}],建议设置为{{form3.recommendRate}}</div>
+                        </div>
+                      </el-form-item>
+
+                      <el-form-item label="还款方式">
+                        <el-collapse v-model="form3.activeName" accordion>
+
+                          <div @click="get_scheme(1)">
+                            <el-collapse-item title="等额本息" name="1">
+                              <div>每月偿还等同数额的贷款；</div>
+                              <div>还款期限内压力平分，总利息高于等额本金。</div>
+                            </el-collapse-item>
+                          </div>
+
+                          <div @click="get_scheme(2)">
+                            <el-collapse-item title="等额本金" name="2" >
+                              <div>贷款数总额等分，每月的还款本金额固定，利息越来越少；</div>
+                              <div>起初还款压力较大，但是随着时间的推移每月的还款数也越来越少。</div>
+                            </el-collapse-item>
+                          </div>
+
+                          <div @click="get_scheme(3)">
+                            <el-collapse-item title="一次性还本付息" name="3">
+                              <div>贷款到期后一次性归还本金和利息；</div>
+                              <div>还款期压力大，操作间大，借款人资金调整弹性大，资金利用时间长</div>
+                            </el-collapse-item>
+                          </div>
+
+                          <div @click="get_scheme(4)">
+                            <el-collapse-item title="先息后本" name="4">
+                              <div>每月只需支付利息，期末还清本金；</div>
+                              <div>资金利用时间长。</div>
+                            </el-collapse-item>
+                          </div>
+
+                        </el-collapse>
+                      </el-form-item>
+
+                      <!--<el-form-item>
+                        <div v-if="this.form3.activeName==='1'">
+                          <evaluate :scheme="scheme"></evaluate>
+                        </div>
+                        <div v-else-if="this.form3.activeName==='2'">
+                          <evaluate :scheme="scheme"></evaluate>
+                        </div>
+                        <div v-else-if="this.form3.activeName==='3'">
+                          C
+                        </div>
+                        <div v-else-if="this.form3.activeName==='4'">
+                          <evaluate :scheme="scheme"></evaluate>
+                        </div>
+                      </el-form-item>-->
+
+                      <div style="padding-top: 30px">
+                        <el-form-item style="padding-left: 20%;">
+                          <el-button type="primary" @click="onSubmit">确定贷款</el-button>
+                          <el-button @click="clean_form3">清空重写</el-button>
+                        </el-form-item>
+                      </div>
+
+                    </el-form>
+                    <el-form id="evaluate" class="evaluate" style="background-color: white">
+                      <evaluate  :scheme="scheme" ></evaluate>
+                    </el-form>
                   </div>
-                </el-form-item>
-                <el-form-item label="还款期数">
-                  <div>
-                    <el-input placeholder="请填写还款期数(一期时长为一个月)" v-model="form3.period"></el-input>
-                    <div style="color:red;font-size: 12px;">*小额贷款最长期限为1年，建议范围为[{{form3.lowerPeriod}},{{form3.upperPeriod}}]</div>
-                  </div>
-
-                </el-form-item>
-                <el-form-item label="基准还款利率">
-                  <div>
-                    <el-input placeholder="请设置还款利率" v-model="form3.rate"></el-input>
-                    <div style="color:red;font-size: 12px;">*利率上下限为[{{form3.lowerRate}},{{form3.upperRate}}],建议设置为{{form3.recommendRate}}</div>
-                  </div>
-                </el-form-item>
-
-                <el-form-item label="还款方式">
-                  <el-collapse v-model="form3.activeName" accordion>
-
-                    <div @click="get_scheme(1)">
-                      <el-collapse-item title="等额本息" name="1">
-                        <div>每月偿还等同数额的贷款；</div>
-                        <div>还款期限内压力平分，总利息高于等额本金。</div>
-                      </el-collapse-item>
-                    </div>
-
-                    <div @click="get_scheme(2)">
-                      <el-collapse-item title="等额本金" name="2" >
-                        <div>贷款数总额等分，每月的还款本金额固定，利息越来越少；</div>
-                        <div>起初还款压力较大，但是随着时间的推移每月的还款数也越来越少。</div>
-                      </el-collapse-item>
-                    </div>
-
-                    <div @click="get_scheme(3)">
-                      <el-collapse-item title="一次性还本付息" name="3">
-                        <div>贷款到期后一次性归还本金和利息；</div>
-                        <div>还款期压力大，操作间大，借款人资金调整弹性大，资金利用时间长</div>
-                      </el-collapse-item>
-                    </div>
-
-                    <div @click="get_scheme(4)">
-                      <el-collapse-item title="先息后本" name="4">
-                        <div>每月只需支付利息，期末还清本金；</div>
-                        <div>资金利用时间长。</div>
-                      </el-collapse-item>
-                    </div>
-
-                  </el-collapse>
-                </el-form-item>
-
-                <!--<el-form-item>
-                  <div v-if="this.form3.activeName==='1'">
-                    <evaluate :scheme="scheme"></evaluate>
-                  </div>
-                  <div v-else-if="this.form3.activeName==='2'">
-                    <evaluate :scheme="scheme"></evaluate>
-                  </div>
-                  <div v-else-if="this.form3.activeName==='3'">
-                    C
-                  </div>
-                  <div v-else-if="this.form3.activeName==='4'">
-                    <evaluate :scheme="scheme"></evaluate>
-                  </div>
-                </el-form-item>-->
-
-                <div style="padding-top: 30px">
-                  <el-form-item style="padding-left: 20%;">
-                    <el-button type="primary" @click="onSubmit">确定贷款</el-button>
-                    <el-button @click="clean_form3">清空重写</el-button>
-                  </el-form-item>
                 </div>
 
-              </el-form>
-              <el-form id="evaluate" class="evaluate" style="background-color: white">
-                <evaluate  :scheme="scheme" ></evaluate>
-              </el-form>
-            </div>
-            </div>
-
-          <div style="padding-top: 40px;padding-bottom: 20px">
-            <el-button-group style="position:absolute;left: 43%;">
-              <el-button type="primary" icon="el-icon-arrow-left" @click="last">上一步</el-button>
-              <el-button type="primary" @click="next">下一步<i class="el-icon-arrow-right el-icon--right"></i></el-button>
-            </el-button-group>
-          </div>
+                <div style="padding-top: 40px;padding-bottom: 20px">
+                  <el-button-group style="position:absolute;left: 43%;">
+                    <el-button type="primary" icon="el-icon-arrow-left" @click="last">上一步</el-button>
+                    <el-button type="primary" @click="next">下一步<i class="el-icon-arrow-right el-icon--right"></i></el-button>
+                  </el-button-group>
+                </div>
 
 
-          <div>
+                <div>
 
-          </div>
-        </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+
 
       </el-form>
       <footerBar style="float: bottom"></footerBar>
@@ -710,7 +718,6 @@
 
     .sheet{
       margin-top: 40px;
-      margin-left:24%;
 
     }
 
