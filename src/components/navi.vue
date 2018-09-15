@@ -46,12 +46,15 @@
     components: {Avatar},
     inject:['reload'],
     name: 'navi',
-    data: {
-      return(){
-        ifLogin=localStorage.ifLogin
+    data() {
+      return {
+        ifLogin: false
       }
     },
     mounted: function () {
+      if(localStorage.ifLogin==1){
+        this.ifLogin=true;
+      }
       if(localStorage.route=="#homepage"){
         document.getElementById("naviLogo").src="/static/pic/logo3.png";
       }
