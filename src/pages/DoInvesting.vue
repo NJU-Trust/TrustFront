@@ -49,7 +49,7 @@
               <div class="block">
                 <el-slider
                   v-model="num1"
-                  max="5000"
+                  max=5000
                   :format-tooltip="formatTooltip"
                   show-input>
                 </el-slider>
