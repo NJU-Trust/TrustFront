@@ -4,7 +4,7 @@
       default-active="2"
       class="el-menu-vertical-demo"
       router="true">
-      <el-submenu index="1" style="background-color:#e5e9f2">
+      <el-submenu index="1" style="background-color:#f5f5f5">
         <template slot="title">
           <i class="el-icon-location-outline"></i>
           <span>个人信息</span>
@@ -16,7 +16,7 @@
           <el-menu-item index="/UserSpace/BasicInformation">基本信息</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
-      <el-submenu index="2" style="background-color:#e5e9f2">
+      <el-submenu index="2" style="background-color:#f5f5f5">
         <template slot="title">
           <i class="el-icon-menu"></i>
           <span>借款管理</span>
@@ -26,7 +26,7 @@
           <el-menu-item index="/UserSpace/LoanStatistics">借款统计</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
-      <el-submenu index="3" style="background-color:#e5e9f2">
+      <el-submenu index="3" style="background-color:#f5f5f5">
         <template slot="title">
           <i class="el-icon-menu"></i>
           <span>投资管理</span>
@@ -36,7 +36,7 @@
           <el-menu-item index="/UserSpace/InvestEarnings">投资统计</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
-      <el-submenu index="4" style="background-color:#e5e9f2">
+      <el-submenu index="4" style="background-color:#f5f5f5">
         <template slot="title">
           <i class="el-icon-location"></i>
           <span>信用验证</span>
