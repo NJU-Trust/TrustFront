@@ -134,6 +134,7 @@
     components:{adminNavi,footerBar},
     data () {
       return {
+        initial_data: true,
         saveUsers:[],
         users: [
           {username: '王刚',state:'待还款',
@@ -224,6 +225,7 @@
     },*/
     // computed properties
     mounted:function(){
+      this.initial();
       for(var i=0;i<this.users.length;i++){
         this.saveUsers.push(this.users[i]);
       }
@@ -237,6 +239,15 @@
       }
     },
     methods: {
+      initial(){
+        var pageNum=0;
+        this.getData(pageNum)
+        console.log("end: "+pageNum)
+
+      },
+      callback(initial) {
+        this.initial_data = initial;
+      },
       searchNewList(name,tel,email){
         let checkedUser = [];
         for(var i=0;i<this.saveUsers.length;i++){
@@ -264,20 +275,25 @@
         this.passData.tel = row.tel;
         this.passData.state = row.state;
         this.passData.email = row.email;
-      }
-      ,
+      },
       getData:function(pageNum){
-        this.$axios.get('/AdminUser/manage', {
+        var _this = this;
+        this.$axios.get('/adminUser/manage', {
           params: {
             page:pageNum,
-            pageSize:20,
+            pageSize:10,
             keyword: "",
             type:"",
           }
         }).then(function (response) {
-
+          console.log(response)
+          var data = response.data
+          for(var i=0;i<data.length;i++){
+            console.log(data[i]);
+            _this.users.push({username:data[i].username, level:data[i].level, tel:data[i].tel, email:data[i].email, state:data[i].state})
+          }
           }).catch(function (error) {
-
+            console.log("error:"+error)
           });
       },
 
