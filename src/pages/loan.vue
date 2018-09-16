@@ -78,10 +78,18 @@
                           v-model="form2.textarea1">
                         </el-input>
                         <div style="color:red;font-size: 12px;">*不超过100字</div>
-                        <div>
-                          <el-button type="primary" size="small" style="margin-top: -10px">上传凭证<i class="el-icon-upload el-icon--right"></i></el-button>
-                        </div>
                       </div>
+                    </el-form-item>
+                    <el-form-item label="上传凭证">
+                      <el-upload
+                        class="upload-demo"
+                        drag
+                        :action='url'
+                        multiple>
+                        <i class="el-icon-upload"></i>
+                        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                        <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+                      </el-upload>
                     </el-form-item>
 
                   </el-form>
@@ -547,7 +555,7 @@
               return time.getTime() > Date.now();
             },
           },
-
+          url: "http://localhost:8000/upload/image",
           form1:{
             name: '',
             date1: '',
