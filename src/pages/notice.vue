@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div :style=back>
     <!--顶栏 -->
     <div class="col-xs-12 col-md-12" style="padding: 0;position: relative;background-color: black;">
       <navi style="position: relative"></navi>
@@ -46,7 +46,8 @@
                             </div>
                           </div>
                           <el-button slot="reference">
-                            <img v-bind:src=latestmes[i-1].pic class="picbox" alt="User_pic" >
+                            <!--<img src="../../static/pic/testkey.png" class="picbox" alt="User_pic" >-->
+                           <img v-bind:src=latestmes[i-1].pic class="picbox" alt="User_pic" >
                           </el-button>
                         </el-popover>
                       </el-carousel-item>
@@ -141,7 +142,7 @@
     </div>
 
     <!--底栏-->
-    <div class="col-xs-12 col-md-12" style="padding: 0;position: relative;background-color: black;">
+    <div  style="padding: 0;position: relative;background-color: black;">
       <footer-bar></footer-bar>
     </div>
 
@@ -159,6 +160,13 @@
     components:{leftInformationbar, navi, footerBar, rightBar},
     data() {
       return {
+        back:{
+          backgroundImage:"url(" + require("../../static/pic/investListBack.jpg") + ")",
+          backgroundRepeat:"no-repeat",
+          backgroundAttachment:"fixed",
+          backgroundSize:"100% auto",
+          backgroundPosition: "0% 0%",
+        },
         types: ['校园卡', '钥匙', '水杯', '雨伞','其他'],
         locs:['四五六食堂','基础实验楼','仙I','仙II','逸夫楼','九食堂','十食堂','操场'],
         checkboxGroup: [],
@@ -363,10 +371,10 @@
       0 1px 6px 0 rgba(0,0,0, .12),
       0 1px 6px 0 rgba(0,0,0, .12);
     border-radius: 3px;
-    width:305px;
-    height:174px;
-    //margin-top:-2%;
-    //margin-left:-5%;
+    width:370px;
+    height:210px;
+    margin-top:-4%;
+    margin-left:-12%;
   }
 
   /*卡片样式*/

@@ -216,7 +216,8 @@
   export default {
     name: "academicPerformance",
     data(){
-      var aboveAverage;
+      var person;
+      var average;
       return{
         user:{
           schoolClass: '985',
@@ -247,7 +248,7 @@
           library: null,
           cheating: null,
           indentNull: '&nbsp&nbsp',
-          aboveAverage: '',
+          aboveAverage: true,
         }
       }
     },
@@ -259,18 +260,22 @@
     methods: {
       getSchool() {
         console.log("校园表现");
+        let self = this;
         this.$axios.get('/profile/campusPerformence')
-          .then(function (response) {
+          .then((response) => {
             console.log("success");
             console.log(response);
             console.log(response.data.aboveAverage);
-            this.aboveAverage = response.data.aboveAverage;
+            self.aboveAverage = response.data.aboveAverage;
+            self.average = response.data.average;
+            console.log(this.average);
+            self.person = response.data.person;
             // alert("success");
           })
-          .catch(function (response) {
+          .catch((response) => {
             console.log(response);
             // alert("error")
-          });
+          })
       },
       drawRadar() {
         // 基于准备好的dom，初始化echarts实例
@@ -312,7 +317,7 @@
                 name: '您的表现'
               },
               {
-                value: [60, 70, 45, 80, 85, 27],
+                value: this.average,
                 name: '注册用户平均表现'
               }
             ]

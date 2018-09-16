@@ -78,6 +78,19 @@
                     团队简介<hr/>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本项目的管理团队由来自南京大学的优秀师生组成，在南京大学工程管理学院肖斌卿教授与李心丹教授的带领下，本团队21名成员分为商业组和软件组，分别负责金融产品的设计和软件开发等工作。两组队员合理分工相互协作，充分发挥团队的能力和凝聚力。
                   </label>
+                  <table style="margin:0 auto;">
+                    <tbody>
+                    <tr>
+                      <td>
+                        <div style="display: flex;">
+                          <img  style="padding:20px;width:250px;height: 250px;border-radius:50%;" src="../../static/pic/南大软院.jpg"/>
+                          <img  style="padding:20px;width:250px;height: 250px;border-radius:50%;" src="../../static/pic/工管院.jpg"/>
+                          <img  style="padding:20px;width:250px;height: 250px;border-radius:50%;" src="../../static/pic/计算机学院.jpg"/>
+                        </div>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
               <div class="detail" v-if="item3">
