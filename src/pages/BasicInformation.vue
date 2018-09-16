@@ -115,7 +115,7 @@
         // alert("用户总览");
         console.log("个人信息");
         let self = this;
-        this.$axios.get('/profile/details',{
+        this.$axios.get('/profile/personalInformation',{
           params:{
             username:"test"
           }

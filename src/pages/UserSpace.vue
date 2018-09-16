@@ -194,6 +194,7 @@
     components: {personalCenter},
     mounted: function() {
       this.getOverview();
+      this.getTodo();
     },
     methods:{
       getOverview(){
@@ -252,7 +253,77 @@
             console.log(response);
             // alert("error")
           });
-      }
+      },
+      getTodo(){
+        // alert("用户总览");
+        console.log("用户总览");
+        let self = this;
+        this.$axios.get('/profile/todo',{
+          params:{
+            username:"test"
+          }
+        })
+          .then(function (response) {
+            console.log(response);
+            console.log("Get TodoList success");
+            console.log(response.data);
+            var res = [{
+              date: '2018/10/1',
+              title: '待还款',
+              desc: '您还有一笔还款在10月1号'
+            }, {
+              date: '2018/10/4',
+              title: '待还款',
+              desc: '您还有一笔还款在10月4号'
+            },{
+              date: '2018/10/5',
+              title: '待还款',
+              desc: '您还有一笔还款在10月5号'
+            }, {
+              date: '2018/10/7',
+              title: '待还款',
+              desc: '您还有一笔还款在10月7号'
+            }, {
+              date: '2018/10/9',
+              title: '待还款',
+              desc: '您还有一笔还款在10月9号'
+            }, {
+              date: '2018/10/11',
+              title: '待还款',
+              desc: '您还有一笔还款在10月11号'
+            }, {
+              date: '2018/9/11',
+              title: '已收款',
+              desc: '您已在9月11日收款'
+            }, {
+              date: '2018/9/9',
+              title: '已收款',
+              desc: '您已在9月9日收款'
+            }, {
+              date: '2018/9/4',
+              title: '已收款',
+              desc: '您已在9月4日收款'
+            }, {
+              date: '2018/9/5',
+              title: '已收款',
+              desc: '您已在9月5日收款'
+            }, {
+              date: '2018/8/5',
+              title: '已收款',
+              desc: '您已在8月5日收款'
+            }, {
+              date: '2018/7/5',
+              title: '已收款',
+              desc: '您已在7月5日收款'
+            }, ]
+
+            self.demoEvents = res;
+
+          })
+          .catch(function (response) {
+            console.log(response);
+          });
+      },
     },
     data () {
       var time = new Date();
