@@ -216,65 +216,129 @@
   export default {
     name: "academicPerformance",
     data(){
-      var aboveAverage;
+      var person;
+      var average;
       return{
         user:{
-          schoolClass: '985',
-          majorCondition: '综合',
-          educationBackground: '硕士',
-          financeSource: '家庭供给',
-          GPA: '前20%',
+          schoolClass: '',
+          majorCondition: '',
+          educationBackground: '',
+          financeSource: '',
+          GPA: '',
           numNoPass: 0,
-          scholarship: [
-            { text: '2017年人民奖学金一等奖' },
-            { text: '南大联创学生领袖奖学金' }
-          ],
-          reseachCompetition: [
-            { text: '2017花旗杯金融创新应用大赛一等奖' },
-            { text: '“悦诗风吟”营销大赛三等奖' },
-            { text: '银星杯论文比赛二等奖' },
-            { text: '贝恩杯中国赛区二等奖' }
-          ],
-          awards: [
-            { text: '江苏省优秀学生干部' },
-            { text: '江苏省社会实践先进个人' },
-            { text: '2017-2018年度南京大学优秀共青团员' },
-            { text: '全国计算机等级考试二级证书' },
-            { text: '证券从业资格证' }
-          ],
+          scholarship: [],
+          reseachCompetition: [],
+          awards: [],
           punishment: null,
           payment: null,
           library: null,
           cheating: null,
-          indentNull: '&nbsp&nbsp',
-          aboveAverage: '',
+          aboveAverage: true,
         }
       }
     },
     mounted() {
+      // this.getRadar();
+      this.getSchoolTable();
       this.drawRadar();
       this.drawGraph();
-      this.getSchool();
     },
     methods: {
-      getSchool() {
-        console.log("校园表现");
-        this.$axios.get('/profile/campusPerformence')
-          .then(function (response) {
+      getRadar() {
+        console.log("雷达图");
+        let self = this;
+        this.$axios.get('/profile/campusPerformence',{
+          params:{
+            username:"test"
+          }
+        })
+          .then((response) => {
             console.log("success");
             console.log(response);
             console.log(response.data.aboveAverage);
-            this.aboveAverage = response.data.aboveAverage;
+            console.log(response.data.averagePerformance);
+            console.log(response.data.personalPerformance);
+            self.user.aboveAverage = response.data.aboveAverage;
+            self.user.average = response.data.averagePerformance;
+            self.user.person = response.data.personalPerformance;
+            console.log(self.user.person);
+            console.log(self.user.average);
+
             // alert("success");
           })
-          .catch(function (response) {
+          .catch((response) => {
             console.log(response);
+            console.log("error");
             // alert("error")
-          });
+          })
+      },
+      getSchoolTable(){
+        console.log("非结构化数据表格");
+        let self = this;
+        this.$axios.get('/profile/information',{
+          params:{
+            username:"test"
+          }
+        })
+          .then((response) => {
+            console.log("非结构化数据表格success");
+            console.log(response);
+            var res = response;
+            self.user.schoolClass = res.data.schoolClass;
+            self.user.majorCondition = res.data.majorCondition;
+            self.user.educationBackground = res.data.educationBackground;
+            self.user.financeSource = res.data.financeSource;
+            self.user.GPA = res.data.GPA;
+            self.user.numNoPass = res.data.numNoPass;
+            self.user.scholarship = res.data.scholarship;
+            self.user.reseachCompetition = res.data.reseachCompetition;
+            self.user.awards = res.data.awards;
+            self.user.punishment = res.data.punishment;
+            self.user.payment = res.data.payment;
+            self.user.library = res.data.library;
+            self.user.cheating = res.data.cheating;
+
+            //接入数据
+            self.user.schoolClass = '985';
+            self.user.majorCondition = '综合';
+            self.user.educationBackground = '硕士';
+            self.user.financeSource = '家庭供给';
+            self.user.GPA = '前20%';
+            self.user.numNoPass = 0;
+            self.user.scholarship =  [
+              { text: '2017年人民奖学金一等奖' },
+              { text: '南大联创学生领袖奖学金' }
+            ];
+            self.user.reseachCompetition = [
+              { text: '2017花旗杯金融创新应用大赛一等奖' },
+              { text: '“悦诗风吟”营销大赛三等奖' },
+              { text: '银星杯论文比赛二等奖' },
+              { text: '贝恩杯中国赛区二等奖' }
+            ];
+            self.user.awards =  [
+              { text: '江苏省优秀学生干部' },
+              { text: '江苏省社会实践先进个人' },
+              { text: '2017-2018年度南京大学优秀共青团员' },
+              { text: '全国计算机等级考试二级证书' },
+              { text: '证券从业资格证' }
+            ];
+            self.user.punishment = null;
+            self.user.payment = null;
+            self.user.library = null;
+            self.user.cheating = null;
+
+            // alert("success");
+          })
+          .catch((response) => {
+            console.log(response);
+            console.log("error");
+            // alert("error")
+          })
       },
       drawRadar() {
         // 基于准备好的dom，初始化echarts实例
         let myChart = echarts.init(document.getElementById('myradar'), 'infographic')
+
         // 绘制图表
         myChart.setOption({
           title: {
@@ -308,16 +372,58 @@
             // areaStyle: {normal: {}},
             data: [
               {
-                value: [80, 76, 65, 89, 77, 66],
+                value: [],
                 name: '您的表现'
               },
               {
-                value: [60, 70, 45, 80, 85, 27],
+                value: [],
                 name: '注册用户平均表现'
               }
             ]
           }]
         });
+
+        console.log("校园表现");
+        var value1 = [80, 76, 65, 89, 77, 66];
+        var value2 = [60, 70, 45, 80, 85, 27];
+        let self = this;
+        this.$axios.get('/profile/campusPerformence',{
+          params:{
+            username:"test"
+          }
+        })
+          .then((response) => {
+            console.log("success");
+            console.log(response);
+            // console.log(response.data.aboveAverage);
+            console.log(response.data.averagePerformance);
+            console.log(response.data.personalPerformance);
+            self.user.aboveAverage = response.data.aboveAverage;
+            self.user.aboveAverage = true;
+            value1 = response.data.personalPerformance;
+            value2 = response.data.averagePerformance;
+
+            var value1 = [80, 76, 65, 89, 77, 66];
+            var value2 = [60, 70, 45, 80, 85, 27];
+
+            myChart.setOption({
+              series: [{
+                data: [
+                  {
+                    value: value1,
+                  },
+                  {
+                    value: value2,
+                  }
+                ]
+              }]
+            });
+          })
+          .catch((response) => {
+            console.log(response);
+            console.log("error");
+            // alert("error")
+          })
       },
       drawGraph() {
         // 基于准备好的dom，初始化echarts实例

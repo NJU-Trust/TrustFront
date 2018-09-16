@@ -103,6 +103,8 @@
     import topRange from '@/components/topRange.vue'
     import Login from "./login";
     import investList from '@/components/investList.vue'
+    import store from '../vuex/store'
+
     export default {
       name: "homepage",
       components:{Login, navi, footerBar, rightBar,announcement,topRange,investList},
@@ -133,7 +135,7 @@
       mounted: function () {
         $(".whole").css("background-color","transparent");
         $(".wholeNav").css("background-color","transparent");
-        var winHeight=0;
+        let winHeight=0;
         if (window.innerHeight)
           winHeight = window.innerHeight;
         else if ((document.body) && (document.body.clientHeight))
@@ -145,11 +147,10 @@
       },
       beforeCreate: function () {
         localStorage.route="#homepage";
-        //localStorage.ifLogin=1;
       },
       methods: {
         trustNow:function () {
-          if(localStorage.ifLogin==1){
+          if(store.getters.isLogin){
             this.$router.push('/userSpace');
           }else{
             this.$router.push('/signup')
@@ -158,7 +159,7 @@
         },
 
         shiftRecommend:function () {
-          var temp=this.investInformation;
+          let temp=this.investInformation;
           this.investInformation=this.investInformation2;
           this.investInformation2=temp;
         }

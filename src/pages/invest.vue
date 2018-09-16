@@ -95,9 +95,17 @@
                   <p style="display: inline;margin-left:5px;margin-right:5px;">天</p>
                 </el-form-item>
                 <el-form-item label="开始时间" class="form_item">
-                  <input type="date" v-model="smallDateDown" class="selectInput" style="width:120px;"/>
+                  <el-date-picker
+                    v-model="smallDateDown"
+                    type="date"
+                    placeholder="选择日期">
+                  </el-date-picker>
                   <p style="display: inline;margin-left:5px;margin-right:5px;">-</p>
-                  <input type="date" v-model="smallDateUp" class="selectInput" style="width:120px;"/>
+                  <el-date-picker
+                    v-model="smallDateUp"
+                    type="date"
+                    placeholder="选择日期">
+                  </el-date-picker>
                 </el-form-item>
                 <el-form-item style="float: right;margin-right: 30px;">
                   <el-button type="primary" @click="small_fil">过滤</el-button>
@@ -132,9 +140,9 @@
                 v-bind:investList="item"
                 v-bind:key="item.id"
               ></invest-list>\
-              <el-pagination style="margin-left: 32%"
-                layout="prev, pager, next"
-                :total="50">
+              <el-pagination style="margin-left: 32%" @current-change="smallCurrentChange"
+                layout="prev, pager, next" :current-page.sync="page"
+                :page-size="size" >
               </el-pagination>
             </el-tab-pane>
             <el-tab-pane label="转让中">
@@ -211,9 +219,9 @@
                     </el-select>
                   </el-form-item>
                   <el-form-item label="投资金额" class="form_item">
-                    <input v-model="largeInterestDown" type="number" class="selectInput" style="width:100px;"/>
+                    <input v-model="largeInvestDown" type="number" class="selectInput" style="width:100px;"/>
                     <p style="display: inline;margin-left:5px;margin-right:5px;">-</p>
-                    <input v-model="largeInterestUp" type="number" class="selectInput" style="width:100px;"/>
+                    <input v-model="largeInvestUp" type="number" class="selectInput" style="width:100px;"/>
                   </el-form-item>
                   <el-form-item label="还款期限" class="form_item">
                     <input v-model="largeDayDown" type="number" class="selectInput" style="width:83px;"/>
@@ -222,9 +230,17 @@
                     <p style="display: inline;margin-left:5px;margin-right:5px;">天</p>
                   </el-form-item>
                   <el-form-item label="开始时间" class="form_item">
-                    <input v-model="largeDateDown" type="date" class="selectInput" style="width:120px;"/>
+                    <el-date-picker
+                      v-model="largeDateDown"
+                      type="date"
+                      placeholder="选择日期">
+                    </el-date-picker>
                     <p style="display: inline;margin-left:5px;margin-right:5px;">-</p>
-                    <input v-model="largeDateUp" type="date" class="selectInput" style="width:120px;"/>
+                    <el-date-picker
+                      v-model="largeDateUp"
+                      type="date"
+                      placeholder="选择日期">
+                    </el-date-picker>
                   </el-form-item>
                 </el-form>
               </div>
@@ -318,6 +334,7 @@
   import investList from '@/components/investList.vue'
   import ProjectList from "../components/projectList";
   import investList2 from "../components/investList2";
+
   // 引入基本模板
   let echarts = require('echarts/lib/echarts')
   // 引入柱状图组件
@@ -376,11 +393,11 @@
           '聚餐轰趴', '运动健身', '观看演出', '外出旅游', '诊断治疗', '保健养生'],
         /*选择信息*/
         options: [
-          { label: 'AA', value: 5},
-          { label: 'A', value: 4},
-          { label: 'B', value: 3},
-          { label: 'C', value: 2},
-          { label: 'D', value: 1}
+          { label: 'AA', value: 'AA'},
+          { label: 'A', value: 'A'},
+          { label: 'B', value: 'B'},
+          { label: 'C', value: 'C'},
+          { label: 'D', value: 'D'}
         ],
         /*评级信息*/
         smallTargetRating: [],
@@ -393,17 +410,20 @@
         largeInterestDown: 0,
         largeInterestUp: 100,
         smallInvestDown: 0,
-        smallInvestUp: null,
+        smallInvestUp: 0,
         largeInvestDown: 0,
-        largeInvestUp: null,
+        largeInvestUp: 0,
         smallDayDown: 0,
-        smallDayUp: null,
+        smallDayUp: 0,
         largeDayDown: 0,
-        largeDayUp: null,
-        smallDateDown: null,
-        smallDateUp: null,
-        largeDateDown: null,
-        largeDateUp: null,
+        largeDayUp: 0,
+        smallDateDown: "",
+        smallDateUp: "",
+        largeDateDown: "",
+        largeDateUp: "",
+        /*pages*/
+        page: 0,
+        size: 10,
       };
     },
     beforeCreate:function(){
@@ -411,20 +431,25 @@
     },
     methods:{
       /*过滤*/
+      smallCurrentChange() {
+
+      },
       small_fil() {
         let self = this;
-        this.$axios.post("/loan/smallTargetList", {
-            page: 0,
-            size: 10,
-            sort: 'money.asc',
-            money: [self.smallInvestDown, self.smallInvestUp],
-            time: [self.smallDateDown, self.smallDateUp],
-            interestRate: [self.smallInterestDown, self.smallInterestUp],
-            repaymentDuration: [self.smallDateDown, self.smallDayUp],
-            userCreditRating: self.smallUserRating,
-            targetRating: self.smallTargetRating,
-            useOfFunds: self.fundUse
-        })
+        let small_data = {
+          page: self.page,
+          size: self.size,
+          sort: 'money,ASC',
+          money: [self.smallInvestDown, self.smallInvestUp],
+          time: [self.smallDateDown, self.smallDateUp],
+          interestRate: [self.smallInterestDown, self.smallInterestUp],
+          repaymentDuration: [self.smallDateDown, self.smallDayUp],
+          userCreditRating: self.smallUserRating == null? []:self.smallUserRating ,
+          targetRating: self.smallTargetRating == null? []:self.smallUserRating,
+          useOfFunds: self.fundUse
+        }
+
+        this.$axios.post("/loan/smallTargetList",small_data )
           .then(res => { console.log(res)})
           .catch(e => {console.log(e)})
       },
