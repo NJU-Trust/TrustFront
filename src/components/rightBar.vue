@@ -6,8 +6,8 @@
       </div>
       <div id="shareContainer">
         <img src="../../static/pic/qq.png" class="shareChoice" v-on:click="qqShare"/>
-        <img src="/static/pic/wechat.png" class="shareChoice"/>
-        <img src="/static/pic/sina.png" class="shareChoice"/>
+        <img src="/static/pic/wechat.png" class="shareChoice" v-on:click="wechatShare"/>
+        <img src="/static/pic/sina.png" class="shareChoice" v-on:click="sinaShare"/>
       </div>
     </div>
     <div class="rightItem" id="favourite">
@@ -27,8 +27,8 @@
 
 <script>
   var title="安全理财，轻松借款，即刻加入trust平台";
-  var url="http://www.baidu.com";
-  var picurl="http://101.37.19.32:10080/161250119/DaZuoYe/raw/master/doc/code/SSSL/Client/src/presentation/resource/images/%E6%B3%A8%E5%86%8C%E7%95%8C%E9%9D%A2.jpg";
+  var url="http://193.112.82.110:3030/";
+  var picurl="/static/pic/logo3_blue.png";
 
     export default {
         name: "rightBar",
@@ -79,10 +79,39 @@
         },
 
         wechatShare : function () {
-          var shareString='http://v.t.sina.com.cn/share/share.php?title='+
-            encodeURIComponent(title)+'&url='+encodeURIComponent(url||document.location)+'&pics='+encodeURIComponent(picurl);
-          window.open(shareString,'newwindow','height=400,width=400,top=100,left=100');
+          var text ="trust校园金融互助平台";
+          //生成二维码可能和网上其他地方的资料不一样，添加了logo图片路径（之前不知道哪位高手写的第一版本，貌似没有logo功能，小弟在此基础上加的）
+          $('#div_code').qrcode({
+            text: utf16to8(text),
+            height: 200,
+            width: 200,
+            colorDark : '#000000',
+            colorLight : '#ffffff',
+            correctLevel : QRCode.CorrectLevel.H,
+            //此处添加了个logo，可以随意替换链接
+            src: '/static/pic/logo3_blue.png'
+          });
         },
+
+        utf16to8: function (str) {
+          var out, i, len, c;
+          out = "";
+          len = str.length;
+          for (i = 0; i < len; i++) {
+            c = str.charCodeAt(i);
+            if ((c >= 0x0001) && (c <= 0x007F)) {
+              out += str.charAt(i);
+            } else if (c > 0x07FF) {
+              out += String.fromCharCode(0xE0 | ((c >> 12) & 0x0F));
+              out += String.fromCharCode(0x80 | ((c >> 6) & 0x3F));
+              out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+            } else {
+              out += String.fromCharCode(0xC0 | ((c >> 6) & 0x1F));
+              out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+            }
+          }
+          return out;
+        }
       }
     }
 </script>
