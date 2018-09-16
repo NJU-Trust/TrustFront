@@ -12,7 +12,7 @@
             <td>
               <div id="sheet" class="sheet">
 
-                <div style="margin-top: 20px;padding-top:15px;padding-left:12.5%;width: 860px">
+                <div style="margin-top: 20px;padding-top:15px;padding-left:5.5%;width: 860px">
                   <el-steps :active="active" style="width: 800px">
                     <el-step class="test" title="项目信息"  align-center></el-step>
                     <el-step title="信息披露"  align-center></el-step>
@@ -174,9 +174,9 @@
                       <el-form-item
                         label="拆借金额"
                         :rules="[
-      { required: true, message: '金额不能为空'},
-      { type: 'number', message: '金额必须为数字值'}
-    ]">
+                            { required: true, message: '金额不能为空'},
+                            { type: 'number', message: '金额必须为数字值'}
+                         ]">
                         <div>
                           <el-input placeholder="请填写拆借金额" v-model="form3.money"></el-input>
                           <div style="color:red;font-size: 12px;">*借款额度剩余{{limit}}</div>
@@ -259,8 +259,8 @@
                   </div>
                 </div>
 
-                <div style="padding-top: 40px;padding-bottom: 20px">
-                  <el-button-group style="position:absolute;left: %;">
+                <div style="margin: auto;width: 210px;padding-top: 40px;padding-bottom: 20px">
+                  <el-button-group>
                     <el-button type="primary" icon="el-icon-arrow-left" @click="last">上一步</el-button>
                     <el-button type="primary" @click="next">下一步<i class="el-icon-arrow-right el-icon--right"></i></el-button>
                   </el-button-group>
@@ -329,21 +329,14 @@
           var interestRate = this.form3.rate;
           var duration = this.form3.period;
           var useOfFonds = this.selectedOptions2[1];
-          console.log(useOfFonds);
           var identityOption = this.layer;
           var repaymentType = this.form3.repaymentType;
 
-          this.$axios.post('/loan/borrow1',{"name": name,"start_time": start_time,"money": money,"projectDescription": description,"proof": proof,
-            "username": username,"completoinRate": completoinRate,"interestRate": interestRate,"name": name,"duration": duration,"useOfFonds": useOfFonds,
-            "identityOption": identityOption,"repaymentType": repaymentType,}).then(
+          this.$axios.post('/loan/new/small',{name: name,startTime: start_time ,money: money, projectDescription: description, proof: proof,
+            completionRate: completoinRate, interestRate: interestRate, duration: duration, useOfFunds: useOfFonds,
+            identityOption: identityOption, repaymentType: repaymentType,}).then(
             function(response){
-              var res = response;
-              if(res.success){
-                alert("SUCCESS");
-                window.location.href = "/enterLoan";
-              }else{
-                alert("ERROR")
-              }
+              console.log(response)
             }
           ).catch(function (error) {
             console.log(error);
@@ -357,8 +350,6 @@
         },
 
         get_scheme(num){
-
-          console.log(num);
           var money = parseFloat(this.form3.money);
           var period = parseInt(this.form3.period);
           var rate = parseFloat(this.form3.rate);
@@ -388,23 +379,25 @@
 
         get_average_capital(money,period,rate){
           console.log("等额本金");
-          this.$axios.post('/loan/repayment/ep',{"money": money,"duration":period,"interestRate":rate}).then(
+          const self = this;
+          this.$axios.post('/loan/repayment/ep',{money: money, duration:period, interestRate:rate}).then(
             function(response){
               var res = response;
-             this.scheme.interest = res.interest;
-             this.scheme.sum = res.sum;
-             this.scheme.difficulty = res.difficulty;
-             this.scheme.capital = parseFloat(this.form3.money);
-             this.scheme.enough = res.note.exceedSurplus;
-             this.scheme.change = res.note.exceedDisc;
-             this.scheme.count = res.note.exceedSurplusMonths.length;
-             this.scheme.months = res.note.exceedSurplusMonths;
-             this.scheme.a = res.note.discRatios[0]+"%";
-              this.scheme.b = res.note.discRatios[1]+"%";
-              this.scheme.c = res.note.discRatios[2]+"%";
-              this.scheme.d = res.note.discRatios[3]+"%";
-              this.scheme.income = res.note.income;
-              this.scheme.count2 = res.note.income.length;
+              console.log(res);
+              self.scheme.interest = res.data.interest;
+              self.scheme.sum = res.data.sum;
+              self.scheme.difficulty = res.data.note.difficulty;
+              self.scheme.capital = parseFloat(self.form3.money);
+              self.scheme.enough = res.data.note.exceedSurplus;
+              self.scheme.change = res.data.note.exceedDisc;
+              self.scheme.count = res.data.note.exceedSurplusMonths.length;
+              self.scheme.months = res.data.note.exceedSurplusMonths;
+              self.scheme.a = res.data.note.discRatios[0]+"%";
+              self.scheme.b = res.data.note.discRatios[1]+"%";
+              self.scheme.c = res.data.note.discRatios[2]+"%";
+              self.scheme.d = res.data.note.discRatios[3]+"%";
+              self.scheme.income = res.data.note.income;
+              self.scheme.count2 = res.data.note.income.length;
 
             }
           ).catch(function (error) {
@@ -503,36 +496,41 @@
           console.log(value);
         },
         getRate(){
+          const self = this;
           this.$axios.post('/loan/rate').then(
             function(response){
-              var res = response;
-              this.form3.rate = res.rate;
-              this.form3.recommendRate = res.rate;
+              let res = response;
+              self.form3.rate = res.data;
+              self.form3.recommendRate = res.data;
             }
             ).catch(function (error) {
             console.log(error);
           });
-
-          console.log(this.form3.rate)
         },
         getRateRange(){
+          const self = this;
           this.$axios.post('/loan/rateRange').then(
             function(response){
               var res = response;
-              this.form3.lowerRate = res.lower;
-              this.form3.upperRate = res.upper;
+              self.form3.lowerRate = res.data.lower;
+              self.form3.upperRate = res.data.upper;
             }
           ).catch(function (error) {
             console.log(error);
           });
         },
         getTimeRange(a){
+          const self = this;
           var money = parseFloat(a.money);
-          this.$axios.post('/loan/timeRange',{"money": money}).then(
+          this.$axios.get('/loan/timeRange',{
+            params: {
+              money: money
+            }
+          }).then(
             function(response){
               var res = response;
-              this.form3.lowerPeriod = res.lower;
-              this.form3.upperPeriod = res.upper;
+              self.form3.lowerPeriod = res.data.lower;
+              self.form3.upperPeriod = res.data.upper;
             }
           ).catch(function (error) {
             console.log(error);
@@ -577,6 +575,7 @@
             lowerPeriod:0,
             upperPeriod:0,
             repaymentType:'',
+
           },
 
           scheme:{
@@ -607,61 +606,61 @@
             value: 'shop',
             label: '购物',
             children: [{
-              value: 'clothing',
+              value: '鞋帽服饰',
               label: '鞋帽服饰',
             },{
-              value: 'life',
+              value: '生活用品',
               label: '生活用品'
             }, {
-              value: 'make_up',
+              value: '护肤美妆',
               label: '护肤美妆'
             }, {
-              value: 'game',
+              value: '游戏动漫',
               label: '游戏动漫',
             }, {
-              value: 'electronics',
+              value: '电子产品',
               label: '电子产品',
             }]
           }, {
-            value: 'study',
+            value: '学习',
             label: '学习',
             children: [{
-              value: 'basic',
+              value: '学习用品',
               label: '学习用品',
             }, {
-              value: 'book',
+              value: '书籍报刊',
               label: '书籍报刊',
             }, {
-              value: 'data',
+              value: '培训考证',
               label: '培训考证',
             }, {
-              value: 'notice',
+              value: '校际交换',
               label: '校际交换',
             }]
           }, {
-            value: 'entertain',
+            value: '娱乐',
             label: '娱乐',
             children: [{
-              value: 'party',
+              value: '聚餐轰趴',
               label: '聚餐轰趴'
             }, {
-              value: 'sports',
+              value: '运动健身',
               label: '运动健身'
             }, {
-              value: 'show',
+              value: '观看演出',
               label: '观看演出'
             }, {
-                value: 'travel',
+                value: '外出旅游',
                 label: '外出旅游'
             }]
           },{
-            value:'medical',
+            value:'医疗',
             label:'医疗',
             children:[{
-              value:'treatment',
+              value:'诊断治疗',
               label:'诊断治疗'
             }, {
-              value:'healthy',
+              value:'保健养生',
               label:'保健养生'
             }]
           }],
@@ -765,7 +764,7 @@
     @-webkit-keyframes move_left /* Safari and Chrome */
     {
       0%   {left:0;  width:750px;}
-      100% {left:-8%; width:50%;}
+      100% {left:-150px; width:500px;}
     }
 
     .evaluate{

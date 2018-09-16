@@ -61,7 +61,7 @@
                 <el-form-item label="用户信用等级" class="form_item">
                     <el-select v-model="smallUserRating" multiple placeholder="请选择">
                       <el-option
-                        v-for="item in options"
+                        v-for="item in userOptions"
                         :key="item.value"
                         :label="item.label"
                         :value="item.value">
@@ -76,7 +76,7 @@
                 <el-form-item label="项目风险评级" class="form_item">
                     <el-select v-model="smallTargetRating" multiple placeholder="请选择">
                       <el-option
-                        v-for="item in options"
+                        v-for="item in targetOptions"
                         :key="item.value"
                         :label="item.label"
                         :value="item.value">
@@ -139,10 +139,10 @@
                 v-for="item in investInformation"
                 v-bind:investList="item"
                 v-bind:key="item.id"
-              ></invest-list>\
-              <el-pagination style="margin-left: 32%" @current-change="smallCurrentChange"
+              ></invest-list>
+              <el-pagination style="width: 100px;margin: auto" @current-change="smallCurrentChange"
                 layout="prev, pager, next" :current-page.sync="page"
-                :page-size="size" >
+                :page-size="size" :total="5">
               </el-pagination>
             </el-tab-pane>
             <el-tab-pane label="转让中">
@@ -196,7 +196,7 @@
                   <el-form-item label="用户信用等级" class="form_item">
                     <el-select v-model="largeUserRating" multiple placeholder="请选择">
                       <el-option
-                        v-for="item in options"
+                        v-for="item in userOptions"
                         :key="item.value"
                         :label="item.label"
                         :value="item.value">
@@ -211,7 +211,7 @@
                   <el-form-item label="项目风险评级" class="form_item">
                     <el-select v-model="largeTargetRating" multiple placeholder="请选择">
                       <el-option
-                        v-for="item in options"
+                        v-for="item in targetOptions"
                         :key="item.value"
                         :label="item.label"
                         :value="item.value">
@@ -310,7 +310,7 @@
                     <div id="myradar" style="width: 310px;height: 350px;margin-left:3%;"></div>
                   </el-form-item>
                   <el-form-item>
-                    <el-button type="primary">
+                    <el-button type="primary" :onclick="compareTarget">
                       标的比较
                     </el-button>
                   </el-form-item>
@@ -392,8 +392,14 @@
         fundUse2: [ '鞋帽服饰', '生活用品', '护肤美妆', '游戏动漫', '电子产品', '学习用品', '书籍报刊', '培训考证', '校际交换',
           '聚餐轰趴', '运动健身', '观看演出', '外出旅游', '诊断治疗', '保健养生'],
         /*选择信息*/
-        options: [
+        userOptions: [
           { label: 'AA', value: 'AA'},
+          { label: 'A', value: 'A'},
+          { label: 'B', value: 'B'},
+          { label: 'C', value: 'C'},
+          { label: 'D', value: 'D'}
+        ],
+        targetOptions: [
           { label: 'A', value: 'A'},
           { label: 'B', value: 'B'},
           { label: 'C', value: 'C'},
@@ -422,8 +428,12 @@
         largeDateDown: "",
         largeDateUp: "",
         /*pages*/
-        page: 0,
+        page: 1,
         size: 10,
+        /*标的比较*/
+        target1: [0,0,0,0,0,0],
+        target2: [0,0,0,0,0,0]
+
       };
     },
     beforeCreate:function(){
@@ -437,20 +447,38 @@
       small_fil() {
         let self = this;
         let small_data = {
-          page: self.page,
+          page: (self.page - 1),
           size: self.size,
-          sort: 'money,ASC',
+          properties: 'money',
           money: [self.smallInvestDown, self.smallInvestUp],
           time: [self.smallDateDown, self.smallDateUp],
           interestRate: [self.smallInterestDown, self.smallInterestUp],
-          repaymentDuration: [self.smallDateDown, self.smallDayUp],
+          repaymentDuration: [self.smallDayDown, self.smallDayUp],
           userCreditRating: self.smallUserRating == null? []:self.smallUserRating ,
-          targetRating: self.smallTargetRating == null? []:self.smallUserRating,
+          targetRating: self.smallTargetRating == null? []:self.smallTargetRating,
           useOfFunds: self.fundUse
         }
 
         this.$axios.post("/loan/smallTargetList",small_data )
-          .then(res => { console.log(res)})
+          .then(res => {
+            console.log(res)
+            let invests = []
+            for(let i of res.data) {
+              invests.push({
+                id: i.id,
+                name: i.name,
+                profit: (i.interestRate + "%"),
+                money: i.money,
+                remainMoney: (i.money-i.collectedMoney),
+                type: i.classification,
+                finishProgress: i.completionRate*1.0/100,
+                range: i.riskRating,
+                beginTime: i.startTime,
+              })
+            }
+            console.log(invests)
+            self.investInformation = invests
+          })
           .catch(e => {console.log(e)})
       },
       // large_fil() {
@@ -482,6 +510,11 @@
       handleLargeCommand(command) {
         this.fundUse2 = [];
         this.fundUse2.push(command);
+      },
+      /*标的比较*/
+      compareTarget() {
+        this.target1= [80, 76, 65, 89, 77, 66]
+        this.target2= [60, 70, 45, 80, 85, 27]
       },
       /* 绘制雷达图*/
       drawRadar() {
@@ -517,11 +550,11 @@
             type: 'radar',
             data : [
               {
-                value : [80, 76, 65, 89, 77, 66],
+                value : this.target1,
                 name : 'A'
               },
               {
-                value : [60, 70, 45, 80, 85, 27],
+                value : this.target2,
                 name : 'B'
               }
             ]

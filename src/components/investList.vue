@@ -40,7 +40,6 @@
                 </el-row>
                 <br/>
                 <p style="font-size:10px;">借款截止：{{investList.beginTime}}</p>
-                <p style="font-size:10px;">还款日期：{{investList.endTime}}</p>
               </div>
             </div>
           </div>
