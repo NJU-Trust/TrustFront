@@ -24,6 +24,7 @@
     "font-awesome": "^4.7.0",
     "http-proxy-middleware": "^0.18.0",
     "node-sass": "^4.9.3",
+    "qs": "^6.5.2",
     "scrollreveal": "^4.0.0",
     "vue": "^2.5.17",
     "vue-avatar": "^2.1.6",

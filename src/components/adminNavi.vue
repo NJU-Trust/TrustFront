@@ -10,7 +10,7 @@
             <li><a id="user" style="width: 120px" href="/usermanage">用户管理</a></li>
             <li><a id="statistics" href="/backAdminData" style="width: 120px">数据统计</a></li>
             <li><a id="verify" style="width: 120px" href="/EnterVerify">审核中心</a></li>
-            <el-dropdown style="float:right;position: relative;">
+            <el-dropdown style="float:right;position: relative;" v-if="login">
               <span>
                 <avatar username="default" src="/static/pic/person-flat.png"></avatar></span>
               <el-dropdown-menu slot="dropdown">
@@ -30,6 +30,9 @@
 
 <script>
   import Avatar from "vue-avatar/src/Avatar";
+  import store from '../vuex/store'
+  import * as types from '../vuex/types'
+
   export default {
       name: "adminNavi",
       components: { Avatar },
@@ -37,24 +40,10 @@
         if(localStorage.route=="#homepage"){
           document.getElementById("naviLogo").src="/static/pic/logo3.png";
         }
-        //localStorage.ifAdmin=0;
-        var ifAdmin=localStorage.ifAdmin;
-        if(ifAdmin==0){
-          $("#admin").remove();
-        }
-        //localStorage.ifExamine=0;
-        var ifExamine=localStorage.ifAdmin;
-        if(ifExamine==0){
-          $("#examine").remove();
-        }
-
-        // localStorage.ifLogin = false;
-        // localStorage.ifUnread = true;
-        // localStorage.photoSrc = '/static/pic/photo.jpg';
-        // localStorage.account="test";
 
         $("#manageAccount").css('display','none');
-        if (localStorage.ifLogin==1){
+        if (store.getters.isLogin && store.getters.isAdmin){
+          this.login = store.getters.isLogin;
           document.getElementById('last').removeChild(document.getElementById('signup'));
           document.getElementById('secondLast').removeChild(document.getElementById('login'));
           var personalCenter = document.createElement('a');
@@ -120,15 +109,16 @@
       },
       methods: {
         logout: function () {
-          localStorage.ifLogin = 0;
-          this.$router.replace("/");
+          store.commit(types.LOGOUT)
+          this.$router.replace("/login");
           this.reload();
-          this.$axios.get("/logout", {"account": localStorage.account}).then(res => {
-
-          });
         },
-
-      }
+      },
+      data() {
+        return {
+         login: false
+        }
+     }
     }
 
 </script>

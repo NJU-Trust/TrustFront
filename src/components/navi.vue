@@ -12,7 +12,7 @@
             <li><a id="trade" href="/trade">南大鱼塘</a></li>
             <li><a id="notice" href="/notice">失物/寻物</a></li>
             <li><a id="guide" href="/guide">平台指南</a></li>
-            <el-dropdown style="float:right;position: relative;">
+            <el-dropdown style="float:right;position: relative;" v-if="login">
               <span>
                 <avatar username="default" src="/static/pic/person-flat.png"></avatar>
               </span>
@@ -31,41 +31,26 @@
         </div>
       </div>
     </nav>
-    <!--<div id="manageAccount">-->
-    <!--<button style="background-color: lightskyblue">用户模式</button>-->
-    <!--<a href="./usermanage" id="admin"><button>管理模式</button></a>-->
-    <!--<a href="./EnterVerify" id="EnterVerify"><button>审核模式</button></a>-->
-    <!--<button v-on:click="logout">退出</button>-->
-    <!--</div>-->
   </div>
 </template>
 
 <script>
   import Avatar from "vue-avatar/src/Avatar";
+  import store from '../vuex/store'
+  import * as types from '../vuex/types'
+
   export default {
     components: {Avatar},
     inject:['reload'],
     name: 'navi',
     mounted: function () {
+      this.login = store.state.token;
       if(localStorage.route=="#homepage"){
         document.getElementById("naviLogo").src="/static/pic/logo3.png";
       }
-      //localStorage.ifAdmin=0;
-      var ifAdmin=localStorage.ifAdmin;
-      if(ifAdmin==0){
-        $("#admin").remove();
-      }
-      //localStorage.ifExamine=0;
-      var ifExamine=localStorage.ifAdmin;
-      if(ifExamine==0){
-        $("#examine").remove();
-      }
-      // localStorage.ifLogin = true;
-      // localStorage.ifUnread = true;
-      // localStorage.photoSrc = '/static/pic/photo.jpg';
-      // localStorage.account="test";
       $("#manageAccount").css('display','none');
-      if (localStorage.ifLogin==1){
+      if (store.getters.isLogin){
+        this.login = store.getters.isLogin;
         document.getElementById('last').removeChild(document.getElementById('signup'));
         document.getElementById('secondLast').removeChild(document.getElementById('login'));
         var personalCenter = document.createElement('a');
@@ -123,27 +108,20 @@
             message.src = '/static/pic/message_white.png';
           }
         );
-        // var photo = document.createElement('img');
-        // photo.id="photo";
-        // photo.className = 'photo';
-        // photo.src = localStorage.photoSrc;
-        // document.getElementById('last').appendChild(photo);
-        // photo.onmouseover=function(e){
-        //   $("#manageAccount").css('display','inherit');
-        //   $(navi).mouseleave(function (e) {
-        //     $("#manageAccount").css('display','none');
-        //   })
-        // }
+
       }
     },
     methods: {
       logout: function () {
-        localStorage.ifLogin = 0;
-        this.$router.replace("/");
+        store.commit(types.LOGOUT);
+        this.$router.replace("/login");
         this.reload();
-        this.$axios.get("/logout", {"account": localStorage.account}).then(res => {
-        });
       },
+    },
+    data() {
+      return {
+        login: false
+      }
     }
   }
 </script>
