@@ -26,6 +26,32 @@
                     <template>
                       <el-carousel :interval="3000" type="card" height="250px">
                         <el-carousel-item v-for="i in topData.length" :key="i">
+                          <el-popover
+                            placement="left"
+                            style="background-color: #DCDFE6;"
+                            width="200"
+                            trigger="hover">
+                            <div >
+                              <div style="position:relative;top:3px;">
+                                <span style="position:relative;left:20px;"><i class="el-icon-goods"></i>&nbsp;&nbsp;{{ topData[i-1].name}}</span>
+                                <br/>
+                                <span style="position:relative;left:20px;">￥&nbsp;  {{ topData[i-1].price}}</span>
+                                <br/>
+                                <span style="position:relative;left:20px;"><i class="el-icon-phone"></i>&nbsp;&nbsp;{{ topData[i-1].contact}}</span>
+                              </div>
+                              <hr/>
+                              <div style="margin-top:-10%;width:150px;">
+                                <img v-bind:src=headpic[i-1] style="width:30px;height:30px;position:relative;left:10px;top:-15px;"  alt="User_pic" >
+                                <!--<img src="../../static/pic/testuserpic1.png" style="width:30px;height:30px;position:relative;left:10px;top:-15px;"  alt="User_pic" >-->
+                                <span style="position:relative;margin-top:-10%;">&nbsp;&nbsp;&nbsp;&nbsp;“{{ topData[i-1].description}}”</span>
+                              </div>
+                            </div>
+                            <el-button slot="reference">
+                              <!--<img src="../../static/pic/dhc.jpeg" style="width:422px;height:250px;" class="picbox" alt="User_pic">-->
+                              <img v-bind:src=topData[i-1].pic style="width:422px;height:250px;" class="picbox" alt="User_pic">
+                            </el-button>
+                          </el-popover>
+
                           <div >
                             <img v-bind:src=topData[i-1].pic style="width:422px;height:250px;" class="picbox" alt="User_pic">
                           </div>
@@ -146,6 +172,7 @@
           backgroundSize:"100% auto",
           backgroundPosition: "0% 0%",
         },
+        headpic:["../../static/pic/testuserpic1.png","../../static/pic/photo.jpg","../../static/pic/testuserpic3.png","../../static/pic/testuserpic2.png"],
         options4: [],
         value9: [],
         list: [],
@@ -165,7 +192,7 @@
           name:'DHC橄榄润唇膏',
           description:'日本 大国药妆店购入 全新未拆封',
           price:'50',
-          contact:'123456',
+          contact:'15876209838',
           pic:"../../static/pic/dhc.jpeg",
           date:"2018/06/04",
           state: true
