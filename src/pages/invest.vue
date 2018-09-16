@@ -310,7 +310,7 @@
                     <div id="myradar" style="width: 310px;height: 350px;margin-left:3%;"></div>
                   </el-form-item>
                   <el-form-item>
-                    <el-button type="primary" :onclick="compareTarget">
+                    <el-button type="primary" @click="compareTarget">
                       标的比较
                     </el-button>
                   </el-form-item>
@@ -515,6 +515,8 @@
       compareTarget() {
         this.target1= [80, 76, 65, 89, 77, 66]
         this.target2= [60, 70, 45, 80, 85, 27]
+        //console.log(this.target1,this.target2)
+        this.drawRadar()
       },
       /* 绘制雷达图*/
       drawRadar() {

@@ -5,7 +5,7 @@
     <div>
       <img src="https://megsoftconsulting.com/wp-content/uploads/2016/04/web-design-packages-background.jpg" class="img-responsive gray" alt="Cinque Terre" style="opacity:0.7;top: 0;z-index: -1;width:100%;height:450px;position: absolute">
     </div>
-    <div class="overview" style="padding: 100px 60px 40px 40px;font-size:18px;height: 400px">
+    <div class="overview" style="padding: 60px 60px 40px 40px;font-size:18px;height: 400px">
       <el-row>
         <el-col :span="12">
           <div style="padding-left: 70px;padding-right: 70px">
@@ -48,14 +48,14 @@
               <label style="font-weight: normal">投资金额： </label>
               <div class="block">
                 <el-slider
-                  v-model="num1"
+                  v-model="money"
                   :max="10000"
                   :format-tooltip="formatTooltip"
                   show-input>
                 </el-slider>
               </div>
               <br/>
-              <el-button type="primary" round>我要投资</el-button>
+              <el-button type="primary" :onclick="invest()" round>我要投资</el-button>
             </div>
         </el-col>
       </el-row>
@@ -67,11 +67,8 @@
                         style="padding:60px 60px 10px 30px;font-size:18px;line-height: 30px;">
             <div style="display: flex;">
                 <div style="padding:25px 70px;">
-                  <div v-if="pic2">
+                  <div>
                     <img src="../../static/pic/TOEFL.jpg" style="width: 400px;height: 300px;"/>
-                  </div>
-                  <div v-if="pic1">
-                    <img src="../../static/pic/shoes.png" style="width: 400px;height: 300px;"/>
                   </div>
                   <label style="font-size:16px;font-style: oblique;text-align: center;font-weight: normal;color:grey">此图为用户上传的项目说明</label>
                   <br/>
@@ -186,12 +183,10 @@
           totalLoan:8000,
           leftNeeds:1600,
           userMoney:1000,
-          num1: 1000,
+          money: 1000,
           tabPostion:"left",
           DoInvest:"确认投资",
 
-          pic1:false,
-          pic2:true,
 
           payWay:"付息还本",
           useWay:"托福培训",
@@ -205,52 +200,24 @@
       },
       mounted: function () {
         this.target_id = this.$route.params.id;
-        //console.log(this.$route.params.id)
-        //this.target_id=this.$route.params.id;
-        //this.getInvestmentDetail(this.target_id);
-        if(this.$route.params.id == "0001"){
-          this.setMockData();
-        }
+        this.getInvestmentDetail(Number(this.target_id))
       },
       methods: {
-        setMockData(){
-          /*
-          picPath:'../../static/pic/TOEFL.jpg',
-          payWay:"付息还本",
-          useWay:"托福培训",
-          monthInterest:  "180.32",
-          payAll: "8000",
-          PS: "不可以",
-           */
-          this.pic1=true;
-          this.pic2=false;
-          this.payWay="付息还本"
-          this.useWay="买鞋"
-          this.monthInterest="99.954"
-          this.payAll="1800"
-          this.PS="可以"
-          this.revenueRate=5.55
-          this.lifeOfLoan="3个月"
-          this.totalLoan=1800
-          this.leftNeeds=360
-          this.tableData=[
-            {date: '2018-09-03',
-              name: '王博',
-              money: '1000'
-            },
-            {date: '2018-08-20',
-              name: '吴玥',
-              money: '400'
-            },
-            {date: '2018-08-29',
-              name: '李欣',
-              money: '40'
-            },
-          ]
-
+        invest: function (){
+          let self = this;
+          this.$axios.get('/loan/investment/target',{
+            params:{
+              targetId : parseInt(self.target_id),
+              money: self.money
+            }
+          }).then(function (response) {
+            console.log(response)
+          }).catch(function (error) {
+            console.log("error:"+error)
+          });
         },
         getInvestmentDetail(id){
-          var _this = this;
+          var self = this;
           this.$axios.get('/loan/details',{
             params:{
               targetId : parseInt(id)
@@ -258,7 +225,26 @@
           }).then(function (response) {
             //console.log("response:"+response.data)
             var data = response.data
+            self.percentage = data.progress * 100;
+            self.leftTime = data.leftDays * 24 * 60 * 60 * 1000;
+            // self.revenueRate = data.interestRate
+            self.lifeOfLoan = data.lifeOfLoan
+            self.totalLoan = data.totalLoan
+            self.leftNeeds = data.leftNeeds
+            //   userMoney:1000,
+            //   num1: 1000,
+            switch (data.payWay) {
+              case "EQUAL_PRINCIPAL": self.payWay = '等额本金'; break;
+              case "EQUAL_INSTALLMENT_OF_PRINCIPAL_AND_INTEREST": self.payWay = '等额本息'; break;
+              case "ONE_TIME_PAYMENT": self.payWay = '一次性还付本息'; break;
+              case "PRE_INTEREST": self.payWay = '先息后本'; break;
 
+            }
+            self.useWay = data.useWay
+            self.monthInterest = data.monthInterest
+            self.payAll = data.payAll
+            self.PS = data.ps;
+            console.log(data)
           }).catch(function (error) {
             console.log("error:"+error)
           });

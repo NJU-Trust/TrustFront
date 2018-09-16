@@ -182,9 +182,9 @@ export default new Router({
       component:invest
     },
     {
-      path:'/DoInvesting',
+      path:'/DoInvesting/:id',
       name:'DoInvesting',
-      component:DoInvesting
+      component: DoInvesting
     },
     {
       path:'/EnterVerify',
