@@ -61,7 +61,7 @@
         </div>
         <div class="col-xs-6 col-sm-3 placeholder">
           <br>
-          <img src="/static/pic/photo.jpg" width="200" height="200" class="img-responsive" alt="User_pic">
+          <img src="/static/pic/nju_user.jpg" width="200" height="200" class="img-responsive" alt="User_pic">
           <!--<div style="display: none;">-->
           <!--<h4>{{ userName.name }}</h4>-->
           <!--<span class="text-muted">{{ userName.level }}</span>-->
@@ -79,18 +79,18 @@
       data() {
         return {
           userName: {
-            name: '李世民',
-            sex: '男',
-            age: '18',
+            name: '南小紫',
+            sex: '女',
+            age: '20',
             level: '高级账户',
-            stuNum: '161220000',
+            stuNum: '161090000',
             grade: '大二',
-            major: '临床医学',
+            major: '金融学',
             phone: '13055644123',
-            alipay: '13175050438',
-            email: '135782468@126.com',
-            workaddr: '华为技术有限公司',
-            address: '江苏省南京市栖霞区仙林大道163号'
+            alipay: '13055644123',
+            email: 'lovetrust@trust.com',
+            workaddr: '南京大学',
+            address: '江苏省南京市栖霞区仙林大道163号南京大学仙林校区'
           },
         }
       }
