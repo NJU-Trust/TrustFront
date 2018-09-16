@@ -140,16 +140,16 @@
     z-index: 1;
   }
   .logo{
-    max-width: 9%;
+    max-width: 7%;
     display: inline-block;
     margin-left: 5%;
-    margin-top: -48px;
+    margin-top: -53px;
   }
   .wholeNav{
     border-color: transparent;
     display: inline-block;
     min-width: 80%;
-    width: 84%;
+    width: 86%;
     min-height: 30px;
     margin-top: 5px;
     margin-bottom: 0;

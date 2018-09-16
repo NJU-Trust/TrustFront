@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <a href='/'><img src="/static/pic/logo3_blue.png" style="width:12%;position:absolute;top:15px;left: 6%;" align=center></a><br>
+    <a href='/'><img src="/static/pic/logo3.png" style="width:12%;position:absolute;top:35px;left: 6%;" align=center></a><br>
     <div class="mainbox">
     <img id="ad" src="/static/pic/loginPic.png" style="width:32%;display: inline-block;margin-left: 16%">
 

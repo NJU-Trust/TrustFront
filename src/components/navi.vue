@@ -168,7 +168,7 @@
   .wholeNav{
     border-color: transparent;
     display: inline-block;
-    width: 84%;
+    width: 86%;
     min-width: 80%;
     min-height: 30px;
     margin-top: 5px;
@@ -179,10 +179,10 @@
 
 <style>
   #naviLogo{
-    max-width: 9%;
+    max-width: 7%;
     display: inline-block;
     margin-left: 5%;
-    margin-top: -48px;
+    margin-top: -53px;
     position: relative;
   }
   #nav li{
