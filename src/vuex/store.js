@@ -1,7 +1,6 @@
 import Vuex from 'vuex'
 import Vue from 'vue'
 import * as types from './types'
-
 Vue.use(Vuex);
 
 /**
@@ -15,14 +14,22 @@ export default new Vuex.Store({
       roles: null
     },
     token: null,
-    title: ''
+    title: '',
+    remember: false
   },
   getters: {
     isLogin: state => {
-      return localStorage.token !== null;
+      console.log(localStorage.token)
+      return (localStorage.token !== null && localStorage.token !== undefined);
     },
     isAdmin: state => {
       if(localStorage.roles.length > 1 && localStorage.roles.indexOf("ROLE_ADMIN") >= 0) {
+        return true;
+      }
+      return false;
+    },
+    isRemember: state => {
+      if(localStorage.password !== null && localStorage.password !== undefined) {
         return true;
       }
       return false;
@@ -45,7 +52,6 @@ export default new Vuex.Store({
     },
     [types.LOGOUT]: (state) => {
       localStorage.removeItem('token');
-      localStorage.removeItem('username');
       localStorage.removeItem('roles');
       state.user.username = null;
       state.user.roles = null;
@@ -54,6 +60,16 @@ export default new Vuex.Store({
     [types.TITLE]: (state, data) => {
       state.title = data;
     },
+    [types.REMEMBER]: (state, data) => {
+      state.remember = true;
+      localStorage.username = data.username;
+      localStorage.password = window.btoa(data.password)
+    },
+    [types.CANCELREMEMBER]: (state) => {
+      state.remember = false
+      localStorage.removeItem('username');
+      localStorage.removeItem('password');
+    }
 
   }
 })

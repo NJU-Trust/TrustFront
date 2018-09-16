@@ -8,7 +8,7 @@
         <h3 style="float: top;" align="center">登录</h3>
         <el-input id="account" class="loginInput" v-model="account" style="margin-top: 6%;" placeholder="账户/邮箱"></el-input>
         <el-input id="password" type="password" v-model="password" class="loginInput" style="margin-top: 8%;" align="center" placeholder="请输入密码"></el-input><br>
-        <el-checkbox id="remember" style="margin-top: 3%;margin-left: 8%"></el-checkbox>
+        <el-checkbox id="remember" v-model="remember" style="margin-top: 3%;margin-left: 8%"></el-checkbox>
         <p style="display: inline;">记住密码</p>
         <a href="/findPassword" style="float: right;margin-right: 8%;display: inline;margin-top: 3%">忘记密码？</a>
         <el-button type="primary" id="login" v-on:click="login()" round>登录</el-button>
@@ -42,6 +42,15 @@
   export default {
       name: "login",
       components: {footerBar},
+      mounted() {
+        store.commit(types.LOGOUT)
+        if(store.getters.isRemember) {
+          console.log("wocao");
+          this.account = localStorage.username;
+          this.password = window.atob(localStorage.password)
+          this.remember = true;
+        }
+      },
       methods: {
         login: function () {
           let self = this;
@@ -55,16 +64,20 @@
             }).catch(err => {
               console.log(err)
           });
+          console.log(this.remember)
+          if(this.remember) {
+            store.commit(types.REMEMBER, {username: this.username , password: this.password })
+          } else {
+            store.commit(types.CANCELREMEMBER)
+          }
         }
       },
       data() {
         return {
           account: "",
-          password: ""
+          password: "",
+          remember: false
         }
-      },
-      beforeCreate: function () {
-        store.commit(types.LOGOUT)
       },
     }
 
