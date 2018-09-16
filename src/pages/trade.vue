@@ -52,9 +52,9 @@
                             </el-button>
                           </el-popover>
 
-                          <div >
+                          <!--<div >
                             <img v-bind:src=topData[i-1].pic style="width:422px;height:250px;" class="picbox" alt="User_pic">
-                          </div>
+                          </div>-->
                         </el-carousel-item>
                       </el-carousel>
                     </template>
