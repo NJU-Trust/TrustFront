@@ -199,9 +199,53 @@
       getOverview(){
         // alert("用户总览");
         console.log("用户总览");
-        this.$axios.get('/profile/investAndLoan')
+        let self = this;
+        this.$axios.get('/profile/investAndLoan',{
+          params:{
+            username:"test"
+          }
+        })
           .then(function (response) {
             console.log(response);
+            console.log("用户总览success");
+            console.log(response.data);
+            var res = response.data;
+            self.user.investAmount = res.totalInvestment;
+            self.user.loanAmount = res.totalLoan;
+            self.user.captial = res.totalInvestment;
+            self.user.interest = res.totalInvestment;
+            self.user.credit.points = res.creditRatingScore;
+            self.user.credit.level = res.creditRating;
+            self.user.amountAll = res.totalAccount;
+            self.user.balance = res.balance;
+            self.user.accountFrozen = res.frozenAmount;
+            self.user.interestToRecovered = res.pendingPI;
+            self.user.investmentTender = res.investmentInBidding;
+
+
+            var regUser= {
+              investAmount: 12869,
+                loanAmount: 19857,
+                captial:{
+                amountToCover: '856',
+                  progress: 37
+              },
+              interest:{
+                amountToCove: '7263.33',
+                  progress: 21
+              },
+              credit:{
+                points: 91,
+                  level: 'AA'
+              },
+              amountAll: 4356,
+                balance: 3500,
+                accountFrozen: 0,
+                interestToRecovered: 856,
+                investmentTender: 0
+            };
+            //toDelete
+            self.user = regUser;
             // alert("success");
           })
           .catch(function (response) {

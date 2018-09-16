@@ -66,10 +66,6 @@
               <div class="user_photo">
                 <br>
                 <img src="/static/pic/nju_user.jpg" width="200" height="200" class="img-responsive img-thumbnail" alt="User_pic" >
-                <!--<div style="display: none;">-->
-                <!--<h4>{{ userName.name }}</h4>-->
-                <!--<span class="text-muted">{{ userName.level }}</span>-->
-                <!--</div>-->
               </div>
             </el-col>
           </el-row>
@@ -143,6 +139,9 @@
   export default {
     name:"basicinformation",
     components: {SetPasswordProtection, Modifyphone, Modifymailbox, OrdinaryNormalCheck, Changepassword, personalCenter},
+    mounted: function() {
+      this.getUserDetails();
+    },
     data() {
       return {
         activeName: 'first',
@@ -190,6 +189,60 @@
         }
         console.log(tab, event);
       },
+      getUserDetails(){
+        // alert("用户总览");
+        console.log("个人信息");
+        let self = this;
+        this.$axios.get('/profile/details',{
+          params:{
+            username:"test"
+          }
+        })
+          .then(function (response) {
+            console.log(response);
+            console.log("个人信息success");
+            console.log(response.data);
+            var res = response.data;
+
+            self.data.username.name = res.name;
+            self.data.username.sex = res.sex;
+            self.data.username.age = res.age;
+            self.data.username.level = res.level;
+            self.data.username.stuNum = res.stuNum;
+            self.data.username.grade = res.grade;
+            self.data.username.major = res.major;
+            self.data.username.phone = res.phone;
+            self.data.username.alipay = res.alipay;
+            self.data.username.email = res.email;
+            self.data.username.workaddr = res.address;
+            self.data.username.address = res.address;
+
+            //
+            var regUser= {
+                name: '南小紫',
+                sex: '女',
+                age: '20',
+                level: '高级账户',
+                stuNum: '161090000',
+                grade: '大二',
+                major: '金融学',
+                phone: '13055644123',
+                alipay: '13055644123',
+                email: 'lovetrust@trust.com',
+                workaddr: '南京大学',
+                address: '江苏省南京市栖霞区仙林大道163号南京大学仙林校区'
+              };
+            self.data.username = regUser;
+
+
+            // alert("success");
+          })
+          .catch(function (response) {
+            console.log(response);
+            // alert("error")
+          });
+      }
+
     }
   }
 
