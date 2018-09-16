@@ -47,7 +47,7 @@
                           </div>
                           <el-button slot="reference">
                             <!--<img src="../../static/pic/testkey.png" class="picbox" alt="User_pic" >-->
-                           <img v-bind:src=latestmes[i-1].pic class="picbox" alt="User_pic" >
+                            <img v-bind:src=latestmes[i-1].pic class="picbox" alt="User_pic" >
                           </el-button>
                         </el-popover>
                       </el-carousel-item>
@@ -82,7 +82,7 @@
                     <hr/>
                   </div>
                 </template>
-                <div v-for="j in mesdata.length" :key="j">
+                <div v-for="j in mesdata.length" :key="j" style="margin-left:6%;">
                   <el-row :gutter="400" >
                     <div v-for="i in 2" :key="i">
                       <el-col :span="6">
@@ -109,7 +109,7 @@
                               </el-col>
                               <el-col :span="10">
                                 <div class="grid-content bg-purple" style="margin-top:-9%;">
-                                  <img v-bind:src=mesdata[j-1][i-1].pic style="width:110px;height:110px;position:relative;left:5px;top:-8px;" class="picbox" alt="User_pic">
+                                  <img v-bind:src=mesdata[j-1][i-1].pic style="width:110px;height:110px;position:relative;left:5px;top:-8px;" class="picbox1" alt="User_pic">
                                   <br/>
                                   <span style="position:relative;"><strong>{{ mesdata[j-1][i-1].mestype}}&nbsp;&nbsp;>></strong></span>
                                   <span style="position:relative;left:5px;"><strong>{{ mesdata[j-1][i-1].name}}</strong></span>
@@ -125,7 +125,7 @@
                 <el-pagination
                   background
                   layout="prev, pager, next"
-                  style="position:relative;left:200px;"
+                  style="margin-left:45%;"
                   :total="1000">
                 </el-pagination>
               </el-tab-pane>
@@ -260,9 +260,9 @@
             headpic:"../../static/pic/testuserpic2.png",
             pic:"../../static/pic/testusb.png",
             phone:'18842957391',
-          dec:'明天机房有考试呀，今天落在机房的U盘都收到119了哦',
-          loc:'基础实验楼乙124',
-          time:'2018-09-07'
+            dec:'明天机房有考试呀，今天落在机房的U盘都收到119了哦',
+            loc:'基础实验楼乙124',
+            time:'2018-09-07'
           },{
             headpic:"../../static/pic/testuserpic3.png",
             pic:"../../static/pic/testcard.png",
@@ -277,7 +277,7 @@
             dec:'落在四食门口的一辆小蓝里了！给了四食超市阿姨。',
             loc:'共享单车',
             time:'2018-09-06',}
-          ]
+        ]
       }
     },
     methods: {
@@ -316,7 +316,7 @@
     /*background-color: rgba(173,216,230,0.5);*/
     width: 100%;
     background-color: #D9F3FB;
-    //height:100%;
+  //height:100%;
     height:1350px;
   //height: 200px;
     padding-bottom: 20px;
@@ -343,13 +343,13 @@
 
   /*消息框*/
   .mesboxborder{
-    //width:850px;
+  //width:850px;
     margin-right: 10%;
     margin-left: 5%;
     margin-top: 30px;
     margin-bottom:5%;
 
-]    border-radius: 3px;
+  ]    border-radius: 3px;
     background:white;
     border:1px solid #e4e4e4;
     /*//height:80px;*/
@@ -360,9 +360,9 @@
 
   .textitem{
     position:relative;
-    //background-color: #d3dce66;
-   // left:200px;
-    //top:-170px;
+  //background-color: #d3dce66;
+  // left:200px;
+  //top:-170px;
 
   }
 
@@ -371,17 +371,27 @@
       0 1px 6px 0 rgba(0,0,0, .12),
       0 1px 6px 0 rgba(0,0,0, .12);
     border-radius: 3px;
-    width:370px;
+    width:400px;
     height:210px;
     margin-top:-4%;
     margin-left:-12%;
+  }
+  .picbox1{
+    box-shadow:
+      0 1px 6px 0 rgba(0,0,0, .12),
+      0 1px 6px 0 rgba(0,0,0, .12);
+    border-radius: 3px;
+    width:390px;
+    height:210px;
+  //margin-top:-4%;
+  //margin-left:-12%;
   }
 
   /*卡片样式*/
   .box-card {
     width: 370px;
     height: 180px;
-    //border-top:3px solid dodgerblue;
+  //border-top:3px solid dodgerblue;
     border-radius: 5px;
     box-shadow:
       0 1px 6px 0 rgba(0,0,0, .12),
@@ -451,8 +461,8 @@
   .grid-content {
     margin-left:-3%;
     margin-right:-13%;
-    //border-radius: 4px;
-    //min-height: 36px;
+  //border-radius: 4px;
+  //min-height: 36px;
   }
 
 </style>
