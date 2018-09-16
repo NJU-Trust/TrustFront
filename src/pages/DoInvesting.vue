@@ -88,11 +88,11 @@
                       <strong><span style="font-size: 20px;">借款项目简介</span></strong>
                     </div>
                     <div>
-                      <div>{{payWay}}</div>
-                      <div>{{useWay}}</div>
-                      <div>{{monthInterest}}</div>
-                      <div>{{payAll}}</div>
-                      <div>{{PS}}</div>
+                      <div>还款方式：{{payWay}}</div>
+                      <div>借款用途：{{useWay}}</div>
+                      <div>月还本息：{{monthInterest}}</div>
+                      <div>到期需还本金：{{payAll}}</div>
+                      <div>说明：在投资期限届满前，投资人{{PS}}转让或赎回</div>
                     </div>
                     <hr/>
                     <div>
@@ -186,11 +186,11 @@
           tabPostion:"left",
           DoInvest:"确认投资",
 
-          payWay:"还款方式：付息还本",
-          useWay:"借款用途：托福培训",
-          monthInterest:  "月还本息：180.32",
-          payAll: "到期需还本金：8000",
-          PS: "说明：在投资期限届满前，投资人不可以转让或赎回",
+          payWay:"付息还本",
+          useWay:"托福培训",
+          monthInterest:  "180.32",
+          payAll: "8000",
+          PS: "不可以",
 
           //产品概要
           InvestInfo:"XXXXXXXXXXXX",
@@ -200,17 +200,19 @@
         this.target_id = this.$route.params.id;
         //console.log(this.$route.params.id)
         //this.target_id=this.$route.params.id;
-        this.getInvestmentDetail();
+        this.getInvestmentDetail(this.target_id);
       },
       methods: {
-        getInvestmentDetail(){
+        getInvestmentDetail(id){
           var _this = this;
           this.$axios.get('/loan/details',{
             params:{
-              targetId : 1
+              targetId : parseInt(id)
             }
           }).then(function (response) {
-            console.log("response:"+response.data)
+            //console.log("response:"+response.data)
+            var data = response.data
+
           }).catch(function (error) {
             console.log("error:"+error)
           });
