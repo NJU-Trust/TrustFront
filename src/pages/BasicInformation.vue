@@ -2,78 +2,7 @@
   <personalCenter paneltitle="基本信息">
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="个人资料" name="first">
-        <div id="userinformation">
-          <el-row>
-            <el-col :span="16">
-              <div class="user_info">
-                <div class="table-responsive">
-                  <table class="table" style="border: 0px solid transparent">
-                    <tbody>
-                    <tr>
-                      <th>用户名</th>
-                      <td> {{ userName.name }} </td>
-                    </tr>
-                    <tr>
-                      <th>性别</th>
-                      <td> {{ userName.sex }} </td>
-                    </tr>
-                    <tr>
-                      <th>年龄</th>
-                      <td> {{ userName.age }} </td>
-                    </tr>
-                    <tr>
-                      <th>账户等级</th>
-                      <td> {{ userName.level }} </td>
-                    </tr>
-                    <tr v-if="true">
-                      <th>学号</th>
-                      <td> {{ userName.stuNum }} </td>
-                    </tr>
-                    <tr v-if="true">
-                      <th>年级</th>
-                      <td> {{ userName.grade }} </td>
-                    </tr>
-                    <tr v-if="true">
-                      <th>专业</th>
-                      <td> {{ userName.major }} </td>
-                    </tr>
-                    <tr>
-                      <th>手机号</th>
-                      <td> {{ userName.phone }} </td>
-                    </tr>
-                    <tr>
-                      <th>支付宝账号</th>
-                      <td> {{ userName.alipay }} </td>
-                    </tr>
-                    <tr>
-                      <th>邮箱</th>
-                      <td> {{ userName.email }} </td>
-                    </tr>
-                    <tr v-if="true">
-                      <th>工作单位</th>
-                      <td> {{ userName.workaddr }} </td>
-                    </tr>
-                    <tr>
-                      <th>现居地</th>
-                      <td colspan="3" rowspan="2">{{ userName.address }}</td>
-                    </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </el-col>
-            <el-col :span="8">
-              <div class="user_photo">
-                <br>
-                <img src="/static/pic/nju_user.jpg" width="200" height="200" class="img-responsive img-thumbnail" alt="User_pic" >
-                <!--<div style="display: none;">-->
-                <!--<h4>{{ userName.name }}</h4>-->
-                <!--<span class="text-muted">{{ userName.level }}</span>-->
-                <!--</div>-->
-              </div>
-            </el-col>
-          </el-row>
-        </div>
+        <user-information v-bind:user-name="userName"></user-information>
       </el-tab-pane>
       <el-tab-pane label="修改资料" name="second">
         <div style="padding-left: 60px;padding-right: 200px">
@@ -139,10 +68,16 @@
   import Modifymailbox from "../components/modifyMailBox";
   import Modifyphone from "../components/modifyPhone";
   import SetPasswordProtection from "../components/setPasswordProtection";
+  import UserInformation from "../components/userInformation";
 
   export default {
     name:"basicinformation",
-    components: {SetPasswordProtection, Modifyphone, Modifymailbox, OrdinaryNormalCheck, Changepassword, personalCenter},
+    components: {
+      UserInformation,
+      SetPasswordProtection, Modifyphone, Modifymailbox, OrdinaryNormalCheck, Changepassword, personalCenter},
+    mounted: function() {
+      this.getUserDetails();
+    },
     data() {
       return {
         activeName: 'first',
@@ -162,20 +97,6 @@
         },
         secService: '1',
         labelPosition: 'right',
-        // revice: {
-        //   name: '李世民',
-        //   sex: '男',
-        //   age: '18',
-        //   level: '高级账户',
-        //   stuNum: '161220000',
-        //   grade: '大二',
-        //   major: '临床医学',
-        //   phone: '13055644123',
-        //   alipay: '13175050438',
-        //   email: '135782468@126.com',
-        //   workaddr: '华为技术有限公司',
-        //   address: '江苏省南京市栖霞区仙林大道163号'
-        // }
       };
     },
     methods: {
@@ -190,6 +111,60 @@
         }
         console.log(tab, event);
       },
+      getUserDetails(){
+        // alert("用户总览");
+        console.log("个人信息");
+        let self = this;
+        this.$axios.get('/profile/details',{
+          params:{
+            username:"test"
+          }
+        })
+          .then(function (response) {
+            console.log(response);
+            console.log("个人信息success");
+            console.log(response.data);
+            var res = response.data;
+
+            self.data.username.name = res.name;
+            self.data.username.sex = res.sex;
+            self.data.username.age = res.age;
+            self.data.username.level = res.level;
+            self.data.username.stuNum = res.stuNum;
+            self.data.username.grade = res.grade;
+            self.data.username.major = res.major;
+            self.data.username.phone = res.phone;
+            self.data.username.alipay = res.alipay;
+            self.data.username.email = res.email;
+            self.data.username.workaddr = res.address;
+            self.data.username.address = res.address;
+
+            //
+            var regUser= {
+                name: '南小紫',
+                sex: '女',
+                age: '20',
+                level: '高级账户',
+                stuNum: '161090000',
+                grade: '大二',
+                major: '金融学',
+                phone: '13055644123',
+                alipay: '13055644123',
+                email: 'lovetrust@trust.com',
+                workaddr: '南京大学',
+                address: '江苏省南京市栖霞区仙林大道163号南京大学仙林校区'
+              };
+            self.data.username = regUser;
+
+
+            // alert("success");
+          })
+          .catch(function (response) {
+            console.log(response);
+            // alert("error")
+          });
+      }
+
     }
   }
 
