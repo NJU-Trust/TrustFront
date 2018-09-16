@@ -259,6 +259,37 @@
       this.drawGraph();
     },
     methods: {
+      getCreditChange(creditPts) {
+        var resCredit= {
+          creditChange:0,
+          color: '#5db2ff',
+        };
+        if(creditPts<30) {
+          resCredit.creditChange = -3;
+          resCredit.color='#fa6862';
+        }
+        else if(creditPts<60) {
+          resCredit.creditChange = -2;
+          resCredit.color='#afb8c2';
+        }
+        else if(creditPts<70) {
+          resCredit.creditChange = -1;
+          resCredit.color='#7ac2ff';
+        }
+        else if(creditPts<80) {
+          resCredit.creditChange = 0;
+          resCredit.color='#244767';
+        }
+        else if(creditPts<90) {
+          resCredit.creditChange = 1;
+          resCredit.color='#5db2ff';
+        }
+        else{
+          resCredit.creditChange = 2;
+          resCredit.color='#409EFF';
+        }
+        return resCredit;
+      },
       getRadar() {
         console.log("雷达图");
         let self = this;
@@ -387,11 +418,11 @@
             // areaStyle: {normal: {}},
             data: [
               {
-                value: [],
+                value: [80, 76, 65, 89, 77, 66],
                 name: '您的表现'
               },
               {
-                value: [],
+                value: [60, 70, 45, 80, 85, 27],
                 name: '注册用户平均表现'
               }
             ]
@@ -446,9 +477,6 @@
         // 绘制图表
         myChart.setOption({
           title: {text: '您的校园关系图如下'},
-          legend: {
-            data: ['您的表现', '注册用户平均表现']
-          },
           tooltip: {
             formatter: function (x) {
               if (typeof(x.data.creditPts) == "undefined") {
@@ -748,6 +776,99 @@
             }
           ]
         });
+
+        console.log("校园关系图");
+        let self = this;
+        this.$axios.get('/profile/relationship',{
+          params:{
+            username:"test"
+          }
+        })
+          .then((response) => {
+            console.log("关系图 success");
+            console.log(response);
+            // console.log(response.data.aboveAverage);
+            console.log(response.data.people);
+            console.log(response.data.relations);
+
+            let Vertex  = [];
+            let Edge = [];
+            for(let i of response.data.people) {
+
+              let resCredit = getCreditChange(i.creditPts);
+              Vertex.push({
+                name: i.name,
+                creditPts: i.creditPts,
+                financialPts: i.financialPts,
+                schoolPts: i.schoolPts,
+                creditChange: resCredit.creditChange,
+                itemStyle: {
+                  normal: {
+                    color: resCredit.color,
+                  }
+                }
+              });
+            }
+
+            var center = {
+              name: '南小紫',
+              creditPts: 97,
+              financialPts: 85,
+              schoolPts: 67,
+              symbolSize: 100,
+              itemStyle: {
+                normal: {
+                  // color : '#409EFF'
+                  color: {
+                    type: 'linear',
+                    x: 0,
+                    y: 0,
+                    x2: 0,
+                    y2: 1,
+                    colorStops: [{
+                      offset: 0, color: '#7853de' // 0% 处的颜色
+                    }, {
+                      offset: 1, color: '#409EFF' // 100% 处的颜色
+                    }],
+                    globalCoord: false, // 缺省为 false
+                  }
+                }
+              },
+            };
+
+            let user = response.data.people[0];
+            center.name = user.name;
+            center.creditPts = user.creditPts;
+            center.financialPts = user.financialPts;
+            center.schoolPts = user.schoolPts;
+
+            Vertex[0] = center;
+
+            for(let i of response.data.relations) {
+              Edge.push({
+                source: i.source,
+                target: i.target,
+                name: i.name,
+                relation: i.creditChange,
+              });
+            }
+
+            console.log(Vertex);
+            console.log(Edge);
+
+            // myChart.setOption({
+            //   series: [{
+            //     data: Vertex,
+            //     links: Edge,
+            //   }]
+            // });
+
+          })
+          .catch((response) => {
+            console.log(response);
+            console.log("error");
+            // alert("error")
+          })
       }
     }
   }
