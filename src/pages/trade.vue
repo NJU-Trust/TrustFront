@@ -172,7 +172,7 @@
           backgroundSize:"100% auto",
           backgroundPosition: "0% 0%",
         },
-        headpic:["../../static/pic/testuserpic1.png","../../static/pic/photo.jpg","../../static/pic/testuserpic3.png","../../static/pic/testuserpic2.png"],
+        headpic:["../../static/pic/testuserpic1.png","../../static/pic/photo.jpg","../../static/pic/testuserpic3.png","../../static/pic/testuserpic2.png","../../static/pic/testuserpic4.png"],
         options4: [],
         value9: [],
         list: [],
@@ -398,7 +398,8 @@
       0 1px 6px 0 rgba(0,0,0, .12),
       0 1px 6px 0 rgba(0,0,0, .12);
     border-radius: 3px;
-
+    margin-top:-3%;
+    margin-left:-12%;
   }
 
   /*卡片样式*/
