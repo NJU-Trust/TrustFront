@@ -795,7 +795,7 @@
             let Edge = [];
             for(let i of response.data.people) {
 
-              let resCredit = getCreditChange(i.creditPts);
+              let resCredit = self.getCreditChange(i.creditPts);
               Vertex.push({
                 name: i.name,
                 creditPts: i.creditPts,

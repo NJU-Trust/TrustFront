@@ -27,8 +27,7 @@
               <el-input v-model="userName.address"></el-input>
             </el-form-item>
             <el-form-item style="float:right;">
-              <el-button type="primary" @click="submitForm('revice')">提交</el-button>
-              <el-button @click="resetForm('revice')">重置</el-button>
+              <el-button type="primary" @click="submitChange">提交</el-button>
             </el-form-item>
           </el-form>
 
@@ -126,19 +125,7 @@
             console.log(response.data);
             var res = response.data;
 
-            self.data.username.name = res.name;
-            self.data.username.sex = res.sex;
-            self.data.username.age = res.age;
-            self.data.username.level = res.level;
-            self.data.username.stuNum = res.stuNum;
-            self.data.username.grade = res.grade;
-            self.data.username.major = res.major;
-            self.data.username.phone = res.phone;
-            self.data.username.alipay = res.alipay;
-            self.data.username.email = res.email;
-            self.data.username.workaddr = res.address;
-            self.data.username.address = res.address;
-
+            self.userName = res;
             //
             var regUser= {
                 name: '南小紫',
@@ -154,15 +141,36 @@
                 workaddr: '南京大学',
                 address: '江苏省南京市栖霞区仙林大道163号南京大学仙林校区'
               };
-            self.data.username = regUser;
 
-
+            //toDelete
+            self.userName = regUser;
             // alert("success");
           })
           .catch(function (response) {
             console.log(response);
             // alert("error")
           });
+      },
+      submitChange()
+      {
+        let self = this;
+        this.$axios.post('/profile/personalInformation', {
+          username: self.userName.name,
+          gender: self.userName.sex,
+          age: self.userName.age,
+          institution: self.userName.workaddr,
+          livingPlace: self.userName.address
+        })
+          .then(function (response) {
+            console.log(response);
+            alert("修改成功！");
+            self.$router.replace("/userSpace/BasicInformation");
+          })
+          .catch(function (response) {
+            console.log(response);
+            alert("修改失败！请检测您的网络连接");
+            self.$router.replace("/userSpace/BasicInformation");
+          })
       }
 
     }

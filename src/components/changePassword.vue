@@ -69,6 +69,7 @@
     methods: {
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
+          alert("已提交");
           if (valid) {
             alert('submit!');
           } else {
@@ -78,6 +79,7 @@
         });
       },
       resetForm(formName) {
+        alert("已重置");
         this.$refs[formName].resetFields();
       }
     }

@@ -213,46 +213,91 @@
             var res = response.data;
             self.user.investAmount = res.totalInvestment;
             self.user.loanAmount = res.totalLoan;
-            self.user.captial = res.totalInvestment;
-            self.user.interest = res.totalInvestment;
+            self.user.captial.amountToCover = res.getMoney;
+            self.user.captial.progress = res.getMoneyProgress;
+            self.user.interest.amountToCove = res.payMoney;
+            self.user.interest.progress = res.payMoneyProgress;
             self.user.credit.points = res.creditRatingScore;
             self.user.credit.level = res.creditRating;
+            // alert("success");
+
+            let regUser= {
+              investAmount: 12869,
+              loanAmount: 19857,
+              captial:{
+                amountToCover: '856',
+                progress: 37
+              },
+              interest:{
+                amountToCove: '7263.33',
+                progress: 21
+              },
+              credit:{
+                points: 91,
+                level: 'AA'
+              },
+              amountAll: 4356,
+              balance: 3500,
+              accountFrozen: 0,
+              interestToRecovered: 856,
+              investmentTender: 0
+            }
+            //toDelete
+            self.user = regUser;
+          })
+          .catch(function (response) {
+            console.log(response);
+            // alert("error")
+          });
+
+        this.$axios.get('/profile/totalAccount',{
+          params:{
+            username:"test"
+          }
+        })
+          .then(function (response) {
+            console.log(response);
+            console.log("totalAccount success");
+            console.log(response.data);
+            var res = response.data;
             self.user.amountAll = res.totalAccount;
             self.user.balance = res.balance;
             self.user.accountFrozen = res.frozenAmount;
             self.user.interestToRecovered = res.pendingPI;
             self.user.investmentTender = res.investmentInBidding;
 
-
-            var regUser= {
+            let regUser= {
               investAmount: 12869,
-                loanAmount: 19857,
-                captial:{
+              loanAmount: 19857,
+              captial:{
                 amountToCover: '856',
-                  progress: 37
+                progress: 37
               },
               interest:{
                 amountToCove: '7263.33',
-                  progress: 21
+                progress: 21
               },
               credit:{
                 points: 91,
-                  level: 'AA'
+                level: 'AA'
               },
               amountAll: 4356,
-                balance: 3500,
-                accountFrozen: 0,
-                interestToRecovered: 856,
-                investmentTender: 0
-            };
+              balance: 3500,
+              accountFrozen: 0,
+              interestToRecovered: 856,
+              investmentTender: 0
+            }
             //toDelete
             self.user = regUser;
+
             // alert("success");
           })
           .catch(function (response) {
             console.log(response);
             // alert("error")
           });
+
+
       },
       getTodo(){
         // alert("用户总览");
@@ -267,7 +312,7 @@
             console.log(response);
             console.log("Get TodoList success");
             console.log(response.data);
-            var res = [{
+            let res = [{
               date: '2018/10/1',
               title: '待还款',
               desc: '您还有一笔还款在10月1号'
@@ -315,7 +360,7 @@
               date: '2018/7/5',
               title: '已收款',
               desc: '您已在7月5日收款'
-            }, ]
+            }, ];
 
             self.demoEvents = res;
 
