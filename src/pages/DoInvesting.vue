@@ -35,7 +35,7 @@
         </el-col>
         <el-col :span="12">
             <div style="color: white; ">
-              <countdown :time="2 * 24 * 60 * 60 * 1000">
+              <countdown :time="leftTime">
                 <template slot-scope="props">剩余时间：<span class="keypoint">{{ props.days }}</span> 天 <span class="keypoint">{{ props.hours }}</span> 小时 <span class="keypoint">{{ props.minutes }}</span> 分钟 <span class="keypoint">{{ props.seconds }}</span> 秒</template>
               </countdown>
               <!--<label>剩余时间：{{leftTime}}</label>-->
@@ -67,8 +67,12 @@
                         style="padding:60px 60px 10px 30px;font-size:18px;line-height: 30px;">
             <div style="display: flex;">
                 <div style="padding:25px 70px;">
-                  <img src="../../static/pic/TOEFL.jpg" style="width:400px;"/>
-                  <br>
+                  <div v-if="pic2">
+                    <img src="../../static/pic/TOEFL.jpg" style="width: 400px;height: 300px;"/>
+                  </div>
+                  <div v-if="pic1">
+                    <img src="../../static/pic/shoes.png" style="width: 400px;height: 300px;"/>
+                  </div>
                   <label style="font-size:16px;font-style: oblique;text-align: center;font-weight: normal;color:grey">此图为用户上传的项目说明</label>
                   <br/>
                   <label>信用等级排序说明：</label>
@@ -88,18 +92,18 @@
                       <strong><span style="font-size: 20px;">借款项目简介</span></strong>
                     </div>
                     <div>
-                      <div>{{payWay}}</div>
-                      <div>{{useWay}}</div>
-                      <div>{{monthInterest}}</div>
-                      <div>{{payAll}}</div>
-                      <div>{{PS}}</div>
+                      <div>还款方式：{{payWay}}</div>
+                      <div>借款用途：{{useWay}}</div>
+                      <div>月还本息：{{monthInterest}}</div>
+                      <div>到期需还本金：{{payAll}}</div>
+                      <div>说明：在投资期限届满前，投资人{{PS}}转让，不可以赎回</div>
                     </div>
                     <hr/>
                     <div>
                       <label>用户信用评级：</label>
                       <label class="level">A&nbsp;&nbsp;</label>
                       <label>项目风险评级:</label>
-                      <label class="level">AA</label>
+                      <label class="level">A</label>
                     </div>
                   </el-card>
 
@@ -176,8 +180,8 @@
           ],
           target_id:"723972",
           percentage:80,
-          leftTime:"31天9小时50分04秒",
-          revenueRate:8.0,
+          leftTime:2 * 24 * 60 * 60 * 1000,
+          revenueRate:5.85,
           lifeOfLoan:"2年",
           totalLoan:8000,
           leftNeeds:1600,
@@ -186,11 +190,14 @@
           tabPostion:"left",
           DoInvest:"确认投资",
 
-          payWay:"还款方式：付息还本",
-          useWay:"借款用途：托福培训",
-          monthInterest:  "月还本息：180.32",
-          payAll: "到期需还本金：8000",
-          PS: "说明：在投资期限届满前，投资人不可以转让或赎回",
+          pic1:false,
+          pic2:true,
+
+          payWay:"付息还本",
+          useWay:"托福培训",
+          monthInterest:  "180.32",
+          payAll: "8000",
+          PS: "不可以",
 
           //产品概要
           InvestInfo:"XXXXXXXXXXXX",
@@ -200,17 +207,58 @@
         this.target_id = this.$route.params.id;
         //console.log(this.$route.params.id)
         //this.target_id=this.$route.params.id;
-        this.getInvestmentDetail();
+        //this.getInvestmentDetail(this.target_id);
+        if(this.$route.params.id == "0001"){
+          this.setMockData();
+        }
       },
       methods: {
-        getInvestmentDetail(){
+        setMockData(){
+          /*
+          picPath:'../../static/pic/TOEFL.jpg',
+          payWay:"付息还本",
+          useWay:"托福培训",
+          monthInterest:  "180.32",
+          payAll: "8000",
+          PS: "不可以",
+           */
+          this.pic1=true;
+          this.pic2=false;
+          this.payWay="付息还本"
+          this.useWay="买鞋"
+          this.monthInterest="99.954"
+          this.payAll="1800"
+          this.PS="可以"
+          this.revenueRate=5.55
+          this.lifeOfLoan="3个月"
+          this.totalLoan=1800
+          this.leftNeeds=360
+          this.tableData=[
+            {date: '2018-09-03',
+              name: '王博',
+              money: '1000'
+            },
+            {date: '2018-08-20',
+              name: '吴玥',
+              money: '400'
+            },
+            {date: '2018-08-29',
+              name: '李欣',
+              money: '40'
+            },
+          ]
+
+        },
+        getInvestmentDetail(id){
           var _this = this;
           this.$axios.get('/loan/details',{
             params:{
-              targetId : 1
+              targetId : parseInt(id)
             }
           }).then(function (response) {
-            console.log("response:"+response.data)
+            //console.log("response:"+response.data)
+            var data = response.data
+
           }).catch(function (error) {
             console.log("error:"+error)
           });

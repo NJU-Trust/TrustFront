@@ -12,7 +12,7 @@
             <td>
               <div id="sheet" class="sheet">
 
-                <div style="margin-top: 20px;padding-top:15px;padding-left:5.5%;width: 860px">
+                <div style="margin-top: 20px;padding-top:15px;padding-left:12.5%;width: 860px">
                   <el-steps :active="active" style="width: 800px">
                     <el-step class="test" title="项目信息"  align-center></el-step>
                     <el-step title="信息披露"  align-center></el-step>
@@ -260,7 +260,7 @@
                 </div>
 
                 <div style="padding-top: 40px;padding-bottom: 20px">
-                  <el-button-group style="position:absolute;left: 43%;">
+                  <el-button-group style="position:absolute;left: %;">
                     <el-button type="primary" icon="el-icon-arrow-left" @click="last">上一步</el-button>
                     <el-button type="primary" @click="next">下一步<i class="el-icon-arrow-right el-icon--right"></i></el-button>
                   </el-button-group>
@@ -765,7 +765,7 @@
     @-webkit-keyframes move_left /* Safari and Chrome */
     {
       0%   {left:0;  width:750px;}
-      100% {left:-150px; width:500px;}
+      100% {left:-8%; width:50%;}
     }
 
     .evaluate{

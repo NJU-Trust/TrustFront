@@ -132,7 +132,7 @@
 
   .btn{
     margin-top: 20px;
-    margin-left: 20%;
+    margin-left: 18%;
     width: 180px;
     height: 200px;
   }
