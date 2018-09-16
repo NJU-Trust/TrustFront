@@ -1,7 +1,7 @@
 <template>
   <div class="UserDetail" >
     <adminNavi></adminNavi>
-    <div class="userdetail" style="padding:50px;position: absolute;width:100%;min-height:800px;">
+    <div class="userdetail" style="padding:50px;position: absolute;width:100%;min-height:900px;">
       <table style="margin:0 auto;">
         <tbody>
         <tr>
@@ -24,7 +24,8 @@
                 <label>{{baseinfo.state}}</label>
               </div>
             </div>
-            <div class="details" style="border: 1px solid lightgrey;">
+            <hr/>
+            <div class="details" style="min-height:700px;padding-top: 50px;">
               <el-tabs :tab-position="tabPosition">
                 <el-tab-pane label="投资详情">
                   <div style="padding:0px 0px 0px 20px;">
@@ -152,7 +153,7 @@
 <style scoped>
   .details >>> .el-tabs__item{
     font-size: 20px;
-    padding: 40px 20px 30px 20px;
+    padding: 70px 20px 30px 20px;
     width: 150px;
     height: 100px;
     text-align: center;
