@@ -65,7 +65,7 @@
         v-bind:monthPie="month_single"
       ></finpies>
     </div>
-    <hr/>
+    <!--<hr/>-->
     <div class="LevelOneIndex" id="leveloneindex" style="display: none"><!--一级指标，收入&&支出和其他-->
       <div class="class_outcome" id="id_class_outcome" style="display: inline">
         <h4><b>您本月的支出情况</b></h4>

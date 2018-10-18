@@ -1,7 +1,7 @@
 <template>
   <div id="pie_template">
     <div>
-      <!--<p>您选中了{{ monthPie }}</p>-->
+      <p>您选中了{{ monthPie }}</p>
     </div>
     <div>
       <el-row :gutter="20">
@@ -20,21 +20,21 @@
       </el-row>
     </div><!--Pie选择指标-->
     <hr/>
-    <div v-show="selectPie=='支出'">
+    <div v-show="selectPie=='支出' && user.outcome!=-1">
       <div v-if="selectPie=='支出'">
         <h4><i class="el-icon-success"></i><b>&nbsp&nbsp在此期间, 您的{{selectPie}}总额是 {{ user.outcome }} 元, 具体分布如下</b></h4>
       </div>
       <br/>
       <div id="myOutcomePie" :style="{width: '900px', height: '450px'}"></div>
     </div>
-    <div v-show="selectPie=='可调支出'">
+    <div v-show="selectPie=='可调支出' && user.adjust!=-1">
       <div v-if="selectPie=='可调支出'">
         <h4><i class="el-icon-tickets"></i><b>&nbsp&nbsp在此期间, 您的{{selectPie}}总额是 {{ user.adjust }} 元, 具体分布如下</b></h4>
       </div>
       <br/>
       <div id="myAdjustOutcomePie" :style="{width: '900px', height: '450px'}"></div>
     </div>
-    <div v-show="selectPie=='饮食支出'">
+    <div v-show="selectPie=='饮食支出' && user.food!=-1">
       <div v-if="selectPie=='饮食支出'">
         <h4><i class="el-icon-time"></i><b>&nbsp&nbsp在此期间, 您的{{selectPie}}总额是 {{ user.food }}元, 具体分布如下</b></h4>
       </div>
@@ -62,21 +62,102 @@
     data() {
       return{
         user:{
-          outcome: 4000,
-          adjust: 1000,
-          food: 1297
+          outcome: -1,
+          adjust: -1,
+          food: -1
         },
         selectPie: '支出',
       }
     },
+    props:['monthPie'],
+    watch: {
+
+      monthPie: function (newVal,oldVal){
+        alert('old value='+oldVal);
+        this.monthPie = newVal;
+        alert('new value='+newVal);
+        var pieData = this.getPies();
+        alert(pieData);
+        this.user.outcome=4000;
+        this.user.adjust=1000;
+        this.user.food=1297;
+        this.drawOutcomePie(pieData.data1);
+        this.drawAdjustOutcomePie(pieData.data2);
+        this.drawFoodOutcomePie(pieData.data3);
+      }
+    },
+
     mounted() {
-      this.drawOutcomePie();
-      this.drawAdjustOutcomePie();
-      this.drawFoodOutcomePie();
+      var pieData = {
+        data1:[
+          {value:0, name:'日常'},
+          {value:0, name:'学习'},
+          {value:0, name:'饮食'},
+          {value:0, name:'出行'},
+          {value:0, name:'娱乐'},
+        ],
+        data2:[
+          {value:0, name:'衣物'},
+          {value:0, name:'饮食'},
+          {value:0, name:'住宿'},
+          {value:0, name:'娱乐'},
+        ],
+        data3:[
+          {value:0, name:'食堂条数'},
+          {value:0, name:'外卖单数'},
+          {value:0, name:'外出次数'},
+          {value:0, name:'零食数目'}
+        ]
+      };
+      this.drawOutcomePie(pieData.data1);
+      this.drawAdjustOutcomePie(pieData.data2);
+      this.drawFoodOutcomePie(pieData.data3);
     },
     methods: {
+      getPies() {
+        console.log("比例分析");
+        let self = this;
+        this.$axios.get('/profile/todo',{
+          params:{
+            username:"test",
+            mouth: this.monthPie,
+          }
+        })
+          .then((response) => {
+            console.log("success");
+            console.log(response);
+            return response;
+          })
+          .catch((response) => {
+            console.log(response);
+            console.log("error");
+          })
+        alert('getPies');
+        var pieData = {
+          data1:[
+            {value:1501, name:'日常'},
+            {value:482, name:'学习'},
+            {value:1297, name:'饮食'},
+            {value:211, name:'出行'},
+            {value:509, name:'娱乐'},
+          ],
+          data2:[
+            {value:566, name:'衣物'},
+            {value:237, name:'饮食'},
+            {value:143, name:'住宿'},
+            {value:54, name:'娱乐'},
+          ],
+          data3:[
+            {value:45, name:'食堂条数'},
+            {value:17, name:'外卖单数'},
+            {value:7, name:'外出次数'},
+            {value:9, name:'零食数目'}
+          ]
+        };
+        return pieData;
+      },
       //饼状图集合
-      drawOutcomePie() {
+      drawOutcomePie(Piedata) {
         // 基于准备好的dom，初始化echarts实例
         let myOutcomePie = echarts.init(document.getElementById('myOutcomePie'))
         // 绘制图表
@@ -91,28 +172,6 @@
             data:['日常','学习','饮食','出行','娱乐']
           },
           series: [
-            // {
-            //   name:'访问来源',
-            //   type:'pie',
-            //   selectedMode: 'single',
-            //   radius: [0, '30%'],
-            //
-            //   label: {
-            //     normal: {
-            //       position: 'inner'
-            //     }
-            //   },
-            //   labelLine: {
-            //     normal: {
-            //       show: false
-            //     }
-            //   },
-            //   data:[
-            //     {value:335, name:'直达', selected:true},
-            //     {value:679, name:'营销广告'},
-            //     {value:1548, name:'搜索引擎'}
-            //   ]
-            // },
             {
               name:'支出去向',
               type:'pie',
@@ -161,18 +220,19 @@
                   }
                 }
               },
-              data:[
-                {value:1501, name:'日常'},
-                {value:482, name:'学习'},
-                {value:1297, name:'饮食'},
-                {value:211, name:'出行'},
-                {value:509, name:'娱乐'},
-              ]
+              // data:[
+              //   {value:1501, name:'日常'},
+              //   {value:482, name:'学习'},
+              //   {value:1297, name:'饮食'},
+              //   {value:211, name:'出行'},
+              //   {value:509, name:'娱乐'},
+              // ]
+              data: Piedata
             }
           ]
         });
       },
-      drawAdjustOutcomePie() {
+      drawAdjustOutcomePie(Piedata) {
         // 基于准备好的dom，初始化echarts实例
         let myOutcomePie = echarts.init(document.getElementById('myAdjustOutcomePie'),'shine')
         // 绘制图表
@@ -187,28 +247,6 @@
             data:['衣物','饮食','住宿','娱乐']
           },
           series: [
-            // {
-            //   name:'访问来源',
-            //   type:'pie',
-            //   selectedMode: 'single',
-            //   radius: [0, '30%'],
-            //
-            //   label: {
-            //     normal: {
-            //       position: 'inner'
-            //     }
-            //   },
-            //   labelLine: {
-            //     normal: {
-            //       show: false
-            //     }
-            //   },
-            //   data:[
-            //     {value:335, name:'直达', selected:true},
-            //     {value:679, name:'营销广告'},
-            //     {value:1548, name:'搜索引擎'}
-            //   ]
-            // },
             {
               name:'支出去向',
               type:'pie',
@@ -257,17 +295,18 @@
                   }
                 }
               },
-              data:[
-                {value:566, name:'衣物'},
-                {value:237, name:'饮食'},
-                {value:143, name:'住宿'},
-                {value:54, name:'娱乐'},
-              ]
+              // data:[
+              //   {value:566, name:'衣物'},
+              //   {value:237, name:'饮食'},
+              //   {value:143, name:'住宿'},
+              //   {value:54, name:'娱乐'},
+              // ]
+              data: Piedata
             }
           ]
         });
       },
-      drawFoodOutcomePie() {
+      drawFoodOutcomePie(Piedata) {
         // 基于准备好的dom，初始化echarts实例
         let myOutcomePie = echarts.init(document.getElementById('myFoodOutcomePie'),'macarons')
         // 绘制图表
@@ -353,19 +392,18 @@
                   }
                 }
               },
-              data:[
-                {value:589, name:'食堂'},
-                {value:367, name:'外卖'},
-                {value:140, name:'外出'},
-                {value:201, name:'零食'},
-              ]
-            }
+              // data:[
+              //   {value:589, name:'食堂'},
+              //   {value:367, name:'外卖'},
+              //   {value:140, name:'外出'},
+              //   {value:201, name:'零食'},
+              // ]
+              data:Piedata             }
           ]
         });
       },
 
     },
-    props:['monthPie']
   }
 </script>
 

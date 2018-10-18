@@ -1,7 +1,7 @@
 <template>
   <div id="line_template">
     <div>
-      <!--<p>您选中了{{ monthLineStart }} 到 {{ monthLineEnd }}</p>-->
+      <p>您选中了{{ monthLineStart }} 到 {{ monthLineEnd }}</p>
     </div>
     <!--恩格尔系数、刚性比率、负债率、偿债能力、杠杆比率、消费比率、储蓄比率-->
     <div>
