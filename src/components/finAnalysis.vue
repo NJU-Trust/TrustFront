@@ -146,9 +146,11 @@
     name: 'finAnalysis',
     components: {Finbars, Finlines, Finpies},
     data() {
+      var myDate = new Date();//获取系统当前时间
+      var initDate = myDate.getFullYear()+'-'+myDate.getMonth();
       return{
-        month_start: '',
-        month_end: '',
+        month_start: initDate,
+        month_end: initDate,
         month_single: '',
         inoutcome: '1',
       }
