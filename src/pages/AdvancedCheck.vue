@@ -67,7 +67,7 @@
                 :on-exceed="handleExceed"
                 :file-list="selfinfo_form.report_cards" prop="fail_img">
                 <el-button size="small" type="primary">点击上传</el-button>
-                <div slot="tip" class="el-upload__tip">仅限jpg/png文件（不超过500kb）</div>
+                <div slot="tip" class="el-upload__tip">仅限jpg/png文件（每张不超过500kb，可以上传多张）</div>
               </el-upload>
             </div>
 
