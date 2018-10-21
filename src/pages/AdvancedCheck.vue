@@ -70,7 +70,6 @@
                 <div slot="tip" class="el-upload__tip">仅限jpg/png文件（每张不超过500kb，可以上传多张）</div>
               </el-upload>
             </div>
-
           </div>
           <div class="reward" style="width:600px">
             <el-form-item class="info_input" label="获奖情况" style="width:650px">
@@ -209,9 +208,26 @@
 
             </el-form-item>
           </div>
-          <el-form-item class="info_input" label="志愿时长：小时" prop="volunteer">
-            <el-input class="inputs" v-model.number="selfinfo_form.volunteer"></el-input>
-          </el-form-item>
+          <!--志愿时长-->
+          <div class="fail_subject" style="display:flex;">
+            <el-form-item class="info_input" label="志愿时长：小时" prop="volunteer">
+              <el-input class="inputs" v-model.number="selfinfo_form.volunteer"></el-input>
+            </el-form-item>
+            <div style="padding-left: 300px">
+              <el-upload
+                class="upload-demo"
+                action="https://jsonplaceholder.typicode.com/posts/"
+                :on-change="handleChange"
+                :on-preview="handlePreview"
+                :on-remove="handleRemove"
+                :before-remove="beforeRemove"
+              >
+                <el-button size="small" type="primary">点击上传</el-button>
+                <div slot="tip" class="el-upload__tip">仅限jpg/png文件</div>
+              </el-upload>
+            </div>
+          </div>
+
           <div class="qualifications" >
             <el-form-item class="info_input" label="获得证书" style="width:640px">
               <!--qualifications-->
@@ -272,6 +288,7 @@
           fail:'',
           report_cards: [],
           volunteer:'',
+          volunteer_img:'',
           school_rewards: [{
             value: '',
             file:'',
