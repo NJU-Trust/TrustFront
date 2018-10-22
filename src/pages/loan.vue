@@ -367,9 +367,9 @@
           }else if(num===2){
             this.get_average_capital(money,period,rate);
           }else if(num===3){
-
+            this.get_one_off(money,period,rate);
           }else if(num===4){
-
+            this.get_interest_first(money,period,rate);
           }
 
           document.getElementById('small_loan').className+=' animation_left';
@@ -433,21 +433,134 @@
 
           console.log("等额本息");
           const self = this;
-          this.scheme.interest = 20;
-          this.scheme.sum = 200;
-          self.scheme.difficulty = 4;
-          /*self.scheme.interest = 20;
-          self.scheme.sum = 200;
-          self.scheme.difficulty = 4;*/
+          this.$axios.post('/loan/repayment/eipi',{money: money, duration:period, interestRate:rate}).then(
+            function(response){
+              var res = response;
+              console.log(res.data);
+              self.scheme.interest = res.data.interest;
+              self.scheme.sum = res.data.sum;
+              self.scheme.difficulty = parseInt(res.data.note.difficulty);
+              self.scheme.capital = parseFloat(self.form3.money);
+              /*self.scheme.enough = res.data.note.exceedSurplus;
+              self.scheme.change = res.data.note.exceedDisc;*/
+
+              self.scheme.count = res.data.note.exceedSurplusMonths.length;
+              self.scheme.months = res.data.note.exceedSurplusMonths;
+              if(self.scheme.count == 0){
+                self.scheme.enough = false;
+              }else{
+                self.scheme.enough = true;
+              }
+              self.scheme.a = res.data.note.discRatios[0]+"%";
+              self.scheme.b = res.data.note.discRatios[1]+"%";
+              self.scheme.c = res.data.note.discRatios[2]+"%";
+              self.scheme.d = res.data.note.discRatios[3]+"%";
+              self.scheme.income = res.data.note.needIncomeMonths;
+              self.scheme.count2 = res.data.note.needIncomeMonths.length;
+              if(self.scheme.count2 == 0){
+                self.scheme.change = false;
+              }else{
+                self.scheme.change = true;
+              }
+
+              self.scheme.each = self.scheme.sum / parseFloat(self.form3.period);
+
+              /*self.scheme.difficulty = 4;*/
+              console.log("self.scheme.each:"+self.scheme.each);
+
+            }
+          ).catch(function (error) {
+            console.log(error);
+          });
 
         },
 
         get_one_off(money,period,rate){
-          console.log("一次性还本付息")
+          console.log("一次性还本付息");
+          const self = this;
+          this.$axios.post('/loan/repayment/ep',{money: money, duration:period, interestRate:rate}).then(
+            function(response){
+              var res = response;
+              console.log(res.data);
+              self.scheme.interest = res.data.interest;
+              self.scheme.sum = res.data.sum;
+              self.scheme.difficulty = parseInt(res.data.note.difficulty);
+              self.scheme.capital = parseFloat(self.form3.money);
+              /*self.scheme.enough = res.data.note.exceedSurplus;
+              self.scheme.change = res.data.note.exceedDisc;*/
+
+              self.scheme.count = res.data.note.exceedSurplusMonths.length;
+              self.scheme.months = res.data.note.exceedSurplusMonths;
+              if(self.scheme.count == 0){
+                self.scheme.enough = false;
+              }else{
+                self.scheme.enough = true;
+              }
+              self.scheme.a = res.data.note.discRatios[0]+"%";
+              self.scheme.b = res.data.note.discRatios[1]+"%";
+              self.scheme.c = res.data.note.discRatios[2]+"%";
+              self.scheme.d = res.data.note.discRatios[3]+"%";
+              self.scheme.income = res.data.note.needIncomeMonths;
+              self.scheme.count2 = res.data.note.needIncomeMonths.length;
+              if(self.scheme.count2 == 0){
+                self.scheme.change = false;
+              }else{
+                self.scheme.change = true;
+              }
+
+              self.scheme.each = self.scheme.sum / parseFloat(self.form3.period);
+
+              /*self.scheme.difficulty = 4;*/
+              console.log("self.scheme.each:"+self.scheme.each);
+
+            }
+          ).catch(function (error) {
+            console.log(error);
+          });
         },
 
         get_interest_first(money,period,rate){
-          console.log("先息后本")
+          console.log("先息后本");
+          const self = this;
+          this.$axios.post('/loan/repayment/pi',{money: money, duration:period, interestRate:rate}).then(
+            function(response){
+              var res = response;
+              console.log(res.data);
+              self.scheme.interest = res.data.interest;
+              self.scheme.sum = res.data.sum;
+              self.scheme.difficulty = parseInt(res.data.note.difficulty);
+              self.scheme.capital = parseFloat(self.form3.money);
+              /*self.scheme.enough = res.data.note.exceedSurplus;
+              self.scheme.change = res.data.note.exceedDisc;*/
+
+              self.scheme.count = res.data.note.exceedSurplusMonths.length;
+              self.scheme.months = res.data.note.exceedSurplusMonths;
+              if(self.scheme.count == 0){
+                self.scheme.enough = false;
+              }else{
+                self.scheme.enough = true;
+              }
+              self.scheme.a = res.data.note.discRatios[0]+"%";
+              self.scheme.b = res.data.note.discRatios[1]+"%";
+              self.scheme.c = res.data.note.discRatios[2]+"%";
+              self.scheme.d = res.data.note.discRatios[3]+"%";
+              self.scheme.income = res.data.note.needIncomeMonths;
+              self.scheme.count2 = res.data.note.needIncomeMonths.length;
+              if(self.scheme.count2 == 0){
+                self.scheme.change = false;
+              }else{
+                self.scheme.change = true;
+              }
+
+              self.scheme.each = self.scheme.sum / parseFloat(self.form3.period);
+
+              /*self.scheme.difficulty = 4;*/
+              console.log("self.scheme.each:"+self.scheme.each);
+
+            }
+          ).catch(function (error) {
+            console.log(error);
+          });
         },
 
         last() {
@@ -510,13 +623,13 @@
             this.form2.layer3 = true;
             this.form2.layer4 = true;
           }else if(num===3){
-            this.layer = "Three";
+            this.layer = "THREE";
             this.form2.layer1 = false;
             this.form2.layer2 = false;
             this.form2.layer3 = true;
             this.form2.layer4 = true;
           }else if(num===4){
-            this.layer = "Four";
+            this.layer = "FOUR";
             this.form2.layer1 = false;
             this.form2.layer2 = false;
             this.form2.layer3 = false;
