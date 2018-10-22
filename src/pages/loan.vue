@@ -262,7 +262,7 @@
 
                     </el-form>
                     <el-form id="evaluate" class="evaluate" style="background-color: white">
-                      <evaluate  :scheme="scheme" ></evaluate>
+                      <evaluate ref="evaluate" :scheme="scheme" ></evaluate>
                     </el-form>
                   </div>
                 </div>
@@ -344,7 +344,10 @@
             completionRate: completoinRate, interestRate: interestRate, duration: duration, useOfFunds: useOfFonds,
             identityOption: identityOption, repaymentType: repaymentType,}).then(
             function(response){
-              console.log(response)
+              console.log(response.data);
+              if(response.data.success === true){
+                alert("提交成功！");
+              }
             }
           ).catch(function (error) {
             console.log(error);
@@ -392,6 +395,16 @@
             function(response){
               var res = response;
               console.log(res.data);
+
+
+              var month_list = res.data.monthlyData;
+              console.log("month_list");
+              console.log(month_list);
+              for(var i=0;i<month_list.length;i++){
+                self.scheme.interest_list.push(month_list[i].interest);
+                self.scheme.capital_and_interest_list.push(month_list[i].interest+month_list[i].principal);
+              }
+
               self.scheme.interest = res.data.interest;
               self.scheme.sum = res.data.sum;
               self.scheme.difficulty = parseInt(res.data.note.difficulty);
@@ -420,8 +433,10 @@
 
               self.scheme.each = self.scheme.sum / parseFloat(self.form3.period);
 
-              /*self.scheme.difficulty = 4;*/
-              console.log("self.scheme.each:"+self.scheme.each);
+
+              self.$refs.evaluate.drawLine();
+
+              console.log("self.scheme.interest_list:"+self.scheme.interest_list);
 
             }
           ).catch(function (error) {
@@ -749,7 +764,10 @@
             c:'',
             d:'',
             income:[],
-            count2:0
+            count2:0,
+            interest_list:[],
+            capital_and_interest_list:[],
+            period:[]
           },
 
           limit:3000,

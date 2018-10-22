@@ -93,6 +93,8 @@
       name: "evaluate",
       props:["scheme","plan_table"],
       mounted() {
+        console.log("!!!!!!!this.scheme.interest_list:"+this.scheme.interest_list);
+
         this.drawLine();
       },
       data() {
@@ -132,81 +134,14 @@
             else:''
           }],
           myChart: null,
-          option:[]/*{
-            title : {
-              text: '未来一周气温变化',
-              subtext: '纯属虚构'
-            },
-            tooltip : {
-              trigger: 'axis'
-            },
-            legend: {
-              data:['最高气温','最低气温']
-            },
-            toolbox: {
-              show : true,
-              feature : {
-                mark : {show: true},
-                dataView : {show: true, readOnly: false},
-                magicType : {show: true, type: ['line', 'bar']},
-                restore : {show: true},
-                saveAsImage : {show: true}
-              }
-            },
-            calculable : true,
-            xAxis : [
-              {
-                type : 'category',
-                boundaryGap : false,
-                data : ['周一','周二','周三','周四','周五','周六','周日']
-              }
-            ],
-            yAxis : [
-              {
-                type : 'value',
-                axisLabel : {
-                  formatter: '{value} °C'
-                }
-              }
-            ],
-            series : [
-              {
-                name:'最高气温',
-                type:'line',
-                data:[11, 11, 15, 13, 12, 13, 10],
-                markPoint : {
-                  data : [
-                    {type : 'max', name: '最大值'},
-                    {type : 'min', name: '最小值'}
-                  ]
-                },
-                markLine : {
-                  data : [
-                    {type : 'average', name: '平均值'}
-                  ]
-                }
-              },
-              {
-                name:'最低气温',
-                type:'line',
-                data:[1, -2, 2, 5, 3, 2, 0],
-                markPoint : {
-                  data : [
-                    {name : '周最低', value : -2, xAxis: 1, yAxis: -1.5}
-                  ]
-                },
-                markLine : {
-                  data : [
-                    {type : 'average', name : '平均值'}
-                  ]
-                }
-              }
-            ]
-          }*/,
+          option:[],
         } //end return
       },
       methods: {
         drawLine () {
+
+          this.getPeriod();
+
           // 基于准备好的dom，初始化echarts实例
           let myChart = echarts.init(document.getElementById('myChart'),'macarons');
           // 绘制图表
@@ -236,7 +171,7 @@
               {
                 type : 'category',
                 boundaryGap : false,
-                data : ['第一期','第二期','第三期','第四期','第五期']
+                data : this.scheme.period
               }
             ],
             yAxis : [
@@ -251,7 +186,7 @@
               {
                 name:'偿还本息',
                 type:'line',
-                data:[654.4, 654.4, 654.4, 654.4, 654.4],
+                data:this.scheme.capital_and_interest_list,
                 markPoint : {
                   data : [
                     {type : 'max', name: '最大值'},
@@ -267,7 +202,7 @@
               {
                 name:'偿还利息',
                 type:'line',
-                data:[408.33,407.33,406.32,405.31,404.29],
+                data:this.scheme.interest_list,
                 markPoint : {
                   data : [
                     {type : 'max', name: '最大值'},
@@ -282,6 +217,13 @@
               }
             ]
           });
+        },
+        getPeriod(){
+          var length = this.scheme.interest_list.length;
+          for(var i=1;i<=length;i++){
+            var str = "第"+i+"期";
+            this.scheme.period.push(str);
+          }
         }
       },
 
