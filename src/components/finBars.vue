@@ -24,43 +24,43 @@
       </el-row>
     </div><!--Bar选择指标-->
     <hr/>
-    <div v-show="selectBar=='收入'">
+    <div v-show="selectBar=='收入' && user.income!=-1">
       <div v-if="selectBar=='收入'">
         <h4><b>您这段时间的收入总额为：<i class="el-icon-goods"></i>&nbsp {{ user.income }} 元, 每月变化情况如下</b></h4>
       </div>
       <div id="myIncomeBar" :style="{width: '600px', height: '450px'}"></div>
     </div>
-    <div v-show="selectBar=='支出'">
+    <div v-show="selectBar=='支出' && user.outcome!=-1">
       <div v-if="selectBar=='支出'">
         <h4><b>您这段时间的支出总额为：<i class="el-icon-tickets"></i>&nbsp {{ user.outcome }} 元, 每月变化情况如下</b></h4>
       </div>
       <div id="myOutcomeBar" :style="{width: '600px', height: '450px'}"></div>
     </div>
-    <div v-show="selectBar=='刚性支出'">
+    <div v-show="selectBar=='刚性支出' && user.rigid!=-1">
       <div v-if="selectBar=='刚性支出'">
         <h4><b>您这段时间的刚性支出总额为：<i class="el-icon-sold-out"></i>&nbsp {{ user.rigid }} 元, 每月变化情况如下</b></h4>
       </div>
       <div id="myRigidBar" :style="{width: '600px', height: '450px'}"></div>
     </div>
-    <div v-show="selectBar=='可调支出'">
+    <div v-show="selectBar=='可调支出' && user.adjust!=-1">
       <div v-if="selectBar=='可调支出'">
         <h4><b>您这段时间的可调支出总额为：<i class="el-icon-document"></i>&nbsp {{ user.adjust }} 元, 每月变化情况如下</b></h4>
       </div>
       <div id="myAdjustBar" :style="{width: '600px', height: '450px'}"></div>
     </div>
-    <div v-show="selectBar=='投资额结余'">
+    <div v-show="selectBar=='投资额结余' && user.surplus!=-1">
       <div v-if="selectBar=='投资额结余'">
         <h4><b>您这段时间的投资额结余总额为：<i class="el-icon-edit"></i>&nbsp {{ user.surplus }} 元, 每月变化情况如下</b></h4>
       </div>
       <div id="myInvestBar" :style="{width: '600px', height: '450px'}"></div>
     </div>
-    <div v-show="selectBar=='负债'">
+    <div v-show="selectBar=='负债' && user.debt!=-1">
       <div v-if="selectBar=='负债'">
         <h4><b>您的负债总额为：<i class="el-icon-edit-outline"></i>&nbsp {{ user.debt }} 元, 每月变化情况如下</b></h4>
       </div>
       <div id="myDebtBar" :style="{width: '600px', height: '450px'}"></div>
     </div>
-    <div v-show="selectBar=='净资产'">
+    <div v-show="selectBar=='净资产' && user.income!=-1"> //使用income，因为净资产可能是负数
       <div v-if="selectBar=='净资产'">
         <h4><b>您的净资产总额为：<i class="el-icon-tickets"></i>&nbsp {{ user.asset }} 元, 每月变化情况如下</b></h4>
       </div>
@@ -87,29 +87,118 @@
     data() {
       return{
         user:{
-          income: 67070, //结余
-          outcome: 62220,
-          rigid: 48000,
-          adjust: 14220,
-          surplus: 3140,
-          debt: 1390,
-          asset: 1750
+          income: -1, //结余
+          outcome: -1,
+          rigid: -1,
+          adjust: -1,
+          surplus: -1,
+          debt: -1,
+          asset: -1
         },
         selectBar:'收入',
       }
     },
+    watch: {
+      monthBarStart: function (newVal,oldVal){
+        alert('old value='+oldVal);
+        this.monthBarStart = newVal;
+        alert('new value='+newVal);
+        var BarData = this.getBars();
+        alert(BarData);
+        this.drawIncomeBar(BarData.time,BarData.dataIncome);
+        this.drawOutcomeBar(BarData.time,BarData.dataOutcome);
+        this.drawRigidBar(BarData.time,BarData.dataRigid);
+        this.drawAdjustBar(BarData.time,BarData.dataAdjust);
+        this.drawInvestBar(BarData.time,BarData.dataInvest);
+        this.drawDebtBar(BarData.time,BarData.dataDebt);
+        this.drawNetAssetsBar(BarData.time,BarData.dataNetAssets);
+      },
+      monthBarEnd: function (newVal,oldVal){
+        alert('old value='+oldVal);
+        this.monthBarEnd = newVal;
+        alert('new value='+newVal);
+        var BarData = this.getBars();
+        alert(BarData);
+        this.drawIncomeBar(BarData.time,BarData.dataIncome);
+        this.drawOutcomeBar(BarData.time,BarData.dataOutcome);
+        this.drawRigidBar(BarData.time,BarData.dataRigid);
+        this.drawAdjustBar(BarData.time,BarData.dataAdjust);
+        this.drawInvestBar(BarData.time,BarData.dataInvest);
+        this.drawDebtBar(BarData.time,BarData.dataDebt);
+        this.drawNetAssetsBar(BarData.time,BarData.dataNetAssets);
+      },
+    },
     mounted() {
-      this.drawIncomeBar();
-      this.drawOutcomeBar();
-      this.drawRigidBar();
-      this.drawAdjustBar();
-      this.drawInvestBar();
-      this.drawDebtBar();
-      this.drawNetAssetsBar();
+      var BarData = {
+        time: ["1月", "2月", "3月", "4月", "5月", "6月","7月","8月","9月","10月","11月","12月"],
+        dataIncome: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        dataOutcome: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        dataRigid: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        dataAdjust: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        dataInvest: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        dataDebt: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        dataNetAssets: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      };
+      this.drawIncomeBar(BarData.time,BarData.dataIncome);
+      this.drawOutcomeBar(BarData.time,BarData.dataOutcome);
+      this.drawRigidBar(BarData.time,BarData.dataRigid);
+      this.drawAdjustBar(BarData.time,BarData.dataAdjust);
+      this.drawInvestBar(BarData.time,BarData.dataInvest);
+      this.drawDebtBar(BarData.time,BarData.dataDebt);
+      this.drawNetAssetsBar(BarData.time,BarData.dataNetAssets);
     },
     methods: {
       //柱状图集合
-      drawIncomeBar() {
+      getBars(){
+        console.log("数值分析");
+        let self = this;
+        this.$axios.get('/profile/todo',{
+          params:{
+            username:"test",
+            stratMonth: this.monthLineStart,
+            endMonth: this.monthLineEnd
+          }
+        })
+          .then((response) => {
+            console.log("success");
+            console.log(response);
+            //TODO to add the true data
+            return response;
+          })
+          .catch((response) => {
+            console.log(response);
+            console.log("error");
+          })
+        alert('getBars');
+
+        var user2 ={
+            income: 67070, //结余
+            outcome: 62220,
+            rigid: 48000,
+            adjust: 14220,
+            surplus: 3140,
+            debt: 1390,
+            asset: 1750
+        };
+
+        this.user=user2;
+
+
+
+        var barData = {
+          time: ["1月", "2月", "3月", "4月", "5月", "6月","7月","8月","9月","10月","11月","12月"],
+          dataIncome: [3000, 3100, 12000, 4900, 5100, 4800, 3000, 3090, 13000, 4780, 5000, 5300],
+          dataOutcome: [2500, 2700, 11000, 4790, 4900, 4700, 2800, 2500, 12040, 4500, 4700, 5090],
+          dataRigid: [1500, 1500, 10000, 3500, 3500, 3500, 1500, 1500, 11000, 3500, 3500, 3500],
+          dataAdjust: [1000, 1200, 1000, 1290, 1400, 1200, 1300, 1000, 1040, 1000, 1200, 1590],
+          dataInvest: [1.00, 0.50, 3.00, -0.89, 0.00, -0.50, 0.00, 1.90, 7.60, 0.80, 0.50, 0.00 ],
+          dataDebt: [300, 100, 200, 100, 100, 50, 100, 300, 100, 100, 150, 110],
+          dataNetAssets: [100, 100, 600, -80, 0, -50, 0, 190, 760, 80, 50, 0],
+        };
+        return barData;
+      },
+
+      drawIncomeBar(time,barData) {
         // 基于准备好的dom，初始化echarts实例
         let myIncomeBar = echarts.init(document.getElementById('myIncomeBar'))
         // 绘制图表
@@ -130,7 +219,7 @@
           xAxis: {
             // name: '时间',
             type: 'category',
-            data: ["1月", "2月", "3月", "4月", "5月", "6月","7月","8月", "9月", "10月", "11月", "12月"],
+            data: time,
             axisTick: {
               alignWithLabel: true
             }
@@ -144,11 +233,11 @@
             name: '收入情况',
             type: 'bar',
             barWidth: '60%',
-            data: [3000, 3100, 12000, 4900, 5100, 4800, 3000, 3090, 13000, 4780, 5000, 5300]
+            data: barData
           }]
         });
       },
-      drawOutcomeBar() {
+      drawOutcomeBar(time,barData) {
         // 基于准备好的dom，初始化echarts实例
         let myOutcomeBar = echarts.init(document.getElementById('myOutcomeBar'))
         // 绘制图表
@@ -169,7 +258,7 @@
           xAxis: {
             // name: '时间',
             type: 'category',
-            data: ["1月", "2月", "3月", "4月", "5月", "6月","7月","8月", "9月", "10月", "11月", "12月"],
+            data: time,
             axisTick: {
               alignWithLabel: true
             }
@@ -183,11 +272,11 @@
             name: '支出情况',
             type: 'bar',
             barWidth: '60%',
-            data: [2500, 2700, 11000, 4790, 4900, 4700, 2800, 2500, 12040, 4500, 4700, 5090]
+            data: barData
           }]
         });
       },
-      drawRigidBar() {
+      drawRigidBar(time,barData) {
         // 基于准备好的dom，初始化echarts实例
         let myRigidBar = echarts.init(document.getElementById('myRigidBar'))
         // 绘制图表
@@ -208,7 +297,7 @@
           xAxis: {
             // name: '时间',
             type: 'category',
-            data: ["1月", "2月", "3月", "4月", "5月", "6月","7月","8月", "9月", "10月", "11月", "12月"],
+            data: time,
             axisTick: {
               alignWithLabel: true
             }
@@ -222,11 +311,11 @@
             name: '刚性支出',
             type: 'bar',
             barWidth: '60%',
-            data: [1500, 1500, 10000, 3500, 3500, 3500, 1500, 1500, 11000, 3500, 3500, 3500]
+            data: barData
           }]
         });
       },
-      drawAdjustBar() {
+      drawAdjustBar(time,barData) {
         // 基于准备好的dom，初始化echarts实例
         let myAdjustBar = echarts.init(document.getElementById('myAdjustBar'))
         // 绘制图表
@@ -247,7 +336,7 @@
           xAxis: {
             // name: '时间',
             type: 'category',
-            data: ["1月", "2月", "3月", "4月", "5月", "6月","7月","8月", "9月", "10月", "11月", "12月"],
+            data: time,
             axisTick: {
               alignWithLabel: true
             }
@@ -261,11 +350,11 @@
             name: '可调支出',
             type: 'bar',
             barWidth: '60%',
-            data: [1000, 1200, 1000, 1290, 1400, 1200, 1300, 1000, 1040, 1000, 1200, 1590]
+            data: barData
           }]
         });
       },
-      drawInvestBar() {
+      drawInvestBar(time,barData) {
         // 基于准备好的dom，初始化echarts实例
         let myInvestBar = echarts.init(document.getElementById('myInvestBar'))
         // 绘制图表
@@ -286,7 +375,7 @@
           xAxis: {
             // name: '时间',
             type: 'category',
-            data: ["1月", "2月", "3月", "4月", "5月", "6月","7月","8月", "9月", "10月", "11月", "12月"],
+            data: time,
             axisTick: {
               alignWithLabel: true
             }
@@ -300,11 +389,11 @@
             name: '每月结余',
             type: 'bar',
             barWidth: '60%',
-            data: [300, 100, 200, 100, 100, 50, 100, 300, 100, 100, 150, 110]
+            data: barData
           }]
         });
       },
-      drawDebtBar() {
+      drawDebtBar(time,barData) {
         // 基于准备好的dom，初始化echarts实例
         let myDebtBar = echarts.init(document.getElementById('myDebtBar'))
         // 绘制图表
@@ -325,7 +414,7 @@
           xAxis: {
             // name: '时间',
             type: 'category',
-            data: ["1月", "2月", "3月", "4月", "5月", "6月","7月","8月", "9月", "10月", "11月", "12月"],
+            data: time,
             axisTick: {
               alignWithLabel: true
             }
@@ -339,11 +428,11 @@
             name: '负债情况',
             type: 'bar',
             barWidth: '60%',
-            data: [100, 200, 200, 90, 100, 100, 100, 100, 100, 100, 100, 100]
+            data: barData
           }]
         });
       },
-      drawNetAssetsBar() {
+      drawNetAssetsBar(time,barData) {
         // 基于准备好的dom，初始化echarts实例
         let myNetAssetsBar = echarts.init(document.getElementById('myNetAssetsBar'))
         // 绘制图表
@@ -364,7 +453,7 @@
           xAxis: {
             // name: '时间',
             type: 'category',
-            data: ["1月", "2月", "3月", "4月", "5月", "6月","7月","8月", "9月", "10月", "11月", "12月"],
+            data: time,
             axisTick: {
               alignWithLabel: true
             }
@@ -378,7 +467,7 @@
             name: '净资产情况',
             type: 'bar',
             barWidth: '60%',
-            data: [100, 100, 600, -80, 0, -50, 0, 190, 760, 80, 50, 0]
+            data: barData
           }]
         });
       },

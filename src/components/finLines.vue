@@ -143,10 +143,6 @@
     methods: {
       //线图集合
       getLines(){
-        if(this.monthLineStart>=this.monthLineEnd){
-          alert('请选择符合实际意义的日期起始');
-          return;
-        }
         console.log("趋势分析");
         let self = this;
         this.$axios.get('/profile/todo',{
@@ -159,13 +155,14 @@
           .then((response) => {
             console.log("success");
             console.log(response);
+            //TODO to add the true data
             return response;
           })
           .catch((response) => {
             console.log(response);
             console.log("error");
           })
-        alert('getPies');
+        alert('getLines');
         var lineData = {
           time: ["1月", "2月", "3月", "4月", "5月", "6月","7月","8月","9月","10月","11月","12月"],
           dataEngels: [0.52, 0.48, 0.12, 0.27, 0.27, 0.28, 0.46, 0.52, 0.11, 0.29, 0.28, 0.26 ],

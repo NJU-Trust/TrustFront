@@ -219,7 +219,7 @@
         let myChart = echarts.init(document.getElementById('ForecastK'))
         // 绘制图表
         myChart.setOption({
-          title: { text: '预测的您第n个月时的结余K(n)' },
+          title: { text: '预测的您第n个月后的结余K(n)' },
           tooltip: {},
           xAxis: {
             name: '时间',
@@ -243,12 +243,12 @@
         let myChart = echarts.init(document.getElementById('ForecastA'))
         // 绘制图表
         myChart.setOption({
-          title: { text: '预测您第n个月内的可调整支出A(n)' },
+          title: { text: '预测您第n个月后的可调整支出A(n)' },
           tooltip: {},
           xAxis: {
             name: '时间',
             type: 'category',
-            data: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"]          },
+            data: ["2018-11", "2018-12", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"]          },
           yAxis: {
             name: '可调整支出A(n)',
             type: 'value'
