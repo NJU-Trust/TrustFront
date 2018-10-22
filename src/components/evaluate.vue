@@ -91,7 +91,7 @@
     export default {
       components: {ElCard,evaluateTopPane},
       name: "evaluate",
-      props:['scheme','plan_table'],
+      props:["scheme","plan_table"],
       mounted() {
         this.drawLine();
       },
