@@ -14,7 +14,7 @@
             <div class="ad_checkpanel" id="ad_checkid" style="margin-top: 30px;margin-bottom: 30px;display: inline;" >
               <div style="position: relative">
                 <div class="col-xs-12 col-sm-6 placeholder" style="min-height: 200px">
-                  <label>请导入银行卡数据</label><br>
+                  <label>请导入校园卡数据</label><br>
                   <el-upload
                     class="upload-demo"
                     drag
@@ -22,8 +22,8 @@
                     multiple>
                     <i class="el-icon-upload"></i>
                     <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-                    <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
-                    <div class="el-upload__tip" slot="tip">银行卡正面照片，需能看清卡号</div>
+                    <div class="el-upload__tip" slot="tip">上传消费数据excel表格，且不超过500kb</div>
+                    <div class="el-upload__tip" slot="tip">会进行脱敏处理，不会泄露个人隐私</div>
                   </el-upload>
                 </div>
                 <div class="col-xs-12 col-sm-6 placeholder" style="min-height: 200px">
@@ -35,7 +35,7 @@
                     multiple>
                     <i class="el-icon-upload"></i>
                     <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-                    <div class="el-upload__tip" slot="tip">上传支付宝的消费记录，且不超过500kb</div>
+                    <div class="el-upload__tip" slot="tip">上传支付宝的消费记录excel表格，且不超过500kb</div>
                     <div class="el-upload__tip" slot="tip">会进行脱敏处理，不会泄露个人隐私</div>
                   </el-upload>
                 </div>
@@ -54,21 +54,22 @@
             <el-form-item class="info_input" label="挂科数目" prop="fail">
               <el-input class="inputs" v-model.number="selfinfo_form.fail"></el-input>
             </el-form-item>
-            <label>&nbsp;&nbsp;&nbsp;&nbsp;</label>
-            <el-upload
-              class="upload-demo"
-              action="https://jsonplaceholder.typicode.com/posts/"
-              :on-change="handleChange"
-              :on-preview="handlePreview"
-              :on-remove="handleRemove"
-              :before-remove="beforeRemove"
-              multiple
-              :limit="16"
-              :on-exceed="handleExceed"
-              :file-list="selfinfo_form.report_cards" prop="fail_img">
-              <el-button size="small" type="primary">点击上传</el-button>
-              <div slot="tip" class="el-upload__tip">仅限jpg/png文件（不超过500kb）</div>
-            </el-upload>
+            <div style="padding-left: 300px;">
+              <el-upload
+                class="upload-demo"
+                action="https://jsonplaceholder.typicode.com/posts/"
+                :on-change="handleChange"
+                :on-preview="handlePreview"
+                :on-remove="handleRemove"
+                :before-remove="beforeRemove"
+                multiple
+                :limit="16"
+                :on-exceed="handleExceed"
+                :file-list="selfinfo_form.report_cards" prop="fail_img">
+                <el-button size="small" type="primary">点击上传</el-button>
+                <div slot="tip" class="el-upload__tip">仅限jpg/png文件（每张不超过500kb，可以上传多张）</div>
+              </el-upload>
+            </div>
           </div>
           <div class="reward" style="width:600px">
             <el-form-item class="info_input" label="获奖情况" style="width:650px">
@@ -207,24 +208,26 @@
 
             </el-form-item>
           </div>
-          <el-form-item label="收入来源" prop="income">
-            <el-checkbox-group v-model="selfinfo_form.income"style="width:600px;">
-              <el-checkbox label="家庭供给" name="type"></el-checkbox>
-              <el-checkbox label="助学贷款" name="type"></el-checkbox>
-              <el-checkbox label="奖学金" name="type"></el-checkbox>
-              <el-checkbox label="兼职收入" name="type"></el-checkbox>
-              <el-checkbox label="投资偶然获得" name="type"></el-checkbox>
-              <div @click="otherway">
-                <el-checkbox label="其他方式" name="type"></el-checkbox>
-              </div>
-            </el-checkbox-group>
-            <el-form-item class="info_input" v-if="count%4!=0" prop="income_description">
-              <el-input class="inputs" type="textarea" v-model="selfinfo_form.income_description" style="width:400px"></el-input>
+          <!--志愿时长-->
+          <div class="fail_subject" style="display:flex;">
+            <el-form-item class="info_input" label="志愿时长：小时" prop="volunteer">
+              <el-input class="inputs" v-model.number="selfinfo_form.volunteer"></el-input>
             </el-form-item>
-          </el-form-item>
-          <el-form-item class="info_input" label="志愿时长：小时" prop="volunteer">
-            <el-input class="inputs" v-model.number="selfinfo_form.volunteer"></el-input>
-          </el-form-item>
+            <div style="padding-left: 300px">
+              <el-upload
+                class="upload-demo"
+                action="https://jsonplaceholder.typicode.com/posts/"
+                :on-change="handleChange"
+                :on-preview="handlePreview"
+                :on-remove="handleRemove"
+                :before-remove="beforeRemove"
+              >
+                <el-button size="small" type="primary">点击上传</el-button>
+                <div slot="tip" class="el-upload__tip">仅限jpg/png文件</div>
+              </el-upload>
+            </div>
+          </div>
+
           <div class="qualifications" >
             <el-form-item class="info_input" label="获得证书" style="width:640px">
               <!--qualifications-->
@@ -279,15 +282,13 @@
     components: {personalCenter},
     data() {
       return {
-        count:0,
         activeName: 'first',
         activeNames: ['1'],
         selfinfo_form:{
           fail:'',
           report_cards: [],
-          income:[false,false,false,false,false,false],
-          income_description:'',
           volunteer:'',
+          volunteer_img:'',
           school_rewards: [{
             value: '',
             file:'',
@@ -316,12 +317,6 @@
           volunteer:[
             {required:true,type: 'number', message: '必须为数字值'}
           ],
-          income:[
-            {required:true, message: '收入来源不能为空'}
-          ],
-          income_description:[
-            {required:true, message: '描述不能为空'}
-          ]
         },
         };
     },
@@ -337,9 +332,6 @@
       },
       handlePreview(file) {
         console.log(file);
-      },
-      otherway(){
-        this.count++;
       },
       add_school_reward() {
         this.selfinfo_form.school_rewards.push({

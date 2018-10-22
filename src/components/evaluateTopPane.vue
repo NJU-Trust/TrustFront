@@ -13,7 +13,7 @@
 
       </div>
       <div style="padding-left: 50px">
-        <span style="font-size: 25px;font-weight:bold;color: #cd5f33;padding-top: 20px;padding-left: 15px">654.44</span>
+        <span style="font-size: 25px;font-weight:bold;color: #cd5f33;padding-top: 20px;padding-left: 15px">{{scheme.each}}</span>
         <br>
         <span style="color: #acacac;padding-top: -20px">每月还款金额(元)</span>
       </div>
@@ -32,7 +32,7 @@
 <script>
     export default {
         name: "evaluate-top-pane",
-        props:['scheme'],
+        props:["scheme"],
         data(){
           return{
 

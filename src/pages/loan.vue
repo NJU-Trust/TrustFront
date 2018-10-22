@@ -262,7 +262,7 @@
 
                     </el-form>
                     <el-form id="evaluate" class="evaluate" style="background-color: white">
-                      <evaluate  :scheme="scheme" ></evaluate>
+                      <evaluate ref="evaluate" :scheme="scheme" ></evaluate>
                     </el-form>
                   </div>
                 </div>
@@ -344,7 +344,10 @@
             completionRate: completoinRate, interestRate: interestRate, duration: duration, useOfFunds: useOfFonds,
             identityOption: identityOption, repaymentType: repaymentType,}).then(
             function(response){
-              console.log(response)
+              console.log(response.data);
+              if(response.data.success === true){
+                alert("提交成功！");
+              }
             }
           ).catch(function (error) {
             console.log(error);
@@ -363,13 +366,13 @@
           var rate = parseFloat(this.form3.rate);
 
           if(num===1){
-
+            this.get_average_capital_plus_interest(money,period,rate);
           }else if(num===2){
             this.get_average_capital(money,period,rate);
           }else if(num===3){
-
+            this.get_one_off(money,period,rate);
           }else if(num===4){
-
+            this.get_interest_first(money,period,rate);
           }
 
           document.getElementById('small_loan').className+=' animation_left';
@@ -391,21 +394,49 @@
           this.$axios.post('/loan/repayment/ep',{money: money, duration:period, interestRate:rate}).then(
             function(response){
               var res = response;
-              console.log(res);
+              console.log(res.data);
+
+
+              var month_list = res.data.monthlyData;
+              console.log("month_list");
+              console.log(month_list);
+              for(var i=0;i<month_list.length;i++){
+                self.scheme.interest_list.push(month_list[i].interest);
+                self.scheme.capital_and_interest_list.push(month_list[i].interest+month_list[i].principal);
+              }
+
               self.scheme.interest = res.data.interest;
               self.scheme.sum = res.data.sum;
-              self.scheme.difficulty = res.data.note.difficulty;
+              self.scheme.difficulty = parseInt(res.data.note.difficulty);
               self.scheme.capital = parseFloat(self.form3.money);
-              self.scheme.enough = res.data.note.exceedSurplus;
-              self.scheme.change = res.data.note.exceedDisc;
+              /*self.scheme.enough = res.data.note.exceedSurplus;
+              self.scheme.change = res.data.note.exceedDisc;*/
+
               self.scheme.count = res.data.note.exceedSurplusMonths.length;
               self.scheme.months = res.data.note.exceedSurplusMonths;
+              if(self.scheme.count == 0){
+                self.scheme.enough = false;
+              }else{
+                self.scheme.enough = true;
+              }
               self.scheme.a = res.data.note.discRatios[0]+"%";
               self.scheme.b = res.data.note.discRatios[1]+"%";
               self.scheme.c = res.data.note.discRatios[2]+"%";
               self.scheme.d = res.data.note.discRatios[3]+"%";
-              self.scheme.income = res.data.note.income;
-              self.scheme.count2 = res.data.note.income.length;
+              self.scheme.income = res.data.note.needIncomeMonths;
+              self.scheme.count2 = res.data.note.needIncomeMonths.length;
+              if(self.scheme.count2 == 0){
+                self.scheme.change = false;
+              }else{
+                self.scheme.change = true;
+              }
+
+              self.scheme.each = self.scheme.sum / parseFloat(self.form3.period);
+
+
+              self.$refs.evaluate.drawLine();
+
+              console.log("self.scheme.interest_list:"+self.scheme.interest_list);
 
             }
           ).catch(function (error) {
@@ -416,15 +447,135 @@
         get_average_capital_plus_interest(money,period,rate){
 
           console.log("等额本息");
+          const self = this;
+          this.$axios.post('/loan/repayment/eipi',{money: money, duration:period, interestRate:rate}).then(
+            function(response){
+              var res = response;
+              console.log(res.data);
+              self.scheme.interest = res.data.interest;
+              self.scheme.sum = res.data.sum;
+              self.scheme.difficulty = parseInt(res.data.note.difficulty);
+              self.scheme.capital = parseFloat(self.form3.money);
+              /*self.scheme.enough = res.data.note.exceedSurplus;
+              self.scheme.change = res.data.note.exceedDisc;*/
+
+              self.scheme.count = res.data.note.exceedSurplusMonths.length;
+              self.scheme.months = res.data.note.exceedSurplusMonths;
+              if(self.scheme.count == 0){
+                self.scheme.enough = false;
+              }else{
+                self.scheme.enough = true;
+              }
+              self.scheme.a = res.data.note.discRatios[0]+"%";
+              self.scheme.b = res.data.note.discRatios[1]+"%";
+              self.scheme.c = res.data.note.discRatios[2]+"%";
+              self.scheme.d = res.data.note.discRatios[3]+"%";
+              self.scheme.income = res.data.note.needIncomeMonths;
+              self.scheme.count2 = res.data.note.needIncomeMonths.length;
+              if(self.scheme.count2 == 0){
+                self.scheme.change = false;
+              }else{
+                self.scheme.change = true;
+              }
+
+              self.scheme.each = self.scheme.sum / parseFloat(self.form3.period);
+
+              /*self.scheme.difficulty = 4;*/
+              console.log("self.scheme.each:"+self.scheme.each);
+
+            }
+          ).catch(function (error) {
+            console.log(error);
+          });
 
         },
 
         get_one_off(money,period,rate){
-          console.log("一次性还本付息")
+          console.log("一次性还本付息");
+          const self = this;
+          this.$axios.post('/loan/repayment/ep',{money: money, duration:period, interestRate:rate}).then(
+            function(response){
+              var res = response;
+              console.log(res.data);
+              self.scheme.interest = res.data.interest;
+              self.scheme.sum = res.data.sum;
+              self.scheme.difficulty = parseInt(res.data.note.difficulty);
+              self.scheme.capital = parseFloat(self.form3.money);
+              /*self.scheme.enough = res.data.note.exceedSurplus;
+              self.scheme.change = res.data.note.exceedDisc;*/
+
+              self.scheme.count = res.data.note.exceedSurplusMonths.length;
+              self.scheme.months = res.data.note.exceedSurplusMonths;
+              if(self.scheme.count == 0){
+                self.scheme.enough = false;
+              }else{
+                self.scheme.enough = true;
+              }
+              self.scheme.a = res.data.note.discRatios[0]+"%";
+              self.scheme.b = res.data.note.discRatios[1]+"%";
+              self.scheme.c = res.data.note.discRatios[2]+"%";
+              self.scheme.d = res.data.note.discRatios[3]+"%";
+              self.scheme.income = res.data.note.needIncomeMonths;
+              self.scheme.count2 = res.data.note.needIncomeMonths.length;
+              if(self.scheme.count2 == 0){
+                self.scheme.change = false;
+              }else{
+                self.scheme.change = true;
+              }
+
+              self.scheme.each = self.scheme.sum / parseFloat(self.form3.period);
+
+              /*self.scheme.difficulty = 4;*/
+              console.log("self.scheme.each:"+self.scheme.each);
+
+            }
+          ).catch(function (error) {
+            console.log(error);
+          });
         },
 
         get_interest_first(money,period,rate){
-          console.log("先息后本")
+          console.log("先息后本");
+          const self = this;
+          this.$axios.post('/loan/repayment/pi',{money: money, duration:period, interestRate:rate}).then(
+            function(response){
+              var res = response;
+              console.log(res.data);
+              self.scheme.interest = res.data.interest;
+              self.scheme.sum = res.data.sum;
+              self.scheme.difficulty = parseInt(res.data.note.difficulty);
+              self.scheme.capital = parseFloat(self.form3.money);
+              /*self.scheme.enough = res.data.note.exceedSurplus;
+              self.scheme.change = res.data.note.exceedDisc;*/
+
+              self.scheme.count = res.data.note.exceedSurplusMonths.length;
+              self.scheme.months = res.data.note.exceedSurplusMonths;
+              if(self.scheme.count == 0){
+                self.scheme.enough = false;
+              }else{
+                self.scheme.enough = true;
+              }
+              self.scheme.a = res.data.note.discRatios[0]+"%";
+              self.scheme.b = res.data.note.discRatios[1]+"%";
+              self.scheme.c = res.data.note.discRatios[2]+"%";
+              self.scheme.d = res.data.note.discRatios[3]+"%";
+              self.scheme.income = res.data.note.needIncomeMonths;
+              self.scheme.count2 = res.data.note.needIncomeMonths.length;
+              if(self.scheme.count2 == 0){
+                self.scheme.change = false;
+              }else{
+                self.scheme.change = true;
+              }
+
+              self.scheme.each = self.scheme.sum / parseFloat(self.form3.period);
+
+              /*self.scheme.difficulty = 4;*/
+              console.log("self.scheme.each:"+self.scheme.each);
+
+            }
+          ).catch(function (error) {
+            console.log(error);
+          });
         },
 
         last() {
@@ -475,25 +626,25 @@
         get_layer(num){
           console.log(num);
           if(num===1){
-            this.layer = "ONE"
+            this.layer = "ONE";
             this.form2.layer1 = true;
             this.form2.layer2 = true;
             this.form2.layer3 = true;
             this.form2.layer4 = true;
           }else if(num===2){
-            this.layer = "TWO"
+            this.layer = "TWO";
             this.form2.layer1 = false;
             this.form2.layer2 = true;
             this.form2.layer3 = true;
             this.form2.layer4 = true;
           }else if(num===3){
-            this.layer = "Three"
+            this.layer = "THREE";
             this.form2.layer1 = false;
             this.form2.layer2 = false;
             this.form2.layer3 = true;
             this.form2.layer4 = true;
           }else if(num===4){
-            this.layer = "Four"
+            this.layer = "FOUR";
             this.form2.layer1 = false;
             this.form2.layer2 = false;
             this.form2.layer3 = false;
@@ -508,11 +659,14 @@
           this.$axios.post('/loan/rate').then(
             function(response){
               let res = response;
+              console.log("rate");
+              console.log(res.data);
               self.form3.rate = res.data;
               self.form3.recommendRate = res.data;
             }
             ).catch(function (error) {
-            console.log(error);
+              console.log("error in  rate");
+              console.log(error);
           });
         },
         getRateRange(){
@@ -520,10 +674,14 @@
           this.$axios.post('/loan/rateRange').then(
             function(response){
               var res = response;
+              console.log('rateRange');
+              console.log(res.data.lower);
+              console.log(res.data.upper);
               self.form3.lowerRate = res.data.lower;
               self.form3.upperRate = res.data.upper;
             }
           ).catch(function (error) {
+            console.log("error in rateRange")
             console.log(error);
           });
         },
@@ -536,11 +694,16 @@
             }
           }).then(
             function(response){
+              console.log("timeRange");
               var res = response;
+              console.log("timeRange");
+              console.log(res.data.lower);
+              console.log(res.data.upper);
               self.form3.lowerPeriod = res.data.lower;
               self.form3.upperPeriod = res.data.upper;
             }
           ).catch(function (error) {
+            console.log("error in timeRange");
             console.log(error);
           });
         }
@@ -591,6 +754,7 @@
             capital:0,
             interest:0,
             sum:0,
+            each:0,
             count:0,
             months:[],
             enough:false,
@@ -600,7 +764,10 @@
             c:'',
             d:'',
             income:[],
-            count2:0
+            count2:0,
+            interest_list:[],
+            capital_and_interest_list:[],
+            period:[]
           },
 
           limit:3000,
@@ -689,26 +856,6 @@
         }
       },
 
-      mounted() {
-        this.scrollReveal.reveal('.reveal-top', {
-          // 动画的时长
-          duration: 2000,
-          // 延迟时间
-          delay: 500,
-          // 动画开始的位置，'bottom', 'left', 'top', 'right'
-          origin: 'top',
-          // 回滚的时候是否再次触发动画
-          reset: false,
-          // 在移动端是否使用动画
-          mobile: false,
-          // 滚动的距离，单位可以用%，rem等
-          distance: '200px',
-          // 其他可用的动画效果
-          opacity: 0.001,
-          easing: 'linear',
-          scale: 0.9,
-        });
-      }
 
     }
 </script>
@@ -716,7 +863,7 @@
 <style scoped>
 
     .back{
-      min-height: 1200px;
+      /*min-height: 1200px;*/
       width: 100%;
       display:flex;
       background-image: url("../../static/pic/loanBack.jpg");
