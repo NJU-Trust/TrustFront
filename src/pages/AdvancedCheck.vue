@@ -285,9 +285,9 @@
         activeName: 'first',
         activeNames: ['1'],
         selfinfo_form:{
-          fail:'',
+          fail:0,
           report_cards: [],
-          volunteer:'',
+          volunteer:0.0,
           volunteer_img:'',
           school_rewards: [{
             value: '',

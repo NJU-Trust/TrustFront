@@ -6,7 +6,17 @@
         <div v-if="userstate === 0" >
           <br/><br/>
           <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 您已经完成关系网络检验，您的关系检验总评分是：
-            <span class="grade">{{ grade }}&nbsp;分</span>
+            <br/>
+            <br/>
+            <table style="margin:0 auto;">
+              <tbody>
+              <tr>
+                <td>
+                  <span class="grade">{{ grade }}&nbsp;分</span>
+                </td>
+              </tr>
+              </tbody>
+            </table>
           </h3>
         </div>
         <div v-else-if="userstate === 1" >
@@ -31,10 +41,10 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="" prop="num">
+            <el-form-item label="" prop="user1">
               <el-input v-model="formInline.user1" placeholder="填写用户学号"></el-input>
             </el-form-item>
-            <br/>
+            <hr/>
             <el-form-item label="用户二" prop="depart">
               <el-select v-model="formInline.opt2"
                          filterable
@@ -49,10 +59,10 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="" prop="num">
+            <el-form-item label="" prop="user2">
               <el-input v-model="formInline.user2" placeholder="填写用户学号"></el-input>
             </el-form-item>
-            <br/>
+            <hr/>
             <el-form-item label="用户三" prop="depart">
               <el-select v-model="formInline.opt3"
                          filterable
@@ -67,12 +77,12 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="" prop="num">
+            <el-form-item label="" prop="user3">
               <el-input v-model="formInline.user3" placeholder="填写用户学号"></el-input>
             </el-form-item>
             <br/>
             <el-form-item>
-              <el-button type="primary" @click="send(userstate)" style="position:relative;left:200px;">提交</el-button>
+              <el-button type="primary" @click="send()" style="position:relative;left:200px;">提交</el-button>
               <!--<el-dialog
                 title="提示"
                 :visible.sync="dialogVisible"
@@ -89,13 +99,12 @@
           </el-form>
         </div>
         <div v-else-if="userstate === 2">
-          <br/><br/>
-          <h3>
-            &nbsp;&nbsp;&nbsp;&nbsp;您的问卷已发送至用户邮箱中，相关用户正在填写。 进度：
-            <span class="grade">{{ done }}</span>&nbsp;/&nbsp;10
-          </h3>
-        </div>
-        <div v-else-if="userstate === 3">
+        <br/><br/>
+        <h3>
+          &nbsp;&nbsp;&nbsp;&nbsp;您的问卷已发送至用户邮箱中，相关用户正在填写。
+        </h3>
+      </div>
+        <!--<div v-else-if="userstate === 3">
           <br/>
           <p class="lead">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;您选择的以下用户未在指定时间内填写问卷，请重新选择用户进行填写。</p>
           <template>
@@ -178,7 +187,7 @@
             <br/>
             <el-form-item>
               <el-button type="primary" @click="send(userstate)" style="position:relative;left:200px;">提交</el-button>
-              <!--<el-dialog
+              &lt;!&ndash;<el-dialog
                 title="提示"
                 :visible.sync="dialogVisible"
                 width="30%">
@@ -188,11 +197,11 @@
                 <span slot="footer" class="dialog-footer">
                   <el-button type="primary" @click="dialogVisible = send(userstate)">确 定</el-button>
                 </span>
-              </el-dialog>-->
+              </el-dialog>&ndash;&gt;
 
             </el-form-item>
           </el-form>
-        </div>
+        </div>-->
       </el-tab-pane>
       <el-tab-pane  name="second">
         <span slot="label" style="font-size:19px;">待填问卷</span>
@@ -356,7 +365,7 @@
           </el-table>
         </template>
       </el-tab-pane>
-      <el-tab-pane  name="third">
+      <!--<el-tab-pane  name="third">
         <span slot="label" style="font-size:19px;">过期问卷</span>
         <div class="AluUsrInstruction"  style="display: inline;margin-top: 10px;margin-bottom: 10px">
           <h3 style="text-indent: 0px">过期问卷</h3>
@@ -390,11 +399,10 @@
                 <el-button @click.native.prevent="deleteRow(scope.$index, delayQuestion)" type="danger" icon="el-icon-delete" size="small"></el-button>
               </template>
             </el-table-column>
-
           </el-table>
         </template>
         <br/><br/>
-      </el-tab-pane>
+      </el-tab-pane>-->
     </el-tabs>
   </personalCenter>
 </template>
@@ -427,21 +435,33 @@
           value3:0,
         },
         formInline:{
-          user1:'',
-          user2:'',
-          user3:'',
+          user1:"",
+          user2:"",
+          user3:"",
           opt1:'',
           opt2:'',
           opt3:'',
         },
         rules:{
-          depart:[{required:true,message:'请选择用户院系',trigger: 'blur'}],
-          num:[{required:true,message:'请填写用户学号',trigger: 'blur'}],
+          depart:[
+            {required:false,message:'请选择用户院系'}
+            ],
+          user1:[
+            {required:true,message:'请填写用户学号'}
+            ],
+          user2:[
+            {required:true,message:'请填写用户学号'}
+          ],
+          user3:[
+            {required:true,message:'请填写用户学号'}
+          ]
+
         },
-        userstate:3,          //这里有四种状态：0 已完成、1 未完成、2 还待填写、3 等待时间过长还没填完
+        userstate:1,          //这里有四种状态：0 已完成、1 未完成、2 还待填写、3 等待时间过长还没填完->简化，只有0,1,2
         grade:90,             //总评分
         done:3,
-        pendingQuestion:[
+        pendingQuestion:[],
+        /*delayQuestion:[
           {type:'用户选择',depart:'工程管理学院',num:161270000},
           {type:'系统随机',depart:'软件学院',num:161200000},
           {type:'系统随机',depart:'软件学院',num:161200000},
@@ -449,21 +469,13 @@
           {type:'系统随机',depart:'工程管理学院',num:161270000},
           {type:'系统随机',depart:'软件学院',num:161200000},
           {type:'系统随机',depart:'计算机科学与技术系',num:161220000},
-        ],
-        delayQuestion:[
-          {type:'用户选择',depart:'工程管理学院',num:161270000},
-          {type:'系统随机',depart:'软件学院',num:161200000},
-          {type:'系统随机',depart:'软件学院',num:161200000},
-          {type:'用户选择',depart:'计算机科学与技术系',num:161220000},
-          {type:'系统随机',depart:'工程管理学院',num:161270000},
-          {type:'系统随机',depart:'软件学院',num:161200000},
-          {type:'系统随机',depart:'计算机科学与技术系',num:161220000},
-        ],
+        ],*/
 
-        delaylist:[
+        /*delaylist:[
           {depart:'计算机科学与技术系',num:161220000,name:'小明'},
           {depart:'工程管理学院',num:161270000,name:'小红'},
-        ],
+        ],*/
+
         departmentoptions:[{
           value: '选项1',
           label: '计算机科学与技术系'
@@ -558,7 +570,30 @@
           ],
       }
     },
+    mounted:function(){
+      /**
+       * 161250127
+       */
+      var _this = this;
+      this.$axios.get('/crossCheck/crossScore',{
+        params:{
 
+        }
+      }).then(function (response) {
+        var data = response.data
+        //console.log(data)
+        if (data<0.0){
+          _this.userstate = 1;
+        } else if (data===0.0){
+          _this.userstate = 2;
+        } else{
+          _this.userstate = 0;
+          _this.grade = data.toFixed(2);
+        }
+      }).catch(function (error) {
+        console.log("error:"+error)
+      });
+    },
     methods: {
       last(form){
         console.log(this.active);
@@ -586,26 +621,34 @@
           this.active = 0;
         }
       },
-      send: function (userstate) {
-        //这里会将状态改变传给后端，重新加载页面的时候状态就会传过来，自动跳转到状态2的情况
-        console.log(userstate);
-        this.$confirm('您的用户选择已提交。系统将及时发送问卷至相应用户邮箱。', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '发送成功!'
-          });
-          this.$router.push('/UserSpace/CrossCheck');
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消'
-          });
+      send: function () {
+        /**
+         * 161250127
+         */
+        var _this = this;
+        this.$axios.get('/crossCheck/setUpNetwork',{
+          params:{
+            studentId1:_this.formInline.user1,
+            studentId2:_this.formInline.user2,
+            studentId3:_this.formInline.user3
+          }
+        }).then(function (response) {
+          var data = response.data
+          //console.log(data)
+          if(data.success){
+            _this.$message({
+              message:'提交成功！',
+              type:'success',
+            });
+          }else{
+            _this.$message({
+              message:data.message,
+              type:'error',
+            });
+          }
+        }).catch(function (error) {
+          console.log("error:"+error)
         });
-        return false;
 
       },
       send1: function () {
@@ -634,6 +677,27 @@
       handleClick(tab, event) {
         //this.$router.push('/UserSpace/questionnaires');
         console.log(tab, event);
+        if(tab.name==="second"){
+          /**
+           * 161250127
+           */
+          var _this = this;
+          this.$axios.get('/crossCheck/questionnaireList',{
+            params:{
+
+            }
+          }).then(function (response) {
+            var data = response.data
+            //console.log(data)
+            for(var i=0;i<data.length;i++){
+              _this.pendingQuestion.push({type:data[i].type,num:data[i].studentId,depart:data[i].institution,id:data[i].id})
+              //console.log(data[i]);
+            }
+          }).catch(function (error) {
+            console.log("error:"+error)
+          });
+
+        }
       },
       filterHandler(value, row, column) {
         const property = column['property'];
@@ -644,13 +708,13 @@
         //rows.splice(index, 1);
         return true;
       },
-      deleteRow(index, rows) {
+      /*deleteRow(index, rows) {
         this.$message({
           type: 'success',
           message: '删除成功!'
         });
         rows.splice(index, 1);
-      },
+      },*/
     }
   }
 
