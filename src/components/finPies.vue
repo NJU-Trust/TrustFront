@@ -117,10 +117,10 @@
       getPies() {
         console.log("比例分析");
         let self = this;
-        this.$axios.get('/profile/todo',{
+        this.$axios.get('/profile/proportionAnalysis',{
           params:{
             username:"test",
-            mouth: this.monthPie,
+            month: this.monthPie,
           }
         })
           .then((response) => {

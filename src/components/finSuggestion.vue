@@ -145,7 +145,8 @@
           { paytitle : "CPA考试借款项目", projectTime :"2018.6.5-2018.10.5", times:"1", interestPlus:"513.33", timesA:"1", timeA:"2018.10.5", amountA:"513.33", timesB:"",  timeB:"", amountB:"", timesC:"", timeC:"", amountC:"" },
           { paytitle : "ACCA考试借款项目", projectTime :"2018.9.7-2018.9.7", times:"12", interestPlus:"3888", timesA:"1", timeA:"2018.10.7", amountA:"324", timesB:"2",  timeB:"2018.11.7", amountB:"324", timesC:"3", timeC:"2018.12.7", amountC:"324" },
         ],
-        tableData: [{
+        tableData: [
+          {
           month: '1',
           valX: '100%',
           valY: '95.53%',
@@ -210,10 +211,29 @@
       };
     },
     mounted() {
+      this.getConsumptionAnalysis();
       this.drawK();
       this.drawA();
     },
     methods: {
+      getConsumptionAnalysis(){
+        console.log("消费修正建议");
+        let self = this;
+        this.$axios.get('/repayment/loan/consumptionAnalysis',{
+          params:{
+            username:"test",
+          }
+        })
+          .then((response) => {
+            console.log("消费修正建议success");
+            console.log(response);
+            return response;
+          })
+          .catch((response) => {
+            console.log(response);
+            console.log("消费修正建议error");
+          })
+      },
       drawK() {
         // 基于准备好的dom，初始化echarts实例
         let myChart = echarts.init(document.getElementById('ForecastK'))

@@ -100,35 +100,16 @@
     },
     watch: {
       monthBarStart: function (newVal,oldVal){
-        alert('old value='+oldVal);
         this.monthBarStart = newVal;
-        alert('new value='+newVal);
-        var BarData = this.getBars();
-        alert(BarData);
-        this.drawIncomeBar(BarData.time,BarData.dataIncome);
-        this.drawOutcomeBar(BarData.time,BarData.dataOutcome);
-        this.drawRigidBar(BarData.time,BarData.dataRigid);
-        this.drawAdjustBar(BarData.time,BarData.dataAdjust);
-        this.drawInvestBar(BarData.time,BarData.dataInvest);
-        this.drawDebtBar(BarData.time,BarData.dataDebt);
-        this.drawNetAssetsBar(BarData.time,BarData.dataNetAssets);
+        this.getBars();
       },
       monthBarEnd: function (newVal,oldVal){
-        alert('old value='+oldVal);
         this.monthBarEnd = newVal;
-        alert('new value='+newVal);
-        var BarData = this.getBars();
-        alert(BarData);
-        this.drawIncomeBar(BarData.time,BarData.dataIncome);
-        this.drawOutcomeBar(BarData.time,BarData.dataOutcome);
-        this.drawRigidBar(BarData.time,BarData.dataRigid);
-        this.drawAdjustBar(BarData.time,BarData.dataAdjust);
-        this.drawInvestBar(BarData.time,BarData.dataInvest);
-        this.drawDebtBar(BarData.time,BarData.dataDebt);
-        this.drawNetAssetsBar(BarData.time,BarData.dataNetAssets);
+        this.getBars();
       },
     },
     mounted() {
+      //初始化
       var BarData = {
         time: ["1月", "2月", "3月", "4月", "5月", "6月","7月","8月","9月","10月","11月","12月"],
         dataIncome: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -149,53 +130,71 @@
     },
     methods: {
       //柱状图集合
+
       getBars(){
         console.log("数值分析");
         let self = this;
-        this.$axios.get('/profile/todo',{
+        this.$axios.get('/profile/dataAnalysis',{
           params:{
             username:"test",
-            stratMonth: this.monthLineStart,
-            endMonth: this.monthLineEnd
+            startMonth: this.monthBarStart,
+            endMonth: this.monthBarEnd
           }
         })
-          .then((response) => {
+          .then((res) => {
             console.log("success");
-            console.log(response);
+            console.log(res);
             //TODO to add the true data
-            return response;
+            let user2 ={
+              income : res.data.incomeSum, //结余
+              outcome: res.data.expenseSum,
+              rigid: 0, //todo follows
+              adjust: 0,
+              surplus: 0,
+              debt: 0,
+              asset: 0
+            };
+
+            let barData = {
+              time: [],
+              dataIncome: [],
+              dataOutcome: [],
+              dataRigid: [],
+              dataAdjust: [],
+              dataInvest: [],
+              dataDebt: [],
+              dataNetAssets: [],
+            };
+
+            this.user=user2;
+
+
+            for(let i of res.data.monthAnalysisList){
+              barData.time.push(i.month);
+              barData.dataIncome.push(i.income);
+              barData.dataOutcome.push(i.expense);
+              barData.dataRigid.push(i.expense_rig);
+              barData.dataAdjust.push(i.expense_disc);
+              barData.dataInvest.push(i.surplus);
+              barData.dataDebt.push(i.lblt);
+              barData.dataNetAssets.push(i.asset);
+            }
+            console.log('before return barData,the barData is:');
+            console.log(barData);
+
+            this.drawIncomeBar(barData.time,barData.dataIncome);
+            this.drawOutcomeBar(barData.time,barData.dataOutcome);
+            this.drawRigidBar(barData.time,barData.dataRigid);
+            this.drawAdjustBar(barData.time,barData.dataAdjust);
+            this.drawInvestBar(barData.time,barData.dataInvest);
+            this.drawDebtBar(barData.time,barData.dataDebt);
+            this.drawNetAssetsBar(barData.time,barData.dataNetAssets);
+
           })
-          .catch((response) => {
-            console.log(response);
+          .catch((res) => {
+            console.log(res);
             console.log("error");
           })
-        alert('getBars');
-
-        var user2 ={
-            income: 67070, //结余
-            outcome: 62220,
-            rigid: 48000,
-            adjust: 14220,
-            surplus: 3140,
-            debt: 1390,
-            asset: 1750
-        };
-
-        this.user=user2;
-
-
-
-        var barData = {
-          time: ["1月", "2月", "3月", "4月", "5月", "6月","7月","8月","9月","10月","11月","12月"],
-          dataIncome: [3000, 3100, 12000, 4900, 5100, 4800, 3000, 3090, 13000, 4780, 5000, 5300],
-          dataOutcome: [2500, 2700, 11000, 4790, 4900, 4700, 2800, 2500, 12040, 4500, 4700, 5090],
-          dataRigid: [1500, 1500, 10000, 3500, 3500, 3500, 1500, 1500, 11000, 3500, 3500, 3500],
-          dataAdjust: [1000, 1200, 1000, 1290, 1400, 1200, 1300, 1000, 1040, 1000, 1200, 1590],
-          dataInvest: [1.00, 0.50, 3.00, -0.89, 0.00, -0.50, 0.00, 1.90, 7.60, 0.80, 0.50, 0.00 ],
-          dataDebt: [300, 100, 200, 100, 100, 50, 100, 300, 100, 100, 150, 110],
-          dataNetAssets: [100, 100, 600, -80, 0, -50, 0, 190, 760, 80, 50, 0],
-        };
-        return barData;
       },
 
       drawIncomeBar(time,barData) {
