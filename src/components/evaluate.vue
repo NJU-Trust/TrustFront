@@ -185,7 +185,7 @@
             series : [
               {
                 name:'偿还本息',
-                type:'line',
+                type:'bar',
                 data:this.scheme.capital_and_interest_list,
                 markPoint : {
                   data : [
@@ -219,11 +219,14 @@
           });
         },
         getPeriod(){
+          this.scheme.period = [];
           var length = this.scheme.interest_list.length;
           for(var i=1;i<=length;i++){
             var str = "第"+i+"期";
             this.scheme.period.push(str);
           }
+
+          /*this.scheme.period.push("");*/
         }
       },
 

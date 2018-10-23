@@ -365,6 +365,9 @@
           var period = parseInt(this.form3.period);
           var rate = parseFloat(this.form3.rate);
 
+          this.scheme.interest_list = [];
+          this.scheme.capital_and_interest_list = [];
+
           if(num===1){
             this.get_average_capital_plus_interest(money,period,rate);
           }else if(num===2){
@@ -379,13 +382,6 @@
           document.getElementById('small_loan').setAttribute('width','550px');
           document.getElementById('evaluate').style.display = 'block';
           this.show_evaluate = true;
-
-         /* this.scheme.difficulty = 3;
-          this.scheme.capital = 20000;
-          this.scheme.interest = 4000;
-          this.scheme.sum = 24000;
-          this.scheme.count = 10;
-          this.scheme.months = [1,2,4,5,6,7,8,10,11,12];*/
         },
 
         get_average_capital(money,period,rate){
@@ -401,8 +397,8 @@
               console.log("month_list");
               console.log(month_list);
               for(var i=0;i<month_list.length;i++){
-                self.scheme.interest_list.push(month_list[i].interest);
-                self.scheme.capital_and_interest_list.push(month_list[i].interest+month_list[i].principal);
+                self.scheme.interest_list.push(month_list[i].interest.toFixed(2));
+                self.scheme.capital_and_interest_list.push((month_list[i].interest+month_list[i].principal).toFixed(2));
               }
 
               self.scheme.interest = res.data.interest;
@@ -478,6 +474,14 @@
                 self.scheme.change = true;
               }
 
+              var month_list = res.data.monthlyData;
+              console.log("month_list");
+              console.log(month_list);
+              for(var i=0;i<month_list.length;i++){
+                self.scheme.interest_list.push(month_list[i].interest.toFixed(2));
+                self.scheme.capital_and_interest_list.push((month_list[i].interest+month_list[i].principal).toFixed(2));
+              }
+
               self.scheme.each = self.scheme.sum / parseFloat(self.form3.period);
 
               /*self.scheme.difficulty = 4;*/
@@ -523,6 +527,8 @@
                 self.scheme.change = true;
               }
 
+
+
               self.scheme.each = self.scheme.sum / parseFloat(self.form3.period);
 
               /*self.scheme.difficulty = 4;*/
@@ -565,6 +571,14 @@
                 self.scheme.change = false;
               }else{
                 self.scheme.change = true;
+              }
+
+              var month_list = res.data.monthlyData;
+              console.log("month_list");
+              console.log(month_list);
+              for(var i=0;i<month_list.length;i++){
+                self.scheme.interest_list.push(month_list[i].interest.toFixed(2));
+                self.scheme.capital_and_interest_list.push((month_list[i].interest+month_list[i].principal).toFixed(2));
               }
 
               self.scheme.each = self.scheme.sum / parseFloat(self.form3.period);
