@@ -65,7 +65,7 @@
         v-bind:monthPie="month_single"
       ></finpies>
     </div>
-    <hr/>
+    <!--<hr/>-->
     <div class="LevelOneIndex" id="leveloneindex" style="display: none"><!--一级指标，收入&&支出和其他-->
       <div class="class_outcome" id="id_class_outcome" style="display: inline">
         <h4><b>您本月的支出情况</b></h4>
@@ -146,9 +146,11 @@
     name: 'finAnalysis',
     components: {Finbars, Finlines, Finpies},
     data() {
+      var myDate = new Date();//获取系统当前时间
+      var initDate = myDate.getFullYear()+'-'+myDate.getMonth();
       return{
-        month_start: '',
-        month_end: '',
+        month_start: initDate,
+        month_end: initDate,
         month_single: '',
         inoutcome: '1',
       }

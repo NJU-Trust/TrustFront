@@ -1,7 +1,7 @@
 <template>
   <div id="line_template">
     <div>
-      <!--<p>您选中了{{ monthLineStart }} 到 {{ monthLineEnd }}</p>-->
+      <p>您选中了{{ monthLineStart }} 到 {{ monthLineEnd }}</p>
     </div>
     <!--恩格尔系数、刚性比率、负债率、偿债能力、杠杆比率、消费比率、储蓄比率-->
     <div>
@@ -90,18 +90,92 @@
         selectLine:'恩格尔系数',
       }
     },
+    props:['monthLineStart','monthLineEnd'],
+    watch: {
+      monthLineStart: function (newVal,oldVal){
+        alert('old value='+oldVal);
+        this.monthLineStart = newVal;
+        alert('new value='+newVal);
+        var lineData = this.getLines();
+        alert(lineData);
+        this.drawEngelsLine(lineData.time,lineData.dataEngels);
+        this.drawRigidLine(lineData.time,lineData.dataRigid);
+        this.drawLiabilityLine(lineData.time,lineData.dataLiability);
+        this.drawSolvencyLine(lineData.time,lineData.dataSolvency);
+        this.drawLeverageLine(lineData.time,lineData.dataLeverageLine);
+        this.drawConsumptionLine(lineData.time,lineData.dataConsumpt);
+        this.drawSavingLine(lineData.time,lineData.dataSaving);
+      },
+      monthLineEnd: function (newVal,oldVal){
+        alert('old value='+oldVal);
+        this.monthLineEnd = newVal;
+        alert('new value='+newVal);
+        var lineData = this.getLines();
+        alert(lineData);
+        this.drawEngelsLine(lineData.time,lineData.dataEngels);
+        this.drawRigidLine(lineData.time,lineData.dataRigid);
+        this.drawLiabilityLine(lineData.time,lineData.dataLiability);
+        this.drawSolvencyLine(lineData.time,lineData.dataSolvency);
+        this.drawLeverageLine(lineData.time,lineData.dataLeverageLine);
+        this.drawConsumptionLine(lineData.time,lineData.dataConsumpt);
+        this.drawSavingLine(lineData.time,lineData.dataSaving);
+      },
+    },
     mounted() {
-      this.drawEngelsLine();
-      this.drawRigidLine();
-      this.drawLiabilityLine();
-      this.drawSolvencyLine();
-      this.drawLeverageLine();
-      this.drawConsumptionLine();
-      this.drawSavingLine();
+      var lineData = {
+        time: ["1月", "2月", "3月", "4月", "5月", "6月","7月","8月","9月","10月","11月","12月"],
+        dataEngels: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+        dataRigid: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+        dataLiability: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+        dataSolvency: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+        dataLeverageLine: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+        dataConsumpt: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+        dataSaving: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+      };
+      this.drawEngelsLine(lineData.time,lineData.dataEngels);
+      this.drawRigidLine(lineData.time,lineData.dataRigid);
+      this.drawLiabilityLine(lineData.time,lineData.dataLiability);
+      this.drawSolvencyLine(lineData.time,lineData.dataSolvency);
+      this.drawLeverageLine(lineData.time,lineData.dataLeverageLine);
+      this.drawConsumptionLine(lineData.time,lineData.dataConsumpt);
+      this.drawSavingLine(lineData.time,lineData.dataSaving);
     },
     methods: {
       //线图集合
-      drawEngelsLine() {
+      getLines(){
+        console.log("趋势分析");
+        let self = this;
+        this.$axios.get('/profile/todo',{
+          params:{
+            username:"test",
+            stratMonth: this.monthLineStart,
+            endMonth: this.monthLineEnd
+          }
+        })
+          .then((response) => {
+            console.log("success");
+            console.log(response);
+            //TODO to add the true data
+            return response;
+          })
+          .catch((response) => {
+            console.log(response);
+            console.log("error");
+          })
+        alert('getLines');
+        var lineData = {
+          time: ["1月", "2月", "3月", "4月", "5月", "6月","7月","8月","9月","10月","11月","12月"],
+          dataEngels: [0.52, 0.48, 0.12, 0.27, 0.27, 0.28, 0.46, 0.52, 0.11, 0.29, 0.28, 0.26 ],
+          dataRigid: [0.60, 0.56, 0.91, 0.73, 0.71, 0.74, 0.54, 0.60, 0.91, 0.78, 0.74, 0.69 ],
+          dataLiability: [0.50, 0.67, 0.25, 9.00, 1.00, 2.00, 1.00, 0.34, 0.12, 0.56, 0.67, 1.00 ],
+          dataSolvency: [2.00, 1.50, 4.00, 0.11, 1.00, 0.50, 1.00, 2.90, 8.60, 1.80, 1.50, 1.00 ],
+          dataLeverageLine: [1.00, 0.50, 3.00, -0.89, 0.00, -0.50, 0.00, 1.90, 7.60, 0.80, 0.50, 0.00 ],
+          dataConsumpt: [0.83, 0.87, 0.92, 0.98, 0.96, 0.98, 0.93, 0.81, 0.93, 0.94, 0.94, 0.96 ],
+          dataSaving: [0.07, 0.10, 0.07, 0.00, 0.02, 0.01, 0.03, 0.09, 0.07, 0.04, 0.03, 0.02 ],
+        };
+        return lineData;
+      },
+      drawEngelsLine(time,lineData) {
         // 基于准备好的dom，初始化echarts实例
         let myEngelsLine = echarts.init(document.getElementById('myEngelsLine'))
         // 绘制图表
@@ -111,7 +185,7 @@
           xAxis: {
             name: '时间',
             type: 'category',
-            data: ["1月", "2月", "3月", "4月", "5月", "6月","7月","8月","9月","10月","11月","12月"]
+            data: time
           },
           yAxis: {
             name: '恩格尔系数',
@@ -120,12 +194,12 @@
           series: [{
             name: '恩格尔系数',
             type: 'line',
-            data: [0.52, 0.48, 0.12, 0.27, 0.27, 0.28, 0.46, 0.52, 0.11, 0.29, 0.28, 0.26 ],
+            data: lineData,
             smooth: true
           }]
         });
       },
-      drawRigidLine() {
+      drawRigidLine(time,lineData) {
         // 基于准备好的dom，初始化echarts实例
         let myRigidLine = echarts.init(document.getElementById('myRigidLine'))
         // 绘制图表
@@ -135,7 +209,7 @@
           xAxis: {
             name: '时间',
             type: 'category',
-            data: ["1月", "2月", "3月", "4月", "5月", "6月","7月","8月","9月","10月","11月","12月"]
+            data: time
           },
           yAxis: {
             name: '刚性比率',
@@ -144,12 +218,12 @@
           series: [{
             name: '刚性比率',
             type: 'line',
-            data: [0.60, 0.56, 0.91, 0.73, 0.71, 0.74, 0.54, 0.60, 0.91, 0.78, 0.74, 0.69 ],
+            data: lineData,
             smooth: true
           }]
         });
       },
-      drawLiabilityLine() {
+      drawLiabilityLine(time,lineData) {
         // 基于准备好的dom，初始化echarts实例
         let myLiabilityLine = echarts.init(document.getElementById('myLiabilityLine'))
         // 绘制图表
@@ -159,7 +233,7 @@
           xAxis: {
             name: '时间',
             type: 'category',
-            data: ["1月", "2月", "3月", "4月", "5月", "6月","7月","8月","9月","10月","11月","12月"]
+            data: time
           },
           yAxis: {
             name: '负债率',
@@ -168,12 +242,12 @@
           series: [{
             name: '负债率',
             type: 'line',
-            data: [0.50, 0.67, 0.25, 9.00, 1.00, 2.00, 1.00, 0.34, 0.12, 0.56, 0.67, 1.00 ],
+            data: lineData,
             smooth: true
           }]
         });
       },
-      drawSolvencyLine() {
+      drawSolvencyLine(time,lineData) {
         // 基于准备好的dom，初始化echarts实例
         let mySolvencyLine = echarts.init(document.getElementById('mySolvencyLine'))
         // 绘制图表
@@ -183,7 +257,7 @@
           xAxis: {
             name: '时间',
             type: 'category',
-            data: ["1月", "2月", "3月", "4月", "5月", "6月","7月","8月","9月","10月","11月","12月"]
+            data: time
           },
           yAxis: {
             name: '偿债能力',
@@ -192,12 +266,12 @@
           series: [{
             name: '偿债能力',
             type: 'line',
-            data: [2.00, 1.50, 4.00, 0.11, 1.00, 0.50, 1.00, 2.90, 8.60, 1.80, 1.50, 1.00 ],
+            data: lineData,
             smooth: true
           }]
         });
       },
-      drawLeverageLine() {
+      drawLeverageLine(time,lineData) {
         // 基于准备好的dom，初始化echarts实例
         let myLeverageLine = echarts.init(document.getElementById('myLeverageLine'))
         // 绘制图表
@@ -207,7 +281,7 @@
           xAxis: {
             name: '时间',
             type: 'category',
-            data: ["1月", "2月", "3月", "4月", "5月", "6月","7月","8月","9月","10月","11月","12月"]
+            data: time
           },
           yAxis: {
             name: '杠杆比率',
@@ -216,12 +290,12 @@
           series: [{
             name: '杠杆比率',
             type: 'line',
-            data: [1.00, 0.50, 3.00, -0.89, 0.00, -0.50, 0.00, 1.90, 7.60, 0.80, 0.50, 0.00 ],
+            data: lineData,
             smooth: true
           }]
         });
       },
-      drawConsumptionLine() {
+      drawConsumptionLine(time,lineData) {
         // 基于准备好的dom，初始化echarts实例
         let myConsumptionLine = echarts.init(document.getElementById('myConsumptionLine'))
         // 绘制图表
@@ -231,7 +305,7 @@
           xAxis: {
             name: '时间',
             type: 'category',
-            data: ["1月", "2月", "3月", "4月", "5月", "6月","7月","8月","9月","10月","11月","12月"]
+            data: time
           },
           yAxis: {
             name: '消费比率',
@@ -240,12 +314,12 @@
           series: [{
             name: '消费比率',
             type: 'line',
-            data: [0.83, 0.87, 0.92, 0.98, 0.96, 0.98, 0.93, 0.81, 0.93, 0.94, 0.94, 0.96 ],
+            data: lineData,
             smooth: true
           }]
         });
       },
-      drawSavingLine() {
+      drawSavingLine(time,lineData) {
         // 基于准备好的dom，初始化echarts实例
         let mySavingLine = echarts.init(document.getElementById('mySavingLine'))
         // 绘制图表
@@ -255,7 +329,7 @@
           xAxis: {
             name: '时间',
             type: 'category',
-            data: ["1月", "2月", "3月", "4月", "5月", "6月","7月","8月","9月","10月","11月","12月"]
+            data: time
           },
           yAxis: {
             name: '储蓄比率',
@@ -264,14 +338,13 @@
           series: [{
             name: '储蓄比率',
             type: 'line',
-            data: [0.07, 0.10, 0.07, 0.00, 0.02, 0.01, 0.03, 0.09, 0.07, 0.04, 0.03, 0.02 ],
+            data: lineData,
             smooth: true
           }]
         });
       },
 
     },
-    props:['monthLineStart','monthLineEnd']
   }
 </script>
 
