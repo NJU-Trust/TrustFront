@@ -175,6 +175,9 @@
   export default {
     name:"repay",
     components: {ElCard, InvestList, personalCenter,timeLine},
+    beforeCreate:function(){
+      console.log("repay");
+    },
     data() {
       return {
         info1:{
