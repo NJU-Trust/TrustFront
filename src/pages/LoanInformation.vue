@@ -1,11 +1,11 @@
 <template>
   <personalCenter paneltitle="项目信息">
     <el-tabs v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane label="正在进行" name="first">
+      <el-tab-pane label="正在进行" name="first" >
         <loanTopBar></loanTopBar>
         <loanUnderway></loanUnderway>
       </el-tab-pane>
-      <el-tab-pane label="完成项目" name="second">
+      <el-tab-pane label="完成项目" name="second" >
         <loanTopBar></loanTopBar>
         <loanComplete></loanComplete>
       </el-tab-pane>
@@ -66,12 +66,76 @@
       return {
         currentPage1: 2,
         activeName: 'first',
+        paneName:'',
+
+        condition:{
+          moneyUpper:null,
+          moneyLower:null,
+          targetType:null,
+          name:null,
+          startDate:null,
+          endDate:null
+        },
+
       };
     },
     methods:{
       handleClick(tab, event) {
-        console.log(tab, event);
+        this.paneName = tab.name;
+        console.log(this.paneName);
+        if(this.paneName==='first'){
+          this.getUnderway();
+        }else if(this.paneName==='second'){
+          this.getComplete();
+        }else if(this.paneName==='third'){
+          this.getLaunched();
+        }else if(this.paneName==='fourth'){
+          this.getUnbelieve();
+        }
       },
+      getUnderway(){
+
+        var moneyUpper = this.condition.moneyUpper;
+        var moneyLower = this.condition.moneyLower;
+        var targetType = this.condition.targetType;
+        var name = this.condition.name;
+        var startDate = this.condition.startDate;
+        var endDate = this.condition.endDate;
+
+        console.log("正在进行");
+        const self = this;
+        this.$axios.post('/loan/info/ongoing',{
+          moneyUpper:moneyUpper,
+          moneyLower:moneyLower,
+          targetType:targetType,
+          name:name,
+          startDate:startDate,
+          endDate:endDate
+          /*params: {
+
+          }*/
+        }).then(
+          function(response){
+              console.log(response.data);
+
+          }
+        ).catch(function (error) {
+          console.log("error in Underway");
+          console.log(error);
+        });
+      },
+      getComplete(){
+        console.log("已完成");
+      },
+      getLaunched(){
+        console.log("已发布");
+      },
+      getUnbelieve(){
+        console.log("违约记录");
+      },
+      getDate(){
+
+      }
     }
   }
 

@@ -3,6 +3,14 @@
       <navi></navi>
       <el-form class="back">
 
+        <!--<el-alert
+          title="成功提示的文案"
+          type="success"
+          center
+          v-show="visible"
+          show-icon>
+        </el-alert>-->
+
         <div>
           <right-bar></right-bar>
         </div>
@@ -85,6 +93,7 @@
                         class="upload-demo"
                         drag
                         :action='url'
+                        :onSuccess="uploadSuccess"
                         multiple>
                         <i class="el-icon-upload"></i>
                         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
@@ -309,566 +318,589 @@
         evaluate,
         checkList
       },
-      beforeCreate:function(){
-        localStorage.route = "#loan";
-      },
-      methods:{
+     /* props: {
 
-        onSubmit(){
-          console.log("确认贷款："+this.form3.activeName);
-          if(this.form3.activeName==="1"){
-            this.form3.repaymentType = 'EQUAL_INSTALLMENT_OF_PRINCIPAL_AND_INTEREST';
-          }else if(this.form3.activeName==="2"){
-            this.form3.repaymentType = 'EQUAL_PRINCIPAL';
-          }else if(this.form3.activeName==="3"){
-            this.form3.repaymentType = 'ONE_TIME_PAYMENT';
-          }else if(this.form3.activeName==="4"){
-            this.form3.repaymentType = 'PRE_INTEREST';
-          }
+        title: {
 
-          var name = this.form1.name;
-          var start_time = this.form1.date1;
-          var money = this.form3.money;
-          var description = this.form2.textarea1;
-          var username = "test";
-          var targetType = "SMALL";
-          var proof = "";
-          var completoinRate = this.form1.least_rate;
-          var interestRate = this.form3.rate;
-          var duration = this.form3.period;
-          var useOfFonds = this.selectedOptions2[1];
-          var identityOption = this.layer;
-          var repaymentType = this.form3.repaymentType;
+          type: String,
 
-          this.$axios.post('/loan/new/small',{name: name,startTime: start_time ,money: money, projectDescription: description, proof: proof,
-            completionRate: completoinRate, interestRate: interestRate, duration: duration, useOfFunds: useOfFonds,
-            identityOption: identityOption, repaymentType: repaymentType,}).then(
-            function(response){
-              console.log(response.data);
-              if(response.data.success === true){
-                alert("提交成功！");
-              }
+          default: '',
+
+          required: true
+
+        },*/
+        beforeCreate: function () {
+          localStorage.route = "#loan";
+        },
+        methods: {
+
+          uploadSuccess(response, file, fileList) {
+            console.log("uploadSuccess");
+            this.proof += 'http://localhost:8000/';
+            this.proof += response;
+            console.log("this.proof:" + this.proof);
+          },
+
+          onSubmit() {
+            console.log("确认贷款：" + this.form3.activeName);
+            if (this.form3.activeName === "1") {
+              this.form3.repaymentType = 'EQUAL_INSTALLMENT_OF_PRINCIPAL_AND_INTEREST';
+            } else if (this.form3.activeName === "2") {
+              this.form3.repaymentType = 'EQUAL_PRINCIPAL';
+            } else if (this.form3.activeName === "3") {
+              this.form3.repaymentType = 'ONE_TIME_PAYMENT';
+            } else if (this.form3.activeName === "4") {
+              this.form3.repaymentType = 'PRE_INTEREST';
             }
-          ).catch(function (error) {
-            console.log(error);
-          });
 
+            var name = this.form1.name;
+            var start_time = this.form1.date1;
+            var money = this.form3.money;
+            var description = this.form2.textarea1;
+            var username = "test";
+            var targetType = "SMALL";
+            var proof = this.proof;
+            var completoinRate = this.form1.least_rate;
+            var interestRate = this.form3.rate;
+            var duration = this.form3.period;
+            var useOfFonds = this.selectedOptions2[1];
+            var identityOption = this.layer;
+            var repaymentType = this.form3.repaymentType;
 
-
-        },
-        clean_form3(){
-          this.form3.activeName = '';
-        },
-
-        get_scheme(num){
-          var money = parseFloat(this.form3.money);
-          var period = parseInt(this.form3.period);
-          var rate = parseFloat(this.form3.rate);
-
-          this.scheme.interest_list = [];
-          this.scheme.capital_and_interest_list = [];
-
-          if(num===1){
-            this.get_average_capital_plus_interest(money,period,rate);
-          }else if(num===2){
-            this.get_average_capital(money,period,rate);
-          }else if(num===3){
-            this.get_one_off(money,period,rate);
-          }else if(num===4){
-            this.get_interest_first(money,period,rate);
-          }
-
-          document.getElementById('small_loan').className+=' animation_left';
-          document.getElementById('small_loan').setAttribute('width','550px');
-          document.getElementById('evaluate').style.display = 'block';
-          this.show_evaluate = true;
-        },
-
-        get_average_capital(money,period,rate){
-          console.log("等额本金");
-          const self = this;
-          this.$axios.post('/loan/repayment/ep',{money: money, duration:period, interestRate:rate}).then(
-            function(response){
-              var res = response;
-              console.log(res.data);
-
-
-              var month_list = res.data.monthlyData;
-              console.log("month_list");
-              console.log(month_list);
-              for(var i=0;i<month_list.length;i++){
-                self.scheme.interest_list.push(month_list[i].interest.toFixed(2));
-                self.scheme.capital_and_interest_list.push((month_list[i].interest+month_list[i].principal).toFixed(2));
+            this.$axios.post('/loan/new/small', {
+              name: name, startTime: start_time, money: money, projectDescription: description, proof: proof,
+              completionRate: completoinRate, interestRate: interestRate, duration: duration, useOfFunds: useOfFonds,
+              identityOption: identityOption, repaymentType: repaymentType,
+            }).then(
+              function (response) {
+                console.log(response.data);
+                if (response.data.success === true) {
+                  alert("提交成功！");
+                }
               }
+            ).catch(function (error) {
+              console.log(error);
+            });
 
-              self.scheme.interest = res.data.interest;
-              self.scheme.sum = res.data.sum;
-              self.scheme.difficulty = parseInt(res.data.note.difficulty);
-              self.scheme.capital = parseFloat(self.form3.money);
-              /*self.scheme.enough = res.data.note.exceedSurplus;
+
+          },
+          clean_form3() {
+            this.form3.activeName = '';
+          },
+
+          get_scheme(num) {
+
+            this.visible = true;
+
+            var money = parseFloat(this.form3.money);
+            var period = parseInt(this.form3.period);
+            var rate = parseFloat(this.form3.rate);
+
+            this.scheme.interest_list = [];
+            this.scheme.capital_and_interest_list = [];
+
+            if (num === 1) {
+              this.get_average_capital_plus_interest(money, period, rate);
+            } else if (num === 2) {
+              this.get_average_capital(money, period, rate);
+            } else if (num === 3) {
+              this.get_one_off(money, period, rate);
+            } else if (num === 4) {
+              this.get_interest_first(money, period, rate);
+            }
+
+            document.getElementById('small_loan').className += ' animation_left';
+            document.getElementById('small_loan').setAttribute('width', '550px');
+            document.getElementById('evaluate').style.display = 'block';
+            this.show_evaluate = true;
+          },
+
+          get_average_capital(money, period, rate) {
+            console.log("等额本金");
+            const self = this;
+            this.$axios.post('/loan/repayment/ep', {money: money, duration: period, interestRate: rate}).then(
+              function (response) {
+                var res = response;
+                console.log(res.data);
+
+
+                var month_list = res.data.monthlyData;
+                console.log("month_list");
+                console.log(month_list);
+                for (var i = 0; i < month_list.length; i++) {
+                  self.scheme.interest_list.push(month_list[i].interest.toFixed(2));
+                  self.scheme.capital_and_interest_list.push((month_list[i].interest + month_list[i].principal).toFixed(2));
+                }
+
+                self.scheme.interest = res.data.interest;
+                self.scheme.sum = res.data.sum;
+                self.scheme.difficulty = parseInt(res.data.note.difficulty);
+                self.scheme.capital = parseFloat(self.form3.money);
+                /*self.scheme.enough = res.data.note.exceedSurplus;
               self.scheme.change = res.data.note.exceedDisc;*/
 
-              self.scheme.count = res.data.note.exceedSurplusMonths.length;
-              self.scheme.months = res.data.note.exceedSurplusMonths;
-              if(self.scheme.count == 0){
-                self.scheme.enough = false;
-              }else{
-                self.scheme.enough = true;
+                self.scheme.count = res.data.note.exceedSurplusMonths.length;
+                self.scheme.months = res.data.note.exceedSurplusMonths;
+                if (self.scheme.count == 0) {
+                  self.scheme.enough = false;
+                } else {
+                  self.scheme.enough = true;
+                }
+                self.scheme.a = res.data.note.discRatios[0] + "%";
+                self.scheme.b = res.data.note.discRatios[1] + "%";
+                self.scheme.c = res.data.note.discRatios[2] + "%";
+                self.scheme.d = res.data.note.discRatios[3] + "%";
+                self.scheme.income = res.data.note.needIncomeMonths;
+                self.scheme.count2 = res.data.note.needIncomeMonths.length;
+                if (self.scheme.count2 == 0) {
+                  self.scheme.change = false;
+                } else {
+                  self.scheme.change = true;
+                }
+
+                self.scheme.each = self.scheme.sum / parseFloat(self.form3.period);
+
+
+                self.$refs.evaluate.drawLine();
+
+                console.log("self.scheme.interest_list:" + self.scheme.interest_list);
+
               }
-              self.scheme.a = res.data.note.discRatios[0]+"%";
-              self.scheme.b = res.data.note.discRatios[1]+"%";
-              self.scheme.c = res.data.note.discRatios[2]+"%";
-              self.scheme.d = res.data.note.discRatios[3]+"%";
-              self.scheme.income = res.data.note.needIncomeMonths;
-              self.scheme.count2 = res.data.note.needIncomeMonths.length;
-              if(self.scheme.count2 == 0){
-                self.scheme.change = false;
-              }else{
-                self.scheme.change = true;
-              }
+            ).catch(function (error) {
+              console.log(error);
+            });
+          },
 
-              self.scheme.each = self.scheme.sum / parseFloat(self.form3.period);
+          get_average_capital_plus_interest(money, period, rate) {
 
-
-              self.$refs.evaluate.drawLine();
-
-              console.log("self.scheme.interest_list:"+self.scheme.interest_list);
-
-            }
-          ).catch(function (error) {
-            console.log(error);
-          });
-        },
-
-        get_average_capital_plus_interest(money,period,rate){
-
-          console.log("等额本息");
-          const self = this;
-          this.$axios.post('/loan/repayment/eipi',{money: money, duration:period, interestRate:rate}).then(
-            function(response){
-              var res = response;
-              console.log(res.data);
-              self.scheme.interest = res.data.interest;
-              self.scheme.sum = res.data.sum;
-              self.scheme.difficulty = parseInt(res.data.note.difficulty);
-              self.scheme.capital = parseFloat(self.form3.money);
-              /*self.scheme.enough = res.data.note.exceedSurplus;
+            console.log("等额本息");
+            const self = this;
+            this.$axios.post('/loan/repayment/eipi', {money: money, duration: period, interestRate: rate}).then(
+              function (response) {
+                var res = response;
+                console.log(res.data);
+                self.scheme.interest = res.data.interest;
+                self.scheme.sum = res.data.sum;
+                self.scheme.difficulty = parseInt(res.data.note.difficulty);
+                self.scheme.capital = parseFloat(self.form3.money);
+                /*self.scheme.enough = res.data.note.exceedSurplus;
               self.scheme.change = res.data.note.exceedDisc;*/
 
-              self.scheme.count = res.data.note.exceedSurplusMonths.length;
-              self.scheme.months = res.data.note.exceedSurplusMonths;
-              if(self.scheme.count == 0){
-                self.scheme.enough = false;
-              }else{
-                self.scheme.enough = true;
+                self.scheme.count = res.data.note.exceedSurplusMonths.length;
+                self.scheme.months = res.data.note.exceedSurplusMonths;
+                if (self.scheme.count == 0) {
+                  self.scheme.enough = false;
+                } else {
+                  self.scheme.enough = true;
+                }
+                self.scheme.a = res.data.note.discRatios[0] + "%";
+                self.scheme.b = res.data.note.discRatios[1] + "%";
+                self.scheme.c = res.data.note.discRatios[2] + "%";
+                self.scheme.d = res.data.note.discRatios[3] + "%";
+                self.scheme.income = res.data.note.needIncomeMonths;
+                self.scheme.count2 = res.data.note.needIncomeMonths.length;
+                if (self.scheme.count2 == 0) {
+                  self.scheme.change = false;
+                } else {
+                  self.scheme.change = true;
+                }
+
+                var month_list = res.data.monthlyData;
+                console.log("month_list");
+                console.log(month_list);
+                for (var i = 0; i < month_list.length; i++) {
+                  self.scheme.interest_list.push(month_list[i].interest.toFixed(2));
+                  self.scheme.capital_and_interest_list.push((month_list[i].interest + month_list[i].principal).toFixed(2));
+                }
+
+                self.scheme.each = self.scheme.sum / parseFloat(self.form3.period);
+
+                /*self.scheme.difficulty = 4;*/
+                console.log("self.scheme.each:" + self.scheme.each);
+
               }
-              self.scheme.a = res.data.note.discRatios[0]+"%";
-              self.scheme.b = res.data.note.discRatios[1]+"%";
-              self.scheme.c = res.data.note.discRatios[2]+"%";
-              self.scheme.d = res.data.note.discRatios[3]+"%";
-              self.scheme.income = res.data.note.needIncomeMonths;
-              self.scheme.count2 = res.data.note.needIncomeMonths.length;
-              if(self.scheme.count2 == 0){
-                self.scheme.change = false;
-              }else{
-                self.scheme.change = true;
-              }
+            ).catch(function (error) {
+              console.log(error);
+            });
 
-              var month_list = res.data.monthlyData;
-              console.log("month_list");
-              console.log(month_list);
-              for(var i=0;i<month_list.length;i++){
-                self.scheme.interest_list.push(month_list[i].interest.toFixed(2));
-                self.scheme.capital_and_interest_list.push((month_list[i].interest+month_list[i].principal).toFixed(2));
-              }
+          },
 
-              self.scheme.each = self.scheme.sum / parseFloat(self.form3.period);
-
-              /*self.scheme.difficulty = 4;*/
-              console.log("self.scheme.each:"+self.scheme.each);
-
-            }
-          ).catch(function (error) {
-            console.log(error);
-          });
-
-        },
-
-        get_one_off(money,period,rate){
-          console.log("一次性还本付息");
-          const self = this;
-          this.$axios.post('/loan/repayment/ep',{money: money, duration:period, interestRate:rate}).then(
-            function(response){
-              var res = response;
-              console.log(res.data);
-              self.scheme.interest = res.data.interest;
-              self.scheme.sum = res.data.sum;
-              self.scheme.difficulty = parseInt(res.data.note.difficulty);
-              self.scheme.capital = parseFloat(self.form3.money);
-              /*self.scheme.enough = res.data.note.exceedSurplus;
+          get_one_off(money, period, rate) {
+            console.log("一次性还本付息");
+            const self = this;
+            this.$axios.post('/loan/repayment/ep', {money: money, duration: period, interestRate: rate}).then(
+              function (response) {
+                var res = response;
+                console.log(res.data);
+                self.scheme.interest = res.data.interest;
+                self.scheme.sum = res.data.sum;
+                self.scheme.difficulty = parseInt(res.data.note.difficulty);
+                self.scheme.capital = parseFloat(self.form3.money);
+                /*self.scheme.enough = res.data.note.exceedSurplus;
               self.scheme.change = res.data.note.exceedDisc;*/
 
-              self.scheme.count = res.data.note.exceedSurplusMonths.length;
-              self.scheme.months = res.data.note.exceedSurplusMonths;
-              if(self.scheme.count == 0){
-                self.scheme.enough = false;
-              }else{
-                self.scheme.enough = true;
+                self.scheme.count = res.data.note.exceedSurplusMonths.length;
+                self.scheme.months = res.data.note.exceedSurplusMonths;
+                if (self.scheme.count == 0) {
+                  self.scheme.enough = false;
+                } else {
+                  self.scheme.enough = true;
+                }
+                self.scheme.a = res.data.note.discRatios[0] + "%";
+                self.scheme.b = res.data.note.discRatios[1] + "%";
+                self.scheme.c = res.data.note.discRatios[2] + "%";
+                self.scheme.d = res.data.note.discRatios[3] + "%";
+                self.scheme.income = res.data.note.needIncomeMonths;
+                self.scheme.count2 = res.data.note.needIncomeMonths.length;
+                if (self.scheme.count2 == 0) {
+                  self.scheme.change = false;
+                } else {
+                  self.scheme.change = true;
+                }
+
+
+                self.scheme.each = self.scheme.sum / parseFloat(self.form3.period);
+
+                /*self.scheme.difficulty = 4;*/
+                console.log("self.scheme.each:" + self.scheme.each);
+
               }
-              self.scheme.a = res.data.note.discRatios[0]+"%";
-              self.scheme.b = res.data.note.discRatios[1]+"%";
-              self.scheme.c = res.data.note.discRatios[2]+"%";
-              self.scheme.d = res.data.note.discRatios[3]+"%";
-              self.scheme.income = res.data.note.needIncomeMonths;
-              self.scheme.count2 = res.data.note.needIncomeMonths.length;
-              if(self.scheme.count2 == 0){
-                self.scheme.change = false;
-              }else{
-                self.scheme.change = true;
-              }
+            ).catch(function (error) {
+              console.log(error);
+            });
+          },
 
-
-
-              self.scheme.each = self.scheme.sum / parseFloat(self.form3.period);
-
-              /*self.scheme.difficulty = 4;*/
-              console.log("self.scheme.each:"+self.scheme.each);
-
-            }
-          ).catch(function (error) {
-            console.log(error);
-          });
-        },
-
-        get_interest_first(money,period,rate){
-          console.log("先息后本");
-          const self = this;
-          this.$axios.post('/loan/repayment/pi',{money: money, duration:period, interestRate:rate}).then(
-            function(response){
-              var res = response;
-              console.log(res.data);
-              self.scheme.interest = res.data.interest;
-              self.scheme.sum = res.data.sum;
-              self.scheme.difficulty = parseInt(res.data.note.difficulty);
-              self.scheme.capital = parseFloat(self.form3.money);
-              /*self.scheme.enough = res.data.note.exceedSurplus;
+          get_interest_first(money, period, rate) {
+            console.log("先息后本");
+            const self = this;
+            this.$axios.post('/loan/repayment/pi', {money: money, duration: period, interestRate: rate}).then(
+              function (response) {
+                var res = response;
+                console.log(res.data);
+                self.scheme.interest = res.data.interest;
+                self.scheme.sum = res.data.sum;
+                self.scheme.difficulty = parseInt(res.data.note.difficulty);
+                self.scheme.capital = parseFloat(self.form3.money);
+                /*self.scheme.enough = res.data.note.exceedSurplus;
               self.scheme.change = res.data.note.exceedDisc;*/
 
-              self.scheme.count = res.data.note.exceedSurplusMonths.length;
-              self.scheme.months = res.data.note.exceedSurplusMonths;
-              if(self.scheme.count == 0){
-                self.scheme.enough = false;
-              }else{
-                self.scheme.enough = true;
+                self.scheme.count = res.data.note.exceedSurplusMonths.length;
+                self.scheme.months = res.data.note.exceedSurplusMonths;
+                if (self.scheme.count == 0) {
+                  self.scheme.enough = false;
+                } else {
+                  self.scheme.enough = true;
+                }
+                self.scheme.a = res.data.note.discRatios[0] + "%";
+                self.scheme.b = res.data.note.discRatios[1] + "%";
+                self.scheme.c = res.data.note.discRatios[2] + "%";
+                self.scheme.d = res.data.note.discRatios[3] + "%";
+                self.scheme.income = res.data.note.needIncomeMonths;
+                self.scheme.count2 = res.data.note.needIncomeMonths.length;
+                if (self.scheme.count2 == 0) {
+                  self.scheme.change = false;
+                } else {
+                  self.scheme.change = true;
+                }
+
+                var month_list = res.data.monthlyData;
+                console.log("month_list");
+                console.log(month_list);
+                for (var i = 0; i < month_list.length; i++) {
+                  self.scheme.interest_list.push(month_list[i].interest.toFixed(2));
+                  self.scheme.capital_and_interest_list.push((month_list[i].interest + month_list[i].principal).toFixed(2));
+                }
+
+                self.scheme.each = self.scheme.sum / parseFloat(self.form3.period);
+
+                /*self.scheme.difficulty = 4;*/
+                console.log("self.scheme.each:" + self.scheme.each);
+
               }
-              self.scheme.a = res.data.note.discRatios[0]+"%";
-              self.scheme.b = res.data.note.discRatios[1]+"%";
-              self.scheme.c = res.data.note.discRatios[2]+"%";
-              self.scheme.d = res.data.note.discRatios[3]+"%";
-              self.scheme.income = res.data.note.needIncomeMonths;
-              self.scheme.count2 = res.data.note.needIncomeMonths.length;
-              if(self.scheme.count2 == 0){
-                self.scheme.change = false;
-              }else{
-                self.scheme.change = true;
+            ).catch(function (error) {
+              console.log(error);
+            });
+          },
+
+          last() {
+            if (this.active > 0) {
+              this.active--;
+            }
+
+            if (this.active === 0) {
+              document.getElementById("primary").style.display = "block";
+              document.getElementById("information").style.display = "none";
+              document.getElementById("small_loan").style.display = "none";
+              document.getElementById("evaluate").style.display = "none";
+            } else if (this.active === 1) {
+              document.getElementById("primary").style.display = "none";
+              document.getElementById("information").style.display = "block";
+              document.getElementById("small_loan").style.display = "none";
+              document.getElementById("evaluate").style.display = "none";
+            } else if (this.active === 2) {
+              document.getElementById("primary").style.display = "none";
+              document.getElementById("information").style.display = "none";
+              document.getElementById("small_loan").style.display = "block";
+            }
+          },
+
+          next() {
+            if (this.active < 2) {
+              this.active++;
+            }
+
+            if (this.active === 0) {
+              document.getElementById("primary").style.display = "block";
+              document.getElementById("information").style.display = "none";
+              document.getElementById("small_loan").style.display = "none";
+            } else if (this.active === 1) {
+              document.getElementById("primary").style.display = "none";
+              document.getElementById("information").style.display = "block";
+              document.getElementById("small_loan").style.display = "none";
+            } else if (this.active === 2) {
+              document.getElementById("primary").style.display = "none";
+              document.getElementById("information").style.display = "none";
+              document.getElementById("small_loan").style.display = "block";
+              if (this.show_evaluate) {
+                document.getElementById("evaluate").style.display = "block";
               }
+            }
 
-              var month_list = res.data.monthlyData;
-              console.log("month_list");
-              console.log(month_list);
-              for(var i=0;i<month_list.length;i++){
-                self.scheme.interest_list.push(month_list[i].interest.toFixed(2));
-                self.scheme.capital_and_interest_list.push((month_list[i].interest+month_list[i].principal).toFixed(2));
+          },
+          get_layer(num) {
+            console.log(num);
+            if (num === 1) {
+              this.layer = "ONE";
+              this.form2.layer1 = true;
+              this.form2.layer2 = true;
+              this.form2.layer3 = true;
+              this.form2.layer4 = true;
+            } else if (num === 2) {
+              this.layer = "TWO";
+              this.form2.layer1 = false;
+              this.form2.layer2 = true;
+              this.form2.layer3 = true;
+              this.form2.layer4 = true;
+            } else if (num === 3) {
+              this.layer = "THREE";
+              this.form2.layer1 = false;
+              this.form2.layer2 = false;
+              this.form2.layer3 = true;
+              this.form2.layer4 = true;
+            } else if (num === 4) {
+              this.layer = "FOUR";
+              this.form2.layer1 = false;
+              this.form2.layer2 = false;
+              this.form2.layer3 = false;
+              this.form2.layer4 = true;
+            }
+          },
+          handleChange(value) {
+            console.log(value);
+          },
+          getRate() {
+            const self = this;
+            this.$axios.post('/loan/rate').then(
+              function (response) {
+                let res = response;
+                console.log("rate");
+                console.log(res.data);
+                self.form3.rate = res.data;
+                self.form3.recommendRate = res.data;
               }
-
-              self.scheme.each = self.scheme.sum / parseFloat(self.form3.period);
-
-              /*self.scheme.difficulty = 4;*/
-              console.log("self.scheme.each:"+self.scheme.each);
-
-            }
-          ).catch(function (error) {
-            console.log(error);
-          });
-        },
-
-        last() {
-         if(this.active>0){
-           this.active--;
-         }
-
-         if(this.active===0){
-           document.getElementById("primary").style.display = "block";
-           document.getElementById("information").style.display = "none";
-           document.getElementById("small_loan").style.display = "none";
-           document.getElementById("evaluate").style.display = "none";
-         }else if(this.active===1){
-           document.getElementById("primary").style.display = "none";
-           document.getElementById("information").style.display = "block";
-           document.getElementById("small_loan").style.display = "none";
-           document.getElementById("evaluate").style.display = "none";
-         }else if(this.active===2){
-           document.getElementById("primary").style.display = "none";
-           document.getElementById("information").style.display = "none";
-           document.getElementById("small_loan").style.display = "block";
-         }
-        },
-
-        next() {
-          if (this.active<2){
-            this.active++;
-          }
-
-          if(this.active===0){
-            document.getElementById("primary").style.display = "block";
-            document.getElementById("information").style.display = "none";
-            document.getElementById("small_loan").style.display = "none";
-          }else if(this.active===1){
-            document.getElementById("primary").style.display = "none";
-            document.getElementById("information").style.display = "block";
-            document.getElementById("small_loan").style.display = "none";
-          }else if(this.active===2){
-            document.getElementById("primary").style.display = "none";
-            document.getElementById("information").style.display = "none";
-            document.getElementById("small_loan").style.display = "block";
-            if(this.show_evaluate){
-              document.getElementById("evaluate").style.display = "block";
-            }
-          }
-
-        },
-        get_layer(num){
-          console.log(num);
-          if(num===1){
-            this.layer = "ONE";
-            this.form2.layer1 = true;
-            this.form2.layer2 = true;
-            this.form2.layer3 = true;
-            this.form2.layer4 = true;
-          }else if(num===2){
-            this.layer = "TWO";
-            this.form2.layer1 = false;
-            this.form2.layer2 = true;
-            this.form2.layer3 = true;
-            this.form2.layer4 = true;
-          }else if(num===3){
-            this.layer = "THREE";
-            this.form2.layer1 = false;
-            this.form2.layer2 = false;
-            this.form2.layer3 = true;
-            this.form2.layer4 = true;
-          }else if(num===4){
-            this.layer = "FOUR";
-            this.form2.layer1 = false;
-            this.form2.layer2 = false;
-            this.form2.layer3 = false;
-            this.form2.layer4 = true;
-          }
-        },
-        handleChange(value) {
-          console.log(value);
-        },
-        getRate(){
-          const self = this;
-          this.$axios.post('/loan/rate').then(
-            function(response){
-              let res = response;
-              console.log("rate");
-              console.log(res.data);
-              self.form3.rate = res.data;
-              self.form3.recommendRate = res.data;
-            }
             ).catch(function (error) {
               console.log("error in  rate");
               console.log(error);
-          });
-        },
-        getRateRange(){
-          const self = this;
-          this.$axios.post('/loan/rateRange').then(
-            function(response){
-              var res = response;
-              console.log('rateRange');
-              console.log(res.data.lower);
-              console.log(res.data.upper);
-              self.form3.lowerRate = res.data.lower;
-              self.form3.upperRate = res.data.upper;
-            }
-          ).catch(function (error) {
-            console.log("error in rateRange")
-            console.log(error);
-          });
-        },
-        getTimeRange(a){
-          const self = this;
-          var money = parseFloat(a.money);
-          this.$axios.get('/loan/timeRange',{
-            params: {
-              money: money
-            }
-          }).then(
-            function(response){
-              console.log("timeRange");
-              var res = response;
-              console.log("timeRange");
-              console.log(res.data.lower);
-              console.log(res.data.upper);
-              self.form3.lowerPeriod = res.data.lower;
-              self.form3.upperPeriod = res.data.upper;
-            }
-          ).catch(function (error) {
-            console.log("error in timeRange");
-            console.log(error);
-          });
-        }
+            });
+          },
+          getRateRange() {
+            const self = this;
+            this.$axios.post('/loan/rateRange').then(
+              function (response) {
+                var res = response;
+                console.log('rateRange');
+                console.log(res.data.lower);
+                console.log(res.data.upper);
+                self.form3.lowerRate = res.data.lower;
+                self.form3.upperRate = res.data.upper;
+              }
+            ).catch(function (error) {
+              console.log("error in rateRange")
+              console.log(error);
+            });
+          },
+          getTimeRange(a) {
+            const self = this;
+            var money = parseFloat(a.money);
+            this.$axios.get('/loan/timeRange', {
+              params: {
+                money: money
+              }
+            }).then(
+              function (response) {
+                console.log("timeRange");
+                var res = response;
+                console.log("timeRange");
+                console.log(res.data.lower);
+                console.log(res.data.upper);
+                self.form3.lowerPeriod = res.data.lower;
+                self.form3.upperPeriod = res.data.upper;
+              }
+            ).catch(function (error) {
+              console.log("error in timeRange");
+              console.log(error);
+            });
+          }
 
-      },
+        },
 
-      data(){
-        return {
-          active: 0,
-          pickerOptions1: {
-            disabledDate(time) {
-              return time.getTime() > Date.now();
+        data() {
+          return {
+            active: 0,
+            pickerOptions1: {
+              disabledDate(time) {
+                return time.getTime() > Date.now();
+              },
             },
-          },
-          url: "http://localhost:8000/upload/image",
-          form1:{
-            name: '',
-            date1: '',
-            date2: '',
-            least_rate:''
-          },
-          form2: {
-            user: '',
-            region: '',
-            textarea1:'',
-            layer1:true,
-            layer2:true,
-            layer3:true,
-            layer4:true,
-          },
-          form3:{
-            money:'',
-            period:'',
-            rate:'',
-            create:false,
-            activeName: '',
-            recommendRate:'',
-            lowerRate:'',
-            upperRate:'',
-            lowerPeriod:0,
-            upperPeriod:0,
-            repaymentType:'',
+            url: "http://localhost:8000/upload/image",
+            proof: '',
+            visible: false,
+            form1: {
+              name: '',
+              date1: '',
+              date2: '',
+              least_rate: ''
+            },
+            form2: {
+              user: '',
+              region: '',
+              textarea1: '',
+              layer1: true,
+              layer2: true,
+              layer3: true,
+              layer4: true,
+            },
+            form3: {
+              money: '',
+              period: '',
+              rate: '',
+              create: false,
+              activeName: '',
+              recommendRate: '',
+              lowerRate: '',
+              upperRate: '',
+              lowerPeriod: 0,
+              upperPeriod: 0,
+              repaymentType: '',
 
-          },
+            },
 
-          scheme:{
-            difficulty:0,
-            capital:0,
-            interest:0,
-            sum:0,
-            each:0,
-            count:0,
-            months:[],
-            enough:false,
-            change:true,
-            a:'',
-            b:'',
-            c:'',
-            d:'',
-            income:[],
-            count2:0,
-            interest_list:[],
-            capital_and_interest_list:[],
-            period:[]
-          },
+            scheme: {
+              difficulty: 0,
+              capital: 0,
+              interest: 0,
+              sum: 0,
+              each: 0,
+              count: 0,
+              months: [],
+              enough: false,
+              change: true,
+              a: '',
+              b: '',
+              c: '',
+              d: '',
+              income: [],
+              count2: 0,
+              interest_list: [],
+              capital_and_interest_list: [],
+              period: []
+            },
 
-          limit:3000,
+            limit: 3000,
 
-          usage_radio: 3,
-          textarea2:'',
+            usage_radio: 3,
+            textarea2: '',
 
-          layer:'ONE',
+            layer: 'ONE',
 
-          options: [{
-            value: 'shop',
-            label: '购物',
-            children: [{
-              value: '鞋帽服饰',
-              label: '鞋帽服饰',
-            },{
-              value: '生活用品',
-              label: '生活用品'
+            options: [{
+              value: 'shop',
+              label: '购物',
+              children: [{
+                value: '鞋帽服饰',
+                label: '鞋帽服饰',
+              }, {
+                value: '生活用品',
+                label: '生活用品'
+              }, {
+                value: '护肤美妆',
+                label: '护肤美妆'
+              }, {
+                value: '游戏动漫',
+                label: '游戏动漫',
+              }, {
+                value: '电子产品',
+                label: '电子产品',
+              }]
             }, {
-              value: '护肤美妆',
-              label: '护肤美妆'
+              value: '学习',
+              label: '学习',
+              children: [{
+                value: '学习用品',
+                label: '学习用品',
+              }, {
+                value: '书籍报刊',
+                label: '书籍报刊',
+              }, {
+                value: '培训考证',
+                label: '培训考证',
+              }, {
+                value: '校际交换',
+                label: '校际交换',
+              }]
             }, {
-              value: '游戏动漫',
-              label: '游戏动漫',
-            }, {
-              value: '电子产品',
-              label: '电子产品',
-            }]
-          }, {
-            value: '学习',
-            label: '学习',
-            children: [{
-              value: '学习用品',
-              label: '学习用品',
-            }, {
-              value: '书籍报刊',
-              label: '书籍报刊',
-            }, {
-              value: '培训考证',
-              label: '培训考证',
-            }, {
-              value: '校际交换',
-              label: '校际交换',
-            }]
-          }, {
-            value: '娱乐',
-            label: '娱乐',
-            children: [{
-              value: '聚餐轰趴',
-              label: '聚餐轰趴'
-            }, {
-              value: '运动健身',
-              label: '运动健身'
-            }, {
-              value: '观看演出',
-              label: '观看演出'
-            }, {
+              value: '娱乐',
+              label: '娱乐',
+              children: [{
+                value: '聚餐轰趴',
+                label: '聚餐轰趴'
+              }, {
+                value: '运动健身',
+                label: '运动健身'
+              }, {
+                value: '观看演出',
+                label: '观看演出'
+              }, {
                 value: '外出旅游',
                 label: '外出旅游'
-            }]
-          },{
-            value:'医疗',
-            label:'医疗',
-            children:[{
-              value:'诊断治疗',
-              label:'诊断治疗'
+              }]
             }, {
-              value:'保健养生',
-              label:'保健养生'
-            }]
-          }],
-          selectedOptions2: [],
-          scrollReveal:scrollReveal(),
-          show_evaluate:false,
+              value: '医疗',
+              label: '医疗',
+              children: [{
+                value: '诊断治疗',
+                label: '诊断治疗'
+              }, {
+                value: '保健养生',
+                label: '保健养生'
+              }]
+            }],
+            selectedOptions2: [],
+            scrollReveal: scrollReveal(),
+            show_evaluate: false,
 
-        };//return
-      },
-      watch:{
-        form3:{
-          handler(a){
-            this.getRate();
-            this.getRateRange();
-            this.getTimeRange(a);
-          },
-          deep:true
-        }
-      },
+          };//return
+        },
+        watch: {
+          form3: {
+            handler(a) {
+              this.getRate();
+              this.getRateRange();
+              this.getTimeRange(a);
+            },
+            deep: true
+          }
+        },
 
 
     }
