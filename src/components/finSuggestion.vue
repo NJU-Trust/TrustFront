@@ -211,7 +211,7 @@
       };
     },
     mounted() {
-      this.getConsumptionAnalysis();
+      //this.getConsumptionAnalysis();
       this.drawK();
       this.drawA();
     },

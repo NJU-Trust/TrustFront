@@ -93,32 +93,12 @@
     props:['monthLineStart','monthLineEnd'],
     watch: {
       monthLineStart: function (newVal,oldVal){
-        alert('old value='+oldVal);
         this.monthLineStart = newVal;
-        alert('new value='+newVal);
-        var lineData = this.getLines();
-        alert(lineData);
-        this.drawEngelsLine(lineData.time,lineData.dataEngels);
-        this.drawRigidLine(lineData.time,lineData.dataRigid);
-        this.drawLiabilityLine(lineData.time,lineData.dataLiability);
-        this.drawSolvencyLine(lineData.time,lineData.dataSolvency);
-        this.drawLeverageLine(lineData.time,lineData.dataLeverageLine);
-        this.drawConsumptionLine(lineData.time,lineData.dataConsumpt);
-        this.drawSavingLine(lineData.time,lineData.dataSaving);
+        this.getLines();
       },
       monthLineEnd: function (newVal,oldVal){
-        alert('old value='+oldVal);
         this.monthLineEnd = newVal;
-        alert('new value='+newVal);
-        var lineData = this.getLines();
-        alert(lineData);
-        this.drawEngelsLine(lineData.time,lineData.dataEngels);
-        this.drawRigidLine(lineData.time,lineData.dataRigid);
-        this.drawLiabilityLine(lineData.time,lineData.dataLiability);
-        this.drawSolvencyLine(lineData.time,lineData.dataSolvency);
-        this.drawLeverageLine(lineData.time,lineData.dataLeverageLine);
-        this.drawConsumptionLine(lineData.time,lineData.dataConsumpt);
-        this.drawSavingLine(lineData.time,lineData.dataSaving);
+        this.getLines();
       },
     },
     mounted() {
@@ -145,34 +125,54 @@
       getLines(){
         console.log("趋势分析");
         let self = this;
-        // this.$axios.get('/profile/trendAnalysis',{
-        //   params:{
-        //     username:"test",
-        //     startMonth: this.monthLineStart,
-        //     endMonth: this.monthLineEnd
-        //   }
-        // })
-        //   .then((response) => {
-        //     console.log("success");
-        //     console.log(response);
-        //     //TODO to add the true data
-        //     return response;
-        //   })
-        //   .catch((response) => {
-        //     console.log(response);
-        //     console.log("error");
-        //   })
-        var lineData = {
-          time: ["1月", "2月", "3月", "4月", "5月", "6月","7月","8月","9月","10月","11月","12月"],
-          dataEngels: [0.52, 0.48, 0.12, 0.27, 0.27, 0.28, 0.46, 0.52, 0.11, 0.29, 0.28, 0.26 ],
-          dataRigid: [0.60, 0.56, 0.91, 0.73, 0.71, 0.74, 0.54, 0.60, 0.91, 0.78, 0.74, 0.69 ],
-          dataLiability: [0.50, 0.67, 0.25, 9.00, 1.00, 2.00, 1.00, 0.34, 0.12, 0.56, 0.67, 1.00 ],
-          dataSolvency: [2.00, 1.50, 4.00, 0.11, 1.00, 0.50, 1.00, 2.90, 8.60, 1.80, 1.50, 1.00 ],
-          dataLeverageLine: [1.00, 0.50, 3.00, -0.89, 0.00, -0.50, 0.00, 1.90, 7.60, 0.80, 0.50, 0.00 ],
-          dataConsumpt: [0.83, 0.87, 0.92, 0.98, 0.96, 0.98, 0.93, 0.81, 0.93, 0.94, 0.94, 0.96 ],
-          dataSaving: [0.07, 0.10, 0.07, 0.00, 0.02, 0.01, 0.03, 0.09, 0.07, 0.04, 0.03, 0.02 ],
-        };
-        return lineData;
+        this.$axios.get('/profile/trendAnalysis',{
+          params:{
+            username:"test",
+            startMonth: this.monthLineStart,
+            endMonth: this.monthLineEnd
+          }
+        })
+          .then((response) => {
+            console.log("success");
+            console.log(response);
+            //TODO to add the true data
+            let lineData = {
+              time: [],
+              dataEngels: [],
+              dataRigid: [],
+              dataLiability: [],
+              dataSolvency: [],
+              dataLeverageLine: [],
+              dataConsumpt: [],
+              dataSaving: [],
+            };
+
+            for(let i of response.data){
+              lineData.time.push(i.month);
+              lineData.dataEngels.push(i.engel);
+              lineData.dataRigid.push(i.rig_ratio);
+              lineData.dataLiability.push(i.d2a_ratio);
+              lineData.dataSolvency.push(i.dp_ability);
+              lineData.dataLeverageLine.push(i.leverage);
+              lineData.dataConsumpt.push(i.consump_ratio);
+              lineData.dataSaving.push(i.saving_ratio);
+            }
+            console.log('趋势分析的数据如下:');
+            console.log(lineData);
+
+            this.drawEngelsLine(lineData.time,lineData.dataEngels);
+            this.drawRigidLine(lineData.time,lineData.dataRigid);
+            this.drawLiabilityLine(lineData.time,lineData.dataLiability);
+            this.drawSolvencyLine(lineData.time,lineData.dataSolvency);
+            this.drawLeverageLine(lineData.time,lineData.dataLeverageLine);
+            this.drawConsumptionLine(lineData.time,lineData.dataConsumpt);
+            this.drawSavingLine(lineData.time,lineData.dataSaving);
+          })
+          .catch((response) => {
+            console.log(response);
+            console.log("error");
+          })
+
       },
       drawEngelsLine(time,lineData) {
         // 基于准备好的dom，初始化echarts实例

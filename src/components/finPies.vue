@@ -71,19 +71,9 @@
     },
     props:['monthPie'],
     watch: {
-
       monthPie: function (newVal,oldVal){
-        alert('old value='+oldVal);
         this.monthPie = newVal;
-        alert('new value='+newVal);
-        var pieData = this.getPies();
-        alert(pieData);
-        this.user.outcome=4000;
-        this.user.adjust=1000;
-        this.user.food=1297;
-        this.drawOutcomePie(pieData.data1);
-        this.drawAdjustOutcomePie(pieData.data2);
-        this.drawFoodOutcomePie(pieData.data3);
+        this.getPies();
       }
     },
 
@@ -124,15 +114,66 @@
           }
         })
           .then((response) => {
-            console.log("success");
+            console.log("比例分析success");
             console.log(response);
-            return response;
+
+            this.user.outcome = response.data.outcome;
+            this.user.adjust = response.data.adjust;
+            this.user.food = response.data.food;
+
+            let pieData = {
+              data1:[
+                {value:0, name:'日常'},
+                {value:0, name:'学习'},
+                {value:0, name:'饮食'},
+                {value:0, name:'出行'},
+                {value:0, name:'娱乐'},
+              ],
+              data2:[
+                {value:0, name:'衣物'},
+                {value:0, name:'饮食'},
+                {value:0, name:'住宿'},
+                {value:0, name:'娱乐'},
+              ],
+              data3:[
+                {value:0, name:'食堂条数'},
+                {value:0, name:'外卖单数'},
+                {value:0, name:'外出次数'},
+                {value:0, name:'零食数目'}
+              ]
+            };
+
+            let res = response.data.data1;
+            pieData.data1[0].value = res.daily;
+            pieData.data1[1].value = res.learning;
+            pieData.data1[2].value = res.food;
+            pieData.data1[3].value = res.travel;
+            pieData.data1[4].value = res.fun;
+
+            res = response.data.data2;
+            pieData.data2[0].value = res.dress;
+            pieData.data2[1].value = res.food;
+            pieData.data2[2].value = res.fun;
+            pieData.data2[3].value = res.hotel;
+
+            res = response.data.data3;
+            pieData.data3[0].value = res.schoolCanteen;
+            pieData.data3[1].value = res.takeOut;
+            pieData.data3[2].value = res.eatingOut;
+            pieData.data3[3].value = res.snackAndFruit;
+
+            console.log('比例分析数据');
+            console.log(pieData);
+
+            this.drawOutcomePie(pieData.data1);
+            this.drawAdjustOutcomePie(pieData.data2);
+            this.drawFoodOutcomePie(pieData.data3);
+
           })
           .catch((response) => {
             console.log(response);
             console.log("error");
           })
-        alert('getPies');
         var pieData = {
           data1:[
             {value:1501, name:'日常'},
@@ -154,7 +195,7 @@
             {value:9, name:'零食数目'}
           ]
         };
-        return pieData;
+
       },
       //饼状图集合
       drawOutcomePie(Piedata) {
@@ -306,7 +347,7 @@
           ]
         });
       },
-      drawFoodOutcomePie(Piedata) {
+      drawFoodOutcomePie(Piedata,PieTimes) {
         // 基于准备好的dom，初始化echarts实例
         let myOutcomePie = echarts.init(document.getElementById('myFoodOutcomePie'),'macarons')
         // 绘制图表
@@ -321,29 +362,29 @@
             data:['食堂','外卖','外出','零食']
           },
           series: [
-            {
-              name:'支出条数',
-              type:'pie',
-              selectedMode: 'single',
-              radius: [0, '30%'],
-
-              label: {
-                normal: {
-                  position: 'inner'
-                }
-              },
-              labelLine: {
-                normal: {
-                  show: false
-                }
-              },
-              data:[
-                {value:45, name:'食堂条数'},
-                {value:17, name:'外卖单数'},
-                {value:7, name:'外出次数'},
-                {value:9, name:'零食数目', selected:true}
-              ]
-            },
+            // {
+            //   name:'支出条数',
+            //   type:'pie',
+            //   selectedMode: 'single',
+            //   radius: [0, '30%'],
+            //
+            //   label: {
+            //     normal: {
+            //       position: 'inner'
+            //     }
+            //   },
+            //   labelLine: {
+            //     normal: {
+            //       show: false
+            //     }
+            //   },
+            //   data:[
+            //     {value:45, name:'食堂条数'},
+            //     {value:17, name:'外卖单数'},
+            //     {value:7, name:'外出次数'},
+            //     {value:9, name:'零食数目', selected:true}
+            //   ]
+            // },
             {
               name:'支出去向',
               type:'pie',
