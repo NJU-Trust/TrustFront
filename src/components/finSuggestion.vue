@@ -211,7 +211,7 @@
       };
     },
     mounted() {
-      //this.getConsumptionAnalysis();
+      this.getConsumptionAnalysis();
       this.drawK();
       this.drawA();
     },
@@ -219,7 +219,7 @@
       getConsumptionAnalysis(){
         console.log("消费修正建议");
         let self = this;
-        this.$axios.get('/repayment/loan/consumptionAnalysis',{
+        this.$axios.get('/loan/repayment/consumptionAnalysis',{
           params:{
             username:"test",
           }

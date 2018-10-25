@@ -123,28 +123,32 @@
             console.log(response);
             console.log("个人信息success");
             console.log(response.data);
-            var res = response.data;
+            let res = response.data;
 
-            self.userName = res;
-            //
-            var regUser= {
-                name: '南小紫',
-                sex: '女',
-                age: '20',
-                level: '高级账户',
-                stuNum: '161090000',
-                grade: '大二',
-                major: '金融学',
-                phone: '13055644123',
-                alipay: '13055644123',
-                email: 'lovetrust@trust.com',
-                workaddr: '南京大学',
-                address: '江苏省南京市栖霞区仙林大道163号南京大学仙林校区'
+            let ulevel = 0;
+            switch (res.userLevel) {
+              case 'PRIMARY': ulevel ='高级账号';break;
+              //TODO to complete it
+              default:
+                ulevel = '普通账号';
+            }
+
+            let regUser= {
+                name: res.username,
+                sex: res.gender,
+                age: res.age,
+                level: ulevel,
+                stuNum: res.studentId,
+                grade: res.grade,
+                major: res.major,
+                phone: res.phoneNumber,
+                alipay: res.alipay,
+                email: res.email,
+                workaddr: res.institution,
+                address: res.livingPlace,
               };
 
-            //toDelete
             self.userName = regUser;
-            // alert("success");
           })
           .catch(function (response) {
             console.log(response);

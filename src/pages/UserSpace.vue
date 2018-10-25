@@ -220,30 +220,30 @@
             self.user.credit.points = res.creditRatingScore;
             self.user.credit.level = res.creditRating;
             // alert("success");
-
-            let regUser= {
-              investAmount: 12869,
-              loanAmount: 19857,
-              captial:{
-                amountToCover: '856',
-                progress: 37
-              },
-              interest:{
-                amountToCove: '7263.33',
-                progress: 21
-              },
-              credit:{
-                points: 91,
-                level: 'AA'
-              },
-              amountAll: 4356,
-              balance: 3500,
-              accountFrozen: 0,
-              interestToRecovered: 856,
-              investmentTender: 0
-            }
-            //toDelete
-            self.user = regUser;
+            //todo Maybe some bugs? 账户总览
+            // let regUser= {
+            //   investAmount: 12869,
+            //   loanAmount: 19857,
+            //   captial:{
+            //     amountToCover: '856',
+            //     progress: 37
+            //   },
+            //   interest:{
+            //     amountToCove: '7263.33',
+            //     progress: 21
+            //   },
+            //   credit:{
+            //     points: 91,
+            //     level: 'AA'
+            //   },
+            //   amountAll: 4356,
+            //   balance: 3500,
+            //   accountFrozen: 0,
+            //   interestToRecovered: 856,
+            //   investmentTender: 0
+            // }
+            // //toDelete
+            // self.user = regUser;
           })
           .catch(function (response) {
             console.log(response);
@@ -266,29 +266,29 @@
             self.user.interestToRecovered = res.pendingPI;
             self.user.investmentTender = res.investmentInBidding;
 
-            let regUser= {
-              investAmount: 12869,
-              loanAmount: 19857,
-              captial:{
-                amountToCover: '856',
-                progress: 37
-              },
-              interest:{
-                amountToCove: '7263.33',
-                progress: 21
-              },
-              credit:{
-                points: 91,
-                level: 'AA'
-              },
-              amountAll: 4356,
-              balance: 3500,
-              accountFrozen: 0,
-              interestToRecovered: 856,
-              investmentTender: 0
-            }
-            //toDelete
-            self.user = regUser;
+            // let regUser= {
+            //   investAmount: 12869,
+            //   loanAmount: 19857,
+            //   captial:{
+            //     amountToCover: '856',
+            //     progress: 37
+            //   },
+            //   interest:{
+            //     amountToCove: '7263.33',
+            //     progress: 21
+            //   },
+            //   credit:{
+            //     points: 91,
+            //     level: 'AA'
+            //   },
+            //   amountAll: 4356,
+            //   balance: 3500,
+            //   accountFrozen: 0,
+            //   interestToRecovered: 856,
+            //   investmentTender: 0
+            // }
+            // //toDelete
+            // self.user = regUser;
 
             // alert("success");
           })
@@ -312,57 +312,58 @@
             console.log(response);
             console.log("Get TodoList success");
             console.log(response.data);
-            let res = [{
-              date: '2018/10/1',
-              title: '待还款',
-              desc: '您还有一笔还款在10月1号'
-            }, {
-              date: '2018/10/4',
-              title: '待还款',
-              desc: '您还有一笔还款在10月4号'
-            },{
-              date: '2018/10/5',
-              title: '待还款',
-              desc: '您还有一笔还款在10月5号'
-            }, {
-              date: '2018/10/7',
-              title: '待还款',
-              desc: '您还有一笔还款在10月7号'
-            }, {
-              date: '2018/10/9',
-              title: '待还款',
-              desc: '您还有一笔还款在10月9号'
-            }, {
-              date: '2018/10/11',
-              title: '待还款',
-              desc: '您还有一笔还款在10月11号'
-            }, {
-              date: '2018/9/11',
-              title: '已收款',
-              desc: '您已在9月11日收款'
-            }, {
-              date: '2018/9/9',
-              title: '已收款',
-              desc: '您已在9月9日收款'
-            }, {
-              date: '2018/9/4',
-              title: '已收款',
-              desc: '您已在9月4日收款'
-            }, {
-              date: '2018/9/5',
-              title: '已收款',
-              desc: '您已在9月5日收款'
-            }, {
-              date: '2018/8/5',
-              title: '已收款',
-              desc: '您已在8月5日收款'
-            }, {
-              date: '2018/7/5',
-              title: '已收款',
-              desc: '您已在7月5日收款'
-            }, ];
+            // let res = [
+            //   {
+            //   date: '2018/10/1',
+            //   title: '待还款',
+            //   desc: '您还有一笔还款在10月1号'
+            // }, {
+            //   date: '2018/10/4',
+            //   title: '待还款',
+            //   desc: '您还有一笔还款在10月4号'
+            // },{
+            //   date: '2018/10/5',
+            //   title: '待还款',
+            //   desc: '您还有一笔还款在10月5号'
+            // }, {
+            //   date: '2018/10/7',
+            //   title: '待还款',
+            //   desc: '您还有一笔还款在10月7号'
+            // }, {
+            //   date: '2018/10/9',
+            //   title: '待还款',
+            //   desc: '您还有一笔还款在10月9号'
+            // }, {
+            //   date: '2018/10/11',
+            //   title: '待还款',
+            //   desc: '您还有一笔还款在10月11号'
+            // }, {
+            //   date: '2018/9/11',
+            //   title: '已收款',
+            //   desc: '您已在9月11日收款'
+            // }, {
+            //   date: '2018/9/9',
+            //   title: '已收款',
+            //   desc: '您已在9月9日收款'
+            // }, {
+            //   date: '2018/9/4',
+            //   title: '已收款',
+            //   desc: '您已在9月4日收款'
+            // }, {
+            //   date: '2018/9/5',
+            //   title: '已收款',
+            //   desc: '您已在9月5日收款'
+            // }, {
+            //   date: '2018/8/5',
+            //   title: '已收款',
+            //   desc: '您已在8月5日收款'
+            // }, {
+            //   date: '2018/7/5',
+            //   title: '已收款',
+            //   desc: '您已在7月5日收款'
+            // }, ];
 
-            self.demoEvents = res;
+            self.demoEvents = response.data;
 
           })
           .catch(function (response) {
