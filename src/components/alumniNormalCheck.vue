@@ -2,7 +2,7 @@
 
   <el-tabs type="border-card" style="min-height: 600px;">
     <el-tab-pane label="基本资料" style="padding:20px">
-      <el-form ref="base_form" :rules="base_rules" :model="base_form" label-width="100px">
+      <el-form ref="base_form" :rules="base_rules" :model="base_form" label-width="150px">
         <el-form-item label="姓名" prop="name">
           <el-input style="width:267px;" v-model="base_form.name"></el-input>
         </el-form-item>
@@ -38,10 +38,10 @@
             <slot type="tip">请上传您的毕业证书，仅限jpg与png文件</slot>
           </el-upload>
         </div>
-        <el-form-item label="工作单位" prop="institution">
+        <el-form-item label="工作单位及职务" prop="institution">
           <el-input class="inputs" v-model="base_form.institution"></el-input>
         </el-form-item>
-        <div style="display:flex;">
+        <!--<div style="display:flex;">
           <el-form-item label="职务" prop="major">
             <el-input class="inputs" v-model="base_form.major"></el-input>
           </el-form-item>
@@ -58,8 +58,8 @@
             <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
             <slot type="tip">请上传您的工作单位证，仅限jpg与png文件</slot>
           </el-upload>
-        </div>
-        <div style="display:flex;">
+        </div>-->
+        <!--<div style="display:flex;">
           <el-form-item label="年收入" prop="year_income">
             <el-input class="inputs" v-model="base_form.year_income"></el-input>
           </el-form-item>
@@ -76,7 +76,7 @@
             <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
             <slot type="tip">请上传您的收入证明，仅限jpg与png文件</slot>
           </el-upload>
-        </div>
+        </div>-->
         <el-form-item label="现居住地" prop="living_place">
           <el-input class="inputs" v-model="base_form.living_place"></el-input>
         </el-form-item>
@@ -108,7 +108,7 @@
             university:'',
             major:'',
             institution:'',
-            year_income:'',
+            //year_income:'',
             living_place:'',
           },
           base_rules:{
@@ -135,14 +135,14 @@
             institution:[
               {required:true, message:'请输入您的学院',trigger:'blur'}
             ],
-            year_income:[
+            /*year_income:[
               {required:true, message:'请输入您的年收入',trigger:'blur'}
-            ],
+            ],*/
             living_place:[
               {required:true, message:'请输入您的居住地信息',trigger:'blur'}
             ]
           },
-          selfinfo_form:{
+          /*selfinfo_form:{
             fail:'',
             report_cards: [],
             income:[false,false,false,false,false,false],
@@ -168,8 +168,8 @@
               value: '',
               file:'',
             }],
-          },
-          selfinfo_rules:{
+          },*/
+          /*selfinfo_rules:{
             fail:[
               {required:true,type: 'number', message: '必须为数字值'}
             ],
@@ -182,7 +182,7 @@
             income_description:[
               {required:true, message: '描述不能为空'}
             ]
-          },
+          },*/
           //img
 
         }
@@ -204,7 +204,7 @@
         resetForm(formName) {
           this.$refs[formName].resetFields();
         },
-        add_school_reward() {
+        /*add_school_reward() {
           this.selfinfo_form.school_rewards.push({
             value: '',
             key: Date.now()
@@ -263,7 +263,7 @@
           if (index !== -1) {
             this.selfinfo_form.self_qualifications.splice(index, 1)
           }
-        },
+        },*/
         handleRemove(file, fileList) {
           console.log(file, fileList);
         },
@@ -271,10 +271,10 @@
           console.log(file);
         },
         handleExceed(files, fileList) {
-          this.$message.warning(`当前限制选择 16 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+          //this.$message.warning(`当前限制选择 16 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
         },
         beforeRemove(file, fileList) {
-          return this.$confirm(`确定移除 ${ file.name }？`);
+          //return this.$confirm(`确定移除 ${ file.name }？`);
         },
         handleChange(file, fileList) {
           this.selfinfo_form.report_cards = fileList.slice(-3);
