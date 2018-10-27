@@ -1,8 +1,9 @@
 <template>
   <personalCenter paneltitle="项目信息">
-    <el-tabs v-model="activeName" @tab-click="handleClick">
+    <LoanInformationPane></LoanInformationPane>
+    <!--<el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="正在进行" name="first" >
-        <loanTopBar></loanTopBar>
+        <loanTopBar v-on:getConditionEvent="getCondition"></loanTopBar>
         <loanUnderway ref="underway"></loanUnderway>
       </el-tab-pane>
       <el-tab-pane label="完成项目" name="second" >
@@ -17,7 +18,7 @@
         <loanTopBar></loanTopBar>
         <loanUnbelievable ref="unbelievable"></loanUnbelievable>
       </el-tab-pane>
-    </el-tabs>
+    </el-tabs>-->
 
    <!-- <div class="projectPanel">
       <div class="projectPages">
@@ -44,19 +45,22 @@
 </template>
 
 <script>
-  import personalCenter from "../components/personalCenter";
+  /*import personalCenter from "../components/personalCenter";
   import loanTopBar from "../components/loanTopBar";
   import loanUnderway from "../components/loanUnderway"
   import loanComplete from "../components/loanComplete"
   import loanLaunched from "../components/loanLaunched"
-  import loanUnbelievable from "../components/loanUnbelievable"
+  import loanUnbelievable from "../components/loanUnbelievable"*/
+
+  import personalCenter from "../components/personalCenter"
+  import LoanInformationPane from "../components/LoanInformationPane"
 
   export default {
     name:"loaninformation",
-    components: {personalCenter,loanTopBar,loanUnderway,loanComplete,loanLaunched,loanUnbelievable},
-    mounted:function(){
+    components: {personalCenter,LoanInformationPane},
+   /* mounted:function(){
       this.getUnderway();
-    },
+    },*/
    /* methods: {
       handleSizeChange(val) {
         console.log(`每页 ${val} 条`);
@@ -65,7 +69,7 @@
         console.log(`当前页: ${val}`);
       }
     },*/
-    data() {
+    /*data() {
       return {
         currentPage1: 2,
         activeName: 'first',
@@ -144,10 +148,14 @@
 
         this.$refs.unbelievable.getTableData(moneyUpper,moneyLower,targetType,name,startDate,endDate);
       },
-      getDate(){
+      getCondition(money,date,state){
+        console.log("data in loanInformation");
+        console.log("money:"+money);
+        console.log("date:"+date);
+        console.log("state:"+state);
 
       }
-    }
+    }*/
   }
 
 </script>
@@ -173,6 +181,6 @@
 </style>
 
 <style>
-  /*#leftOV,#leftFS,#leftSP,#leftBI,#leftLS,#leftII,#leftIE,#leftNC,#leftAC,#leftCC{ color: #777777 !important; }*/
+
   #leftLI { color: dodgerblue !important}
 </style>

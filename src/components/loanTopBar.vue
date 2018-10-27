@@ -44,9 +44,9 @@
     <hr>
   </div>-->
   <div>
-    <el-form v-model="underway_form">
+    <el-form v-model="radioData">
       <el-form-item label="投资金额">
-        <el-radio-group v-model="underway_form.money">
+        <el-radio-group v-model="radioData.money">
           <el-radio-button label="全部"></el-radio-button>
           <el-radio-button label="100以下"></el-radio-button>
           <el-radio-button label="100-500"></el-radio-button>
@@ -55,7 +55,7 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="项目时间">
-        <el-radio-group v-model="underway_form.date">
+        <el-radio-group v-model="radioData.date">
           <el-radio-button label="全部"></el-radio-button>
           <el-radio-button label="15天之内"></el-radio-button>
           <el-radio-button label="1个月之内"></el-radio-button>
@@ -64,7 +64,7 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="项目状态">
-        <el-radio-group v-model="underway_form.state">
+        <el-radio-group v-model="radioData.state">
           <el-radio-button label="全部"></el-radio-button>
           <el-radio-button label="正在还款"></el-radio-button>
           <el-radio-button label="转让审核"></el-radio-button>
@@ -82,49 +82,33 @@
         name: "info-top-bar",
         data(){
           return{
-            /*pickerOptions0: {
-              disabledDate(time) {
-                return time.getTime() > Date.now();
-              },
-            },
-            num1:1,
-            value_radio1:'',
-            options:[{
-              value:'any',
-              label:'不限'
-            },{
-              value:'small_loan',
-              label:'小额短期借款'
-            },{
-              value:'large_loan',
-              label:'大额长期借款'
-            }],
-            value_radio2:'any',
-            date1:'',
-            date2:'',
-            input:'',*/
-            underway_form:{
-              money:'',
-              options:[{
-                value:'any',
-                label:'不限'
-              },{
-                value:'small_loan',
-                label:'小额短期借款'
-              },{
-                value:'large_loan',
-                label:'大额长期借款'
-              }],
-              value_class:'any',
-              date:'',
-              state:''
+            radioData:{
+              money:'全部',
+              date:'全部',
+              state:'全部'
             },
           }//return
         },
       methods: {
         handleChange(value) {
           console.log(value);
-        }
+        },
+      },
+      watch:{
+          radioData:{
+            handler(a){
+              var money = this.radioData.money;
+              var date = this.radioData.date;
+              var state = this.radioData.state;
+
+              this.$emit("getConditionEvent",money,date,state);
+
+              /*console.log("money:"+this.radioData.money);
+              console.log("date:"+this.radioData.date);
+              console.log("state:"+this.radioData.state);*/
+            },
+            deep:true
+          }
       }
     }
 </script>
