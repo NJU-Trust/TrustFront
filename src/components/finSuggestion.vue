@@ -209,8 +209,6 @@
     mounted() {
       this.getConsumptionAnalysis();
       this.getPredictSurplus();
-      this.drawK();
-      this.drawA();
     },
     methods: {
       getConsumptionAnalysis(){
@@ -278,14 +276,22 @@
           .then((response) => {
             console.log("预测success");
             console.log(response);
-            return response;
+
+            let an = response.data.an;
+            let kn = response.data.kn;
+            let time =response.data.time;
+            console.log("before draw");
+            this.drawK(time,kn);
+            this.drawA(time,an);
+            console.log("after draw");
+            this.tableData = response.data.tableData;
           })
           .catch((response) => {
             console.log(response);
             console.log("预测error");
           })
       },
-      drawK() {
+      drawK(time,dataK) {
         // 基于准备好的dom，初始化echarts实例
         let myChart = echarts.init(document.getElementById('ForecastK'))
         // 绘制图表
@@ -295,7 +301,7 @@
           xAxis: {
             name: '时间',
             type: 'category',
-            data: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"]
+            data: time
           },
           yAxis: {
             name: '结余K(n)',
@@ -304,12 +310,12 @@
           series: [{
             name: '结余',
             type: 'line',
-            data: [200, 300, 800, 10, 100, 50, 100, 290, 860, 180, 150, 100],
+            data: dataK,
             smooth: true
           }]
         });
       },
-      drawA() {
+      drawA(time,dataA) {
         // 基于准备好的dom，初始化echarts实例
         let myChart = echarts.init(document.getElementById('ForecastA'))
         // 绘制图表
@@ -319,7 +325,8 @@
           xAxis: {
             name: '时间',
             type: 'category',
-            data: ["2018-11", "2018-12", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"]          },
+            data: time
+          },
           yAxis: {
             name: '可调整支出A(n)',
             type: 'value'
@@ -327,7 +334,7 @@
           series: [{
             name: '可调整支出',
             type: 'line',
-            data: [1000, 1200, 1000, 1290, 1400, 1200, 1300, 1000, 1040, 1000, 1200, 1590],
+            data: dataA,
             smooth: true
           }]
         });
