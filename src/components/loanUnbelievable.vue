@@ -109,6 +109,7 @@
           console.log(`当前页: ${val}`);
         },
         getTableData(moneyUpper,moneyLower,targetType,name,startDate,endDate){
+          console.log(moneyUpper,moneyLower,targetType,name,startDate,endDate);
           this.tableData = [];
           var list = [];
           const self = this;

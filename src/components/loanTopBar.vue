@@ -48,7 +48,7 @@
       <el-form-item label="投资金额">
         <el-radio-group v-model="radioData.money">
           <el-radio-button label="全部"></el-radio-button>
-          <el-radio-button label="100以下"></el-radio-button>
+          <el-radio-button label="100及以下"></el-radio-button>
           <el-radio-button label="100-500"></el-radio-button>
           <el-radio-button label="500-1000"></el-radio-button>
           <el-radio-button label="1000以上"></el-radio-button>
@@ -63,11 +63,11 @@
           <el-radio-button label="6个月以上"></el-radio-button>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="项目状态">
+      <el-form-item label="项目类型">
         <el-radio-group v-model="radioData.state">
           <el-radio-button label="全部"></el-radio-button>
-          <el-radio-button label="正在还款"></el-radio-button>
-          <el-radio-button label="转让审核"></el-radio-button>
+          <el-radio-button label="小额借款"></el-radio-button>
+          <el-radio-button label="大额借款"></el-radio-button>
         </el-radio-group>
 
       </el-form-item>
