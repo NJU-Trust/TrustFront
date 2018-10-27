@@ -3,19 +3,19 @@
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="正在进行" name="first" >
         <loanTopBar></loanTopBar>
-        <loanUnderway></loanUnderway>
+        <loanUnderway ref="underway"></loanUnderway>
       </el-tab-pane>
       <el-tab-pane label="完成项目" name="second" >
         <loanTopBar></loanTopBar>
-        <loanComplete></loanComplete>
+        <loanComplete ref="complete"></loanComplete>
       </el-tab-pane>
       <el-tab-pane label="已发布项目" name="third">
         <loanTopBar></loanTopBar>
-        <loanLaunched></loanLaunched>
+        <loanLaunched ref="launched"></loanLaunched>
       </el-tab-pane>
       <el-tab-pane label="违约记录" name="fourth">
         <loanTopBar></loanTopBar>
-        <loanUnbelievable></loanUnbelievable>
+        <loanUnbelievable ref="unbelievable"></loanUnbelievable>
       </el-tab-pane>
     </el-tabs>
 
@@ -54,6 +54,9 @@
   export default {
     name:"loaninformation",
     components: {personalCenter,loanTopBar,loanUnderway,loanComplete,loanLaunched,loanUnbelievable},
+    mounted:function(){
+      this.getUnderway();
+    },
    /* methods: {
       handleSizeChange(val) {
         console.log(`每页 ${val} 条`);
@@ -103,35 +106,43 @@
         var endDate = this.condition.endDate;
 
         console.log("正在进行");
-        const self = this;
-        this.$axios.post('/loan/info/ongoing',{
-          moneyUpper:moneyUpper,
-          moneyLower:moneyLower,
-          targetType:targetType,
-          name:name,
-          startDate:startDate,
-          endDate:endDate
-          /*params: {
-
-          }*/
-        }).then(
-          function(response){
-              console.log(response.data);
-
-          }
-        ).catch(function (error) {
-          console.log("error in Underway");
-          console.log(error);
-        });
+        this.$refs.underway.getTableData(moneyUpper,moneyLower,targetType,name,startDate,endDate);
       },
       getComplete(){
         console.log("已完成");
+
+        var moneyUpper = this.condition.moneyUpper;
+        var moneyLower = this.condition.moneyLower;
+        var targetType = this.condition.targetType;
+        var name = this.condition.name;
+        var startDate = this.condition.startDate;
+        var endDate = this.condition.endDate;
+
+        this.$refs.complete.getTableData(moneyUpper,moneyLower,targetType,name,startDate,endDate);
       },
       getLaunched(){
         console.log("已发布");
+
+        var moneyUpper = this.condition.moneyUpper;
+        var moneyLower = this.condition.moneyLower;
+        var targetType = this.condition.targetType;
+        var name = this.condition.name;
+        var startDate = this.condition.startDate;
+        var endDate = this.condition.endDate;
+
+        this.$refs.launched.getTableData(moneyUpper,moneyLower,targetType,name,startDate,endDate);
       },
       getUnbelieve(){
         console.log("违约记录");
+
+        var moneyUpper = this.condition.moneyUpper;
+        var moneyLower = this.condition.moneyLower;
+        var targetType = this.condition.targetType;
+        var name = this.condition.name;
+        var startDate = this.condition.startDate;
+        var endDate = this.condition.endDate;
+
+        this.$refs.unbelievable.getTableData(moneyUpper,moneyLower,targetType,name,startDate,endDate);
       },
       getDate(){
 

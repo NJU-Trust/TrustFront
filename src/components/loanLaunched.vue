@@ -42,7 +42,7 @@
           <template slot-scope="scope">
             <el-button
               size="mini"
-              @click="">查看</el-button>
+              @click="getRepayDetail(scope.row.targetId)">查看</el-button>
           </template>
         </el-table-column>
 
@@ -111,6 +111,43 @@
        },
        handleCurrentChange(val) {
          console.log(`当前页: ${val}`);
+       },
+       getTableData(moneyUpper,moneyLower,targetType,name,startDate,endDate){
+         this.tableData = [];
+         var list = [];
+         const self = this;
+         this.$axios.post('/loan/info/released',{
+           moneyUpper:moneyUpper,
+           moneyLower:moneyLower,
+           targetType:targetType,
+           name:name,
+           startDate:startDate,
+           endDate:endDate
+         }).then(
+           function(response){
+             console.log(response.data);
+             list = response.data;
+
+             for(var i=0;i<list.length;i++){
+               self.tableData.push({name:list[i].name, money:list[i].money, year_rate:list[i].interestRate,
+                 launch_date:list[i].duration[0],state:list[i].state,targetId:list[i].targetId});
+             }
+             console.log("tableData:");
+             console.log(self.tableData);
+
+           }
+         ).catch(function (error) {
+           console.log("error in Underway");
+           console.log(error);
+         });
+
+       },
+
+       getRepayDetail(targetId){
+         console.log("targetId in loanUnderway:"+targetId);
+         this.a.targetId = targetId;
+         //console.log("a in loanUnderway:"+this.a.targetId);
+         this.$router.push({name:'repay',params:this.a});
        }
      },
     }

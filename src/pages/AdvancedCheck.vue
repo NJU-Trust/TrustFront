@@ -57,11 +57,9 @@
             <div style="padding-left: 300px;">
               <el-upload
                 class="upload-demo"
-                action="https://jsonplaceholder.typicode.com/posts/"
-                :on-change="handleChange"
-                :on-preview="handlePreview"
-                :on-remove="handleRemove"
-                :before-remove="beforeRemove"
+                :action="url"
+                :onSuccess="uploadReportCardSuccess"
+                :on-remove="handleReportCardRemove"
                 multiple
                 :limit="16"
                 :on-exceed="handleExceed"
@@ -88,11 +86,12 @@
                     <label>&nbsp;&nbsp;&nbsp;&nbsp;</label>
                     <el-upload
                       class="upload-demo"
-                      action="https://jsonplaceholder.typicode.com/posts/"
-                      :on-change="handleChange"
-                      :on-preview="handlePreview"
-                      :on-remove="handleRemove"
-                      :before-remove="beforeRemove"
+                      :action="url"
+                      :fileList="schoolRewardList"
+                      :onSuccess="uploadSchoolReward"
+                      :on-remove="handleSchoolRewardRemove"
+                      multiple
+                      :limit="1"
                     >
                       <el-button size="small" type="primary">点击上传</el-button>
                     </el-upload>
@@ -121,11 +120,8 @@
                     <label>&nbsp;&nbsp;&nbsp;&nbsp;</label>
                     <el-upload
                       class="upload-demo"
-                      action="https://jsonplaceholder.typicode.com/posts/"
-                      :on-change="handleChange"
-                      :on-preview="handlePreview"
-                      :on-remove="handleRemove"
-                      :before-remove="beforeRemove"
+                      :action="url"
+
                     >
                       <el-button size="small" type="primary">点击上传</el-button>
                     </el-upload>
@@ -154,11 +150,8 @@
                     <label>&nbsp;&nbsp;&nbsp;&nbsp;</label>
                     <el-upload
                       class="upload-demo"
-                      action="https://jsonplaceholder.typicode.com/posts/"
-                      :on-change="handleChange"
-                      :on-preview="handlePreview"
-                      :on-remove="handleRemove"
-                      :before-remove="beforeRemove"
+                      :action="url"
+
                     >
                       <el-button size="small" type="primary">点击上传</el-button>
                     </el-upload>
@@ -187,11 +180,8 @@
                     <label>&nbsp;&nbsp;&nbsp;&nbsp;</label>
                     <el-upload
                       class="upload-demo"
-                      action="https://jsonplaceholder.typicode.com/posts/"
-                      :on-change="handleChange"
-                      :on-preview="handlePreview"
-                      :on-remove="handleRemove"
-                      :before-remove="beforeRemove"
+                      :action="url"
+
                     >
                       <el-button size="small" type="primary">点击上传</el-button>
                     </el-upload>
@@ -216,11 +206,8 @@
             <div style="padding-left: 300px">
               <el-upload
                 class="upload-demo"
-                action="https://jsonplaceholder.typicode.com/posts/"
-                :on-change="handleChange"
-                :on-preview="handlePreview"
-                :on-remove="handleRemove"
-                :before-remove="beforeRemove"
+                :action="url"
+
               >
                 <el-button size="small" type="primary">点击上传</el-button>
                 <div slot="tip" class="el-upload__tip">仅限jpg/png文件</div>
@@ -245,11 +232,8 @@
                     <label>&nbsp;&nbsp;&nbsp;&nbsp;</label>
                     <el-upload
                       class="upload-demo"
-                      action="https://jsonplaceholder.typicode.com/posts/"
-                      :on-change="handleChange"
-                      :on-preview="handlePreview"
-                      :on-remove="handleRemove"
-                      :before-remove="beforeRemove"
+                      :action="url"
+
                     >
                       <el-button size="small" type="primary">点击上传</el-button>
                     </el-upload>
@@ -282,6 +266,14 @@
     components: {personalCenter},
     data() {
       return {
+        url: "http://localhost:8000/upload/image",
+        reportFileList:[],
+        schoolRewardList:[],
+        cityRewardList:[],
+        provinceRewardList:[],
+        countryRewardList:[],
+        qualificationList:[],
+
         activeName: 'first',
         activeNames: ['1'],
         selfinfo_form:{
@@ -321,6 +313,29 @@
         };
     },
     methods: {
+      /*上传成绩*/
+      uploadReportCardSuccess(response, file, fileList){
+        console.log("upload")
+        this.reportFileList=fileList;
+      },
+      handleReportCardRemove(file, fileList){
+        this.reportFileList=fileList;
+        console.log("remove")
+      },
+      uploadSchoolReward(response, file, fileList){
+        //this.schoolRewardList=fileList;
+        console.log(this.schoolRewardList)
+      },
+      handleSchoolRewardRemove(file, fileList){
+        //this.schoolRewardList=fileList;
+        console.log(this.schoolRewardList)
+      },
+      uploadCityReward(response, file, fileList){
+        this.cityRewardList=fileList;
+      },
+      handleCityRewardRemove(file, fileList){
+        this.cityRewardList=fileList;
+      },
       handleClick(tab, event) {
         console.log(tab, event);
       },

@@ -100,7 +100,6 @@
                         <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
                       </el-upload>
                     </el-form-item>
-
                   </el-form>
 
                   <el-form id="information" ref="form2" :model="form2" label-width="140px" class="primary_info" style="display: none">
@@ -921,19 +920,6 @@
 
     }
 
-   /* .return{
-      display: flex;
-      !*border:1px black solid;*!
-      width: 500px;
-      height: 200px;
-    }*/
-    /*.return_label{
-      width:100px;
-      height: 150px;
-      border: 1px black solid;
-      margin-right:40px;
-    }*/
-
     .primary_info{
       width:750px;
       margin-top: 50px;
@@ -950,12 +936,6 @@
       padding-bottom: 20px;
     }
 
-    /*.choose{
-      display: flex;
-      margin-left: 30%;
-      width:1000px;
-    }
-*/
     .animation_left{
       -webkit-animation:move_left 0.5s;
       -webkit-animation-iteration-count:1;

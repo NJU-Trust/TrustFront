@@ -177,9 +177,32 @@
     components: {ElCard, InvestList, personalCenter,timeLine},
     beforeCreate:function(){
       console.log("repay");
+      console.log(this.$route.params);
+      this.targetId = this.$route.params.targetId;
+      console.log("targetId in repay:"+this.targetId);
+
+      const self = this;
+      this.$axios.get('/loan/repayment/info',
+        {
+          params:{
+            targetId:this.targetId
+          }
+        }).then(
+        function (response) {
+          let res = response;
+          console.log("data in repay");
+          console.log(res.data);
+
+        }
+      ).catch(function (error) {
+        console.log("error in  repay");
+        console.log(error);
+      });
+
     },
     data() {
       return {
+        targetId:0,
         info1:{
           date1:'2018-09-02',
           date2:'2018-09-16',
