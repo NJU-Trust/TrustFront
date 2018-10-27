@@ -147,13 +147,13 @@
         console.log("uploadSuccess");
         this.base_form.school_card_proof += 'http://localhost:8000/';
         this.base_form.school_card_proof += response;
-        console.log("school_card_proof:" + this.base_form.school_card_proof);
+        //console.log("school_card_proof:" + this.base_form.school_card_proof);
       },
       uploadStuCardSuccess(response, file, fileList){
         console.log("uploadSuccess");
         this.base_form.stu_card_proof += 'http://localhost:8000/';
         this.base_form.stu_card_proof += response;
-        console.log("stu_card_proof:" + this.base_form.stu_card_proof);
+        //console.log("stu_card_proof:" + this.base_form.stu_card_proof);
       },
       submitForm(formName) {
         if(this.base_form.stu_card_proof===''||this.base_form.school_card_proof===''){
