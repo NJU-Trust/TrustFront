@@ -81,7 +81,7 @@
       return {
         activeName: 'first',
         userName: {
-          name: '南小紫',
+          name: 'test',
           sex: '女',
           age: '20',
           level: '高级账户',
@@ -157,17 +157,29 @@
       },
       submitChange()
       {
+        let username =  self.userName.name;
+        let gender = self.userName.sex;
+        let age = self.userName.age;
+        let institution = self.userName.workaddr;
+        let livingPlace = self.userName.address;
         let self = this;
-        this.$axios.post('/profile/personalInformation', {
-          username: self.userName.name,
-          gender: self.userName.sex,
-          age: self.userName.age,
-          institution: self.userName.workaddr,
-          livingPlace: self.userName.address
+        this.$axios.post('/profile/changeInformation', {
+          username: username,
+          gender: gender,
+          age: age,
+          institution: institution,
+          livingPlace: livingPlace
+
+          // username: 'tsuna',
+          // gender: '男',
+          // age: 11,
+          // institution: '南京',
+          // livingPlace: '江苏'
         })
           .then(function (response) {
             console.log(response);
             alert("修改成功！");
+            self.getUserDetails();
             self.$router.replace("/userSpace/BasicInformation");
           })
           .catch(function (response) {

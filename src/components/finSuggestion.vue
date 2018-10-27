@@ -140,11 +140,7 @@
           monthCusumptionRatio: 92,
           monthSavingRatio: 5,
         },
-        NextpayList: [
-          { paytitle : "托福考试借款项目", projectTime :"2018.9.1-2019.6.1", times:"9", interestPlus:"2862", timesA:"1", timeA:"2018.10.1", amountA:"318", timesB:"2",  timeB:"2018.11.1", amountB:"318", timesC:"3", timeC:"2018.12.1", amountC:"318" },
-          { paytitle : "CPA考试借款项目", projectTime :"2018.6.5-2018.10.5", times:"1", interestPlus:"513.33", timesA:"1", timeA:"2018.10.5", amountA:"513.33", timesB:"",  timeB:"", amountB:"", timesC:"", timeC:"", amountC:"" },
-          { paytitle : "ACCA考试借款项目", projectTime :"2018.9.7-2018.9.7", times:"12", interestPlus:"3888", timesA:"1", timeA:"2018.10.7", amountA:"324", timesB:"2",  timeB:"2018.11.7", amountB:"324", timesC:"3", timeC:"2018.12.7", amountC:"324" },
-        ],
+        NextpayList: [],
         tableData: [
           {
           month: '1',
@@ -212,6 +208,7 @@
     },
     mounted() {
       this.getConsumptionAnalysis();
+      this.getPredictSurplus();
       this.drawK();
       this.drawA();
     },
@@ -227,11 +224,65 @@
           .then((response) => {
             console.log("消费修正建议success");
             console.log(response);
-            return response;
+            console.log(response.data);
+            let res = response.data;
+            this.nextRepayAmount = res.nextPayment;
+            this.nextRepayTime = res.nextPayTime;
+            this.user.solvency = res.user.solvency/100;
+            this.user.engel = res.user.engel*100;
+            this.user.leverage = res.user.leverage/100;
+            this.user.rigid = res.user.rigid/100;
+            this.user.monthCusumptionRatio = res.user.monthConsumptionRatio*100;
+            this.user.assetLiabilityRatio = res.user.assetLiabilityRatio*100;
+            this.user.monthSavingRatio = res.user.monthSavingRatio;
+
+            //this.NextpayList = res.nextPayList; Some bugs,try another method
+            let List  = [];
+            for(let l of res.nextPayList){
+              List.push({
+                paytitle : l.payTitle,
+                projectTime : l.projectTime,
+                times: l.times,
+                interestPlus: l.interestPlus,
+                timesA: l.timesA,
+                timeA: l.timeA,
+                amountA: l.amountA,
+                timesB: l.timesB,
+                timeB: l.timeB,
+                amountB: l.amountB,
+                timesC: l.timesC,
+                timeC: l.timeC,
+                amountC: l.amountC
+              })
+            }
+
+
+
+            this.NextpayList = List;
+
+
           })
           .catch((response) => {
             console.log(response);
             console.log("消费修正建议error");
+          })
+      },
+      getPredictSurplus(){
+        console.log("预测");
+        let self = this;
+        this.$axios.get('/loan/repayment/predictSurplus',{
+          params:{
+            username:"test",
+          }
+        })
+          .then((response) => {
+            console.log("预测success");
+            console.log(response);
+            return response;
+          })
+          .catch((response) => {
+            console.log(response);
+            console.log("预测error");
           })
       },
       drawK() {
