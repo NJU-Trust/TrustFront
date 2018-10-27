@@ -41,7 +41,8 @@
                 <el-upload
                   class="upload-demo"
                   drag
-                  action="https://jsonplaceholder.typicode.com/posts/"
+                  :action='url'
+                  :onSuccess="uploadSchoolCardSuccess"
                   multiple>
                   <i class="el-icon-upload"></i>
                   <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
@@ -54,7 +55,8 @@
                 <el-upload
                   class="upload-demo"
                   drag
-                  action="https://jsonplaceholder.typicode.com/posts/"
+                  :action='url'
+                  :onSuccess="uploadStuCardSuccess"
                   multiple>
                   <i class="el-icon-upload"></i>
                   <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
@@ -82,6 +84,7 @@
     data() {
       return {
         count:0,
+        url: "http://localhost:8000/upload/image",
         base_form: {
           name: '',
           gender: '男',
@@ -90,7 +93,9 @@
           university:'',
           major:'',
           institution:'',
-          alipay:''
+          alipay:'',
+          school_card_proof: '',
+          stu_card_proof:'',
         },
         base_rules:{
           name:[
@@ -124,16 +129,82 @@
 
       }
     },
+
+    mounted:function(){
+      this.$axios.get('/verify/getRoles',{
+        params:{
+
+        }
+      }).then(function (response) {
+
+      }).catch(function (error) {
+        console.log("error:"+error)
+      });
+    },
+
     methods: {
+      uploadSchoolCardSuccess(response, file, fileList) {
+        console.log("uploadSuccess");
+        this.base_form.school_card_proof += 'http://localhost:8000/';
+        this.base_form.school_card_proof += response;
+        console.log("school_card_proof:" + this.base_form.school_card_proof);
+      },
+      uploadStuCardSuccess(response, file, fileList){
+        console.log("uploadSuccess");
+        this.base_form.stu_card_proof += 'http://localhost:8000/';
+        this.base_form.stu_card_proof += response;
+        console.log("stu_card_proof:" + this.base_form.stu_card_proof);
+      },
       submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            alert('submit!');
-          } else {
-            console.log('error submit!!');
-            return false;
-          }
-        });
+        if(this.base_form.stu_card_proof===''||this.base_form.school_card_proof===''){
+          this.$message({
+            message:"请上传学生证和校园卡照片！",
+            type:'error',
+          });
+        }else{
+          this.$refs[formName].validate((valid) => {
+            if (valid) {
+              var _this = this;
+              this.$axios.get('/verify/campus',{
+                params:{
+                  realName:_this.base_form.name,
+                  gender:_this.base_form.gender,
+                  birthday:_this.base_form.date,
+                  idCardNumber:_this.base_form.id_card,
+                  university:_this.base_form.university,
+                  institution:_this.base_form.institution,
+                  major:_this.base_form.major,
+                  alipay:_this.base_form.alipay,
+                  stuCardImage:_this.base_form.stu_card_proof,
+                  schoolCardImage:_this.base_form.school_card_proof
+                }
+              }).then(function (response) {
+                var data = response.data
+                //console.log(data)
+                if(data.success){
+                  _this.$message({
+                    message:'提交成功！',
+                    type:'success',
+                  });
+                }else{
+                  _this.$message({
+                    message:data.message,
+                    type:'error',
+                  });
+                }
+              }).catch(function (error) {
+                console.log(error)
+              });
+
+
+            } else {
+              this.$message({
+                message:"信息不完整！",
+                type:'error',
+              });
+            }
+          });
+        }
       },
       otherway(){
         this.count++;
