@@ -36,7 +36,7 @@
     components: {personalCenter,alumniNormalCheck,ordinaryNormalCheck},
     data(){
       return{
-        test:false,
+        test:true,
       }
     }
 
