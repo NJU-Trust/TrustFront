@@ -157,24 +157,18 @@
       },
       submitChange()
       {
+        let self = this;
         let username =  self.userName.name;
         let gender = self.userName.sex;
         let age = self.userName.age;
         let institution = self.userName.workaddr;
         let livingPlace = self.userName.address;
-        let self = this;
         this.$axios.post('/profile/changeInformation', {
           username: username,
           gender: gender,
           age: age,
           institution: institution,
           livingPlace: livingPlace
-
-          // username: 'tsuna',
-          // gender: '男',
-          // age: 11,
-          // institution: '南京',
-          // livingPlace: '江苏'
         })
           .then(function (response) {
             console.log(response);

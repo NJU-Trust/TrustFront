@@ -220,7 +220,33 @@
         return this.paginate(fSubjects)
       }
     },
+    mounted: function() {
+      this.getInvestManager();
+    },
     methods: {
+      getInvestManager(){
+        console.log("基础数据");
+        let self = this;
+        this.$axios.get('admin/investManager',{
+          params:{
+            page : 1,
+            pageSize : 20,
+            targetType : TargetType,
+            targetState : "targetState",
+          }
+        })
+          .then(function (response) {
+            console.log(response);
+            console.log("基础数据success");
+            console.log(response.data);
+            let res = response.data;
+          })
+          .catch(function (response) {
+            console.log(response);
+            console.log("基础数据error");
+            // alert("error")
+          });
+      },
       filterHandler(value, row, column) {
         const property = column['property'];
         return row[property] === value;
