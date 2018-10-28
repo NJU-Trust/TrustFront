@@ -57,11 +57,9 @@
             <div style="padding-left: 300px;">
               <el-upload
                 class="upload-demo"
-                action="https://jsonplaceholder.typicode.com/posts/"
-                :on-change="handleChange"
-                :on-preview="handlePreview"
-                :on-remove="handleRemove"
-                :before-remove="beforeRemove"
+                :action="url"
+                :onSuccess="uploadReportCardSuccess"
+                :on-remove="handleReportCardRemove"
                 multiple
                 :limit="16"
                 :on-exceed="handleExceed"
@@ -86,22 +84,26 @@
                   <div style="display: flex;width:400px;padding:0px 0px 10px 0px">
                     <el-input class="inputs" v-model="school_reward.value"></el-input>
                     <label>&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                    <el-upload
-                      class="upload-demo"
-                      action="https://jsonplaceholder.typicode.com/posts/"
-                      :on-change="handleChange"
-                      :on-preview="handlePreview"
-                      :on-remove="handleRemove"
-                      :before-remove="beforeRemove"
-                    >
-                      <el-button size="small" type="primary">点击上传</el-button>
-                    </el-upload>
                     <label>&nbsp;&nbsp;&nbsp;&nbsp;</label>
                     <el-button @click.prevent="remove_school_reward(school_reward)" type="danger" icon="el-icon-delete" circle></el-button>
                   </div>
                 </el-form-item>
-                <el-form-item style="float:left;" >
+                <el-form-item style="float:left; padding-bottom: 10px;" >
                   <el-button @click="add_school_reward">新增校级奖项名称</el-button>
+                </el-form-item>
+                <el-form-item style="float:left; padding-bottom: 10px;" >
+                  <el-upload
+                    class="upload-demo"
+                    :action="url"
+                    :fileList="schoolRewardList"
+                    :onSuccess="uploadSchoolReward"
+                    :on-remove="handleSchoolRewardRemove"
+                    multiple
+                    :limit="10"
+                  >
+                    <el-button type="primary">上传校级奖项凭证</el-button>
+                    <div slot="tip" class="el-upload__tip">请按所填奖项顺序上传，每项一张图片凭证，仅限jpg/png文件（每张不超过500kb）</div>
+                  </el-upload>
                 </el-form-item>
                 <br/>
               </div>
@@ -119,22 +121,26 @@
                   <div style="display: flex;width:400px;padding:0px 0px 10px 0px">
                     <el-input class="inputs" v-model="city_reward.value"></el-input>
                     <label>&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                    <el-upload
-                      class="upload-demo"
-                      action="https://jsonplaceholder.typicode.com/posts/"
-                      :on-change="handleChange"
-                      :on-preview="handlePreview"
-                      :on-remove="handleRemove"
-                      :before-remove="beforeRemove"
-                    >
-                      <el-button size="small" type="primary">点击上传</el-button>
-                    </el-upload>
                     <label>&nbsp;&nbsp;&nbsp;&nbsp;</label>
                     <el-button @click.prevent="remove_city_reward(city_reward)"  type="danger" icon="el-icon-delete" circle></el-button>
                   </div>
                 </el-form-item>
-                <el-form-item style="float:left;">
+                <el-form-item style="float:left; padding-bottom: 10px;">
                   <el-button @click="add_city_reward">新增市级奖项名称</el-button>
+                </el-form-item>
+                <el-form-item style="float:left; padding-bottom: 10px;" >
+                  <el-upload
+                    class="upload-demo"
+                    :action="url"
+                    :fileList="cityRewardList"
+                    :onSuccess="uploadCityReward"
+                    :on-remove="handleCityRewardRemove"
+                    multiple
+                    :limit="10"
+                  >
+                    <el-button type="primary">上传市级奖项凭证</el-button>
+                    <div slot="tip" class="el-upload__tip">请按所填奖项顺序上传，每项一张图片凭证，仅限jpg/png文件（每张不超过500kb）</div>
+                  </el-upload>
                 </el-form-item>
                 <br/>
               </div>
@@ -152,22 +158,26 @@
                   <div style="display: flex;width:400px;padding:0px 0px 10px 0px">
                     <el-input class="inputs" v-model="province_reward.value"></el-input>
                     <label>&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                    <el-upload
-                      class="upload-demo"
-                      action="https://jsonplaceholder.typicode.com/posts/"
-                      :on-change="handleChange"
-                      :on-preview="handlePreview"
-                      :on-remove="handleRemove"
-                      :before-remove="beforeRemove"
-                    >
-                      <el-button size="small" type="primary">点击上传</el-button>
-                    </el-upload>
                     <label>&nbsp;&nbsp;&nbsp;&nbsp;</label>
                     <el-button @click.prevent="remove_province_reward(province_reward)"  type="danger" icon="el-icon-delete" circle></el-button>
                   </div>
                 </el-form-item>
-                <el-form-item style="float:left;">
+                <el-form-item style="float:left; padding-bottom: 10px;">
                   <el-button @click="add_province_reward">新增省级奖项名称</el-button>
+                </el-form-item>
+                <el-form-item style="float:left; padding-bottom: 10px;" >
+                  <el-upload
+                    class="upload-demo"
+                    :action="url"
+                    :fileList="provinceRewardList"
+                    :onSuccess="uploadProvinceReward"
+                    :on-remove="handleProvinceRewardRemove"
+                    multiple
+                    :limit="10"
+                  >
+                    <el-button type="primary">上传省级奖项凭证</el-button>
+                    <div slot="tip" class="el-upload__tip">请按所填奖项顺序上传，每项一张图片凭证，仅限jpg/png文件（每张不超过500kb）</div>
+                  </el-upload>
                 </el-form-item>
                 <br/>
               </div>
@@ -185,22 +195,26 @@
                   <div style="display: flex;width:400px;padding:0px 0px 10px 0px">
                     <el-input class="inputs" v-model="country_reward.value"></el-input>
                     <label>&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                    <el-upload
-                      class="upload-demo"
-                      action="https://jsonplaceholder.typicode.com/posts/"
-                      :on-change="handleChange"
-                      :on-preview="handlePreview"
-                      :on-remove="handleRemove"
-                      :before-remove="beforeRemove"
-                    >
-                      <el-button size="small" type="primary">点击上传</el-button>
-                    </el-upload>
                     <label>&nbsp;&nbsp;&nbsp;&nbsp;</label>
                     <el-button @click.prevent="remove_country_reward(country_reward)"  type="danger" icon="el-icon-delete" circle></el-button>
                   </div>
                 </el-form-item>
-                <el-form-item style="float:left;">
+                <el-form-item style="float:left; padding-bottom: 10px;">
                   <el-button @click="add_country_reward">新增国家级奖项名称</el-button>
+                </el-form-item>
+                <el-form-item style="float:left; padding-bottom: 10px;" >
+                  <el-upload
+                    class="upload-demo"
+                    :action="url"
+                    :fileList="countryRewardList"
+                    :onSuccess="uploadCountryReward"
+                    :on-remove="handleCountryRewardRemove"
+                    multiple
+                    :limit="10"
+                  >
+                    <el-button type="primary">上传国级奖项凭证</el-button>
+                    <div slot="tip" class="el-upload__tip">请按所填奖项顺序上传，每项一张图片凭证，仅限jpg/png文件（每张不超过500kb）</div>
+                  </el-upload>
                 </el-form-item>
                 <br/>
               </div>
@@ -216,11 +230,9 @@
             <div style="padding-left: 300px">
               <el-upload
                 class="upload-demo"
-                action="https://jsonplaceholder.typicode.com/posts/"
-                :on-change="handleChange"
-                :on-preview="handlePreview"
-                :on-remove="handleRemove"
-                :before-remove="beforeRemove"
+                :action="url"
+                :onSuccess="uploadVolunteer"
+                :on-remove="removeVolunteer"
               >
                 <el-button size="small" type="primary">点击上传</el-button>
                 <div slot="tip" class="el-upload__tip">仅限jpg/png文件</div>
@@ -243,30 +255,35 @@
                   <div style="display: flex;width:400px;padding:0px 0px 10px 0px">
                     <el-input class="inputs" v-model="self_qualification.value"></el-input>
                     <label>&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                    <el-upload
-                      class="upload-demo"
-                      action="https://jsonplaceholder.typicode.com/posts/"
-                      :on-change="handleChange"
-                      :on-preview="handlePreview"
-                      :on-remove="handleRemove"
-                      :before-remove="beforeRemove"
-                    >
-                      <el-button size="small" type="primary">点击上传</el-button>
-                    </el-upload>
                     <label>&nbsp;&nbsp;&nbsp;&nbsp;</label>
                     <el-button @click.prevent="remove_self_qualification(self_qualification)" type="danger" icon="el-icon-delete" circle></el-button>
                   </div>
                 </el-form-item>
-                <el-form-item style="float:left;">
+                <el-form-item style="float:left; padding-bottom: 10px;">
                   <el-button @click="add_self_qualification">新增证书名称</el-button>
+                </el-form-item>
+                <el-form-item style="float:left; padding-bottom: 10px;" >
+                  <el-upload
+                    class="upload-demo"
+                    :action="url"
+                    :fileList="qualificationList"
+                    :onSuccess="uploadQualification"
+                    :on-remove="handleQualificationRemove"
+                    multiple
+                    :limit="10"
+                  >
+                    <el-button type="primary">上传证书凭证</el-button>
+                    <div slot="tip" class="el-upload__tip">请按所填证书顺序上传，每项一张图片凭证，仅限jpg/png文件（每张不超过500kb）</div>
+                  </el-upload>
                 </el-form-item>
                 <br/>
               </div>
             </el-form-item>
           </div>
           <div style="text-align: justify;float:right;">
-            <el-button type="primary" round>提交</el-button>
+            <el-button type="primary" round @click="submitForm('selfinfo_form')">提交</el-button>
           </div>
+
 
         </el-form>
       </el-tab-pane>
@@ -282,6 +299,14 @@
     components: {personalCenter},
     data() {
       return {
+        url: "http://localhost:8000/upload/image",
+        reportFileList:[],
+        schoolRewardList:[],
+        cityRewardList:[],
+        provinceRewardList:[],
+        countryRewardList:[],
+        qualificationList:[],
+
         activeName: 'first',
         activeNames: ['1'],
         selfinfo_form:{
@@ -321,17 +346,60 @@
         };
     },
     methods: {
+      /*上传成绩*/
+      uploadReportCardSuccess(response, file, fileList){
+        console.log("upload")
+        this.reportFileList=fileList;
+      },
+      handleReportCardRemove(file, fileList){
+        this.reportFileList=fileList;
+        console.log("remove")
+      },
+      /*上传志愿时长*/
+      uploadVolunteer(response, file, fileList){
+        this.selfinfo_form.volunteer_img += 'http://localhost:8000/'
+        this.selfinfo_form.volunteer_img += response;
+      },
+      removeVolunteer(file, fileList){
+        this.selfinfo_form.volunteer_img="";
+      },
+      uploadSchoolReward(response, file, fileList){
+        this.schoolRewardList=fileList;
+        //console.log(this.schoolRewardList)
+      },
+      handleSchoolRewardRemove(file, fileList){
+        this.schoolRewardList=fileList;
+        //console.log(this.schoolRewardList)
+      },
+      uploadCityReward(response, file, fileList){
+        this.cityRewardList=fileList;
+      },
+      handleCityRewardRemove(file, fileList){
+        this.cityRewardList=fileList;
+      },
+      uploadProvinceReward(response, file, fileList){
+        this.provinceRewardList=fileList;
+      },
+      handleProvinceRewardRemove(file, fileList){
+        this.provinceRewardList=fileList;
+      },
+      uploadCountryReward(response, file, fileList){
+        this.countryRewardList=fileList;
+      },
+      handleCountryRewardRemove(file, fileList){
+        this.countryRewardList=fileList;
+      },
+      uploadQualification(response, file, fileList){
+        this.qualificationList=fileList;
+      },
+      handleQualificationRemove(file, fileList){
+        this.qualificationList=fileList;
+      },
       handleClick(tab, event) {
         console.log(tab, event);
       },
-      handleChange(val) {
-        console.log(val);
-      },
       handleRemove(file, fileList) {
         console.log(file, fileList);
-      },
-      handlePreview(file) {
-        console.log(file);
       },
       add_school_reward() {
         this.selfinfo_form.school_rewards.push({
@@ -341,9 +409,8 @@
       },
       remove_school_reward(item) {
         var index = this.selfinfo_form.school_rewards.indexOf(item)
-        if (index !== -1) {
-          this.selfinfo_form.school_rewards.splice(index, 1)
-        }
+        this.selfinfo_form.school_rewards.splice(index, 1)
+
       },
       add_city_reward() {
         this.selfinfo_form.city_rewards.push({
@@ -353,9 +420,8 @@
       },
       remove_city_reward(item) {
         var index = this.selfinfo_form.city_rewards.indexOf(item)
-        if (index !== -1) {
-          this.selfinfo_form.city_rewards.splice(index, 1)
-        }
+        this.selfinfo_form.city_rewards.splice(index, 1)
+
       },
       add_province_reward() {
         this.selfinfo_form.province_rewards.push({
@@ -365,9 +431,7 @@
       },
       remove_province_reward(item) {
         var index = this.selfinfo_form.province_rewards.indexOf(item)
-        if (index !== -1) {
-          this.selfinfo_form.province_rewards.splice(index, 1)
-        }
+        this.selfinfo_form.province_rewards.splice(index, 1)
       },
       add_country_reward() {
         this.selfinfo_form.country_rewards.push({
@@ -377,9 +441,8 @@
       },
       remove_country_reward(item) {
         var index = this.selfinfo_form.country_rewards.indexOf(item)
-        if (index !== -1) {
-          this.selfinfo_form.country_rewards.splice(index, 1)
-        }
+        this.selfinfo_form.country_rewards.splice(index, 1)
+
       },
       add_self_qualification() {
         this.selfinfo_form.self_qualifications.push({
@@ -389,15 +452,8 @@
       },
       remove_self_qualification(item) {
         var index = this.selfinfo_form.self_qualifications.indexOf(item)
-        if (index !== -1) {
-          this.selfinfo_form.self_qualifications.splice(index, 1)
-        }
-      },
-      handleRemove(file, fileList) {
-        console.log(file, fileList);
-      },
-      handlePreview(file) {
-        console.log(file);
+        this.selfinfo_form.self_qualifications.splice(index, 1)
+
       },
       handleExceed(files, fileList) {
         this.$message.warning(`当前限制选择 16 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
@@ -405,9 +461,87 @@
       beforeRemove(file, fileList) {
         return this.$confirm(`确定移除 ${ file.name }？`);
       },
-      handleChange(file, fileList) {
-        this.selfinfo_form.report_cards = fileList.slice(-3);
-      }
+      submitForm(formName) {
+        if(this.reportFileList.length===0||this.selfinfo_form.volunteer_img===''){
+          this.$message({
+            message:"必须上传成绩单和志愿图片凭证！",
+            type:'error',
+          });
+        }else if(this.selfinfo_form.school_rewards.length!=this.schoolRewardList.length||
+          this.selfinfo_form.city_rewards.length!=this.cityRewardList.length||
+          this.selfinfo_form.province_rewards.length!=this.provinceRewardList.length||
+          this.selfinfo_form.country_rewards.length!=this.countryRewardList.length||
+          this.selfinfo_form.self_qualifications.length!=this.qualificationList.length){
+          this.$message({
+            message:"上传的奖项、证书凭证与描述个数不匹配！",
+            type:'error',
+          });
+        }else{
+          this.$refs[formName].validate((valid) => {
+            if (valid) {
+              //console.log(this.reportFileList)
+              for(var i=0;i<this.reportFileList.length;i++){
+                this.selfinfo_form.report_cards[i]=('http://localhost:8000/'+this.reportFileList[i].response)
+              }
+              //console.log(this.selfinfo_form.report_cards)
+              //console.log(this.selfinfo_form.school_rewards)
+              for(var i=0;i<this.schoolRewardList.length;i++){
+                this.selfinfo_form.school_rewards[i].file=('http://localhost:8000/'+this.schoolRewardList[i].response)
+              }
+              //console.log(this.selfinfo_form.school_rewards)
+              for(var i=0;i<this.cityRewardList.length;i++){
+                this.selfinfo_form.city_rewards[i].file=('http://localhost:8000/'+this.cityRewardList[i].response)
+              }
+              for(var i=0;i<this.provinceRewardList.length;i++){
+                this.selfinfo_form.province_rewards[i].file=('http://localhost:8000/'+this.provinceRewardList[i].response)
+              }
+              for(var i=0;i<this.countryRewardList.length;i++){
+                this.selfinfo_form.country_rewards[i].file=('http://localhost:8000/'+this.countryRewardList[i].response)
+              }
+              for(var i=0;i<this.qualificationList.length;i++){
+                this.selfinfo_form.self_qualifications[i].file=('http://localhost:8000/'+this.qualificationList[i].response)
+              }
+
+              var _this = this;
+              this.$axios.post('/verify/selfInfo',{
+                  fail:_this.selfinfo_form.fail,
+                  report_cards:_this.selfinfo_form.report_cards,
+                  school_rewards:_this.selfinfo_form.school_rewards,
+                  city_rewards:_this.selfinfo_form.city_rewards,
+                  province_rewards:_this.selfinfo_form.province_rewards,
+                  country_rewards:_this.selfinfo_form.country_rewards,
+                  country_rewards:_this.selfinfo_form.country_rewards,
+                  volunteer:_this.volunteer,
+                  volunteer_img:_this.volunteer_img,
+                  self_qualifications:_this.selfinfo_form.self_qualifications
+              }).then(function (response) {
+                var data = response.data
+                console.log("data:")
+                console.log(data)
+                if(data.success){
+                  _this.$message({
+                    message:'提交成功！',
+                    type:'success',
+                  });
+                }else{
+                  _this.$message({
+                    message:data.message,
+                    type:'error',
+                  });
+                }
+              }).catch(function (error) {
+                console.log(error)
+              });
+
+            } else {
+              this.$message({
+                message:"信息不完整！",
+                type:'error',
+              });
+            }
+          });
+        }
+      },
     }
   }
 

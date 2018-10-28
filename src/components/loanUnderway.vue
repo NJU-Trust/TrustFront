@@ -53,35 +53,15 @@
           align="center"
         >
           <template slot-scope="scope">
-            <a href="/userSpace/repay"><el-button
+            <el-button
               size="mini"
-              @click="">查看</el-button></a>
+              @click="getRepayDetail(scope.row.targetId,scope.row.name)">查看</el-button>
           </template>
         </el-table-column>
 
       </el-table>
     </div>
 
-    <div class="projectPanel">
-      <div class="projectPages">
-
-      </div>
-      <div id="poj_pagination" class="poj_pagination">
-        <div class="block">
-          <!--<span class="demonstration">完整功能</span>-->
-          <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="currentPage1"
-            :page-sizes="[10, 20, 30, 40]"
-            :page-size="10"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="40">
-          </el-pagination>
-        </div>
-      </div>
-
-    </div>
   </div>
 
 </template>
@@ -89,44 +69,62 @@
 <script>
     export default {
         name: "loan-underway",
+        beforeCreate:function(){
+
+        },
         data(){
           return{
-            currentPage1: 2,
-            tableData:[{
-              name:'托福考试借款项目',
-              date:'2018/9/1',
-              year_rate:'8%',
-              num:9,
-              principal_and_interest:2862,
-              next_return:'2018/10/1',
-              money:318,
-            }, {
-              name:'CPA考试借款项目',
-              date:'2018/6/5',
-              year_rate:'8%',
-              num:9,
-              principal_and_interest:513.33,
-              next_return:'2018/10/1',
-              money:513.33,
-            }, {
-              name:'ACCA考试借款项目',
-              date:'2018/9/7',
-              year_rate:'8%',
-              num:12,
-              principal_and_interest:3888,
-              next_return:'2018/10/7',
-              money:324,
-            }, ],
+            a:{
+              targetId:0,
+              targetName:''
+            },
+            tableData:[],
           }
         },
       methods: {
-        handleSizeChange(val) {
-          console.log(`每页 ${val} 条`);
+
+        getTableData(moneyUpper,moneyLower,targetType,name,startDate,endDate){
+          console.log(moneyUpper,moneyLower,targetType,name,startDate,endDate);
+          this.tableData = [];
+          var list = [];
+          const self = this;
+          this.$axios.post('/loan/info/ongoing',{
+            moneyUpper:moneyUpper,
+            moneyLower:moneyLower,
+            targetType:targetType,
+            name:name,
+            startDate:startDate,
+            endDate:endDate
+          }).then(
+            function(response){
+              console.log(response.data);
+              list = response.data;
+
+              for(var i=0;i<list.length;i++){
+                self.tableData.push({name:list[i].name, date:list[i].releaseDate, year_rate:list[i].interestRate,
+                  num:list[i].remainingRepaidPeriods, principal_and_interest:list[i].remainingMoney,
+                  next_return:list[i].nextDueDate,money:list[i].repayMoney,targetId:list[i].targetId});
+              }
+              console.log("tableData:");
+              console.log(self.tableData);
+
+            }
+          ).catch(function (error) {
+            console.log("error in Underway");
+            console.log(error);
+          });
+
         },
-        handleCurrentChange(val) {
-          console.log(`当前页: ${val}`);
+
+        getRepayDetail(targetId,targetName){
+          console.log("targetId in loanUnderway:"+targetId);
+          this.a.targetId = targetId;
+          this.a.targetName = targetName;
+         //console.log("a in loanUnderway:"+this.a.targetId);
+          this.$router.push({name:'repay',params:this.a});
         }
-      },
+
+      },// end method
     }
 </script>
 

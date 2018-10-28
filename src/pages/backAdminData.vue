@@ -110,6 +110,10 @@
     beforeCreate:function(){
       localStorage.route = "";
     },
+    mounted: function() {
+      this.getBaseData();
+      this.getBaseBreakContract();
+    },
     methods:{
       change11(){
         document.getElementById("default_info").style.display = "none";
@@ -119,6 +123,46 @@
         document.getElementById("default_info").style.display = "inline";
         document.getElementById("basic_data").style.display = "none";
       },
+      getBaseData(){
+        console.log("基础数据");
+        let self = this;
+        this.$axios.get('/adminData/base',{
+          params:{
+
+          }
+        })
+          .then(function (response) {
+            console.log(response);
+            console.log("基础数据success");
+            console.log(response.data);
+            let res = response.data;
+          })
+          .catch(function (response) {
+            console.log(response);
+            console.log("基础数据error");
+            // alert("error")
+          });
+      },
+      getBaseBreakContract(){
+        console.log("违约记录");
+        let self = this;
+        this.$axios.get('/adminData/base',{
+          params:{
+
+          }
+        })
+          .then(function (response) {
+            console.log(response);
+            console.log("违约记录success");
+            console.log(response.data);
+            let res = response.data;
+          })
+          .catch(function (response) {
+            console.log(response);
+            console.log("违约记录error");
+            // alert("error")
+          });
+      }
     },
 
     data(){

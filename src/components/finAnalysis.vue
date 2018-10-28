@@ -50,18 +50,21 @@
     </div><br/>
     <div id="bar_info" style="display: inline">
      <finbars
+       :username="username"
        v-bind:monthBarStart="month_start"
        v-bind:monthBarEnd="month_end">
      </finbars>
     </div>
     <div id="line_info" style="display: none">
       <finlines
+        :username="username"
         v-bind:monthLineStart="month_start"
         v-bind:monthLineEnd="month_end"
       ></finlines>
     </div>
     <div id="pie_info" style="display: none">
       <finpies
+        :username="username"
         v-bind:monthPie="month_single"
       ></finpies>
     </div>
@@ -145,6 +148,7 @@
   export default {
     name: 'finAnalysis',
     components: {Finbars, Finlines, Finpies},
+    props:["username"],
     data() {
       var myDate = new Date();//获取系统当前时间
       var initDate = myDate.getFullYear()+'-'+myDate.getMonth();

@@ -23,8 +23,14 @@
       >
       </el-table-column>
       <el-table-column
-        prop="start_to_end"
-        label="起止时间"
+        prop="start_date"
+        label="开始日期"
+        align="center"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="end_date"
+        label="截止日期"
         align="center"
       >
       </el-table-column>
@@ -42,7 +48,7 @@
         <template slot-scope="scope">
           <el-button
             size="mini"
-            @click="">查看</el-button>
+            @click="getRepayDetail(scope.row.targetId,scope.row.name)">查看</el-button>
         </template>
       </el-table-column>
 
@@ -51,20 +57,6 @@
     <div class="projectPanel">
       <div class="projectPages">
 
-      </div>
-      <div id="poj_pagination" class="poj_pagination">
-        <div class="block">
-          <!--<span class="demonstration">完整功能</span>-->
-          <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="currentPage1"
-            :page-sizes="[10, 20, 30, 40]"
-            :page-size="10"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="40">
-          </el-pagination>
-        </div>
       </div>
 
     </div>
@@ -76,34 +68,53 @@
         name: "loan-complete",
         data(){
           return{
-            currentPage1: 2,
-            tableData:[{
-              name:'创新创业项目经费',
-              money:2000,
-              year_rate:'1.9%',
-              start_to_end:'2017/11/1-2018/3/31',
-              state:'已结束'
-            }, {
-              name:'购买IPAD',
-              money:3557,
-              year_rate:'6.8%',
-              start_to_end:'2018/2/23-2018/7/31',
-              state:'已结束'
-            }, {
-              name:'参加托福培训',
-              money:6000,
-              year_rate:'3.21%',
-              start_to_end:'2018/2/23-2018/7/31',
-              state:"已结束"
-            }],
+            a:{
+              targetId:0,
+              targetName:''
+            },
+            tableData:[],
           }//end return
         },
       methods: {
-        handleSizeChange(val) {
-          console.log(`每页 ${val} 条`);
+
+        getTableData(moneyUpper,moneyLower,targetType,name,startDate,endDate){
+          console.log(moneyUpper,moneyLower,targetType,name,startDate,endDate);
+          this.tableData = [];
+          var list = [];
+          const self = this;
+          this.$axios.post('/loan/info/complete',{
+            moneyUpper:moneyUpper,
+            moneyLower:moneyLower,
+            targetType:targetType,
+            name:name,
+            startDate:startDate,
+            endDate:endDate
+          }).then(
+            function(response){
+              console.log(response.data);
+              list = response.data;
+
+              for(var i=0;i<list.length;i++){
+                self.tableData.push({name:list[i].name, money:list[i].money, year_rate:list[i].interestRate,
+                  start_date:list[i].duration[0],end_date:list[i].duration[1],state:list[i].state,targetId:list[i].targetId});
+              }
+              console.log("tableData:");
+              console.log(self.tableData);
+
+            }
+          ).catch(function (error) {
+            console.log("error in Underway");
+            console.log(error);
+          });
+
         },
-        handleCurrentChange(val) {
-          console.log(`当前页: ${val}`);
+
+        getRepayDetail(targetId,targetName){
+          console.log("targetId in loanUnderway:"+targetId);
+          this.a.targetId = targetId;
+          this.a.targetName = targetName;
+          //console.log("a in loanUnderway:"+this.a.targetId);
+          this.$router.push({name:'repay',params:this.a});
         }
       },
     }

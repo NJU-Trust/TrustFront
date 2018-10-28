@@ -6,14 +6,17 @@
         <div style="display: flex;padding-top: 20px">
 
           <el-card class="info1" v-model="info1" shadow="always" :class="info1" align="center">
+            <p>项目名称</p>
+            <span>{{this.targetName}}</span>
+            <br><br>
             <p >发布日期</p>
             <span>{{info1.date1}}</span>
-            <br><br><br>
+            <br><br>
             <p>截止日期</p>
             <span>{{info1.date2}}</span>
-            <br><br><br>
+            <!--<br><br><br>
             <p>下个还款日</p>
-            <span>{{info1.late_date}}</span>
+            <span>{{info1.late_date}}</span>-->
           </el-card>
 
           <el-card class="main_info" v-model="info2" align="center" shadow="always">
@@ -35,37 +38,37 @@
             </div>
 
             <div style="margin-top: 40px;">
-              <el-progress type="circle" :percentage="25" width="110"></el-progress>
+              <el-progress type="circle" :percentage=percentage width="110"></el-progress>
             </div>
           </el-card>
         </div>
         <hr>
         <div class="title2">项目概要</div>
         <div style="display: flex">
-          <el-card align="center" shadow="always" style="width: 320px;height: 300px;margin-top: 20px">
+          <el-card v-model="info3" align="center" shadow="always" style="width: 320px;height: 300px;margin-top: 20px">
             <div class="title">
               资金用途
             </div>
 
             <div class="usage" style="margin-top: 50px">
-              分类：学习/购买学习用品
+              分类：{{info3.purpose}}
             </div>
             <div class="usage">
-              详述：买了文具和笔
+              详述：{{info3.projectDescription}}
             </div>
 
           </el-card>
 
-          <el-card align="center" shadow="always" style="width: 450px;margin-left: 50px;margin-top: 20px">
+          <el-card align="center" shadow="always" style="width: 450px;margin-left: 50px;margin-top: 20px" v-model="info4">
             <div class="title">
               关于贷款
             </div>
 
-            <div class="usage" style="margin-top: 30px">拆借类型：小额</div>
-            <div class="usage">年利率：5%</div>
-            <div class="usage">待还款期数：3</div>
-            <div class="usage">待还本息：300元</div>
-            <div class="usage">披露层级：2</div>
+            <div class="usage" style="margin-top: 30px">拆借类型：{{info4.type}}</div>
+            <div class="usage">年利率：{{info4.rate}}%</div>
+            <div class="usage">待还款期数：{{info4.period}}</div>
+            <div class="usage">待还本息：{{info4.remainMoney}}元</div>
+            <div class="usage">披露层级：{{info4.layer}}</div>
 
           </el-card>
 
@@ -99,12 +102,12 @@
           <timeLine :recordList="recordList"></timeLine>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="违约情况" name="fifth">
-        <div style="font-size: 30px;margin-top: 140px;margin-left: 160px;display: none">
+      <el-tab-pane label="违约情况" name="third">
+        <div style="font-size: 30px;margin-top: 140px;margin-left: 160px" v-show="this.isDefault === false">
           恭喜您，截止目前，您并未出现违约情况！
         </div>
 
-        <div>
+        <div v-show="this.isDefault">
           <div style="font-size: 20px;margin: 20px">
             截止目前，您在本款项目中共产生了 <span style="font-size: 24px;color:#409EFF">2</span> 次违约情况.
           </div>
@@ -175,20 +178,43 @@
   export default {
     name:"repay",
     components: {ElCard, InvestList, personalCenter,timeLine},
-    beforeCreate:function(){
+    mounted:function(){
       console.log("repay");
+      console.log(this.$route.params);
+      this.targetId = this.$route.params.targetId;
+      this.targetName = this.$route.params.targetName;
+      console.log("targetId in repay:"+this.targetId);
+
+
+      this.getRepayInfo();
     },
     data() {
       return {
+        targetId:0,
+        targetName:'',
+        percentage:25,
+        isDefault:true,
         info1:{
+          name:'项目名称',
           date1:'2018-09-02',
           date2:'2018-09-16',
-          late_date:'2018-09-07',
+
         },
         info2:{
-          name:'项目名称',
+          late_date:'2018-09-07',
           days:0,
           money:50
+        },
+        info3:{
+          purpose:'',
+          projectDescription:''
+        },
+        info4:{
+          type:'',
+          rate:'',
+          period:'',
+          remainMoney:'',
+          layer:''
         },
         return_scheme:{
           return_way:'等额本金',
@@ -254,9 +280,105 @@
     },
     methods: {
       handleClick(tab, event) {
-        console.log(tab, event);
+
+        console.log("activeName:"+this.activeName);
+        if(this.activeName === "first"){
+          this.getRepayInfo();
+        }else if(this.activeName === "second"){
+          this.getRepayAnalysis();
+        }else if(this.activeName === "third"){
+          this.getUnbelievable();
+        }
       },
-    }
+
+      getRepayInfo(){
+        const self = this;
+        this.$axios.get('/loan/repayment/info',
+          {
+            params:{
+              targetId:this.targetId
+            }
+          }).then(
+          function (response) {
+            let res = response;
+            console.log("data in repay info");
+            console.log(res.data);
+
+
+            self.info1.date2 = res.data.recruitmentDeadline;
+            self.info1.late_date = res.data.nextDueDate;
+
+            self.info2.date1 = res.data.releaseDate;
+            self.info2.days = res.data.remainingDay;
+            self.info2.money = res.data.repay;
+
+            self.percentage = res.data.unrepaidProportion;
+
+            self.info3.purpose = res.data.purpose;
+            self.info3.projectDescription = res.data.projectDescription;
+
+          }
+        ).catch(function (error) {
+          console.log("error in  repay info");
+          console.log(error);
+        });
+      },
+
+      getRepayAnalysis(){
+
+        const self = this;
+        this.$axios.get('/loan/repayment/analysis',
+          {
+            params:{
+              targetId:this.targetId
+            }
+          }).then(
+          function (response) {
+            let res = response;
+            console.log("data in repay analysis");
+            console.log(res.data);
+
+
+
+          }
+        ).catch(function (error) {
+          console.log("error in  repay info");
+          console.log(error);
+        });
+      },
+
+      getUnbelievable(){
+        const self = this;
+        this.$axios.get('/loan/repayment/default',
+          {
+            params:{
+              targetId:this.targetId
+            }
+          }).then(
+          function (response) {
+            let res = response;
+            console.log("data in repay default");
+            console.log(res.data);
+
+            var data = res.data;
+            if(data.length === 0){
+              self.isDefault = false;
+            }else{
+              self.tableData = [];
+              for(var i=0;i<data.length;i++){
+                self.tableData.push({ID:i,return_date:data[i].repayDate,actual_date:data[i].actualDate,
+                  return_money:data[i].currentAmmountDue,days:data[i].overDueDays,punish_money:data[i].overDueFine,
+                  current_state:data[i].state});
+              }
+            }
+          }
+        ).catch(function (error) {
+          console.log("error in  repay default");
+          console.log(error);
+        });
+      }
+
+    }// end method
   }
 
 

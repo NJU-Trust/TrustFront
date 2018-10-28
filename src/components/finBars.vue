@@ -84,6 +84,7 @@
 
   export default {
     name: 'finbars',
+    props:["username"],
     data() {
       return{
         user:{
@@ -136,7 +137,7 @@
         let self = this;
         this.$axios.get('/profile/dataAnalysis',{
           params:{
-            username:"test",
+            username:self.username,
             startMonth: this.monthBarStart,
             endMonth: this.monthBarEnd
           }

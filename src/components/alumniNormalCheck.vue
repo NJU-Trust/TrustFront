@@ -6,7 +6,7 @@
         <el-form-item label="姓名" prop="name">
           <el-input style="width:267px;" v-model="base_form.name"></el-input>
         </el-form-item>
-        <el-form-item label="性别" prop="gender">
+        <el-form-item label="性别">
           <template>
             <el-radio v-model="base_form.gender" label="男">男</el-radio>
             <el-radio v-model="base_form.gender" label="女">女</el-radio>
@@ -21,17 +21,18 @@
           <el-input class="inputs" v-model="base_form.id_card"></el-input>
         </el-form-item>
         <div style="display:flex;">
-          <el-form-item label="学历" prop="university">
-            <el-input class="inputs" v-model="base_form.university"></el-input>
+          <el-form-item label="学历">
+            <template>
+              <el-radio v-model="base_form.university" label="本科毕业"></el-radio>
+              <el-radio v-model="base_form.university" label="研究生毕业"></el-radio>
+              <el-radio v-model="base_form.university" label="博士毕业"></el-radio>
+            </template>
           </el-form-item>
           <label>&nbsp;&nbsp;&nbsp;&nbsp;</label>
           <el-upload
             class="upload-demo"
-            action="https://jsonplaceholder.typicode.com/posts/"
-            :on-change="handleChange"
-            :on-preview="handlePreview"
-            :on-remove="handleRemove"
-            :before-remove="beforeRemove"
+            :action='url'
+            :onSuccess="uploadGraduate"
           >
             <el-button type="primary">点击上传</el-button>
             <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
@@ -41,42 +42,6 @@
         <el-form-item label="工作单位及职务" prop="institution">
           <el-input class="inputs" v-model="base_form.institution"></el-input>
         </el-form-item>
-        <!--<div style="display:flex;">
-          <el-form-item label="职务" prop="major">
-            <el-input class="inputs" v-model="base_form.major"></el-input>
-          </el-form-item>
-          <label>&nbsp;&nbsp;&nbsp;&nbsp;</label>
-          <el-upload
-            class="upload-demo"
-            action="https://jsonplaceholder.typicode.com/posts/"
-            :on-change="handleChange"
-            :on-preview="handlePreview"
-            :on-remove="handleRemove"
-            :before-remove="beforeRemove"
-          >
-            <el-button type="primary">点击上传</el-button>
-            <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-            <slot type="tip">请上传您的工作单位证，仅限jpg与png文件</slot>
-          </el-upload>
-        </div>-->
-        <!--<div style="display:flex;">
-          <el-form-item label="年收入" prop="year_income">
-            <el-input class="inputs" v-model="base_form.year_income"></el-input>
-          </el-form-item>
-          <label>&nbsp;&nbsp;&nbsp;&nbsp;</label>
-          <el-upload
-            class="upload-demo"
-            action="https://jsonplaceholder.typicode.com/posts/"
-            :on-change="handleChange"
-            :on-preview="handlePreview"
-            :on-remove="handleRemove"
-            :before-remove="beforeRemove"
-          >
-            <el-button type="primary">点击上传</el-button>
-            <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-            <slot type="tip">请上传您的收入证明，仅限jpg与png文件</slot>
-          </el-upload>
-        </div>-->
         <el-form-item label="现居住地" prop="living_place">
           <el-input class="inputs" v-model="base_form.living_place"></el-input>
         </el-form-item>
@@ -99,25 +64,21 @@
       name: "alumniNormalCheck",
       data() {
         return {
-          count:0,
+          url: "http://localhost:8000/upload/image",
           base_form: {
             name: '',
             gender: '男',
             date: '',
             id_card:'',
-            university:'',
-            major:'',
+            university:'本科毕业',
+            evidence:'',
             institution:'',
-            //year_income:'',
             living_place:'',
           },
           base_rules:{
             name:[
               {required:true, message:'请输入您的姓名',trigger:'blur'},
               {min:1,max:6, message:'长度在1-6之间', trigger:'blur'}
-            ],
-            gender:[
-              {required:true}
             ],
             date:[
               {type:'date', required:true, message:'请选择出生日期', trigger:'change'}
@@ -126,159 +87,77 @@
               {required:true, message:'请输入您的身份证',trigger:'blur'},
               {min:15,max:18, message:'长度为15或18', trigger:'blur'}
             ],
-            university:[
-              {required:true, message:'请输入您的大学',trigger:'blur'}
-            ],
             major:[
               {required:true, message:'请输入您的专业',trigger:'blur'}
             ],
             institution:[
               {required:true, message:'请输入您的学院',trigger:'blur'}
             ],
-            /*year_income:[
-              {required:true, message:'请输入您的年收入',trigger:'blur'}
-            ],*/
             living_place:[
               {required:true, message:'请输入您的居住地信息',trigger:'blur'}
             ]
           },
-          /*selfinfo_form:{
-            fail:'',
-            report_cards: [],
-            income:[false,false,false,false,false,false],
-            income_description:'',
-            volunteer:'',
-            school_rewards: [{
-              value: '',
-              file:'',
-            }],
-            city_rewards: [{
-              value: '',
-              file:'',
-            }],
-            province_rewards: [{
-              value: '',
-              file:'',
-            }],
-            country_rewards: [{
-              value: '',
-              file:'',
-            }],
-            self_qualifications: [{
-              value: '',
-              file:'',
-            }],
-          },*/
-          /*selfinfo_rules:{
-            fail:[
-              {required:true,type: 'number', message: '必须为数字值'}
-            ],
-            volunteer:[
-              {required:true,type: 'number', message: '必须为数字值'}
-            ],
-            income:[
-              {required:true, message: '收入来源不能为空'}
-            ],
-            income_description:[
-              {required:true, message: '描述不能为空'}
-            ]
-          },*/
-          //img
 
         }
       },
       methods: {
-        submitForm(formName) {
-          this.$refs[formName].validate((valid) => {
-            if (valid) {
-              alert('submit!');
-            } else {
-              console.log('error submit!!');
-              return false;
-            }
-          });
+        uploadGraduate(response, file, fileList){
+          console.log("uploadSuccess");
+          this.base_form.evidence+= 'http://localhost:8000/';
+          this.base_form.evidence+=response;
         },
-        otherway(){
-          this.count++;
+        submitForm(formName) {
+          if(this.base_form.university===''){
+            this.$message({
+              message:"请上传学历证明！",
+              type:'error',
+            });
+          }else{
+            this.$refs[formName].validate((valid) => {
+              if (valid) {
+                var _this = this;
+                this.$axios.get('/verify/alumnaVerify',{
+                  params:{
+                    gender:_this.base_form.gender,
+                    birthday: _this.base_form.date,
+                    idCardNumber:_this.base_form.id_card,
+                    education:_this.base_form.university,
+                    evidence:_this.base_form.evidence,
+                    //institution:_this.base_form.institution,
+                    //livingPlace:_this.base_form.living_place
+                  }
+                }).then(function (response) {
+                  var data = response.data
+                  //console.log(data)
+                  if(data.success){
+                    _this.$message({
+                      message:'提交成功！',
+                      type:'success',
+                    });
+                  }else{
+                    _this.$message({
+                      message:data.message,
+                      type:'error',
+                    });
+                  }
+                }).catch(function (error) {
+                  console.log(error)
+                });
+
+
+              } else {
+                this.$message({
+                  message:"信息不完整！",
+                  type:'error',
+                });
+              }
+            });
+          }
         },
         resetForm(formName) {
           this.$refs[formName].resetFields();
         },
-        /*add_school_reward() {
-          this.selfinfo_form.school_rewards.push({
-            value: '',
-            key: Date.now()
-          });
-        },
-        remove_school_reward(item) {
-          var index = this.selfinfo_form.school_rewards.indexOf(item)
-          if (index !== -1) {
-            this.selfinfo_form.school_rewards.splice(index, 1)
-          }
-        },
-        add_city_reward() {
-          this.selfinfo_form.city_rewards.push({
-            value: '',
-            key: Date.now()
-          });
-        },
-        remove_city_reward(item) {
-          var index = this.selfinfo_form.city_rewards.indexOf(item)
-          if (index !== -1) {
-            this.selfinfo_form.city_rewards.splice(index, 1)
-          }
-        },
-        add_province_reward() {
-          this.selfinfo_form.province_rewards.push({
-            value: '',
-            key: Date.now()
-          });
-        },
-        remove_province_reward(item) {
-          var index = this.selfinfo_form.province_rewards.indexOf(item)
-          if (index !== -1) {
-            this.selfinfo_form.province_rewards.splice(index, 1)
-          }
-        },
-        add_country_reward() {
-          this.selfinfo_form.country_rewards.push({
-            value: '',
-            key: Date.now()
-          });
-        },
-        remove_country_reward(item) {
-          var index = this.selfinfo_form.country_rewards.indexOf(item)
-          if (index !== -1) {
-            this.selfinfo_form.country_rewards.splice(index, 1)
-          }
-        },
-        add_self_qualification() {
-          this.selfinfo_form.self_qualifications.push({
-            value: '',
-            key: Date.now()
-          });
-        },
-        remove_self_qualification(item) {
-          var index = this.selfinfo_form.self_qualifications.indexOf(item)
-          if (index !== -1) {
-            this.selfinfo_form.self_qualifications.splice(index, 1)
-          }
-        },*/
-        handleRemove(file, fileList) {
-          console.log(file, fileList);
-        },
-        handlePreview(file) {
-          console.log(file);
-        },
-        handleExceed(files, fileList) {
-          //this.$message.warning(`当前限制选择 16 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
-        },
-        beforeRemove(file, fileList) {
-          //return this.$confirm(`确定移除 ${ file.name }？`);
-        },
-        handleChange(file, fileList) {
-          this.selfinfo_form.report_cards = fileList.slice(-3);
-        }
+
       },
     }
 </script>

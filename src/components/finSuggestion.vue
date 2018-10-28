@@ -123,6 +123,7 @@
   export default {
     name: 'finSuggestion',
     components: {Nextpay, InvestList},
+    props:["username"],
     data() {
       return {
         nextRepayAmount:318,
@@ -140,11 +141,7 @@
           monthCusumptionRatio: 92,
           monthSavingRatio: 5,
         },
-        NextpayList: [
-          { paytitle : "托福考试借款项目", projectTime :"2018.9.1-2019.6.1", times:"9", interestPlus:"2862", timesA:"1", timeA:"2018.10.1", amountA:"318", timesB:"2",  timeB:"2018.11.1", amountB:"318", timesC:"3", timeC:"2018.12.1", amountC:"318" },
-          { paytitle : "CPA考试借款项目", projectTime :"2018.6.5-2018.10.5", times:"1", interestPlus:"513.33", timesA:"1", timeA:"2018.10.5", amountA:"513.33", timesB:"",  timeB:"", amountB:"", timesC:"", timeC:"", amountC:"" },
-          { paytitle : "ACCA考试借款项目", projectTime :"2018.9.7-2018.9.7", times:"12", interestPlus:"3888", timesA:"1", timeA:"2018.10.7", amountA:"324", timesB:"2",  timeB:"2018.11.7", amountB:"324", timesC:"3", timeC:"2018.12.7", amountC:"324" },
-        ],
+        NextpayList: [],
         tableData: [
           {
           month: '1',
@@ -212,29 +209,90 @@
     },
     mounted() {
       this.getConsumptionAnalysis();
-      this.drawK();
-      this.drawA();
+      this.getPredictSurplus();
     },
     methods: {
       getConsumptionAnalysis(){
         console.log("消费修正建议");
         let self = this;
-        this.$axios.get('/repayment/loan/consumptionAnalysis',{
+        this.$axios.get('/loan/repayment/consumptionAnalysis',{
           params:{
-            username:"test",
+            username:self.username,
           }
         })
           .then((response) => {
             console.log("消费修正建议success");
             console.log(response);
-            return response;
+            console.log(response.data);
+            let res = response.data;
+            this.nextRepayAmount = res.nextPayment;
+            this.nextRepayTime = res.nextPayTime;
+            this.user.solvency = res.user.solvency/100;
+            this.user.engel = res.user.engel*100;
+            this.user.leverage = res.user.leverage/100;
+            this.user.rigid = res.user.rigid/100;
+            this.user.monthCusumptionRatio = res.user.monthConsumptionRatio*100;
+            this.user.assetLiabilityRatio = res.user.assetLiabilityRatio*100;
+            this.user.monthSavingRatio = res.user.monthSavingRatio;
+
+            //this.NextpayList = res.nextPayList; Some bugs,try another method
+            let List  = [];
+            for(let l of res.nextPayList){
+              List.push({
+                paytitle : l.payTitle,
+                projectTime : l.projectTime,
+                times: l.times,
+                interestPlus: l.interestPlus,
+                timesA: l.timesA,
+                timeA: l.timeA,
+                amountA: l.amountA,
+                timesB: l.timesB,
+                timeB: l.timeB,
+                amountB: l.amountB,
+                timesC: l.timesC,
+                timeC: l.timeC,
+                amountC: l.amountC
+              })
+            }
+
+
+
+            this.NextpayList = List;
+
+
           })
           .catch((response) => {
             console.log(response);
             console.log("消费修正建议error");
           })
       },
-      drawK() {
+      getPredictSurplus(){
+        console.log("预测");
+        let self = this;
+        this.$axios.get('/loan/repayment/predictSurplus',{
+          params:{
+            username:self.username,
+          }
+        })
+          .then((response) => {
+            console.log("预测success");
+            console.log(response);
+
+            let an = response.data.an;
+            let kn = response.data.kn;
+            let time =response.data.time;
+            console.log("before draw");
+            this.drawK(time,kn);
+            this.drawA(time,an);
+            console.log("after draw");
+            this.tableData = response.data.tableData;
+          })
+          .catch((response) => {
+            console.log(response);
+            console.log("预测error");
+          })
+      },
+      drawK(time,dataK) {
         // 基于准备好的dom，初始化echarts实例
         let myChart = echarts.init(document.getElementById('ForecastK'))
         // 绘制图表
@@ -244,7 +302,7 @@
           xAxis: {
             name: '时间',
             type: 'category',
-            data: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"]
+            data: time
           },
           yAxis: {
             name: '结余K(n)',
@@ -253,12 +311,12 @@
           series: [{
             name: '结余',
             type: 'line',
-            data: [200, 300, 800, 10, 100, 50, 100, 290, 860, 180, 150, 100],
+            data: dataK,
             smooth: true
           }]
         });
       },
-      drawA() {
+      drawA(time,dataA) {
         // 基于准备好的dom，初始化echarts实例
         let myChart = echarts.init(document.getElementById('ForecastA'))
         // 绘制图表
@@ -268,7 +326,8 @@
           xAxis: {
             name: '时间',
             type: 'category',
-            data: ["2018-11", "2018-12", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"]          },
+            data: time
+          },
           yAxis: {
             name: '可调整支出A(n)',
             type: 'value'
@@ -276,7 +335,7 @@
           series: [{
             name: '可调整支出',
             type: 'line',
-            data: [1000, 1200, 1000, 1290, 1400, 1200, 1300, 1000, 1040, 1000, 1200, 1590],
+            data: dataA,
             smooth: true
           }]
         });

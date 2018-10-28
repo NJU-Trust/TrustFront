@@ -44,18 +44,18 @@
     <hr>
   </div>-->
   <div>
-    <el-form v-model="underway_form">
+    <el-form v-model="radioData" style="padding-top: 20px">
       <el-form-item label="投资金额">
-        <el-radio-group v-model="underway_form.money">
+        <el-radio-group v-model="radioData.money">
           <el-radio-button label="全部"></el-radio-button>
-          <el-radio-button label="100以下"></el-radio-button>
+          <el-radio-button label="100及以下"></el-radio-button>
           <el-radio-button label="100-500"></el-radio-button>
           <el-radio-button label="500-1000"></el-radio-button>
           <el-radio-button label="1000以上"></el-radio-button>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="项目时间">
-        <el-radio-group v-model="underway_form.date">
+        <el-radio-group v-model="radioData.date">
           <el-radio-button label="全部"></el-radio-button>
           <el-radio-button label="15天之内"></el-radio-button>
           <el-radio-button label="1个月之内"></el-radio-button>
@@ -63,11 +63,11 @@
           <el-radio-button label="6个月以上"></el-radio-button>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="项目状态">
-        <el-radio-group v-model="underway_form.state">
+      <el-form-item label="项目类型">
+        <el-radio-group v-model="radioData.state">
           <el-radio-button label="全部"></el-radio-button>
-          <el-radio-button label="正在还款"></el-radio-button>
-          <el-radio-button label="转让审核"></el-radio-button>
+          <el-radio-button label="小额借款"></el-radio-button>
+          <el-radio-button label="大额借款"></el-radio-button>
         </el-radio-group>
 
       </el-form-item>
@@ -82,49 +82,121 @@
         name: "info-top-bar",
         data(){
           return{
-            /*pickerOptions0: {
-              disabledDate(time) {
-                return time.getTime() > Date.now();
-              },
+            radioData:{
+              money:'全部',
+              date:'全部',
+              state:'全部'
             },
-            num1:1,
-            value_radio1:'',
-            options:[{
-              value:'any',
-              label:'不限'
-            },{
-              value:'small_loan',
-              label:'小额短期借款'
-            },{
-              value:'large_loan',
-              label:'大额长期借款'
-            }],
-            value_radio2:'any',
-            date1:'',
-            date2:'',
-            input:'',*/
-            underway_form:{
-              money:'',
-              options:[{
-                value:'any',
-                label:'不限'
-              },{
-                value:'small_loan',
-                label:'小额短期借款'
-              },{
-                value:'large_loan',
-                label:'大额长期借款'
-              }],
-              value_class:'any',
-              date:'',
-              state:''
+            condition:{
+              moneyUpper:null,
+              moneyLower:null,
+              targetType:null,
+              name:null,
+              startDate:null,
+              endDate:null
             },
           }//return
         },
       methods: {
         handleChange(value) {
           console.log(value);
+        },
+
+        getCondition(money,date,state){
+
+          if(money === "全部"){
+            this.condition.moneyUpper = null;
+            this.condition.moneyLower = null;
+          }else if(money === "100及以下"){
+            this.condition.moneyUpper = 100;
+            this.condition.moneyLower = 0;
+          }else if(money === "100-500"){
+            this.condition.moneyUpper = 500;
+            this.condition.moneyLower = 100;
+          }else if(money === "500-1000"){
+            this.condition.moneyUpper = 1000;
+            this.condition.moneyLower = 500;
+          }else if(money === "1000以上"){
+            this.condition.moneyUpper = 1000000;
+            this.condition.moneyLower = 1000;
+          }
+
+          var now = new Date();
+          var nowYear = now.getFullYear();
+          var nowMonth = this.getCompleteNum(now.getMonth());
+          var nowDate = this.getCompleteNum(now.getDate());
+          var nowTime = now.getTime();
+          this.condition.endDate = nowYear+"-"+nowMonth+"-"+nowDate;
+          console.log("endDate:"+this.condition.endDate);
+          if(date === "全部"){
+            this.condition.startDate = null;
+            this.condition.endDate = null;
+          }else if(date === "15天之内"){
+            var days = 15;
+            this.getStartDate(nowTime,days);
+          }else if(date === "1个月之内"){
+            var days = 30;
+            this.getStartDate(nowTime,days);
+          }else if(date === "6个月之内"){
+            var days = 183;
+            this.getStartDate(nowTime,days);
+          }else if(date === "6个月以上"){
+            this.condition.startDate = null;
+          }
+
+          if(state === "全部"){
+            this.condition.targetType = null;
+          }else if(state === "大额借款"){
+            this.condition.targetType = "LARGE";
+          }else if(state === "小额借款"){
+            this.condition.targetType = "SMALL";
+          }
+        },
+
+        getStartDate(nowTime,days){
+          var startTime = nowTime -  days*(24*3600*1000); // 将天数转换为毫秒
+          var start = new Date(startTime);
+
+          var startYear = start.getFullYear();
+          var startMonth = this.getCompleteNum(start.getMonth());
+          var startDate = this.getCompleteNum(start.getDate());
+
+          this.condition.startDate = startYear+"-"+startMonth+"-"+startDate;
+          console.log("startDate:"+this.condition.startDate);
+        },
+
+        getCompleteNum(num){
+          num += "";
+          if(num<=9){
+            num = "0"+num;
+          }
+          return num;
         }
+      },
+      watch:{
+          radioData:{
+            handler(a){
+              var money = this.radioData.money;
+              var date = this.radioData.date;
+              var state = this.radioData.state;
+
+              this.getCondition(money,date,state);
+
+              var moneyUpper = this.condition.moneyUpper;
+              var moneyLower = this.condition.moneyLower;
+              var targetType = this.condition.targetType;
+              var name = this.condition.name;
+              var startDate = this.condition.startDate;
+              var endDate = this.condition.endDate;
+
+              this.$emit("getConditionEvent",moneyUpper,moneyLower,targetType,name,startDate,endDate);
+
+              /*console.log("money:"+this.radioData.money);
+              console.log("date:"+this.radioData.date);
+              console.log("state:"+this.radioData.state);*/
+            },
+            deep:true
+          }
       }
     }
 </script>
