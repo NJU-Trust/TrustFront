@@ -2,12 +2,12 @@
   <el-tabs v-model="activeName" @tab-click="handleClick">
     <el-tab-pane label="财务分析" name="first">
       <div id="financial_id"><br/>
-        <fin-analysis></fin-analysis>
+        <fin-analysis :username="username"></fin-analysis>
       </div>
     </el-tab-pane>
     <el-tab-pane label="财务建议" name="second">
       <div id="loan_id">
-        <fin-suggestion></fin-suggestion>
+        <fin-suggestion :username="username"></fin-suggestion>
       </div>
     </el-tab-pane>
   </el-tabs>
@@ -28,6 +28,7 @@
     components: {FinSuggestion, FinAnalysis, personalCenter},
     data() {
       return {
+        username:localStorage.username,
         activeName: 'first',
         valueX: '0.5',
         valueY: '0.7',
@@ -39,7 +40,9 @@
       };
     },
     mounted() {
-
+      /*console.log("local:")
+      console.log(localStorage.username)
+      console.log(this.username)*/
     },
     methods: {
       handleClick(tab, event) {

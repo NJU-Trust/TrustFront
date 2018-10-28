@@ -59,6 +59,7 @@
 
   export default {
     name: 'finpies',
+    props:["username"],
     data() {
       return{
         user:{
@@ -109,7 +110,7 @@
         let self = this;
         this.$axios.get('/profile/proportionAnalysis',{
           params:{
-            username:"test",
+            username:self.username,
             month: this.monthPie,
           }
         })

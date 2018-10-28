@@ -33,28 +33,13 @@
                   </div>
                 </el-tab-pane>
                 <el-tab-pane label="借款详情">
-                  <el-tabs style="padding:0px 0px 0px 20px;" v-model="activeName" @tab-click="handleClick">
-                    <el-tab-pane label="正在进行" name="first">
-                      <loanTopBar></loanTopBar>
-                      <loanUnderway></loanUnderway>
-                    </el-tab-pane>
-                    <el-tab-pane label="完成项目" name="second">
-                      <loanTopBar></loanTopBar>
-                      <loanComplete></loanComplete>
-                    </el-tab-pane>
-                    <el-tab-pane label="已发布项目" name="third">
-                      <loanTopBar></loanTopBar>
-                      <loanLaunched></loanLaunched>
-                    </el-tab-pane>
-                    <el-tab-pane label="违约记录" name="fourth">
-                      <loanTopBar></loanTopBar>
-                      <loanUnbelievable></loanUnbelievable>
-                    </el-tab-pane>
-                  </el-tabs>
+                  <div style="padding:0px 0px 0px 20px;">
+                    <loanInformationPane></loanInformationPane>
+                  </div>
                 </el-tab-pane>
                 <el-tab-pane label="个人财务">
                   <div style="padding:0px 0px 0px 20px;">
-                    <fin-standing></fin-standing>
+                    <fin-standing :username="username"></fin-standing>
                   </div>
                 </el-tab-pane>
               </el-tabs>
@@ -90,12 +75,14 @@
   import adminNavi from '@/components/adminNavi.vue';
   import FinStanding from "../components/finStanding";
   import investInfoTabs from "../components/investInfoTabs";
+  import loanInformationPane from "../components/LoanInformationPane"
 
   export default {
     name: "userdetail",
-    components:{adminNavi,loanTopBar,loanUnderway,loanComplete,loanLaunched,loanUnbelievable,FinStanding,investInfoTabs},
+    components:{adminNavi,loanTopBar,loanUnderway,loanComplete,loanLaunched,loanUnbelievable,FinStanding,investInfoTabs,loanInformationPane},
     data() {
       return {
+        username:'',
         currentPage1: 2,
         activeName: 'first',
         tabPosition:"left",
@@ -113,11 +100,12 @@
     },
     mounted:function () {
       //this.show()
-      this.baseinfo.name=this.$route.params.username
-      this.baseinfo.level=this.$route.params.level
-      this.baseinfo.tel=this.$route.params.tel
-      this.baseinfo.email=this.$route.params.email
-      this.baseinfo.state=this.$route.params.state
+      this.baseinfo.name = this.$route.params.username
+      this.baseinfo.level = this.$route.params.level
+      this.baseinfo.tel = this.$route.params.tel
+      this.baseinfo.email = this.$route.params.email
+      this.baseinfo.state = this.$route.params.state
+      this.username = this.$route.params.username
     },
     methods:{
       show(){
