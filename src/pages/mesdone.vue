@@ -20,8 +20,8 @@
         <div class="mesboxborder">
           <el-tabs v-model="activeName2" type="card" @tab-click="handleClick">
             <el-tab-pane label="失物招领" name="first">
-              <div v-for="i in mesdata.length" :key="i">
-                <div v-if="mesdata[i-1].mestype === '失物招领'" style="margin-top: 20px;margin-left: 20px">
+              <div v-for="i in mesdata1.length" :key="i">
+                <div v-if="mesdata1[i-1].mestype === '失物招领'" style="margin-top: 20px;margin-left: 20px">
                   <el-row>
                     <el-col :span="24">
                       <div class="grid-content bg-purple-dark">
@@ -29,38 +29,38 @@
                           <el-row >
                             <el-col :span="6">
                               <div class="grid-content bg-purple">
-                                <img src="../../static/pic/mestest.png" class="picbox" alt="User_pic">
+                                <img :src="mesdata1[i-1].pic" class="picbox" alt="User_pic">
                               </div>
                             </el-col>
                             <el-col :span="16">
-                              <div class="grid-content bg-purple" style="margin-left:5%;margin-top:5%;">
+                              <div class="grid-content bg-purple" style="margin-left:25%;margin-top:5%;">
                                 <el-row>
                                   <el-col :span="12">
                                     <div class="grid-content bg-purple">
                                       <div>
                                         <strong style="font-size: 15px;">物品类别</strong>
-                                        <span style="position:relative;left:20px;">{{ mesdata[i-1].itemtype}}</span>
+                                        <span style="position:relative;left:20px;">{{ mesdata1[i-1].itemtype}}</span>
                                       </div>
                                       <div>
                                         <strong style="font-size: 15px;">发布时间</strong>
-                                        <span style="position:relative;left:20px;">{{ mesdata[i-1].time}}</span>
+                                        <span style="position:relative;left:20px;">{{ mesdata1[i-1].time}}</span>
                                       </div>
                                     </div>
                                   </el-col>
                                   <el-col :span="12">
                                     <div>
                                       <strong style="font-size: 15px;">物品名称</strong>
-                                      <span style="position:relative;left:20px;">{{ mesdata[i-1].name}}</span>
+                                      <span style="position:relative;left:20px;">{{ mesdata1[i-1].name}}</span>
                                     </div>
                                     <div>
                                       <strong style="font-size: 15px;">联系方式</strong>
-                                      <span style="position:relative;left:20px;">{{ mesdata[i-1].phone}}</span>
+                                      <span style="position:relative;left:20px;">{{ mesdata1[i-1].phone}}</span>
                                     </div>
                                   </el-col>
                                   <br/>
                                   <div>
                                     <strong style="font-size: 15px;">详细信息</strong>
-                                    <span style="position:relative;left:20px;">{{ mesdata[i-1].dec}}</span>
+                                    <span style="position:relative;left:20px;">{{ mesdata1[i-1].dec}}</span>
                                   </div>
                                   <hr/>
                                 </el-row>
@@ -69,15 +69,15 @@
                                     <div class="grid-content bg-purple" style="margin-left:5%;margin-top:5%;">
                                       <div>
                                         <strong style="font-size: 15px;">对方用户名</strong>
-                                        <span style="position:relative;left:20px;">{{ mesdata[i-1].username}}</span>
+                                        <span style="position:relative;left:20px;">{{ mesdata1[i-1].username}}</span>
                                       </div>
                                     </div>
                                   </el-col>
                                   <el-col :span="12">
                                     <div class="grid-content bg-purple" style="margin-left:5%;margin-top:5%;">
                                       <div>
-                                        <strong style="font-size: 15px;">完成日期</strong>
-                                        <span style="position:relative;left:20px;">{{ mesdata[i-1].date}}</span>
+                                        <!--<strong style="font-size: 15px;">完成日期</strong>-->
+                                        <!--<span style="position:relative;left:20px;">{{ mesdata1[i-1].date}}</span>-->
                                       </div>
                                     </div>
                                   </el-col>
@@ -94,8 +94,8 @@
             </el-tab-pane>
 
             <el-tab-pane label="寻物启事" name="second">
-              <div v-for="i in mesdata.length" :key="i">
-                <div v-if="mesdata[i-1].mestype === '寻物启事'" style="margin-top: 20px;margin-left: 20px">
+              <div v-for="i in mesdata2.length" :key="i">
+                <div v-if="mesdata2[i-1].mestype === '寻物启事'" style="margin-top: 20px;margin-left: 20px">
                   <el-row>
                     <el-col :span="24">
                       <div class="grid-content bg-purple-dark">
@@ -103,38 +103,38 @@
                           <el-row >
                             <el-col :span="6">
                               <div class="grid-content bg-purple">
-                                <img src="../../static/pic/mestest2.png" class="picbox" alt="User_pic">
+                                <img :src="mesdata1[i-1].pic" class="picbox" alt="User_pic">
                               </div>
                             </el-col>
                             <el-col :span="16">
-                              <div class="grid-content bg-purple" style="margin-left:5%;margin-top:5%;">
+                              <div class="grid-content bg-purple" style="margin-left:25%;margin-top:5%;">
                                 <el-row>
                                   <el-col :span="12">
                                     <div class="grid-content bg-purple">
                                       <div>
                                         <strong style="font-size: 15px;">物品类别</strong>
-                                        <span style="position:relative;left:20px;">{{ mesdata[i-1].itemtype}}</span>
+                                        <span style="position:relative;left:20px;">{{ mesdata2[i-1].itemtype}}</span>
                                       </div>
                                       <div>
                                         <strong style="font-size: 15px;">发布时间</strong>
-                                        <span style="position:relative;left:20px;">{{ mesdata[i-1].time}}</span>
+                                        <span style="position:relative;left:20px;">{{ mesdata2[i-1].time}}</span>
                                       </div>
                                     </div>
                                   </el-col>
                                   <el-col :span="12">
                                     <div>
                                       <strong style="font-size: 15px;">物品名称</strong>
-                                      <span style="position:relative;left:20px;">{{ mesdata[i-1].name}}</span>
+                                      <span style="position:relative;left:20px;">{{ mesdata2[i-1].name}}</span>
                                     </div>
                                     <div>
                                       <strong style="font-size: 15px;">联系方式</strong>
-                                      <span style="position:relative;left:20px;">{{ mesdata[i-1].phone}}</span>
+                                      <span style="position:relative;left:20px;">{{ mesdata2[i-1].phone}}</span>
                                     </div>
                                   </el-col>
                                   <br/>
                                   <div >
                                     <strong style="font-size: 15px;">详细信息</strong>
-                                    <span style="position:relative;left:20px;">{{ mesdata[i-1].dec}}</span>
+                                    <span style="position:relative;left:20px;">{{ mesdata2[i-1].dec}}</span>
                                   </div>
                                   <hr/>
                                 </el-row>
@@ -143,15 +143,15 @@
                                     <div class="grid-content bg-purple" style="margin-left:5%;margin-top:5%;">
                                       <div>
                                         <strong style="font-size: 15px;">对方用户名</strong>
-                                        <span style="position:relative;left:20px;">{{ mesdata[i-1].username}}</span>
+                                        <span style="position:relative;left:20px;">{{ mesdata2[i-1].username}}</span>
                                       </div>
                                     </div>
                                   </el-col>
                                   <el-col :span="12">
                                     <div class="grid-content bg-purple" style="margin-left:5%;margin-top:5%;">
                                       <div>
-                                        <strong style="font-size: 15px;">完成日期</strong>
-                                        <span style="position:relative;left:20px;">{{ mesdata[i-1].date}}</span>
+                                        <!--<strong style="font-size: 15px;">完成日期</strong>-->
+                                        <!--<span style="position:relative;left:20px;">{{ mesdata2[i-1].date}}</span>-->
                                       </div>
                                     </div>
                                   </el-col>
@@ -203,7 +203,7 @@
           backgroundPosition: "0% 0%",
         },
         activeName2: 'first',
-        mesdata:[
+        mesdata1:[
           {
             mestype:'失物招领',
             itemtype:'其他',
@@ -227,6 +227,7 @@
             date:'2018-09-04',
           }
         ],
+        mesdata2:[]
 
       };
     },
@@ -234,6 +235,67 @@
       handleClick(tab, event) {
         console.log(tab, event);
       }
+    },
+    mounted() {
+      const self = this;
+      this.$axios.get('/lostFound/check',{
+        params: {
+          username: localStorage.username,
+          property: '失物招领',
+          state: '已完成'
+        }
+      } ).then(function (response) {
+        let topNewData = []
+        for(let i=0;i<response.data.length;i++){
+          topNewData.push({
+            mestype: response.data[i].property,
+            itemtype: response.data[i].thingsType,
+            name: response.data[i].thingsName,
+            dec: response.data[i].description,
+            loc: response.data[i].lostPlace,
+            phone: response.data[i].phone,
+            pic: response.data[i].picPath,
+            headpic: "../../static/pic/photo.jpg",
+            state: response.data[i].state,
+            username: response.data[i].username,
+            time: response.data[i].date
+          })
+        }
+        console.log(topNewData)
+        self.mesdata1 = topNewData;
+      }).catch(function (error) {
+        console.log("error:"+error)
+      });
+
+      this.$axios.get('/lostFound/check',{
+        params: {
+          username: localStorage.username,
+          property: '寻物启事',
+          state: '已完成'
+        }
+      } ).then(function (response) {
+        let topNewData = []
+        for(let i=0;i<response.data.length;i++){
+          topNewData.push({
+            mestype: response.data[i].property,
+            itemtype: response.data[i].thingsType,
+            name: response.data[i].thingsName,
+            dec: response.data[i].description,
+            loc: response.data[i].lostPlace,
+            phone: response.data[i].phone,
+            pic: response.data[i].picPath,
+            headpic: "../../static/pic/photo.jpg",
+            state: response.data[i].state,
+            username: response.data[i].username,
+            time: response.data[i].date
+          })
+        }
+        console.log(topNewData)
+        self.mesdata2 = topNewData;
+      }).catch(function (error) {
+        console.log("error:"+error)
+      });
+
     },
     beforeCreate:function(){
       localStorage.route="#notice";

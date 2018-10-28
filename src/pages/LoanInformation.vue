@@ -1,6 +1,6 @@
 <template>
   <personalCenter paneltitle="项目信息">
-    <LoanInformationPane></LoanInformationPane>
+    <LoanInformationPane :username="username"></LoanInformationPane>
     <!--<el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="正在进行" name="first" >
         <loanTopBar v-on:getConditionEvent="getCondition"></loanTopBar>
@@ -58,6 +58,11 @@
   export default {
     name:"loaninformation",
     components: {personalCenter,LoanInformationPane},
+    data() {
+      return {
+        username:localStorage.username
+      }
+    }
    /* mounted:function(){
       this.getUnderway();
     },*/

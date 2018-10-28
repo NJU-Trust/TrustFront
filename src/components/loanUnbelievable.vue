@@ -54,7 +54,7 @@
           <template slot-scope="scope">
             <el-button
               size="mini"
-              @click="getRepayDetail(scope.row.targetId)">查看</el-button>
+              @click="getRepayDetail(scope.row.targetId,scope.row.name)">查看</el-button>
           </template>
         </el-table-column>
 
@@ -87,9 +87,13 @@
 <script>
     export default {
         name: "loan-unbelievable",
+        props:["username"],
         data(){
           return{
-            currentPage1: 2,
+            a:{
+              targetId:0,
+              targetName:''
+            },
             tableData:[{
               name:'ACCA考试借款项目',
               money:3600,
@@ -109,10 +113,12 @@
           console.log(`当前页: ${val}`);
         },
         getTableData(moneyUpper,moneyLower,targetType,name,startDate,endDate){
+          console.log(moneyUpper,moneyLower,targetType,name,startDate,endDate);
           this.tableData = [];
           var list = [];
           const self = this;
           this.$axios.post('/loan/info/default',{
+            username:self.username,
             moneyUpper:moneyUpper,
             moneyLower:moneyLower,
             targetType:targetType,
@@ -139,9 +145,10 @@
 
         },
 
-        getRepayDetail(targetId){
+        getRepayDetail(targetId,targetName){
           console.log("targetId in loanUnderway:"+targetId);
           this.a.targetId = targetId;
+          this.a.targetName = targetName;
           //console.log("a in loanUnderway:"+this.a.targetId);
           this.$router.push({name:'repay',params:this.a});
         }

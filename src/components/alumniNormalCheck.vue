@@ -6,7 +6,7 @@
         <el-form-item label="姓名" prop="name">
           <el-input style="width:267px;" v-model="base_form.name"></el-input>
         </el-form-item>
-        <el-form-item label="性别" prop="gender">
+        <el-form-item label="性别">
           <template>
             <el-radio v-model="base_form.gender" label="男">男</el-radio>
             <el-radio v-model="base_form.gender" label="女">女</el-radio>
@@ -21,17 +21,18 @@
           <el-input class="inputs" v-model="base_form.id_card"></el-input>
         </el-form-item>
         <div style="display:flex;">
-          <el-form-item label="学历" prop="university">
-            <el-input class="inputs" v-model="base_form.university"></el-input>
+          <el-form-item label="学历">
+            <template>
+              <el-radio v-model="base_form.university" label="本科毕业"></el-radio>
+              <el-radio v-model="base_form.university" label="研究生毕业"></el-radio>
+              <el-radio v-model="base_form.university" label="博士毕业"></el-radio>
+            </template>
           </el-form-item>
           <label>&nbsp;&nbsp;&nbsp;&nbsp;</label>
           <el-upload
             class="upload-demo"
-            action="https://jsonplaceholder.typicode.com/posts/"
-            :on-change="handleChange"
-            :on-preview="handlePreview"
-            :on-remove="handleRemove"
-            :before-remove="beforeRemove"
+            :action='url'
+            :onSuccess="uploadGraduate"
           >
             <el-button type="primary">点击上传</el-button>
             <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
@@ -63,12 +64,14 @@
       name: "alumniNormalCheck",
       data() {
         return {
+          url: "http://localhost:8000/upload/image",
           base_form: {
             name: '',
             gender: '男',
             date: '',
             id_card:'',
-            university:'',
+            university:'本科毕业',
+            evidence:'',
             institution:'',
             living_place:'',
           },
@@ -76,9 +79,6 @@
             name:[
               {required:true, message:'请输入您的姓名',trigger:'blur'},
               {min:1,max:6, message:'长度在1-6之间', trigger:'blur'}
-            ],
-            gender:[
-              {required:true}
             ],
             date:[
               {type:'date', required:true, message:'请选择出生日期', trigger:'change'}
@@ -101,15 +101,58 @@
         }
       },
       methods: {
+        uploadGraduate(response, file, fileList){
+          console.log("uploadSuccess");
+          this.base_form.evidence+= 'http://localhost:8000/';
+          this.base_form.evidence+=response;
+        },
         submitForm(formName) {
-          this.$refs[formName].validate((valid) => {
-            if (valid) {
-              alert('submit!');
-            } else {
-              console.log('error submit!!');
-              return false;
-            }
-          });
+          if(this.base_form.university===''){
+            this.$message({
+              message:"请上传学历证明！",
+              type:'error',
+            });
+          }else{
+            this.$refs[formName].validate((valid) => {
+              if (valid) {
+                var _this = this;
+                this.$axios.get('/verify/alumnaVerify',{
+                  params:{
+                    gender:_this.base_form.gender,
+                    birthday: _this.base_form.date,
+                    idCardNumber:_this.base_form.id_card,
+                    education:_this.base_form.university,
+                    evidence:_this.base_form.evidence,
+                    //institution:_this.base_form.institution,
+                    //livingPlace:_this.base_form.living_place
+                  }
+                }).then(function (response) {
+                  var data = response.data
+                  //console.log(data)
+                  if(data.success){
+                    _this.$message({
+                      message:'提交成功！',
+                      type:'success',
+                    });
+                  }else{
+                    _this.$message({
+                      message:data.message,
+                      type:'error',
+                    });
+                  }
+                }).catch(function (error) {
+                  console.log(error)
+                });
+
+
+              } else {
+                this.$message({
+                  message:"信息不完整！",
+                  type:'error',
+                });
+              }
+            });
+          }
         },
         resetForm(formName) {
           this.$refs[formName].resetFields();

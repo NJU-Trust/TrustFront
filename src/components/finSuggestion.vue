@@ -123,6 +123,7 @@
   export default {
     name: 'finSuggestion',
     components: {Nextpay, InvestList},
+    props:["username"],
     data() {
       return {
         nextRepayAmount:318,
@@ -216,7 +217,7 @@
         let self = this;
         this.$axios.get('/loan/repayment/consumptionAnalysis',{
           params:{
-            username:"test",
+            username:self.username,
           }
         })
           .then((response) => {
@@ -270,7 +271,7 @@
         let self = this;
         this.$axios.get('/loan/repayment/predictSurplus',{
           params:{
-            username:"test",
+            username:self.username,
           }
         })
           .then((response) => {

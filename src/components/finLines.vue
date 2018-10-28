@@ -85,6 +85,7 @@
 
   export default {
     name: 'finlines',
+    props:["username"],
     data() {
       return{
         selectLine:'恩格尔系数',
@@ -127,7 +128,7 @@
         let self = this;
         this.$axios.get('/profile/trendAnalysis',{
           params:{
-            username:"test",
+            username:self.username,
             startMonth: this.monthLineStart,
             endMonth: this.monthLineEnd
           }

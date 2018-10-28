@@ -62,8 +62,8 @@
     </div>
     <div style="display:flex;min-height:800px;border: 1px solid lightgrey;">
       <div class="market_out" style="height:100%;width:100%;">
-        <el-tabs :tab-position="tabPostion" style="height:100%;">
-          <el-tab-pane label="产品概要"
+        <el-tabs :tab-position="tabPostion" style="height:100%;" @tab-click="handleClick" v-model="activeName">
+          <el-tab-pane name="one" label="产品概要"
                         style="padding:60px 60px 10px 30px;font-size:18px;line-height: 30px;">
             <div style="display: flex;">
                 <div style="padding:25px 70px;">
@@ -111,10 +111,10 @@
 
 
           </el-tab-pane>
-          <el-tab-pane label="借款人信息" style="padding:60px 60px 10px 30px;font-size:18px;line-height: 30px;">
-            <doInvestingLoanerInfo></doInvestingLoanerInfo>
+          <el-tab-pane name="two" label="借款人借款信息" style="padding:60px 60px 10px 30px;font-size:18px;line-height: 30px;">
+            <LoanInformationPane></LoanInformationPane>
           </el-tab-pane>
-          <el-tab-pane label="投标记录" style="padding:80px 60px 10px 30px;font-size:18px;line-height: 30px;">
+          <el-tab-pane name="three" label="投标记录" style="padding:80px 60px 10px 30px;font-size:18px;line-height: 30px;">
             <el-table
               :data="tableData"
               height="290"
@@ -148,13 +148,15 @@
     import rightBar from '@/components/rightBar.vue';
     import doInvestingLoanerInfo from '@/components/doInvestingLoanerInfo.vue';
     import footerBar from '@/components/footerBar.vue';
+    import LoanInformationPane from "../components/LoanInformationPane"
     export default {
       name: "DoInvesting",
-      components:{navi,rightBar,doInvestingLoanerInfo,footerBar},
+      components:{navi,rightBar,doInvestingLoanerInfo,footerBar,LoanInformationPane},
       data(){
         return{
+          activeName:'one',
           tableData:[
-            {date: '2018-05-03',
+            /*{date: '2018-05-03',
             name: '陈文博',
             money: '5000'
             },
@@ -173,7 +175,7 @@
             {date: '2018-08-29',
               name: '王刚',
               money: '400'
-            },
+            },*/
           ],
           target_id:"723972",
           percentage:80,
@@ -231,8 +233,8 @@
             self.lifeOfLoan = data.lifeOfLoan
             self.totalLoan = data.totalLoan
             self.leftNeeds = data.leftNeeds
-            //   userMoney:1000,
-            //   num1: 1000,
+            //  userMoney:1000,
+            //  num1: 1000,
             switch (data.payWay) {
               case "EQUAL_PRINCIPAL": self.payWay = '等额本金'; break;
               case "EQUAL_INSTALLMENT_OF_PRINCIPAL_AND_INTEREST": self.payWay = '等额本息'; break;
@@ -254,6 +256,33 @@
         },
         handleChange(value) {
           console.log(value);
+        },
+        //点击左导航栏
+        handleClick(tab, event) {
+          if(tab.name==="two"){
+
+          }else if(tab.name==="three"){
+            if(this.tableData.length===0){
+              //无数据则调用
+              var _this = this;
+              this.$axios.get('/loan/investmentRecord', {
+                params: {
+                  targetId:_this.target_id
+                }
+              }).then(function (response) {
+                //console.log("invest record:")
+                var data = response.data
+                //console.log(data)
+                for(var i=0;i<data.length;i++){
+                  _this.tableData.push({date:data[i].date,name:data[i].name,money:data[i].money})
+                }
+
+              }).catch(function (error) {
+                console.log("error:")
+                console.log(error)
+              });
+            }
+          }
         }
       }
     }

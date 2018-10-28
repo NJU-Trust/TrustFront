@@ -2,39 +2,7 @@
   <div>
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="正在进行" name="first">
-        <div class="ChooseBar">
-          <el-form v-model="underway_form">
-            <el-form-item label="投资金额">
-              <el-radio-group v-model="underway_form.money">
-                <el-radio-button label="全部"></el-radio-button>
-                <el-radio-button label="100以下"></el-radio-button>
-                <el-radio-button label="100-500"></el-radio-button>
-                <el-radio-button label="500-1000"></el-radio-button>
-                <el-radio-button label="1000以上"></el-radio-button>
-              </el-radio-group>
-            </el-form-item>
-            <el-form-item label="项目时间">
-              <el-radio-group v-model="underway_form.date">
-                <el-radio-button label="全部"></el-radio-button>
-                <el-radio-button label="15天之内"></el-radio-button>
-                <el-radio-button label="1个月之内"></el-radio-button>
-                <el-radio-button label="6个月之内"></el-radio-button>
-                <el-radio-button label="6个月以上"></el-radio-button>
-              </el-radio-group>
-            </el-form-item>
-            <el-form-item label="项目状态">
-              <el-radio-group v-model="underway_form.state">
-                <el-radio-button label="全部"></el-radio-button>
-                <el-radio-button label="正在还款"></el-radio-button>
-                <el-radio-button label="转让审核"></el-radio-button>
-              </el-radio-group>
-
-            </el-form-item>
-          </el-form>
-
-          <hr>
-
-        </div>
+        <loanTopBar v-on:getConditionEvent="getCondition"></loanTopBar>
 
         <div class="projectPanel">
           <div class="projectPages">
@@ -63,9 +31,14 @@
                 label="投标金额(元)">
               </el-table-column>
               <el-table-column
-                prop="deadline_interest"
+                prop="deadline"
                 align="center"
-                label="期限/利率">
+                label="期限">
+              </el-table-column>
+              <el-table-column
+                prop="interest"
+                align="center"
+                label="利率">
               </el-table-column>
               <el-table-column
                 prop="repayAmountMonth"
@@ -95,54 +68,10 @@
               </el-table-column>
             </el-table>
           </div>
-          <div class="poj_pagination">
-            <div class="block">
-              <!--<span class="demonstration">完整功能</span>-->
-              <el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="currentPage1"
-                :page-sizes="[10, 20, 30, 40]"
-                :page-size="10"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="40">
-              </el-pagination>
-            </div>
-          </div>
         </div>
       </el-tab-pane>
       <el-tab-pane label="完成项目" name="second">
-        <div class="ChooseBar">
-          <el-form v-model="complete_form">
-            <el-form-item label="投资金额">
-              <el-radio-group v-model="complete_form.money">
-                <el-radio-button label="全部"></el-radio-button>
-                <el-radio-button label="100以下"></el-radio-button>
-                <el-radio-button label="100-500"></el-radio-button>
-                <el-radio-button label="500-1000"></el-radio-button>
-                <el-radio-button label="1000以上"></el-radio-button>
-              </el-radio-group>
-            </el-form-item>
-
-            <el-form-item label="项目时间">
-              <el-radio-group v-model="complete_form.date">
-                <el-radio-button label="立刻开始"></el-radio-button>
-                <el-radio-button label="5天之内"></el-radio-button>
-                <el-radio-button label="10天之内"></el-radio-button>
-                <el-radio-button label="10天以上"></el-radio-button>
-              </el-radio-group>
-            </el-form-item>
-
-            <el-form-item label="项目状态">
-              <el-radio-group v-model="complete_form.state">
-                <el-radio-button label="全部"></el-radio-button>
-                <el-radio-button label="正常还款"></el-radio-button>
-                <el-radio-button label="提前还款"></el-radio-button>
-                <el-radio-button label="成功转让"></el-radio-button>
-              </el-radio-group>
-            </el-form-item>
-          </el-form>
-        </div>
+        <loanTopBar v-on:getConditionEvent="getCondition"></loanTopBar>
         <div class="projectPanel">
           <div class="projectPages">
             <el-table
@@ -192,25 +121,11 @@
               </el-table-column>
             </el-table>
           </div>
-          <div class="poj_pagination">
-            <div class="block">
-              <!--<span class="demonstration">完整功能</span>-->
-              <el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="currentPage1"
-                :page-sizes="[10, 20, 30, 40]"
-                :page-size="10"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="40">
-              </el-pagination>
-            </div>
-          </div>
+
         </div>
       </el-tab-pane>
       <el-tab-pane label="收藏项目" name="third">
-        <!--<div class="ChooseBar">
-        </div>-->
+
         <div class="projectPanel">
           <div class="projectPages">
             <el-table
@@ -271,20 +186,6 @@
                 </template>
               </el-table-column>
             </el-table>
-          </div>
-          <div class="poj_pagination">
-            <div class="block">
-              <!--<span class="demonstration">完整功能</span>-->
-              <el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="currentPage1"
-                :page-sizes="[10, 20, 30, 40]"
-                :page-size="10"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="40">
-              </el-pagination>
-            </div>
           </div>
         </div>
       </el-tab-pane>
@@ -352,20 +253,7 @@
               </el-table-column>
             </el-table>
           </div>
-          <div class="poj_pagination">
-            <div class="block">
-              <!--<span class="demonstration">完整功能</span>-->
-              <el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="currentPage1"
-                :page-sizes="[10, 20, 30, 40]"
-                :page-size="10"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="40">
-              </el-pagination>
-            </div>
-          </div>
+
         </div>
       </el-tab-pane>
     </el-tabs>
@@ -378,46 +266,22 @@
   export default {
     name: "invest-info-tabs",
     components: {loanTopBar},
+    mounted:function(){
+      this.getUnderway();
+    },
     data() {
       return {
         currentPage1: 1,
         activeName: 'first',
 
-        underway_form:{
-          money:'',
-          options:[{
-            value:'any',
-            label:'不限'
-          },{
-            value:'small_loan',
-            label:'小额短期借款'
-          },{
-            value:'large_loan',
-            label:'大额长期借款'
-          }],
-          value_class:'any',
-          date:'',
-          state:''
-        },
-        complete_form:{
-          money:'',
-          date:'',
-          state:''
-        },
         bad_form:{
           money:'',
           state:''
         },
-
-
         formInline: {
           user: '',
           region: ''
         },
-        value_radio1: '上海',
-        value_radio2: '上海',
-        value_radio3: '上海',
-
         tableDataUnderway: [{
           projectName: '考托福',
           loanFrom: '南一号',
@@ -473,22 +337,135 @@
         },{projectName: '考GRE', loanFrom: '南十号', badStartDate: '2018/3/4',
           investAmount: 500, lossAmount: 100, state:'已结束'
         }],
+
+        condition:{
+          moneyUpper:null,
+          moneyLower:null,
+          targetType:null,
+          name:null,
+          startDate:null,
+          endDate:null
+        },
       };
     },
     methods:{
       handleClick(tab, event) {
-        console.log(tab, event);
+        //console.log(tab, event);
+        this.getTargets();
+
       },
-      onSubmit() {
-        console.log('submit!');
+
+      getTargets(){
+        if(this.activeName === "first"){
+          this.getUnderway();
+        }else if(this.activeName === "second"){
+          this.getDone();
+        }else if(this.activeName === "third"){
+
+        }else if(this.activeName === "fourth"){
+          this.getBad();
+        }
       },
-      handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
+
+      getCondition(moneyUpper,moneyLower,targetType,name,startDate,endDate){
+        console.log(moneyUpper,moneyLower,targetType,name,startDate,endDate);
       },
-      handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
+
+      getUnderway(){
+        console.log("正在进行");
+        this.tableDataUnderway = [];
+
+        var moneyUpper = this.condition.moneyUpper;
+        var moneyLower = this.condition.moneyLower;
+        var targetType = this.condition.targetType;
+        var name = this.condition.name;
+        var startDate = this.condition.startDate;
+        var endDate = this.condition.endDate;
+
+        const self = this;
+        this.$axios.post('/loan/investment/ongoing',{
+          moneyUpper:moneyUpper,
+          moneyLower:moneyLower,
+          targetType:targetType,
+          name:name,
+          startDate:startDate,
+          endDate:endDate
+        }).then(
+          function(response){
+            console.log(response.data);
+            list = response.data;
+
+            for(var i=0;i<list.length;i++){
+              self.tableDataUnderway.push({projectName:list[i].projectName, loanFrom:list[i].loanFrom, loanDate:list[i].loanDate,
+                investAmount:list[i].num, deadline:list[i].deadlineDate,interest:list[i].interest+"%",
+                repayAmountMonth:list[i].repayAmountMonth,deadlineAmount:list[i].deadlineAmount,targetId:list[i].targetId});
+            }
+            console.log("tableDataUnderway:");
+            console.log(self.tableDataUnderway);
+
+          }
+        ).catch(function (error) {
+          console.log("error in Underway");
+          console.log(error);
+        });
       },
-    }
+
+      getDone(){
+        console.log("已完成");
+        this.tableDataDone = [];
+
+        var moneyUpper = this.condition.moneyUpper;
+        var moneyLower = this.condition.moneyLower;
+        var targetType = this.condition.targetType;
+        var name = this.condition.name;
+        var startDate = this.condition.startDate;
+        var endDate = this.condition.endDate;
+
+        const self = this;
+        this.$axios.post('/loan/investment/complete',{
+          moneyUpper:moneyUpper,
+          moneyLower:moneyLower,
+          targetType:targetType,
+          name:name,
+          startDate:startDate,
+          endDate:endDate
+        }).then(
+          function(response){
+            console.log(response.data);
+            list = response.data;
+
+            for(var i=0;i<list.length;i++){
+              self.tableDataDone.push({projectName:list[i].projectName, loanFrom:list[i].loanFrom,
+                startEndDate:list[i].startDate+"~"+list[i].endDate,
+                investAmount:list[i].investAmount, interest:list[i].interest+"%",
+                state:list[i].state,get:list[i].get,targetId:list[i].targetId});
+            }
+            console.log("tableDataDone:");
+            console.log(self.tableDataDone);
+
+          }
+        ).catch(function (error) {
+          console.log("error in Done");
+          console.log(error);
+        });
+      },
+
+      getBad(){
+        console.log("坏账记录");
+        this.tableDataBad = [];
+
+        var moneyUpper = this.condition.moneyUpper;
+        var moneyLower = this.condition.moneyLower;
+        var targetType = this.condition.targetType;
+        var name = this.condition.name;
+        var startDate = this.condition.startDate;
+        var endDate = this.condition.endDate;
+
+
+
+      }
+
+    }// end method
   }
 </script>
 

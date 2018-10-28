@@ -20,9 +20,8 @@
         <div class="mesboxborder" >
           <el-tabs v-model="activeName2" type="card" @tab-click="handleClick">
             <el-tab-pane label="失物招领" name="first">
-              <div v-for="i in mesdata.length" :key="i">
-                <div v-if="mesdata[i-1].mestype === '失物招领'"
-                     v-show="mesdata[i-1].state" style="margin-left: 20px;margin-top: 20px">
+              <div v-for="i in mesdata1.length" :key="i">
+                <div v-if="mesdata1[i-1].mestype === '失物招领'" style="margin-left: 20px;margin-top: 20px">
                   <el-row>
                     <el-col :span="24">
                       <div class="grid-content bg-purple-dark">
@@ -31,22 +30,22 @@
                             <el-col :span="6">
                               <div class="grid-content bg-purple">
                                 <div>
-                                  <img src="../../static/pic/mestest.png"  class="picbox" alt="User_pic">
+                                  <img :src="mesdata1[i-1].pic"  class="picbox" alt="User_pic">
                                 </div>
                               </div>
                             </el-col>
                             <el-col :span="16">
-                              <div class="grid-content bg-purple" style="margin-left:5%;margin-top:5%;">
+                              <div class="grid-content bg-purple" style="margin-left:25%;margin-top:5%;">
                                 <el-row>
                                   <el-col :span="12">
                                     <div class="grid-content bg-purple">
                                       <div>
                                         <strong style="font-size: 15px;">物品类别</strong>
-                                        <span style="position:relative;left:20px;">{{ mesdata[i-1].itemtype}}</span>
+                                        <span style="position:relative;left:20px;">{{ mesdata1[i-1].itemtype}}</span>
                                       </div>
                                       <div>
                                         <strong style="font-size: 15px;">发布时间</strong>
-                                        <span style="position:relative;left:20px;">{{ mesdata[i-1].time}}</span>
+                                        <span style="position:relative;left:20px;">{{ mesdata1[i-1].time}}</span>
                                       </div>
                                     </div>
                                   </el-col>
@@ -54,11 +53,11 @@
                                     <div class="grid-content bg-purple-light">
                                       <div>
                                         <strong style="font-size: 15px;">物品名称</strong>
-                                        <span style="position:relative;left:20px;">{{ mesdata[i-1].name}}</span>
+                                        <span style="position:relative;left:20px;">{{ mesdata1[i-1].name}}</span>
                                       </div>
                                       <div >
                                         <strong style="font-size: 15px;">联系方式</strong>
-                                        <span style="position:relative;left:20px;">{{ mesdata[i-1].phone}}</span>
+                                        <span style="position:relative;left:20px;">{{ mesdata1[i-1].phone}}</span>
                                       </div>
                                     </div>
                                   </el-col>
@@ -66,13 +65,13 @@
                                 <br/>
                                 <div>
                                     <strong style="font-size: 15px;">详细信息</strong>
-                                    <span style="position:relative;left:20px;">{{ mesdata[i-1].dec}}</span>
+                                    <span style="position:relative;left:20px;">{{ mesdata1[i-1].dec}}</span>
                                   </div>
                                 <el-row>
                                   <el-col :offset="14">
                                     <el-button type="success"
                                                round size="small"
-                                               @click="dialogFormVisible = true"
+                                               @click="currentId(mesdata1[i-1].id)"
                                                style="margin-top: 30px;">确认完成</el-button>
                                     <el-dialog title="确认完成"
                                                width="40%"
@@ -86,7 +85,7 @@
                                       </el-form>
                                       <div slot="footer" class="dialog-footer">
                                         <el-button @click="dialogFormVisible = false">取 消</el-button>
-                                        <el-button type="primary" @click="dialogFormVisible=done(mesdata[i-1])">确 定</el-button>
+                                        <el-button type="primary" @click="done()">确 定</el-button>
                                       </div>
                                     </el-dialog>
                                   </el-col>
@@ -103,30 +102,29 @@
             </el-tab-pane>
 
             <el-tab-pane label="寻物启事" name="second">
-              <div v-for="i in mesdata.length" :key="i">
-                <div v-if="mesdata[i-1].mestype === '寻物启事'"
-                     v-show="mesdata[i-1].state" style="margin-left: 20px;margin-top: 20px">
+              <div v-for="i in mesdata2.length" :key="i">
+                <div v-if="mesdata2[i-1].mestype === '寻物启事'" style="margin-left: 20px;margin-top: 20px">
                   <el-card class="box-card">
                     <el-row >
                       <el-col :span="6">
                         <div class="grid-content bg-purple">
                           <div>
-                            <img src="../../static/pic/mestest2.png"  class="picbox" alt="User_pic">
+                            <img :src="mesdata2[i-1].pic"  class="picbox" alt="User_pic">
                           </div>
                         </div>
                       </el-col>
                       <el-col :span="16">
-                        <div class="grid-content bg-purple" style="margin-left:5%;margin-top:5%;">
+                        <div class="grid-content bg-purple" style="margin-left:25%;margin-top:5%;">
                           <el-row>
                             <el-col :span="12">
                               <div class="grid-content bg-purple">
                                 <div>
                                   <strong style="font-size: 15px;">物品类别</strong>
-                                  <span style="position:relative;left:20px;">{{ mesdata[i-1].itemtype}}</span>
+                                  <span style="position:relative;left:20px;">{{ mesdata2[i-1].itemtype}}</span>
                                 </div>
                                 <div>
                                   <strong style="font-size: 15px;">发布时间</strong>
-                                  <span style="position:relative;left:20px;">{{ mesdata[i-1].time}}</span>
+                                  <span style="position:relative;left:20px;">{{ mesdata2[i-1].time}}</span>
                                 </div>
                               </div>
                             </el-col>
@@ -134,11 +132,11 @@
                               <div class="grid-content bg-purple-light">
                                 <div>
                                   <strong style="font-size: 15px;">物品名称</strong>
-                                  <span style="position:relative;left:20px;">{{ mesdata[i-1].name}}</span>
+                                  <span style="position:relative;left:20px;">{{ mesdata2[i-1].name}}</span>
                                 </div>
                                 <div >
                                   <strong style="font-size: 15px;">联系方式</strong>
-                                  <span style="position:relative;left:20px;">{{ mesdata[i-1].phone}}</span>
+                                  <span style="position:relative;left:20px;">{{ mesdata2[i-1].phone}}</span>
                                 </div>
                               </div>
                             </el-col>
@@ -146,13 +144,13 @@
                           <br/>
                           <div>
                             <strong style="font-size: 15px;">详细信息</strong>
-                            <span style="position:relative;left:20px;">{{ mesdata[i-1].dec}}</span>
+                            <span style="position:relative;left:20px;">{{ mesdata2[i-1].dec}}</span>
                           </div>
                           <el-row>
                             <el-col :offset="14">
                               <el-button type="success"
                                          round size="small"
-                                         @click="dialogFormVisible = true"
+                                         @click="currentId(mesdata1[i-1].id)"
                                          style="margin-top: 30px;">确认完成</el-button>
                               <el-dialog title="确认完成"
                                          width="40%"
@@ -166,7 +164,7 @@
                                 </el-form>
                                 <div slot="footer" class="dialog-footer">
                                   <el-button @click="dialogFormVisible = false">取 消</el-button>
-                                  <el-button type="primary" @click="dialogFormVisible=done(mesdata[i-1])">确 定</el-button>
+                                  <el-button type="primary" @click="done()">确 定</el-button>
                                 </div>
                               </el-dialog>
                             </el-col>
@@ -215,7 +213,7 @@
           backgroundSize:"100% auto",
           backgroundPosition: "0% 0%",
         },
-        mesdata:[
+        mesdata1:[
           {
             mestype:'失物招领',
             itemtype:'其他',
@@ -237,8 +235,10 @@
             time:'2018-09-04',
           }
         ],
+        mesdata2: [],
         activeName2: 'first',
         dialogFormVisible: false,
+        current_choose_id: 0,
         form: {
           name: '',
         },
@@ -252,12 +252,155 @@
       handleClick(tab, event) {
         console.log(tab, event);
       },
-      done :function(vis,formName){
-        console.log(vis);
-        vis.state=false;
-        console.log('进来了！');
-        return false;
+      currentId(index){
+        this.dialogFormVisible = true
+        this.current_choose_id = index
+        console.log(index)
       },
+      loadAll(){
+        const self = this;
+        console.log(localStorage.username)
+        this.$axios.get('/lostFound/check',{
+          params: {
+            username: localStorage.username,
+            property: '失物招领',
+            state: '正在进行'
+          }
+        } ).then(function (response) {
+          console.log(response)
+          let topNewData = []
+          for(let i=0;i<response.data.length;i++){
+            topNewData.push({
+              id: response.data[i].taskID,
+              mestype: response.data[i].property,
+              itemtype: response.data[i].thingsType,
+              name: response.data[i].thingsName,
+              dec: response.data[i].description,
+              loc: response.data[i].lostPlace,
+              phone: response.data[i].phone,
+              pic: response.data[i].picPath,
+              state: response.data[i].state,
+              username: response.data[i].username,
+              time: response.data[i].date
+            })
+          }
+          console.log(topNewData)
+          self.mesdata1 = topNewData;
+        }).catch(function (error) {
+          console.log("error:"+error)
+        });
+
+        this.$axios.get('/lostFound/check',{
+          params: {
+            username: localStorage.username,
+            property: '寻物启事',
+            state: '正在进行'
+          }
+        } ).then(function (response) {
+          let topNewData = []
+          for(let i=0;i<response.data.length;i++){
+            topNewData.push({
+              id: response.data[i].taskID,
+              mestype: response.data[i].property,
+              itemtype: response.data[i].thingsType,
+              name: response.data[i].thingsName,
+              dec: response.data[i].description,
+              loc: response.data[i].lostPlace,
+              phone: response.data[i].phone,
+              pic: response.data[i].picPath,
+              headpic: "../../static/pic/photo.jpg",
+              state: response.data[i].state,
+              username: response.data[i].username,
+              time: response.data[i].date
+            })
+          }
+          console.log(topNewData)
+          self.mesdata2 = topNewData;
+        }).catch(function (error) {
+          console.log("error:"+error)
+        });
+      },
+      done :function(){
+        const self = this;
+        this.$axios.get('/lostFound/finish',{
+          params: {
+            id: self.current_choose_id,
+            toUsername: self.form.name
+          }
+        }).then(
+          function(response){
+            console.log(response)
+            self.dialogFormVisible=false
+            self.loadAll()
+          }
+        ).catch(function (error) {
+          console.log(error);
+        });
+      },
+    },
+    mounted() {
+      const self = this;
+      console.log(localStorage.username)
+      this.$axios.get('/lostFound/check',{
+        params: {
+          username: localStorage.username,
+          property: '失物招领',
+          state: '正在进行'
+        }
+      } ).then(function (response) {
+        console.log(response)
+        let topNewData = []
+        for(let i=0;i<response.data.length;i++){
+          topNewData.push({
+            id: response.data[i].taskID,
+            mestype: response.data[i].property,
+            itemtype: response.data[i].thingsType,
+            name: response.data[i].thingsName,
+            dec: response.data[i].description,
+            loc: response.data[i].lostPlace,
+            phone: response.data[i].phone,
+            pic: response.data[i].picPath,
+            state: response.data[i].state,
+            username: response.data[i].username,
+            time: response.data[i].date
+          })
+        }
+        console.log(topNewData)
+        self.mesdata1 = topNewData;
+      }).catch(function (error) {
+        console.log("error:"+error)
+      });
+
+      this.$axios.get('/lostFound/check',{
+        params: {
+          username: localStorage.username,
+          property: '寻物启事',
+          state: '正在进行'
+        }
+      } ).then(function (response) {
+        let topNewData = []
+        for(let i=0;i<response.data.length;i++){
+          topNewData.push({
+            id: response.data[i].taskID,
+            mestype: response.data[i].property,
+            itemtype: response.data[i].thingsType,
+            name: response.data[i].thingsName,
+            dec: response.data[i].description,
+            loc: response.data[i].lostPlace,
+            phone: response.data[i].phone,
+            pic: response.data[i].picPath,
+            headpic: "../../static/pic/photo.jpg",
+            state: response.data[i].state,
+            username: response.data[i].username,
+            time: response.data[i].date
+          })
+        }
+        console.log(topNewData)
+        self.mesdata2 = topNewData;
+      }).catch(function (error) {
+        console.log("error:"+error)
+      });
+
     },
     beforeCreate:function(){
       localStorage.route="#notice";

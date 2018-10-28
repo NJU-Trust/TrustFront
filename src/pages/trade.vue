@@ -41,7 +41,7 @@
                               </div>
                               <hr/>
                               <div style="margin-top:-10%;width:150px;">
-                                <img v-bind:src=headpic[i-1] style="width:30px;height:30px;position:relative;left:10px;top:-15px;"  alt="User_pic" >
+                                <img v-bind:src=topData[i-1].headPic style="width:30px;height:30px;position:relative;left:10px;top:-15px;"  alt="User_pic" >
                                 <!--<img src="../../static/pic/testuserpic1.png" style="width:30px;height:30px;position:relative;left:10px;top:-15px;"  alt="User_pic" >-->
                                 <span style="position:relative;margin-top:-10%;">&nbsp;&nbsp;&nbsp;&nbsp;“{{ topData[i-1].description}}”</span>
                               </div>
@@ -52,9 +52,6 @@
                             </el-button>
                           </el-popover>
 
-                          <!--<div >
-                            <img v-bind:src=topData[i-1].pic style="width:422px;height:250px;" class="picbox" alt="User_pic">
-                          </div>-->
                         </el-carousel-item>
                       </el-carousel>
                     </template>
@@ -69,33 +66,32 @@
                 <el-tab-pane >
                   <span slot="label" style="font-size:19px;"><i class="el-icon-search"></i>&nbsp;&nbsp;分类检索</span>
                   <el-row :gutter="20">
-                    <el-col :span="16"><template>
+                    <el-col :span="20"><template>
                       <div style="margin-top: 20px">
                         <span><strong>&nbsp;&nbsp;类别筛选&nbsp;&nbsp;</strong></span>
                         <br/>
-                        <el-checkbox v-for="type in types" :key="type" :label="type" style="margin-left:2%;">{{ type }}</el-checkbox>
-
+                        <br/>
+                        <el-checkbox v-model="options" v-for="type in types" :key="type" :label="type" style="margin-left:2%;">{{ type }}</el-checkbox>
+                        <br/>
+                        <br/>
+                        <el-input v-model="searchText" placeholder="搜索名字" class="input-with-select" style="width: 250px;">
+                          <el-button @click="search" slot="append" icon="el-icon-search"></el-button>
+                        </el-input>
                       </div>
                     </template></el-col>
-                    <el-col :span="8"><div style="margin-top: 15px;">
-                      <el-input placeholder="范围搜索" class="input-with-select">
-                        <el-select  slot="prepend" placeholder="请选择">
-                          <el-option label="名称" value="1"></el-option>
-                          <el-option label="类别" value="2"></el-option>
-                          <el-option label="描述" value="3"></el-option>
-                        </el-select>
-                        <el-button slot="append" icon="el-icon-search"></el-button>
-                      </el-input>
-                    </div></el-col>
+                    <el-col :span="4"><div style="margin-top: 15px;">
+                      <br/>
+                      <el-button type="primary" icon="el-icon-search" @click="filter">过滤</el-button>
+                    </div>
+                    </el-col>
                   </el-row>
                   <el-row :gutter="5" v-for="r in 2" :key="r" style="position:relative;top:20px;">
-                    <br/>
                     <el-col :span="7" v-for="(o, index) in 3" :key="o" :offset="index > 0 ? 1 : 0"style="position:relative;top:20px;">
-                      <el-card :body-style="{ padding: '5px' }">
+                      <el-card :body-style="{ padding: '5px' }" v-if="((r-1)*3+o-1) < commData.length" >
                         <img v-bind:src=commData[(r-1)*3+o-1].pic class="image" style="height:200px;">
                         <div style="padding: 14px;">
                           <strong style="font-size: 18px;">{{commData[(r-1)*3+o-1].name}}</strong>
-                          <el-collapse v-model="activeName" accordion >
+                          <el-collapse accordion >
                             <el-collapse-item  name="1">
                               <span slot="title" style="font-size: 17px;">详细信息</span>
                               <div style="position:relative;top:3px;">
@@ -117,19 +113,21 @@
                           <div class="bottom clearfix">
                             <i class="el-icon-goods" style='font-size:25px;'></i>
                             <strong style="position:relative;left:20px;font-size: 17px;">{{commData[(r-1)*3+o-1].price}}元</strong>
-                            <el-button type="primary" class="button" icon="el-icon-star-off">收藏</el-button>
                           </div>
                         </div>
                       </el-card>
                     </el-col>
                   </el-row>
-                </el-tab-pane>
+                </el-tab-pane >
                 <br/><br/><br/><br/>
                 <el-pagination
+                  @current-change="handleCurrentChange"
+                  :current-page.sync="pageNow"
                   background
-                  layout="prev, pager, next"
-                  style="position:relative;left:350px;"
-                  :total="30">
+                  :page-count="totalNum"
+                  layout="prev, pager, next,jumper"
+                  style="position:relative;margin:auto;width: 300px;"
+                  >
                 </el-pagination>
 
               </el-tabs>
@@ -172,20 +170,17 @@
           backgroundSize:"100% auto",
           backgroundPosition: "0% 0%",
         },
-        headpic:["../../static/pic/testuserpic1.png","../../static/pic/photo.jpg","../../static/pic/testuserpic3.png","../../static/pic/testuserpic2.png","../../static/pic/testuserpic4.png"],
+        pageNow: 0,
+        // headpic:["../../static/pic/testuserpic1.png","../../static/pic/photo.jpg","../../static/pic/testuserpic3.png","../../static/pic/testuserpic2.png","../../static/pic/testuserpic4.png"],
         options4: [],
         value9: [],
         list: [],
+        options: [],
+        searchText: '',
         loading: false,
         types:typeOptions,
-
+        totalNum: 0,
         checkboxGroup:['数码零件'],
-        //<el-option label="数码零件" value="家居日用"></el-option>
-        //<el-option label="影音家电" value="影音家电"></el-option>
-        //<el-option label="鞋服配饰" value="运动器材"></el-option>
-        //<el-option label="化妆洗漱" value="化妆洗漱"></el-option>
-        //<el-option label="图书教材" value="图书教材"></el-option>
-        //<el-option label="其他" value="其他"></el-option>
         topData:[{
           num:'000001',
           type:'化妆洗漱',
@@ -194,6 +189,7 @@
           price:'50',
           contact:'15876209838',
           pic:"../../static/pic/dhc.jpeg",
+          headPic:'../../static/pic/person-flat.png',
           date:"2018/06/04",
           state: true
         },
@@ -205,6 +201,7 @@
             price:'70',
             contact:'13329048392',
             pic:'../../static/pic/wylp.jpeg',
+            headPic:'../../static/pic/person-flat.png',
             date:"2018/05/02",
             state: true
           },
@@ -216,6 +213,7 @@
             price:'750',
             contact:'1997939399',
             pic:'../../static/pic/msr.jpg',
+            headPic:'../../static/pic/person-flat.png',
             date:"2018/8/12",
             state: true
           },
@@ -227,6 +225,8 @@
             price:'300',
             contact:'1997939399',
             pic:'../../static/pic/ysl.JPG',
+            headPic:'../../static/pic/person-flat.png',
+
             date:"2018/5/12",
             state: true
           },
@@ -238,82 +238,257 @@
             price:'2500',
             contact:'1997939399',
             pic:'../../static/pic/acer.jpg',
+            headPic:'../../static/pic/person-flat.png',
+
             date:"2018/6/13",
             state: true
           }
 
         ],
-        commData:[{
-          num:'000000',
-          type:'鞋服配饰',
-          name:'名创优品粉红顽皮帽子',
-          description:'名创优品39.9入 带过一次 可小刀',
-          price:'35',
-          contact:'13323389923',
-          pic:"../../static/pic/hat.jpg",
-          state: true
-        },
-          {
-            num:'000001',
-            type:'化妆洗漱',
-            name:'DHC橄榄润唇膏',
-            description:'日本 大国药妆店购入 全新未拆封',
-            price:'50',
-            contact:'123456',
-            pic:"../../static/pic/dhc.jpeg",
-            state: true
-          },
-          {
-            num:'000002',
-            type:'化妆洗漱',
-            name:'无印良品卸妆啫喱',
-            description:'日本 大国药妆店购入 全新未拆封',
-            price:'70',
-            contact:'13329048392',
-            pic:'../../static/pic/wylp.jpeg',
-            state: true
-          },
-          {
-            num:'000003',
-            type:'影音家电',
-            name:'铁三角msr',
-            description:'自用一年，音质良好。',
-            price:'750',
-            contact:'1997939399',
-            pic:'../../static/pic/msr.jpg',
-            state: true
-          },
-          {
-            num:'000004',
-            type:'化妆洗漱',
-            name:'YSL粉底液B10色号',
-            description:'因为皮肤偏干，这款比较哑光，不适合我，仅用过一次',
-            price:'300',
-            contact:'1997939399',
-            pic:'../../static/pic/ysl.JPG',
-            state: true
-          },
-          {
-            num:'000005',
-            type:'影音家电',
-            name:'Acer宏碁572G-528R',
-            description:'自用2年半，硬件全原装，第四代i5标压版 8g(ddr3) gtx840m2g 120g（三星固态，自己加的，根据需求另卖）+1000g。',
-            price:'2500',
-            contact:'1997939399',
-            pic:'../../static/pic/acer.jpg',
-            state: true
-          }
-        ],
+        // commData:[{
+        //   num:'000000',
+        //   type:'鞋服配饰',
+        //   name:'名创优品粉红顽皮帽子',
+        //   description:'名创优品39.9入 带过一次 可小刀',
+        //   price:'35',
+        //   contact:'13323389923',
+        //   pic:"../../static/pic/hat.jpg",
+        //   state: true
+        // },
+        //   {
+        //     num:'000001',
+        //     type:'化妆洗漱',
+        //     name:'DHC橄榄润唇膏',
+        //     description:'日本 大国药妆店购入 全新未拆封',
+        //     price:'50',
+        //     contact:'123456',
+        //     pic:"../../static/pic/dhc.jpeg",
+        //     state: true
+        //   },
+        //   {
+        //     num:'000002',
+        //     type:'化妆洗漱',
+        //     name:'无印良品卸妆啫喱',
+        //     description:'日本 大国药妆店购入 全新未拆封',
+        //     price:'70',
+        //     contact:'13329048392',
+        //     pic:'../../static/pic/wylp.jpeg',
+        //     state: true
+        //   },
+        //   {
+        //     num:'000003',
+        //     type:'影音家电',
+        //     name:'铁三角msr',
+        //     description:'自用一年，音质良好。',
+        //     price:'750',
+        //     contact:'1997939399',
+        //     pic:'../../static/pic/msr.jpg',
+        //     state: true
+        //   },
+        //   {
+        //     num:'000004',
+        //     type:'化妆洗漱',
+        //     name:'YSL粉底液B10色号',
+        //     description:'因为皮肤偏干，这款比较哑光，不适合我，仅用过一次',
+        //     price:'300',
+        //     contact:'1997939399',
+        //     pic:'../../static/pic/ysl.JPG',
+        //     state: true
+        //   },
+        //   {
+        //     num:'000005',
+        //     type:'影音家电',
+        //     name:'Acer宏碁572G-528R',
+        //     description:'自用2年半，硬件全原装，第四代i5标压版 8g(ddr3) gtx840m2g 120g（三星固态，自己加的，根据需求另卖）+1000g。',
+        //     price:'2500',
+        //     contact:'1997939399',
+        //     pic:'../../static/pic/acer.jpg',
+        //     state: true
+        //   }
+        // ],
+        commData: [],
 
       }
     },
     mounted() {
-      this.list = this.states.map(item => {
-        return { value: item, label: item };
+      // this.list = this.states.map(item => {
+      //   return { value: item, label: item };
+      // });
+      const self = this;
+      let getData = {
+        size: 5,
+        page: 0,
+        properties: 'createDate',
+        sort: 'DESC',
+        isMine: false,
+        isSelling: true,
+        isSellingAll: false,
+        isRating: false,
+        goodsTypes: [],
+        goodsName: '',
+        username: ''
+      }
+      this.$axios.post('/flea/getNew', getData).then(function (response) {
+        let topNewData = []
+        for(let i=0;i<response.data.tradeInfoList.length;i++){
+          topNewData.push({
+            num: response.data.tradeInfoList[i].id,
+            type: response.data.tradeInfoList[i].goodsType,
+            name: response.data.tradeInfoList[i].goodsName,
+            description: response.data.tradeInfoList[i].goodsDesc,
+            price: response.data.tradeInfoList[i].price,
+            contact: response.data.tradeInfoList[i].contact,
+            headPic:'../../static/pic/person-flat.png',
+            pic: response.data.tradeInfoList[i].pic,
+          })
+        }
+        self.topData = topNewData;
+
+      }).catch(function (error) {
+        console.log("error:"+error)
       });
+      getData = {
+        size: 6,
+        page: 0,
+        properties: 'goodsPrice',
+        sort: 'ASC',
+        isMine: false,
+        isSelling: true,
+        isSellingAll: false,
+        isRating: false,
+        goodsTypes: [],
+        goodsName: '',
+        username: ''
+      }
+      this.$axios.post('/flea/getNew', getData).then(function (response) {
+        let topNewData = []
+        for(let i=0;i<response.data.tradeInfoList.length;i++){
+          topNewData.push({
+            num: response.data.tradeInfoList[i].id,
+            type: response.data.tradeInfoList[i].goodsType,
+            name: response.data.tradeInfoList[i].goodsName,
+            description: response.data.tradeInfoList[i].goodsDesc,
+            price: response.data.tradeInfoList[i].price,
+            contact: response.data.tradeInfoList[i].contact,
+            pic: response.data.tradeInfoList[i].pic,
+          })
+        }
+        self.commData = topNewData;
+        self.totalNum = response.data.total;
+      }).catch(function (error) {
+        console.log("error:"+error)
+      });
+
     },
     methods: {
-      test:function(){
+      filter() {
+        const self = this;
+        let getData = {
+          size: 6,
+          page: 0,
+          properties: 'goodsPrice',
+          sort: 'ASC',
+          isMine: false,
+          isSelling: true,
+          isSellingAll: false,
+          isRating: false,
+          goodsTypes: self.options,
+          goodsName: '',
+          username: ''
+        }
+        this.$axios.post('/flea/getNew', getData).then(function (response) {
+          console.log(response)
+          let topNewData = []
+          for(let i=0;i<response.data.tradeInfoList.length;i++){
+            topNewData.push({
+              num: response.data.tradeInfoList[i].id,
+              type: response.data.tradeInfoList[i].goodsType,
+              name: response.data.tradeInfoList[i].goodsName,
+              description: response.data.tradeInfoList[i].goodsDesc,
+              price: response.data.tradeInfoList[i].price,
+              contact: response.data.tradeInfoList[i].contact,
+              pic: response.data.tradeInfoList[i].pic,
+            })
+          }
+          self.commData = topNewData;
+          self.totalNum = response.data.total;
+
+        }).catch(function (error) {
+          console.log("error:"+error)
+        });
+      },
+      search() {
+        const self = this;
+        let getData = {
+          size: 6,
+          page: 0,
+          properties: 'goodsPrice',
+          sort: 'ASC',
+          isMine: false,
+          isSelling: true,
+          isSellingAll: false,
+          isRating: false,
+          goodsTypes: self.options,
+          goodsName: self.searchText,
+          username: ''
+        }
+        this.$axios.post('/flea/getNew', getData).then(function (response) {
+          console.log(response)
+          let topNewData = []
+          for(let i=0;i<response.data.tradeInfoList.length;i++){
+            topNewData.push({
+              num: response.data.tradeInfoList[i].id,
+              type: response.data.tradeInfoList[i].goodsType,
+              name: response.data.tradeInfoList[i].goodsName,
+              description: response.data.tradeInfoList[i].goodsDesc,
+              price: response.data.tradeInfoList[i].price,
+              contact: response.data.tradeInfoList[i].contact,
+              pic: response.data.tradeInfoList[i].pic,
+            })
+          }
+          self.commData = topNewData;
+          self.totalNum = response.data.total;
+
+        }).catch(function (error) {
+          console.log("error:"+error)
+        });
+      },
+      handleCurrentChange(val) {
+        const self = this;
+        let getData = {
+          size: 6,
+          page: val -1,
+          properties: 'goodsPrice',
+          sort: 'ASC',
+          isMine: false,
+          isSelling: true,
+          isSellingAll: false,
+          isRating: false,
+          goodsTypes: [],
+          goodsName: '',
+          username: ''
+        }
+        this.$axios.post('/flea/getNew', getData).then(function (response) {
+          console.log(response)
+          let topNewData = []
+          for(let i=0;i<response.data.tradeInfoList.length;i++){
+            topNewData.push({
+              num: response.data.tradeInfoList[i].id,
+              type: response.data.tradeInfoList[i].goodsType,
+              name: response.data.tradeInfoList[i].goodsName,
+              description: response.data.tradeInfoList[i].goodsDesc,
+              price: response.data.tradeInfoList[i].price,
+              contact: response.data.tradeInfoList[i].contact,
+              pic: response.data.tradeInfoList[i].pic,
+            })
+          }
+          self.commData = topNewData;
+          console.log(self.commData)
+
+        }).catch(function (error) {
+          console.log("error:"+error)
+        });
+
       },
       remoteMethod(query) {
         if (query !== '') {
@@ -331,7 +506,6 @@
       }
     },
     created:function(){
-      this.test();
     },
     beforeCreate:function(){
       localStorage.route="#trade";
