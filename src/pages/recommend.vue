@@ -9,7 +9,7 @@
     <div class="col-xs-12 col-md-12" style="padding: 0; margin-top:100px;">
       <div style="margin-bottom: 50px;text-align: center;">
         <h1>个性推荐</h1>
-        <p>Trust平台根据您输入的金额及预期收益率，结合投资风险为您推荐的八个投资标的方案</p>
+        <p>Trust平台根据您输入的金额及预期收益率，结合投资风险为您推荐投资标的方案</p>
       </div>
       <div style="width:50%;float:left;">
         <div style="margin-left:2%;width:95%;">
@@ -59,6 +59,49 @@
             {id:"0009", beginTime:"2018.11.03", endTime:"2018.12.01", name:"Chanel香水", type:"CONSMETIC", profit:"8.56%", money:"800", remainMoney:"320", finishProgress:0.6,range:"C"},
           ]
         }
+      },
+      mounted() {
+        let self = this;
+        let small_data = {
+          page: 0,
+          size: 8,
+          properties: 'targetRatingScore',
+          money: [self.$route.query.recommendInvestDown, self.$route.query.recommendInvestUp],
+          time: [null, null],
+          interestRate: [self.$route.query.recommendInterestDown, self.$route.query.recommendInterestUp],
+          repaymentDuration: [null, null],
+          userCreditRating: [] ,
+          targetRating: [],
+          useOfFunds: []
+        }
+
+        this.$axios.post("/loan/recommendSmall",small_data )
+          .then(res => {
+            console.log(res)
+            let invests = []
+            for(let i of res.data) {
+              invests.push({
+                id: i.id,
+                name: i.name,
+                profit: (i.interestRate + "%"),
+                money: i.money,
+                remainMoney: (i.money-i.collectedMoney),
+                type: i.classification,
+                finishProgress: i.completionRate*1.0/100,
+                range: i.riskRating,
+                beginTime: i.startTime,
+              })
+            }
+            console.log(invests)
+            if(invests.length > 4) {
+              self.investInformation = invests.slice(0, 4)
+              self.investInformation2 = invests.slice(4, invests.length)
+            }else {
+              self.investInformation = invests
+              self.investInformation2 = []
+            }
+          })
+          .catch(e => {console.log(e)})
       }
     }
 </script>

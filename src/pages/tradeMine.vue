@@ -24,7 +24,7 @@
               <el-col :span="10" >
                 <div class="grid-content bg-purple">
                   <el-form-item label="物品类别" prop="type">
-              <el-select v-model="sizeForm.region"  placeholder="请选择物品类别" style="width:200px">
+              <el-select v-model="sizeForm.type"  placeholder="请选择物品类别" style="width:200px">
                 <el-option label="数码零件" value="家居日用"></el-option>
                 <el-option label="影音家电" value="影音家电"></el-option>
                 <el-option label="鞋服配饰" value="运动器材"></el-option>
@@ -49,14 +49,21 @@
               </el-col>
             </el-row>
             <el-form-item label="物品图片" prop="pic">
-              <el-upload class="upload-demo"
-                         drag
-                         action="https://jsonplaceholder.typicode.com/posts/"
+              <el-upload   class="avatar-uploader"
+                           drag
+                           :show-file-list="false"
+                         :action='url'
+                         :onSuccess="uploadSuccess"
                          multiple>
-                <i class="el-icon-upload"></i>
-                <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-                <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+                <img v-if="proof" :src="proof" class="avatar">
+                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
+            </el-form-item>
+            <el-form-item label="大约价格" prop="price">
+              <el-input v-model.number="sizeForm.price"
+                        type="price"
+                        style="width:200px;"
+                        placeholder="价格"></el-input>
             </el-form-item>
             <el-form-item label="物品信息" prop="desc">
               <el-input type="textarea"
@@ -80,59 +87,6 @@
         </div>
       </el-col>
     </el-row>
-
-    <!--<el-row>
-          <el-col span="18">
-              <div class="publishmes">
-                <el-form :rules="rules" ref="ruleForm" :model="sizeForm" label-width="80px">
-                  <el-form-item label="物品类别" prop="type">
-                    <el-select v-model="sizeForm.region"  placeholder="请选择物品类别" style="width:200px">
-                      <el-option label="数码零件" value="家居日用"></el-option>
-                      <el-option label="影音家电" value="影音家电"></el-option>
-                      <el-option label="鞋服配饰" value="运动器材"></el-option>
-                      <el-option label="化妆洗漱" value="化妆洗漱"></el-option>
-                      <el-option label="图书教材" value="图书教材"></el-option>
-                      <el-option label="其他" value="其他"></el-option>
-                    </el-select>
-                  </el-form-item>
-                  <el-form-item label="物品名称" prop="name">
-                    <el-input v-model="sizeForm.name"
-                              palceholder="请输入物品名称"
-                              style="width:200px;"></el-input>
-                  </el-form-item>
-                  <el-form-item label="联系方式"
-                                prop="phone">
-                    <el-input v-model.number="sizeForm.phone"
-                              type="phone"
-                              style="width:200px;"
-                              placeholder="电话"></el-input>
-                  </el-form-item>
-                  <el-form-item label="物品图片" prop="pic">
-                    <el-upload class="upload-demo"
-                               drag
-                               action="https://jsonplaceholder.typicode.com/posts/"
-                               multiple>
-                      <i class="el-icon-upload"></i>
-                      <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-                      <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
-                    </el-upload>
-                  </el-form-item>
-                  <el-form-item label="物品信息" prop="desc">
-                    <el-input type="textarea"
-                              style="width:360px"
-                              minRows="1"
-                              maxRows="3"
-                              autosize
-                              placeholder="请输物品的详细信息"
-                              v-model="sizeForm.desc"></el-input>
-                  </el-form-item>
-                  <el-form-item size="large">
-                    <el-button type="primary" @click="onSubmit()">发布</el-button>
-                  </el-form-item>
-                </el-form>
-              </div>
-          </el-col>
-        </el-row>-->
 
     <!--右边栏-->
     <div>
@@ -158,6 +112,8 @@
     components:{LeftTradeBar, navi, footerBar, rightBar},
     data() {
       return {
+        proof: '',
+        url: "http://localhost:8000/upload/image",
         back:{
           backgroundImage:"url(" + require("../../static/pic/investListBack.jpg") + ")",
           backgroundRepeat:"no-repeat",
@@ -170,8 +126,8 @@
           type: '',
           name: '',
           phone: '',
-          price:'',
-          desc: ''
+          price: 0,
+          desc: '',
         },
         rules: {
           type: [
@@ -196,19 +152,37 @@
       };
     },
     methods: {
+      uploadSuccess(response, file, fileList) {
+        this.proof += 'http://localhost:8000/'
+        this.proof += response
+      },
       onSubmit() {
+        const self = this;
         this.$confirm('确认发布这条信息吗', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '发布成功!'
+          self.$axios.post('/flea/newTrade',{
+            name: self.sizeForm.name,
+            type: self.sizeForm.type,
+            contact: self.sizeForm.phone,
+            picPath: self.proof,
+            desc: self.sizeForm.desc,
+            price: self.sizeForm.price,
+          })
+            .then(function (response) {
+              console.log(response)
+              self.$message({
+                type: 'success',
+                message: '发布成功!'
+              });
+              self.$router.push('/trade');
+            }).catch(function (error) {
+            console.log("error:"+error)
           });
-          this.$router.push('/trade');
         }).catch(() => {
-          this.$message({
+          self.$message({
             type: 'info',
             message: '已取消'
           });
@@ -251,6 +225,29 @@
       0 1px 6px 0 rgba(0,0,0, .12),
       0 1px 6px 0 rgba(0,0,0, .12);
     border-radius: 3px;
+  }
+  .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
   }
 
 

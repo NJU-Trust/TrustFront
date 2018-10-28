@@ -50,6 +50,17 @@
           this.password = window.atob(localStorage.password)
           this.remember = true;
         }
+        let self = this
+        this.$axios.get('/user/gettoken').then(
+          res => {
+            console.log(res)
+            self.modulus = res.data.modulus
+            self.exponent = res.data.exponent
+            self.eventId = res.data.eventId
+          }).catch(err => {
+          console.log(err)
+        });
+
       },
       methods: {
         login: function () {
@@ -70,13 +81,42 @@
           } else {
             store.commit(types.CANCELREMEMBER)
           }
+
+          let citi_username = 'SandboxUser1'
+          let citi_password = 'P@ssUser1$'
+          let pub = new RSAKey();
+          pub.setPublic(self.modulus, self.exponent);
+          let unencrypted_data = self.eventId +",b"+ citi_password;
+          citi_password = pub.encryptB(getByteArray(unencrypted_data)).toString(16);
+          self.$axios.get('/user/presignin', {
+            params:{
+              username: citi_username,
+              password: citi_password
+            }
+          }).then(res => {
+            console.log(res)
+          }).catch(err => {
+            console.log(err)
+          });
+
+
+
+
+
         }
       },
       data() {
         return {
           account: "",
           password: "",
-          remember: false
+          remember: false,
+
+          modulus: '',
+          exponent: '',
+          eventId: ''
+
+
+
         }
       },
     }

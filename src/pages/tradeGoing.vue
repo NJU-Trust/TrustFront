@@ -20,16 +20,16 @@
         <el-col span="18">
           <div class="mesboxborder" >
           <el-tabs v-model="activeName2" type="card"  @tab-click="handleClick">
-              <div v-for="i in commData.length" :key="i">
+              <div v-for="(item, index) in commData">
                 <el-row>
                   <el-col :span="24">
                     <div class="grid-content bg-purple-dark">
-                    <el-card v-if=commData[i-1].state class="box-card">
+                    <el-card class="box-card">
                       <el-row >
                         <el-col :span="6">
                           <div class="grid-content bg-purple">
                             <div>
-                            <img v-bind:src=commData[i-1].pic class="picbox">
+                            <img v-bind:src=item.pic class="picbox">
                             <!--<img v-bind:src=commData[i-1].pic style="width:200px;height:200px;position:relative;top:3px;left:15px;" class="picbox" alt="User_pic">-->
                           </div>
                           </div>
@@ -41,39 +41,39 @@
                                 <div class="grid-content bg-purple">
                                   <div>
                                     <strong style="font-size: 15px;">物品名称</strong>
-                                    <span style="position:relative;left:20px;">{{ commData[i-1].name}}</span>
+                                    <span style="position:relative;left:20px;">{{ item.name}}</span>
                                   </div>
                                   <div>
                                     <strong style="font-size: 15px;">物品种类</strong>
-                                    <span style="position:relative;left:20px;">{{ commData[i-1].type}}</span>
+                                    <span style="position:relative;left:20px;">{{ item.type}}</span>
                                   </div>
                                   <div>
                                     <strong style="font-size: 15px;">目标价格</strong>
-                                    <span style="position:relative;left:20px;">{{ commData[i-1].price}}</span>
+                                    <span style="position:relative;left:20px;">{{ item.price}}</span>
                                   </div>
                                 </div>
                               </el-col>
                               <el-col :span="12">
                                 <div>
                                   <strong style="font-size: 15px;">订单编号</strong>
-                                  <span style="position:relative;left:20px;">{{ commData[i-1].num}}</span>
+                                  <span style="position:relative;left:20px;">{{ item.num}}</span>
                                 </div>
                                 <div >
                                   <strong style="font-size: 15px;">联系方式</strong>
-                                  <span style="position:relative;left:20px;">{{ commData[i-1].contact}}</span>
+                                  <span style="position:relative;left:20px;">{{ item.contact}}</span>
                                 </div>
                               </el-col>
                             </el-row>
                               <div>
                                 <strong style="font-size: 15px;">物品描述</strong>
-                                <span style="position:relative;left:20px;">{{ commData[i-1].description}}</span>
+                                <span style="position:relative;left:20px;">{{ item.description}}</span>
                               </div>
                             <hr/>
                             <el-row>
                               <el-col :offset="14">
                               <el-button type="success"
                                          round size="small"
-                                         @click="dialogFormVisible = true"
+                                         @click="currentId(item.num)"
                                          style="margin-top:30px;">确认完成</el-button>
                               <el-dialog title="确认完成"
                                          width="40%"
@@ -87,7 +87,7 @@
                                 </el-form>
                                 <div slot="footer" class="dialog-footer">
                                   <el-button @click="dialogFormVisible=false">取 消</el-button>
-                                  <el-button type="primary" @click="dialogFormVisible=done(commData[i-1])">确 定</el-button>
+                                  <el-button type="primary" @click="done()">确 定</el-button>
                                 </div>
                               </el-dialog>
                               </el-col>
@@ -104,12 +104,15 @@
               <br/>
               <el-row>
                 <el-col :offset="8">
-              <el-pagination
-                background
-                layout="prev, pager, next"
-                style="position:relative;left: 300px"
-                :total="30">
-              </el-pagination>
+                  <el-pagination
+                    @current-change="handleCurrentChange"
+                    :current-page.sync="pageNow"
+                    background
+                    :page-count="totalNum"
+                    layout="prev, pager, next,jumper"
+                    style="position:relative;margin:auto;width: 1000px;"
+                  >
+                  </el-pagination>
                 </el-col>
               </el-row>
             </el-tabs>
@@ -181,6 +184,9 @@
         ],
         dialogFormVisible: false,
         activeName2: 'first',
+        totalNum: 0,
+        pageNow: 0,
+        current_choose_id: 0,
         form: {
           name: '',
         },
@@ -190,13 +196,102 @@
         formLabelWidth: '120px',
       }
     },
+    mounted() {
+      const self = this;
+      let getData = {
+        size: 6,
+        page: 0,
+        properties: 'goodsPrice',
+        sort: 'ASC',
+        isMine: true,
+        isSelling: true,
+        isSellingAll: true,
+        isRating: false,
+        goodsTypes: [],
+        goodsName: '',
+        username: localStorage.username
+      }
+      this.$axios.post('/flea/getNew', getData).then(function (response) {
+          console.log(response)
+          let topNewData = []
+          for(let i=0;i<response.data.tradeInfoList.length;i++){
+            topNewData.push({
+              num: response.data.tradeInfoList[i].id,
+              type: response.data.tradeInfoList[i].goodsType,
+              name: response.data.tradeInfoList[i].goodsName,
+              description: response.data.tradeInfoList[i].goodsDesc,
+              price: response.data.tradeInfoList[i].price,
+              contact: response.data.tradeInfoList[i].contact,
+              pic: response.data.tradeInfoList[i].pic,
+            })
+          }
+          self.commData = topNewData;
+          self.totalNum = response.data.total;
+      }).catch(function (error) {
+        console.log("error:"+error)
+      });
+    },
     methods:{
-      done: function(vis){
-        console.log(vis);
-        vis.state=false;
-        console.log(vis);
-        return false;
+      currentId(index){
+        this.dialogFormVisible = true
+        this.current_choose_id = index
+        console.log(index)
       },
+      done: function(){
+        const self = this;
+        console.log(self.current_choose_id)
+        this.$axios.get('/flea/finish',{
+          params: {
+            id: self.current_choose_id,
+            toUsername: self.form.name
+          }
+        }).then(
+          function(response){
+            console.log(response)
+            self.dialogFormVisible=false
+            self.handleCurrentChange(1)
+
+          }
+        ).catch(function (error) {
+          console.log(error);
+        });
+      },
+      handleCurrentChange(val) {
+        const self = this;
+        let getData = {
+          size: 6,
+          page: val-1,
+          properties: 'goodsPrice',
+          sort: 'ASC',
+          isMine: true,
+          isSelling: true,
+          isSellingAll: true,
+          isRating: false,
+          goodsTypes: [],
+          goodsName: '',
+          username: localStorage.username
+        }
+        this.$axios.post('/flea/getNew', getData).then(function (response) {
+          console.log(response)
+          let topNewData = []
+          for(let i=0;i<response.data.tradeInfoList.length;i++){
+            topNewData.push({
+              num: response.data.tradeInfoList[i].id,
+              type: response.data.tradeInfoList[i].goodsType,
+              name: response.data.tradeInfoList[i].goodsName,
+              description: response.data.tradeInfoList[i].goodsDesc,
+              price: response.data.tradeInfoList[i].price,
+              contact: response.data.tradeInfoList[i].contact,
+              pic: response.data.tradeInfoList[i].pic,
+            })
+          }
+          self.commData = topNewData;
+          self.totalNum = response.data.total;
+        }).catch(function (error) {
+
+          console.log("error:"+error)
+        });
+      }
     },
     beforeCreate:function(){
       localStorage.route="#trade";

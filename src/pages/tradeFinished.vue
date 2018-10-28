@@ -70,13 +70,29 @@
                       </div>
                     </el-col>
                   </el-row>
+                  <br/>
+                  <br/>
+
                 </div>
               </div>
+              <el-row>
+                <el-col :offset="8">
+                  <el-pagination
+                    @current-change="handleCurrentChange1"
+                    :current-page.sync="pageNow1"
+                    background
+                    :page-count="totalNum1"
+                    layout="prev, pager, next,jumper"
+                    style="position:relative;margin:auto;width: 1000px;"
+                  >
+                  </el-pagination>
+                </el-col>
+              </el-row>
             </el-tab-pane>
 
             <el-tab-pane label="待评价" name="second">
-              <div v-for="i in commentData.length" :key="i">
-                <div v-show="commentData[i-1].state" style="margin-top: 20px;margin-left: 20px">
+              <div v-for="i in commData.length" :key="i">
+                <div style="margin-top: 20px;margin-left: 20px">
                   <el-row>
                     <el-col :span="24">
                       <div class="grid-content bg-purple-dark">
@@ -85,7 +101,7 @@
                             <el-col :span="6">
                               <div class="grid-content bg-purple">
                                 <div>
-                                  <img v-bind:src=commentData[i-1].pic class="picbox" alt="User_pic">
+                                  <img v-bind:src=commData[i-1].pic class="picbox" alt="User_pic">
                                 </div>
                               </div>
                             </el-col>
@@ -93,27 +109,27 @@
                               <div class="grid-content bg-purple-dark">
                                 <div>
                                   <strong style="font-size: 15px;">物品名称</strong>
-                                  <span style="position:relative;left:20px;">{{ commentData[i-1].name}}</span>
+                                  <span style="position:relative;left:20px;">{{ commData[i-1].name}}</span>
                                 </div>
                                 <div style="position:relative;top:3px;">
                                   <strong style="font-size: 15px;">订单编号</strong>
-                                  <span style="position:relative;left:20px;">{{ commentData[i-1].num}}</span>
+                                  <span style="position:relative;left:20px;">{{ commData[i-1].num}}</span>
                                 </div>
                                 <div style="position:relative;top:3px;">
                                   <strong style="font-size: 15px;">物品种类</strong>
-                                  <span style="position:relative;left:20px;">{{ commentData[i-1].type}}</span>
+                                  <span style="position:relative;left:20px;">{{ commData[i-1].type}}</span>
                                 </div>
                                 <div style="position:relative;top:3px;">
                                   <strong style="font-size: 15px;">联系方式</strong>
-                                  <span style="position:relative;left:20px;">{{ commentData[i-1].contact}}</span>
+                                  <span style="position:relative;left:20px;">{{ commData[i-1].contact}}</span>
                                 </div>
                                 <div style="position:relative;top:3px;">
                                   <strong style="font-size: 15px;">目标价格</strong>
-                                  <span style="position:relative;left:20px;">{{ commentData[i-1].price}}</span>
+                                  <span style="position:relative;left:20px;">{{ commData[i-1].price}}</span>
                                 </div>
                                 <div style="position:relative;top:3px;">
                                   <strong style="font-size: 15px;">物品描述</strong>
-                                  <span style="position:relative;left:20px;">{{ commentData[i-1].description}}</span>
+                                  <span style="position:relative;left:20px;">{{ commData[i-1].description}}</span>
                                 </div>
                               </div>
                               <hr/>
@@ -123,7 +139,7 @@
                             <el-col :span="6" :offset="16">
                               <el-button type="success"
                                          round size="small"
-                                         @click="dialogFormVisible = true">评分</el-button>
+                                         @click="currentId(commData[i-1].num)">评分</el-button>
                               <el-dialog title="评价"
                                          width="40%"
                                          :visible.sync="dialogFormVisible">
@@ -137,7 +153,7 @@
                                 </el-form>
                                 <div slot="footer" class="dialog-footer">
                                   <el-button @click="dialogFormVisible=false">取 消</el-button>
-                                  <el-button type="primary" @click="dialogFormVisible=done(commentData[i-1])">确 定</el-button>
+                                  <el-button type="primary" @click="done()">确 定</el-button>
                                 </div>
                               </el-dialog>
                             </el-col>
@@ -146,13 +162,28 @@
                       </div>
                     </el-col>
                   </el-row>
+                  <br/>
+                  <br/>
                 </div>
               </div>
+              <el-row>
+                <el-col :offset="8">
+                  <el-pagination
+                    @current-change="handleCurrentChange2"
+                    :current-page.sync="pageNow2"
+                    background
+                    :page-count="totalNum2"
+                    layout="prev, pager, next,jumper"
+                    style="position:relative;margin:auto;width: 1000px;"
+                  >
+                  </el-pagination>
+                </el-col>
+              </el-row>
             </el-tab-pane>
 
             <el-tab-pane label="已评价" name="third">
               <div v-for="i in commentData.length" :key="i">
-                <div v-show="!commentData[i-1].state" style="margin-top: 20px;margin-left: 20px">
+                <div style="margin-top: 20px;margin-left: 20px">
                   <el-row>
                     <el-col :span="24">
                       <div class="grid-content bg-purple-dark">
@@ -161,7 +192,6 @@
                           <el-col :span="6">
                             <div class="grid-content bg-purple">
                               <img v-bind:src=commentData[i-1].pic   class="picbox" alt="User_pic">
-                             <!-- <img v-bind:src=commentData[i-1].pic style="width:200px;height:200px;position:relative;top:3px;left:15px;" class="picbox" alt="User_pic">-->
                             </div>
                           </el-col>
                           <el-col :span="16" style="margin-top:2%;margin-left:8%;">
@@ -197,8 +227,23 @@
                       </div>
                     </el-col>
                   </el-row>
+                  <br/>
+                  <br/>
                 </div>
               </div>
+              <el-row>
+                <el-col :offset="8">
+                  <el-pagination
+                    @current-change="handleCurrentChange3"
+                    :current-page.sync="pageNow3"
+                    background
+                    :page-count="totalNum3"
+                    layout="prev, pager, next,jumper"
+                    style="position:relative;margin:auto;width: 1000px;"
+                  >
+                  </el-pagination>
+                </el-col>
+              </el-row>
             </el-tab-pane>
           </el-tabs>
         </div>
@@ -244,8 +289,12 @@
           backgroundSize:"100% auto",
           backgroundPosition: "0% 0%",
         },
-
-        activeName2: 'first',
+        pageNow1: 0,
+        totalNum1: 0,
+        pageNow2: 0,
+        totalNum2: 0,
+        pageNow3: 0,
+        totalNum3: 0,
         soldData:[
           {
             num:'000009',
@@ -258,6 +307,7 @@
             state: true
           }
         ],
+        commData: [],
         commentData:[
           {
             num:'000010',
@@ -281,8 +331,8 @@
           }
         ],
         dialogFormVisible: false,
-        dialogFormVisible: false,
         activeName2: 'first',
+        current_choose_id: 0,
         form: {
           name: '',
         },
@@ -294,14 +344,238 @@
       }
     },
     methods:{
-        handleClick(tab, event) {
-          console.log(tab, event);},
-      done: function(vis){
-        console.log(vis);
-        vis.state=false;
-        console.log(vis);
-        return false;
+      handleCurrentChange1(val) {
+        const self = this;
+        let getData = {
+          size: 6,
+          page: val-1,
+          properties: 'goodsPrice',
+          sort: 'ASC',
+          isMine: true,
+          isSelling: false,
+          isSellingAll: true,
+          isRating: false,
+          goodsTypes: [],
+          goodsName: '',
+          username: localStorage.username
+        }
+        this.$axios.post('/flea/getNew', getData).then(function (response) {
+          console.log(response)
+          let topNewData = []
+          for(let i=0;i<response.data.tradeInfoList.length;i++){
+            topNewData.push({
+              num: response.data.tradeInfoList[i].id,
+              type: response.data.tradeInfoList[i].goodsType,
+              name: response.data.tradeInfoList[i].goodsName,
+              description: response.data.tradeInfoList[i].goodsDesc,
+              price: response.data.tradeInfoList[i].price,
+              contact: response.data.tradeInfoList[i].contact,
+              pic: response.data.tradeInfoList[i].pic,
+            })
+          }
+          self.soldData = topNewData;
+        }).catch(function (error) {
+          console.log("error:"+error)
+        });
       },
+      handleCurrentChange2(val) {
+        const self = this;
+        let getData = {
+          size: 6,
+          page: val-1,
+          properties: 'goodsPrice',
+          sort: 'ASC',
+          isMine: true,
+          isSelling: false,
+          isSellingAll: false,
+          isRating: false,
+          goodsTypes: [],
+          goodsName: '',
+          username: localStorage.username
+        }
+        this.$axios.post('/flea/getNew', getData).then(function (response) {
+          console.log(response)
+          let topNewData = []
+          for(let i=0;i<response.data.tradeInfoList.length;i++){
+            topNewData.push({
+              num: response.data.tradeInfoList[i].id,
+              type: response.data.tradeInfoList[i].goodsType,
+              name: response.data.tradeInfoList[i].goodsName,
+              description: response.data.tradeInfoList[i].goodsDesc,
+              price: response.data.tradeInfoList[i].price,
+              contact: response.data.tradeInfoList[i].contact,
+              pic: response.data.tradeInfoList[i].pic,
+            })
+          }
+          self.commData = topNewData;
+        }).catch(function (error) {
+          console.log("error:"+error)
+        });
+      },
+      handleCurrentChange3(val) {
+        const self = this;
+        let getData = {
+          size: 6,
+          page: val-1,
+          properties: 'goodsPrice',
+          sort: 'ASC',
+          isMine: true,
+          isSelling: false,
+          isSellingAll: false,
+          isRating: true,
+          goodsTypes: [],
+          goodsName: '',
+          username: localStorage.username
+        }
+        this.$axios.post('/flea/getNew', getData).then(function (response) {
+          console.log(response)
+          let topNewData = []
+          for(let i=0;i<response.data.tradeInfoList.length;i++){
+            topNewData.push({
+              num: response.data.tradeInfoList[i].id,
+              type: response.data.tradeInfoList[i].goodsType,
+              name: response.data.tradeInfoList[i].goodsName,
+              description: response.data.tradeInfoList[i].goodsDesc,
+              price: response.data.tradeInfoList[i].price,
+              contact: response.data.tradeInfoList[i].contact,
+              pic: response.data.tradeInfoList[i].pic,
+            })
+          }
+          self.commentData = topNewData;
+        }).catch(function (error) {
+          console.log("error:"+error)
+        });
+      },
+      handleClick(tab, event) {
+          console.log(tab, event);
+      },
+      currentId(index){
+        this.dialogFormVisible = true
+        this.current_choose_id = index
+        console.log(index)
+      },
+      done: function(){
+        const self = this;
+        console.log(self.current_choose_id)
+        this.$axios.get('/flea/rating',{
+          params: {
+            id: self.current_choose_id,
+            rating: self.value3
+
+          }
+        }).then(
+          function(response){
+            console.log(response)
+            self.dialogFormVisible=false
+            self.handleCurrentChange2(1)
+            self.handleCurrentChange3(1)
+
+          }
+        ).catch(function (error) {
+          console.log(error);
+        });
+      },
+    },
+    mounted() {
+      const self = this;
+      let getData = {
+        size: 6,
+        page: 0,
+        properties: 'goodsPrice',
+        sort: 'ASC',
+        isMine: true,
+        isSelling: false,
+        isSellingAll: true,
+        isRating: false,
+        goodsTypes: [],
+        goodsName: '',
+        username: localStorage.username
+      }
+      this.$axios.post('/flea/getNew', getData).then(function (response) {
+        console.log(response)
+        let topNewData = []
+        for(let i=0;i<response.data.tradeInfoList.length;i++){
+          topNewData.push({
+            num: response.data.tradeInfoList[i].id,
+            type: response.data.tradeInfoList[i].goodsType,
+            name: response.data.tradeInfoList[i].goodsName,
+            description: response.data.tradeInfoList[i].goodsDesc,
+            price: response.data.tradeInfoList[i].price,
+            contact: response.data.tradeInfoList[i].contact,
+            pic: response.data.tradeInfoList[i].pic,
+          })
+        }
+        self.soldData = topNewData;
+        self.totalNum1 = response.data.total;
+      }).catch(function (error) {
+        console.log("error:"+error)
+      });
+
+      getData = {
+        size: 6,
+        page: 0,
+        properties: 'goodsPrice',
+        sort: 'ASC',
+        isMine: true,
+        isSelling: false,
+        isSellingAll: false,
+        isRating: false,
+        goodsTypes: [],
+        goodsName: '',
+        username: localStorage.username
+      }
+      this.$axios.post('/flea/getNew', getData).then(function (response) {
+        console.log(response)
+        let topNewData = []
+        for(let i=0;i<response.data.tradeInfoList.length;i++){
+          topNewData.push({
+            num: response.data.tradeInfoList[i].id,
+            type: response.data.tradeInfoList[i].goodsType,
+            name: response.data.tradeInfoList[i].goodsName,
+            description: response.data.tradeInfoList[i].goodsDesc,
+            price: response.data.tradeInfoList[i].price,
+            contact: response.data.tradeInfoList[i].contact,
+            pic: response.data.tradeInfoList[i].pic,
+          })
+        }
+        self.commData = topNewData;
+        self.totalNum2 = response.data.total;
+      }).catch(function (error) {
+        console.log("error:"+error)
+      });
+
+      getData = {
+        size: 6,
+        page: 0,
+        properties: 'goodsPrice',
+        sort: 'ASC',
+        isMine: true,
+        isSelling: false,
+        isSellingAll: false,
+        isRating: true,
+        goodsTypes: [],
+        goodsName: '',
+        username: localStorage.username
+      }
+      this.$axios.post('/flea/getNew', getData).then(function (response) {
+        console.log(response)
+        let topNewData = []
+        for(let i=0;i<response.data.tradeInfoList.length;i++){
+          topNewData.push({
+            num: response.data.tradeInfoList[i].id,
+            type: response.data.tradeInfoList[i].goodsType,
+            name: response.data.tradeInfoList[i].goodsName,
+            description: response.data.tradeInfoList[i].goodsDesc,
+            price: response.data.tradeInfoList[i].price,
+            contact: response.data.tradeInfoList[i].contact,
+            pic: response.data.tradeInfoList[i].pic,
+          })
+        }
+        self.commentData = topNewData;
+        self.totalNum3 = response.data.total;
+      }).catch(function (error) {
+        console.log("error:"+error)
+      });
     },
     beforeCreate:function(){
       localStorage.route="#trade";

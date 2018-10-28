@@ -53,9 +53,6 @@
                       </el-carousel-item>
                     </el-carousel>
                   </template>
-                  <div style="margin-left:70%;margin-top:-1%;margin-bottom: 1%;">
-                    <span style="font-size:10px;">*点击图片快速查看详细信息</span>
-                  </div>
                 </div>
               </el-tab-pane>
             </el-tabs>
@@ -66,25 +63,25 @@
             <el-tabs type="border-card">
               <el-tab-pane >
                 <span slot="label" style="font-size:19px;"><i class="el-icon-search"></i>&nbsp;&nbsp;分类检索</span>
+                <el-button type="primary" style="float: right;" @click="filter">
+                  过滤
+                </el-button>
                 <template>
                   <div style="margin-top: 20px">
                     <span><strong>消息性质</strong></span>
-                    <el-checkbox style="margin-left:2%;">失物招领</el-checkbox>
-                    <el-checkbox style="margin-left:2%;">寻物启事</el-checkbox>
+                    <el-checkbox v-for="p in properties" v-model="property" :key="p" :label="p" style="margin-left:2%;">{{ p }}</el-checkbox>
                     <br/>
-
                     <span><strong>物品分类</strong></span>
-                    <el-checkbox v-for="type in types" :key="type" :label="type" style="margin-left:2%;">{{ type }}</el-checkbox>
+                    <el-checkbox v-for="type in types" v-model="thingsType" :key="type" :label="type" style="margin-left:2%;">{{ type }}</el-checkbox>
                     <br/>
-
                     <span><strong>常见地点</strong></span>
-                    <el-checkbox v-for="loc in locs" :key="loc" :label="loc" style="margin-left:2%;">{{ loc }}</el-checkbox>
+                    <el-checkbox v-for="loc in locs" v-model="place" :key="loc" :label="loc" style="margin-left:2%;">{{ loc }}</el-checkbox>
                     <hr/>
                   </div>
                 </template>
-                <div v-for="j in mesdata.length" :key="j" style="margin-left:6%;">
+                <div v-for="j in mesdata.length" :key="j" style="">
                   <el-row :gutter="400" >
-                    <div v-for="i in 2" :key="i">
+                    <div v-for="i in mesdata[j-1].length" :key="i">
                       <el-col :span="6">
                         <el-card class="box-card">
                           <div class="grid-content bg-purple">
@@ -123,10 +120,13 @@
                   </el-row>
                 </div>
                 <el-pagination
+                  @current-change="handleCurrentChange"
+                  :current-page.sync="pageNow"
                   background
-                  layout="prev, pager, next"
-                  style="margin-left:45%;"
-                  :total="1000">
+                  :page-count="totalNum"
+                  layout="prev, pager, next,jumper"
+                  style="position:relative;margin:auto;width: 300px;"
+                >
                 </el-pagination>
               </el-tab-pane>
             </el-tabs>
@@ -169,9 +169,15 @@
         },
         types: ['校园卡', '钥匙', '水杯', '雨伞','其他'],
         locs:['四五六食堂','基础实验楼','仙I','仙II','逸夫楼','九食堂','十食堂','操场'],
+        properties: ['失物招领', '寻物启事'],
         checkboxGroup: [],
         value9: [],
         list: [],
+        place: [],
+        thingsType: [],
+        property: [],
+        pageNow: 0,
+        totalNum: 0,
         loading: false,
         mesdata:[
           [{
@@ -281,6 +287,84 @@
       }
     },
     methods: {
+      filter() {
+        const self = this;
+        let getData = {
+          size: 6,
+          page: 0,
+          properties: 'id',
+          sort: 'DESC',
+          thingsTypes: self.thingsType,
+          lostPlaces: self.place,
+          msgProperties: self.property
+        }
+        this.$axios.post('/lostFound/getNew', getData).then(function (response) {
+          let topNewData = []
+          let temp = [];
+          for(let i=0;i<response.data.taskInfos.length;i++){
+            temp.push({
+              mestype: response.data.taskInfos[i].property,
+              itemtype: response.data.taskInfos[i].thingsType,
+              name: response.data.taskInfos[i].thingsName,
+              dec: response.data.taskInfos[i].description,
+              loc: response.data.taskInfos[i].lostPlace,
+              phone: response.data.taskInfos[i].phone,
+              pic: response.data.taskInfos[i].picPath,
+              headpic: "../../static/pic/person-flat.png",
+              state: response.data.taskInfos[i].state,
+              username: response.data.taskInfos[i].username,
+              time: response.data.taskInfos[i].date
+            })
+            if(i%2===1){
+              topNewData.push(temp)
+              temp = []
+            }
+          }
+          if(temp.length>0){
+            topNewData.push(temp);
+          }
+          console.log(topNewData)
+          self.mesdata = topNewData;
+          self.totalNum = response.data.total;
+        }).catch(function (error) {
+          console.log("error:"+error)
+        });
+      },
+      handleCurrentChange(val) {
+        const self = this;
+        let getData = {
+          size: 6,
+          page: val-1,
+          properties: 'id',
+          sort: 'DESC',
+          thingsTypes: self.thingsType,
+          lostPlaces: self.place,
+          msgProperties: self.property
+        }
+        this.$axios.post('/lostFound/getNew', getData).then(function (response) {
+          let topNewData = []
+          for(let i=0;i<response.data.taskInfos.length;i++){
+            topNewData.push({
+              mestype: response.data.taskInfos[i].property,
+              itemtype: response.data.taskInfos[i].thingsType,
+              name: response.data.taskInfos[i].thingsName,
+              dec: response.data.taskInfos[i].description,
+              loc: response.data.taskInfos[i].lostPlace,
+              phone: response.data.taskInfos[i].phone,
+              pic: response.data.taskInfos[i].picPath,
+              headpic: "../../static/pic/person-flat.png",
+              state: response.data.taskInfos[i].state,
+              username: response.data.taskInfos[i].username,
+              time: response.data.taskInfos[i].date
+            })
+          }
+          console.log(topNewData)
+          self.latestmes = topNewData;
+
+        }).catch(function (error) {
+          console.log("error:"+error)
+        });
+      },
       test:function(){
       },
       remoteMethod(query) {
@@ -300,6 +384,84 @@
       dialog: function(){
 
       },
+    },
+    mounted() {
+      const self = this;
+      let getData = {
+        size: 4,
+        page: 0,
+        properties: 'id',
+        sort: 'DESC',
+        thingsTypes: self.thingsType,
+        lostPlaces: self.place,
+        msgProperties: self.property
+      }
+      this.$axios.post('/lostFound/getNew', getData).then(function (response) {
+        let topNewData = []
+        for(let i=0;i<response.data.taskInfos.length;i++){
+          topNewData.push({
+            mestype: response.data.taskInfos[i].property,
+            itemtype: response.data.taskInfos[i].thingsType,
+            name: response.data.taskInfos[i].thingsName,
+            dec: response.data.taskInfos[i].description,
+            loc: response.data.taskInfos[i].lostPlace,
+            phone: response.data.taskInfos[i].phone,
+            pic: response.data.taskInfos[i].picPath,
+            headpic: "../../static/pic/person-flat.jpg",
+            state: response.data.taskInfos[i].state,
+            username: response.data.taskInfos[i].username,
+            time: response.data.taskInfos[i].date
+          })
+        }
+        console.log(topNewData)
+        self.latestmes = topNewData;
+
+      }).catch(function (error) {
+        console.log("error:"+error)
+      });
+
+      getData = {
+        size: 6,
+        page: 0,
+        properties: 'id',
+        sort: 'DESC',
+        thingsTypes: self.thingsType,
+        lostPlaces: self.place,
+        msgProperties: self.property
+      }
+      this.$axios.post('/lostFound/getNew', getData).then(function (response) {
+        let topNewData = []
+        let temp = [];
+        for(let i=0;i<response.data.taskInfos.length;i++){
+          temp.push({
+            mestype: response.data.taskInfos[i].property,
+            itemtype: response.data.taskInfos[i].thingsType,
+            name: response.data.taskInfos[i].thingsName,
+            dec: response.data.taskInfos[i].description,
+            loc: response.data.taskInfos[i].lostPlace,
+            phone: response.data.taskInfos[i].phone,
+            pic: response.data.taskInfos[i].picPath,
+            headpic: "../../static/pic/person-flat.jpg",
+            state: response.data.taskInfos[i].state,
+            username: response.data.taskInfos[i].username,
+            time: response.data.taskInfos[i].date
+          })
+          if(i%2===1){
+            topNewData.push(temp)
+            temp = []
+          }
+        }
+        if(temp.length>0){
+          topNewData.push(temp);
+        }
+        console.log(topNewData)
+        self.mesdata = topNewData;
+        self.totalNum = response.data.total;
+      }).catch(function (error) {
+        console.log("error:"+error)
+      });
+
+
     },
     created:function(){
       this.test();

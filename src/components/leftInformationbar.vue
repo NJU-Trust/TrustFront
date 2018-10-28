@@ -6,6 +6,15 @@
     router="true">
     <el-submenu index="1" style="background-color:#f5f5f5">
       <template slot="title">
+        <i class="el-icon-menu"></i>
+        <span><strong>消息集散</strong></span>
+      </template>
+      <el-menu-item-group >
+        <el-menu-item index="/notice">失物/寻物</el-menu-item>
+      </el-menu-item-group>
+    </el-submenu>
+    <el-submenu index="1" style="background-color:#f5f5f5">
+      <template slot="title">
         <i class="el-icon-bell"></i>
         <span ><strong>与我相关</strong></span>
       </template>
@@ -13,16 +22,6 @@
         <el-menu-item index="/notice/upload">发布消息</el-menu-item>
         <el-menu-item index="/notice/mesunderway">正在进行</el-menu-item>
         <el-menu-item index="/notice/mesdone">已经完成</el-menu-item>
-      </el-menu-item-group>
-    </el-submenu>
-    <el-submenu index="1" style="background-color:#f5f5f5">
-      <template slot="title">
-        <i class="el-icon-menu"></i>
-        <span><strong>消息集散</strong></span>
-      </template>
-      <el-menu-item-group >
-        <el-menu-item index="/notice">失物/寻物</el-menu-item>
-        <el-menu-item index="/notice/#">其他</el-menu-item>
       </el-menu-item-group>
     </el-submenu>
   </el-menu>

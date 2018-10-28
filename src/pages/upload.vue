@@ -20,14 +20,14 @@
         <div class="publishmes" >
           <el-form :rules="rules"
                    :inline="true"
-                   ref="ruleForm" :model="sizeForm" label-width="80px" size="mini" style="margin-top:8%;margin-left:15%;">
+                   ref="ruleForm" :model="sizeForm" label-width="80px" size="mini" style="margin-top:5%;margin-left:15%;">
             <el-row>
               <el-col :span="10" >
                 <div class="grid-content bg-purple">
                   <el-form-item label="消息性质" prop="type">
                     <el-radio-group v-model="sizeForm.type" size="small">
-                      <el-radio border label="失物招领"></el-radio>
-                      <el-radio border label="寻物启事"></el-radio>
+                      <el-radio border label="失物招领" value="失物招领"></el-radio>
+                      <el-radio border label="寻物启事" value="寻物启事"></el-radio>
                     </el-radio-group>
                   </el-form-item>
                   <el-form-item label="物品名称" prop="name" >
@@ -37,13 +37,27 @@
                   </el-form-item>
                 </div>
               </el-col>
-              <el-col :span="10" >
+              <el-col :span="8" >
+
                 <div class="grid-content bg-purple">
                   <el-form-item label="物品类别" prop="itemtype" >
                     <el-select v-model="sizeForm.region"  placeholder="请选择物品类别" style="width:200px">
                       <el-option label="校园卡" value="校园卡"></el-option>
                       <el-option label="钥匙" value="钥匙"></el-option>
                       <el-option label="证件" value="证件"></el-option>
+                      <el-option label="其他" value="其他"></el-option>
+                    </el-select>
+                  </el-form-item>
+                  <el-form-item label="大致地点" prop="itemtype" >
+                    <el-select v-model="sizeForm.place"  placeholder="请选择大致地点" style="width:200px">
+                      <el-option label="四五六食堂" value="四五六食堂"></el-option>
+                      <el-option label="基础实验楼" value="基础实验楼"></el-option>
+                      <el-option label="仙I" value="仙I"></el-option>
+                      <el-option label="仙II" value="仙II"></el-option>
+                      <el-option label="逸夫楼" value="逸夫楼"></el-option>
+                      <el-option label="九食堂" value="九食堂"></el-option>
+                      <el-option label="十食堂" value="十食堂"></el-option>
+                      <el-option label="操场" value="操场"></el-option>
                       <el-option label="其他" value="其他"></el-option>
                     </el-select>
                   </el-form-item>
@@ -57,14 +71,16 @@
                 </div>
               </el-col>
             </el-row>
+            <br/>
             <el-form-item label="物品图片" prop="pic" >
-              <el-upload class="upload-demo"
-                         drag
-                         action="https://jsonplaceholder.typicode.com/posts/"
-                         multiple>
-                <i class="el-icon-upload"></i>
-                <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-                <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+              <el-upload   class="avatar-uploader"
+                           drag
+                           :show-file-list="false"
+                           :action='url'
+                           :onSuccess="uploadSuccess"
+                           multiple>
+                <img v-if="proof" :src="proof" class="avatar">
+                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
             </el-form-item>
             <br/>
@@ -122,14 +138,16 @@
           backgroundSize:"100% auto",
           backgroundPosition: "0% 0%",
         },
+        url: "http://localhost:8000/upload/image",
+        proof: '',
         sizeForm: {
           name: '',
-          itemtype: '',
           type:'',
+          place:'',
           phone: '',
           pic: '',
-          mestype: [],
-          desc: ''
+          desc: '',
+          region: ''
         },
         rules: {
           mestype: [
@@ -160,17 +178,38 @@
       };
     },
     methods: {
+      uploadSuccess(response) {
+        this.proof += 'http://localhost:8000/'
+        this.proof += response
+        console.log(response)
+      },
+
       onSubmit() {
+        const self = this;
         this.$confirm('确认发布这条信息吗', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '发布成功!'
+          self.$axios.post('/lostFound/launch',{
+            property: self.sizeForm.type,
+            thingsName: self.sizeForm.name,
+            phone: self.sizeForm.phone,
+            picPath: self.proof,
+            description: self.sizeForm.desc,
+            thingsType: self.sizeForm.region,
+            lostPlace: self.sizeForm.place,
+          })
+            .then(function (response) {
+              console.log(response)
+              self.$message({
+                type: 'success',
+                message: '发布成功!'
+              });
+              self.$router.push('/notice/mesunderway');
+            }).catch(function (error) {
+            console.log("error:"+error)
           });
-          this.$router.push('/notice/mesunderway');
         }).catch(() => {
           this.$message({
             type: 'info',
@@ -225,6 +264,29 @@
       0 1px 6px 0 rgba(0,0,0, .12),
       0 1px 6px 0 rgba(0,0,0, .12);
     border-radius: 3px;
+  }
+  .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
   }
 
 </style>
