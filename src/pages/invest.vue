@@ -107,7 +107,7 @@
                     placeholder="选择日期">
                   </el-date-picker>
                 </el-form-item>
-                <el-form-item style="float: right;margin-right: 30px;">
+                <el-form-item style="width:60px;margin: auto;">
                   <el-button type="primary" @click="small_fil">过滤</el-button>
                 </el-form-item>
               </el-form>
@@ -133,6 +133,7 @@
                     <!--<span class="addr">{{ item.address }}</span>-->
                     <!--</template>-->
                   </el-autocomplete>
+                  <!--</el-autocomplete>-->
                 </div>
               </div>
               <invest-list
@@ -145,135 +146,135 @@
                 :page-size="size" :total="5">
               </el-pagination>
             </el-tab-pane>
-            <el-tab-pane label="转让中">
-              <div class="form">
-                <el-form :inline="true" label-width="100px">
-                  <el-form-item label="标的分类" class="form_item">
-                    <el-dropdown class="dropdown" @command="handleLargeCommand">
-                      <el-button type="primary" plain>
-                        购物<i class="el-icon-arrow-down el-icon--right"></i>
-                      </el-button>
-                      <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item command="鞋帽服饰">鞋帽服饰</el-dropdown-item>
-                        <el-dropdown-item command="生活用品">生活用品</el-dropdown-item>
-                        <el-dropdown-item command="护肤美妆">护肤美妆</el-dropdown-item>
-                        <el-dropdown-item command="游戏动漫">游戏动漫</el-dropdown-item>
-                        <el-dropdown-item command="电子产品">电子产品</el-dropdown-item>
-                      </el-dropdown-menu>
-                    </el-dropdown>
-                    <el-dropdown class="dropdown" @command="handleLargeCommand">
-                      <el-button type="primary" plain>
-                        学习<i class="el-icon-arrow-down el-icon--right"></i>
-                      </el-button>
-                      <el-dropdown-menu slot="dropdown" >
-                        <el-dropdown-item command="学习用品">学习用品</el-dropdown-item>
-                        <el-dropdown-item command="书籍报刊">书籍报刊</el-dropdown-item>
-                        <el-dropdown-item command="培训考证">培训考证</el-dropdown-item>
-                        <el-dropdown-item command="校际交换">校际交换</el-dropdown-item>
-                      </el-dropdown-menu>
-                    </el-dropdown>
-                    <el-dropdown class="dropdown" @command="handleLargeCommand">
-                      <el-button type="primary" plain>
-                        娱乐<i class="el-icon-arrow-down el-icon--right"></i>
-                      </el-button>
-                      <el-dropdown-menu slot="dropdown" >
-                        <el-dropdown-item command="聚餐轰趴">聚餐轰趴</el-dropdown-item>
-                        <el-dropdown-item command="运动健身">运动健身</el-dropdown-item>
-                        <el-dropdown-item command="观看演出">观看演出</el-dropdown-item>
-                        <el-dropdown-item command="外出旅游">外出旅游</el-dropdown-item>
-                      </el-dropdown-menu>
-                    </el-dropdown>
-                    <el-dropdown class="dropdown" @command="handleLargeCommand">
-                      <el-button type="primary" plain>
-                        医疗<i class="el-icon-arrow-down el-icon--right"></i>
-                      </el-button>
-                      <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item command="诊断治疗">诊断治疗</el-dropdown-item>
-                        <el-dropdown-item command="保健养生">保健养生</el-dropdown-item>
-                      </el-dropdown-menu>
-                    </el-dropdown>
-                  </el-form-item>
-                  <el-form-item label="用户信用等级" class="form_item">
-                    <el-select v-model="largeUserRating" multiple placeholder="请选择">
-                      <el-option
-                        v-for="item in userOptions"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
-                      </el-option>
-                    </el-select>
-                  </el-form-item>
-                  <el-form-item label="利率" class="form_item">
-                    <input v-model="largeInterestDown" type="number" class="selectInput" style="width:70px;"/>
-                    <p style="display: inline;margin-left:5px;margin-right:5px;">-</p>
-                    <input v-model="largeInterestUp" type="number" class="selectInput" style="width:70px;"/>
-                  </el-form-item>
-                  <el-form-item label="项目风险评级" class="form_item">
-                    <el-select v-model="largeTargetRating" multiple placeholder="请选择">
-                      <el-option
-                        v-for="item in targetOptions"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
-                      </el-option>
-                    </el-select>
-                  </el-form-item>
-                  <el-form-item label="投资金额" class="form_item">
-                    <input v-model="largeInvestDown" type="number" class="selectInput" style="width:100px;"/>
-                    <p style="display: inline;margin-left:5px;margin-right:5px;">-</p>
-                    <input v-model="largeInvestUp" type="number" class="selectInput" style="width:100px;"/>
-                  </el-form-item>
-                  <el-form-item label="还款期限" class="form_item">
-                    <input v-model="largeDayDown" type="number" class="selectInput" style="width:83px;"/>
-                    <p style="display: inline;margin-left:5px;margin-right:5px;">-</p>
-                    <input v-model="largeDayUp" type="number" class="selectInput" style="width:83px;"/>
-                    <p style="display: inline;margin-left:5px;margin-right:5px;">天</p>
-                  </el-form-item>
-                  <el-form-item label="开始时间" class="form_item">
-                    <el-date-picker
-                      v-model="largeDateDown"
-                      type="date"
-                      placeholder="选择日期">
-                    </el-date-picker>
-                    <p style="display: inline;margin-left:5px;margin-right:5px;">-</p>
-                    <el-date-picker
-                      v-model="largeDateUp"
-                      type="date"
-                      placeholder="选择日期">
-                    </el-date-picker>
-                  </el-form-item>
-                </el-form>
-              </div>
-              <div style="margin-top: 10px;">
-                <el-radio-group v-model="value_radio">
-                  <el-radio-button label="标的金额" ></el-radio-button>
-                  <el-radio-button label="开始时间"></el-radio-button>
-                  <el-radio-button label="利率"></el-radio-button>
-                  <el-radio-button label="用户信用分数"></el-radio-button>
-                  <el-radio-button label="项目风险评级"></el-radio-button>
-                </el-radio-group>
-                <div style="float: right;width: 170px;">
-                  <el-autocomplete
-                    popper-class="my-autocomplete"
-                    placeholder="请输入内容"
-                    >
-                    <i class="el-icon-edit el-input__icon"
-                       slot="suffix"
-                       @click="handleIconClick">
-                    </i>
-                    <!--<template slot-scope="{ item }">-->
-                    <!--<div class="name">{{ item.value }}</div>-->
-                    <!--<span class="addr">{{ item.address }}</span>-->
-                    <!--</template>-->
-                  </el-autocomplete>
-                </div>
-              </div>
-              <invest-list2
-                v-for="item in investInformation2"
-                v-bind:investList="item"
-                v-bind:key="item.id"
-              ></invest-list2>
-            </el-tab-pane>
+            <!--<el-tab-pane label="转让中">-->
+              <!--<div class="form">-->
+                <!--<el-form :inline="true" label-width="100px">-->
+                  <!--<el-form-item label="标的分类" class="form_item">-->
+                    <!--<el-dropdown class="dropdown" @command="handleLargeCommand">-->
+                      <!--<el-button type="primary" plain>-->
+                        <!--购物<i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>-->
+                      <!--</el-button>-->
+                      <!--<el-dropdown-menu slot="dropdown">-->
+                        <!--<el-dropdown-item command="鞋帽服饰">鞋帽服饰</el-dropdown-item>-->
+                        <!--<el-dropdown-item command="生活用品">生活用品</el-dropdown-item>-->
+                        <!--<el-dropdown-item command="护肤美妆">护肤美妆</el-dropdown-item>-->
+                        <!--<el-dropdown-item command="游戏动漫">游戏动漫</el-dropdown-item>-->
+                        <!--<el-dropdown-item command="电子产品">电子产品</el-dropdown-item>-->
+                      <!--</el-dropdown-menu>-->
+                    <!--</el-dropdown>-->
+                    <!--<el-dropdown class="dropdown" @command="handleLargeCommand">-->
+                      <!--<el-button type="primary" plain>-->
+                        <!--学习<i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>-->
+                      <!--</el-button>-->
+                      <!--<el-dropdown-menu slot="dropdown" >-->
+                        <!--<el-dropdown-item command="学习用品">学习用品</el-dropdown-item>-->
+                        <!--<el-dropdown-item command="书籍报刊">书籍报刊</el-dropdown-item>-->
+                        <!--<el-dropdown-item command="培训考证">培训考证</el-dropdown-item>-->
+                        <!--<el-dropdown-item command="校际交换">校际交换</el-dropdown-item>-->
+                      <!--</el-dropdown-menu>-->
+                    <!--</el-dropdown>-->
+                    <!--<el-dropdown class="dropdown" @command="handleLargeCommand">-->
+                      <!--<el-button type="primary" plain>-->
+                        <!--娱乐<i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>-->
+                      <!--</el-button>-->
+                      <!--<el-dropdown-menu slot="dropdown" >-->
+                        <!--<el-dropdown-item command="聚餐轰趴">聚餐轰趴</el-dropdown-item>-->
+                        <!--<el-dropdown-item command="运动健身">运动健身</el-dropdown-item>-->
+                        <!--<el-dropdown-item command="观看演出">观看演出</el-dropdown-item>-->
+                        <!--<el-dropdown-item command="外出旅游">外出旅游</el-dropdown-item>-->
+                      <!--</el-dropdown-menu>-->
+                    <!--</el-dropdown>-->
+                    <!--<el-dropdown class="dropdown" @command="handleLargeCommand">-->
+                      <!--<el-button type="primary" plain>-->
+                        <!--医疗<i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>-->
+                      <!--</el-button>-->
+                      <!--<el-dropdown-menu slot="dropdown">-->
+                        <!--<el-dropdown-item command="诊断治疗">诊断治疗</el-dropdown-item>-->
+                        <!--<el-dropdown-item command="保健养生">保健养生</el-dropdown-item>-->
+                      <!--</el-dropdown-menu>-->
+                    <!--</el-dropdown>-->
+                  <!--</el-form-item>-->
+                  <!--<el-form-item label="用户信用等级" class="form_item">-->
+                    <!--<el-select v-model="largeUserRating" multiple placeholder="请选择">-->
+                      <!--<el-option-->
+                        <!--v-for="item in userOptions"-->
+                        <!--:key="item.value"-->
+                        <!--:label="item.label"-->
+                        <!--:value="item.value">-->
+                      <!--</el-option>-->
+                    <!--</el-select>-->
+                  <!--</el-form-item>-->
+                  <!--<el-form-item label="利率" class="form_item">-->
+                    <!--<input v-model="largeInterestDown" type="number" class="selectInput" style="width:70px;"/>-->
+                    <!--<p style="display: inline;margin-left:5px;margin-right:5px;">-</p>-->
+                    <!--<input v-model="largeInterestUp" type="number" class="selectInput" style="width:70px;"/>-->
+                  <!--</el-form-item>-->
+                  <!--<el-form-item label="项目风险评级" class="form_item">-->
+                    <!--<el-select v-model="largeTargetRating" multiple placeholder="请选择">-->
+                      <!--<el-option-->
+                        <!--v-for="item in targetOptions"-->
+                        <!--:key="item.value"-->
+                        <!--:label="item.label"-->
+                        <!--:value="item.value">-->
+                      <!--</el-option>-->
+                    <!--</el-select>-->
+                  <!--</el-form-item>-->
+                  <!--<el-form-item label="投资金额" class="form_item">-->
+                    <!--<input v-model="largeInvestDown" type="number" class="selectInput" style="width:100px;"/>-->
+                    <!--<p style="display: inline;margin-left:5px;margin-right:5px;">-</p>-->
+                    <!--<input v-model="largeInvestUp" type="number" class="selectInput" style="width:100px;"/>-->
+                  <!--</el-form-item>-->
+                  <!--<el-form-item label="还款期限" class="form_item">-->
+                    <!--<input v-model="largeDayDown" type="number" class="selectInput" style="width:83px;"/>-->
+                    <!--<p style="display: inline;margin-left:5px;margin-right:5px;">-</p>-->
+                    <!--<input v-model="largeDayUp" type="number" class="selectInput" style="width:83px;"/>-->
+                    <!--<p style="display: inline;margin-left:5px;margin-right:5px;">天</p>-->
+                  <!--</el-form-item>-->
+                  <!--<el-form-item label="开始时间" class="form_item">-->
+                    <!--<el-date-picker-->
+                      <!--v-model="largeDateDown"-->
+                      <!--type="date"-->
+                      <!--placeholder="选择日期">-->
+                    <!--</el-date-picker>-->
+                    <!--<p style="display: inline;margin-left:5px;margin-right:5px;">-</p>-->
+                    <!--<el-date-picker-->
+                      <!--v-model="largeDateUp"-->
+                      <!--type="date"-->
+                      <!--placeholder="选择日期">-->
+                    <!--</el-date-picker>-->
+                  <!--</el-form-item>-->
+                <!--</el-form>-->
+              <!--</div>-->
+              <!--<div style="margin-top: 10px;">-->
+                <!--<el-radio-group v-model="value_radio">-->
+                  <!--<el-radio-button label="标的金额" ></el-radio-button>-->
+                  <!--<el-radio-button label="开始时间"></el-radio-button>-->
+                  <!--<el-radio-button label="利率"></el-radio-button>-->
+                  <!--<el-radio-button label="用户信用分数"></el-radio-button>-->
+                  <!--<el-radio-button label="项目风险评级"></el-radio-button>-->
+                <!--</el-radio-group>-->
+                <!--<div style="float: right;width: 170px;">-->
+                  <!--<el-autocomplete-->
+                    <!--popper-class="my-autocomplete"-->
+                    <!--placeholder="请输入内容"-->
+                    <!--&gt;-->
+                    <!--<i class="el-icon-edit el-input__icon"-->
+                       <!--slot="suffix"-->
+                       <!--@click="handleIconClick">-->
+                    <!--</i>-->
+                    <!--&lt;!&ndash;<template slot-scope="{ item }">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="name">{{ item.value }}</div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<span class="addr">{{ item.address }}</span>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</template>&ndash;&gt;-->
+                  <!--</el-autocomplete>-->
+                <!--</div>-->
+              <!--</div>-->
+              <!--<invest-list2-->
+                <!--v-for="item in investInformation2"-->
+                <!--v-bind:investList="item"-->
+                <!--v-bind:key="item.id"-->
+              <!--&gt;</invest-list2>-->
+            <!--</el-tab-pane>-->
           </el-tabs>
         </el-col>
         <el-col span="8">
@@ -281,16 +282,20 @@
             <el-tabs>
               <el-tab-pane label="标的推荐" >
                 <el-form>
-                  <el-form-item label="投资金额">
-                    <el-input placeholder="请输入内容"></el-input>
+                  <el-form-item label="投资金额" class="form_item">
+                    <input v-model="recommendInvestDown" type="number" class="selectInput" style="width:100px;"/>
+                    <p style="display: inline;margin-left:5px;margin-right:5px;">-</p>
+                    <input v-model="recommendInvestUp" type="number" class="selectInput" style="width:100px;"/>
                   </el-form-item>
-                  <el-form-item label="利率">
-                    <el-input placeholder="请输入内容"></el-input>
-                  </el-form-item>
+                    <el-form-item label="利率" class="form_item">
+                      <input v-model="recommendInterestDown" type="number" class="selectInput" style="width:70px;"/>
+                      <p style="display: inline;margin-left:5px;margin-right:5px;">-</p>
+                      <input v-model="recommendInterestUp" type="number" class="selectInput" style="width:70px;"/>
+                    </el-form-item>
                   <el-form-item>
                     <template slot-scope="scope">
                       <router-link to="/recommend">
-                        <el-button type="primary">个性推荐</el-button>
+                        <el-button @click="recommend" type="primary">个性推荐</el-button>
                       </router-link>
                     </template>
                   </el-form-item>
@@ -432,7 +437,12 @@
         size: 10,
         /*标的比较*/
         target1: [0,0,0,0,0,0],
-        target2: [0,0,0,0,0,0]
+        target2: [0,0,0,0,0,0],
+        /*标的推荐**/
+        recommendInvestUp: 0,
+        recommendInvestDown: 0,
+        recommendInterestUp: 0,
+        recommendInterestDown: 0
 
       };
     },
@@ -440,9 +450,43 @@
       localStorage.route = "#invest";
     },
     methods:{
+      recommend() {
+        this.$router.push({
+          path: '/recommend',
+          query: {
+            recommendInvestDown: self.recommendInvestDown,
+            recommendInvestUp: self.recommendInvestUp,
+            recommendInterestDown: self.recommendInterestDown,
+            recommendInterestUp: self.recommendInterestUp
+          }
+        })
+
+
+      },
       /*过滤*/
       smallCurrentChange() {
-
+      //   this.$axios.post("/loan/smallTargetList",small_data )
+      //     .then(res => {
+      //       console.log(res)
+      //       let invests = []
+      //       for(let i of res.data) {
+      //         invests.push({
+      //           id: i.id,
+      //           name: i.name,
+      //           profit: (i.interestRate + "%"),
+      //           money: i.money,
+      //           remainMoney: (i.money-i.collectedMoney),
+      //           type: i.classification,
+      //           finishProgress: i.completionRate*1.0/100,
+      //           range: i.riskRating,
+      //           beginTime: i.startTime,
+      //         })
+      //       }
+      //       console.log(invests)
+      //       self.investInformation = invests
+      //     })
+      //     .catch(e => {console.log(e)})
+      // },
       },
       small_fil() {
         let self = this;
