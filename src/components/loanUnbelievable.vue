@@ -54,7 +54,7 @@
           <template slot-scope="scope">
             <el-button
               size="mini"
-              @click="getRepayDetail(scope.row.targetId)">查看</el-button>
+              @click="getRepayDetail(scope.row.targetId,scope.row.name)">查看</el-button>
           </template>
         </el-table-column>
 
@@ -89,7 +89,10 @@
         name: "loan-unbelievable",
         data(){
           return{
-            currentPage1: 2,
+            a:{
+              targetId:0,
+              targetName:''
+            },
             tableData:[{
               name:'ACCA考试借款项目',
               money:3600,
@@ -140,9 +143,10 @@
 
         },
 
-        getRepayDetail(targetId){
+        getRepayDetail(targetId,targetName){
           console.log("targetId in loanUnderway:"+targetId);
           this.a.targetId = targetId;
+          this.a.targetName = targetName;
           //console.log("a in loanUnderway:"+this.a.targetId);
           this.$router.push({name:'repay',params:this.a});
         }

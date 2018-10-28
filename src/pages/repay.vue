@@ -6,14 +6,17 @@
         <div style="display: flex;padding-top: 20px">
 
           <el-card class="info1" v-model="info1" shadow="always" :class="info1" align="center">
+            <p>项目名称</p>
+            <span>{{this.targetName}}</span>
+            <br><br>
             <p >发布日期</p>
             <span>{{info1.date1}}</span>
-            <br><br><br>
+            <br><br>
             <p>截止日期</p>
             <span>{{info1.date2}}</span>
-            <br><br><br>
+            <!--<br><br><br>
             <p>下个还款日</p>
-            <span>{{info1.late_date}}</span>
+            <span>{{info1.late_date}}</span>-->
           </el-card>
 
           <el-card class="main_info" v-model="info2" align="center" shadow="always">
@@ -179,22 +182,26 @@
       console.log("repay");
       console.log(this.$route.params);
       this.targetId = this.$route.params.targetId;
+      this.targetName = this.$route.params.targetName;
       console.log("targetId in repay:"+this.targetId);
+
 
       this.getRepayInfo();
     },
     data() {
       return {
         targetId:0,
+        targetName:'',
         percentage:25,
         isDefault:true,
         info1:{
+          name:'项目名称',
           date1:'2018-09-02',
           date2:'2018-09-16',
-          late_date:'2018-09-07',
+
         },
         info2:{
-          name:'项目名称',
+          late_date:'2018-09-07',
           days:0,
           money:50
         },
@@ -297,10 +304,11 @@
             console.log("data in repay info");
             console.log(res.data);
 
-            self.info1.date1 = res.data.releaseDate;
+
             self.info1.date2 = res.data.recruitmentDeadline;
             self.info1.late_date = res.data.nextDueDate;
 
+            self.info2.date1 = res.data.releaseDate;
             self.info2.days = res.data.remainingDay;
             self.info2.money = res.data.repay;
 
