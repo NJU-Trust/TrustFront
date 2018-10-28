@@ -137,7 +137,7 @@
         initial_data: true,
         saveUsers:[],
         users: [
-          {username: '王刚',state:'待还款',
+          /*{username: '王刚',state:'待还款',
             level: 'B',
             tel: '13258449922',
             email: '134456745@qq.com',},
@@ -172,7 +172,7 @@
           {username: '王桐',state:'逾期',
             level: 'D',
             tel: '13211238753',
-            email: 'wangtong22@126.com',}], // users 数据
+            email: 'wangtong22@126.com',}*/], // users 数据
         /*selectedUsers: [], // 保存选中的 users 数组
         selectedUser: {}, // 选中 user*/
         /*input_username: '', // 过滤 username 的关键字
@@ -229,10 +229,7 @@
       localStorage.route='#usermanage'
     },
     mounted:function(){
-      this.initial();
-      for(var i=0;i<this.users.length;i++){
-        this.saveUsers.push(this.users[i]);
-      }
+      this.getData();
     },
     watch:{
       searchOption:{
@@ -243,17 +240,11 @@
       }
     },
     methods: {
-      initial(){
-        this.getListLength()
-      },
-      callback(initial) {
-        this.initial_data = initial;
-      },
       searchNewList(name,tel,email){
         let checkedUser = [];
         for(var i=0;i<this.saveUsers.length;i++){
           //console.log(this.saveUsers[i]);
-          if(this.saveUsers[i].username.indexOf(name)>=0 && this.saveUsers[i].tel.indexOf(tel)>=0 && this.saveUsers[i].email.indexOf(email)>=0){
+          if((this.saveUsers[i].username===null||this.saveUsers[i].username.indexOf(name)>=0) &&(this.saveUsers[i].tel===null||this.saveUsers[i].tel.indexOf(tel)>=0)  && (this.saveUsers[i].email===null||this.saveUsers[i].email.indexOf(email)>=0)){
             checkedUser.push(this.saveUsers[i]);
           }
         }
@@ -277,7 +268,7 @@
         this.passData.state = row.state;
         this.passData.email = row.email;
       },
-      getListLength:function(){
+ /*     getListLength:function(){
         var _this = this;
         this.$axios.get('/adminUser/manageLen',{
           params:{
@@ -296,13 +287,11 @@
           console.log("error:"+error)
         });
 
-      },
+      },*/
       getData:function(pageNum){
         var _this = this;
         this.$axios.get('/adminUser/manage', {
           params: {
-            page:pageNum,
-            pageSize:10,
             keyword: "",
             type:"",
           }
@@ -312,6 +301,7 @@
           for(var i=0;i<data.length;i++){
             //console.log(data[i]);
             _this.users.push({username:data[i].username, level:data[i].level, tel:data[i].tel, email:data[i].email, state:data[i].state})
+            _this.saveUsers.push({username:data[i].username, level:data[i].level, tel:data[i].tel, email:data[i].email, state:data[i].state})
           }
           }).catch(function (error) {
             console.log("error:"+error)
