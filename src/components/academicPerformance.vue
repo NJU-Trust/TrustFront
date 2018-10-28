@@ -215,6 +215,7 @@
 
   export default {
     name: "academicPerformance",
+    props:["username"],
     data(){
       var person;
       var average;
@@ -295,7 +296,7 @@
         let self = this;
         this.$axios.get('/profile/campusPerformence',{
           params:{
-            username:"test"
+            username:self.username
           }
         })
           .then((response) => {
@@ -323,7 +324,7 @@
         let self = this;
         this.$axios.get('/profile/information',{
           params:{
-            username:"test"
+            username:self.username
           }
         })
           .then((response) => {
@@ -435,7 +436,7 @@
         let self = this;
         this.$axios.get('/profile/campusPerformence',{
           params:{
-            username:"test"
+            username:self.username
           }
         })
           .then((response) => {
@@ -781,7 +782,7 @@
         let self = this;
         this.$axios.get('/profile/relationship',{
           params:{
-            username:"test"
+            username:self.username
           }
         })
           .then((response) => {

@@ -1,6 +1,6 @@
 <template>
   <personalCenter paneltitle="校园表现">
-    <academicPerformance></academicPerformance>
+    <academicPerformance :username="username"></academicPerformance>
   </personalCenter>
 </template>
 
@@ -13,6 +13,11 @@
   export default {
     name:"schoolperformance",
     components: {personalCenter,academicPerformance},
+    data(){
+      return{
+        username:localStorage.username
+      }
+    }
 
   }
 
