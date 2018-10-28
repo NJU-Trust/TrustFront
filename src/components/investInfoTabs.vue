@@ -395,7 +395,7 @@
         }).then(
           function(response){
             console.log(response.data);
-            list = response.data;
+            var list = response.data;
 
             for(var i=0;i<list.length;i++){
               self.tableDataUnderway.push({projectName:list[i].projectName, loanFrom:list[i].loanFrom, loanDate:list[i].loanDate,
@@ -435,7 +435,7 @@
         }).then(
           function(response){
             console.log(response.data);
-            list = response.data;
+            var list = response.data;
 
             for(var i=0;i<list.length;i++){
               self.tableDataDone.push({projectName:list[i].projectName, loanFrom:list[i].loanFrom,
