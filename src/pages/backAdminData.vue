@@ -107,64 +107,6 @@
   export default {
     name: "backAdminData",
     components:{ adminNavi, footerBar, rightBar},
-    beforeCreate:function(){
-      localStorage.route = "";
-    },
-    mounted: function() {
-      this.getBaseData();
-      this.getBaseBreakContract();
-    },
-    methods:{
-      change11(){
-        document.getElementById("default_info").style.display = "none";
-        document.getElementById("basic_data").style.display = "inline";
-      },
-      change22(){
-        document.getElementById("default_info").style.display = "inline";
-        document.getElementById("basic_data").style.display = "none";
-      },
-      getBaseData(){
-        console.log("基础数据");
-        let self = this;
-        this.$axios.get('/adminData/base',{
-          params:{
-
-          }
-        })
-          .then(function (response) {
-            console.log(response);
-            console.log("基础数据success");
-            console.log(response.data);
-            let res = response.data;
-          })
-          .catch(function (response) {
-            console.log(response);
-            console.log("基础数据error");
-            // alert("error")
-          });
-      },
-      getBaseBreakContract(){
-        console.log("违约记录");
-        let self = this;
-        this.$axios.get('/adminData/base',{
-          params:{
-
-          }
-        })
-          .then(function (response) {
-            console.log(response);
-            console.log("违约记录success");
-            console.log(response.data);
-            let res = response.data;
-          })
-          .catch(function (response) {
-            console.log(response);
-            console.log("违约记录error");
-            // alert("error")
-          });
-      }
-    },
-
     data(){
       return {
         pickerOptions1: {
@@ -172,7 +114,8 @@
             return time.getTime() > Date.now();
           },
         },
-        tableData: [{
+        tableData: [
+          {
           total: '交易总额',
           total_num: '25600',
           average: '人均累计借贷额度',
@@ -234,6 +177,119 @@
         }
       };
     },
+
+    beforeCreate:function(){
+      localStorage.route = "";
+    },
+    mounted: function() {
+      this.getBaseData();
+      this.getBaseBreakContract();
+    },
+    methods:{
+      change11(){
+        document.getElementById("default_info").style.display = "none";
+        document.getElementById("basic_data").style.display = "inline";
+      },
+      change22(){
+        document.getElementById("default_info").style.display = "inline";
+        document.getElementById("basic_data").style.display = "none";
+      },
+      getBaseData(){
+        console.log("基础数据");
+        let self = this;
+        this.$axios.get('/adminData/base',{
+          params:{
+
+          }
+        })
+          .then(function (response) {
+            console.log(response);
+            console.log("基础数据success");
+            console.log(response.data);
+            let res = response.data;
+
+            let tableDataReg = [{
+              total: '交易总额',
+              total_num: '25600',
+              average: '人均累计借贷额度',
+              average_num:'610',
+              other:'最大单客户借款余额占比',
+              other_num:'12%'
+            }, {
+              total: '交易总笔数',
+              total_num: '42',
+              average: '笔均借款额度',
+              average_num:'610',
+              other:'最大10户借款余额占比',
+              other_num:'57%'
+            }, {
+              total: '借款人数量',
+              total_num: '42',
+              average: '人均累计投资额度',
+              average_num:'406',
+              other:'平均满标时间',
+              other_num:'21天'
+            },{
+              total: '投资人数量',
+              total_num: '63',
+              average: '',
+              average_num:'',
+              other:'',
+              other_num:''
+            }];
+
+            tableDataReg[0].total_num = res.dealMoneySum;
+            tableDataReg[0].average_num = res.loanPerPerson;
+            tableDataReg[0].other_num = res.mostLoanPersonRate;
+            tableDataReg[1].total_num = res.dealNum;
+            tableDataReg[1].average_num = res.loanPerTarget;
+            tableDataReg[1].other_num = res.most10LoanPersonRate;
+            tableDataReg[2].total_num = res.borrowerNum;
+            tableDataReg[2].average_num = res.investmentPerPerson;
+            tableDataReg[2].other_num = res.averageGoingTime;
+            tableDataReg[3].total_num = res.investorNum;
+
+            self.tableData = tableDataReg;
+          })
+          .catch(function (response) {
+            console.log(response);
+            console.log("基础数据error");
+            // alert("error")
+          });
+      },
+      getBaseBreakContract(){
+        console.log("违约记录");
+        let self = this;
+        this.$axios.get('/adminData/breakContract',{
+          params:{
+
+          }
+        })
+          .then(function (response) {
+            console.log(response);
+            console.log("违约记录success");
+            console.log(response.data);
+            let res = response.data;
+
+            self.tableData2[0].default_num1 = res.defaultRate;
+            self.tableData2[0].default_num2 = res.overdueProgramNum;
+            self.tableData2[0].default_num3 = res.overdueProgramRate;
+            self.tableData2[1].default_num1 = res.overdueProgramRate3;
+            self.tableData2[1].default_num2 = res.overdueMoneySum;
+            self.tableData2[1].default_num3 = res.toPay;
+            self.tableData2[2].default_num1 = res.overdueMoneyRate;
+            self.tableData2[2].default_num2 = res.badDebtRate;
+            self.tableData2[2].default_num3 = res.complaints;
+
+          })
+          .catch(function (response) {
+            console.log(response);
+            console.log("违约记录error");
+            // alert("error")
+          });
+      }
+    },
+
 
   }
 </script>
