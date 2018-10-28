@@ -55,33 +55,13 @@
           <template slot-scope="scope">
             <el-button
               size="mini"
-              @click="getRepayDetail(scope.row.targetId)">查看</el-button>
+              @click="getRepayDetail(scope.row.targetId,scope.row.name)">查看</el-button>
           </template>
         </el-table-column>
 
       </el-table>
     </div>
 
-    <div class="projectPanel">
-      <div class="projectPages">
-
-      </div>
-      <div id="poj_pagination" class="poj_pagination">
-        <div class="block">
-          <!--<span class="demonstration">完整功能</span>-->
-          <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="currentPage1"
-            :page-sizes="[10, 20, 30, 40]"
-            :page-size="10"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="40">
-          </el-pagination>
-        </div>
-      </div>
-
-    </div>
   </div>
 
 </template>
@@ -95,19 +75,13 @@
         data(){
           return{
             a:{
-              targetId:222
+              targetId:0,
+              targetName:''
             },
-            currentPage1: 2,
             tableData:[],
           }
         },
       methods: {
-        handleSizeChange(val) {
-          console.log(`每页 ${val} 条`);
-        },
-        handleCurrentChange(val) {
-          console.log(`当前页: ${val}`);
-        },
 
         getTableData(moneyUpper,moneyLower,targetType,name,startDate,endDate){
           console.log(moneyUpper,moneyLower,targetType,name,startDate,endDate);
@@ -142,9 +116,10 @@
 
         },
 
-        getRepayDetail(targetId){
+        getRepayDetail(targetId,targetName){
           console.log("targetId in loanUnderway:"+targetId);
           this.a.targetId = targetId;
+          this.a.targetName = targetName;
          //console.log("a in loanUnderway:"+this.a.targetId);
           this.$router.push({name:'repay',params:this.a});
         }

@@ -117,9 +117,16 @@
 
           this.$refs.unbelievable.getTableData(moneyUpper,moneyLower,targetType,name,startDate,endDate);
         },
-        getCondition(money,date,state){
+        getCondition(moneyUpper,moneyLower,targetType,name,startDate,endDate){
 
-          if(money === "全部"){
+          this.condition.moneyUpper = moneyUpper;
+          this.condition.moneyLower = moneyLower;
+          this.condition.targetType =targetType;
+          this.condition.name = name;
+          this.condition.startDate = startDate;
+          this.condition.endDate = endDate;
+
+          /*if(money === "全部"){
             this.condition.moneyUpper = null;
             this.condition.moneyLower = null;
           }else if(money === "100及以下"){
@@ -165,7 +172,7 @@
             this.condition.targetType = "LARGE";
           }else if(state === "小额借款"){
             this.condition.targetType = "SMALL";
-          }
+          }*/
 
           this.getTargets();
         },
