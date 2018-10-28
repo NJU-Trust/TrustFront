@@ -26,9 +26,9 @@
   export default {
     name:"FinStanding",
     components: {FinSuggestion, FinAnalysis, personalCenter},
+    props:["username"],
     data() {
       return {
-        username:localStorage.username,
         activeName: 'first',
         valueX: '0.5',
         valueY: '0.7',

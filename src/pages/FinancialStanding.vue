@@ -1,6 +1,6 @@
 <template>
   <personalCenter paneltitle="财务状况">
-    <fin-standing></fin-standing>
+    <fin-standing :username="username"></fin-standing>
   </personalCenter>
 </template>
 
@@ -11,6 +11,11 @@
   export default {
     name:"FinancialStanding",
     components: {FinStanding, personalCenter},
+    data(){
+      return{
+        username:localStorage.username,
+      }
+    }
   }
 
 
