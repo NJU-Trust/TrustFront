@@ -87,6 +87,7 @@
 <script>
     export default {
         name: "loan-unbelievable",
+        props:["username"],
         data(){
           return{
             a:{
@@ -117,6 +118,7 @@
           var list = [];
           const self = this;
           this.$axios.post('/loan/info/default',{
+            username:self.username,
             moneyUpper:moneyUpper,
             moneyLower:moneyLower,
             targetType:targetType,

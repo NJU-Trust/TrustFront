@@ -66,6 +66,7 @@
 <script>
     export default {
         name: "loan-complete",
+        props:["username"],
         data(){
           return{
             a:{
@@ -83,6 +84,7 @@
           var list = [];
           const self = this;
           this.$axios.post('/loan/info/complete',{
+            username:self.username,
             moneyUpper:moneyUpper,
             moneyLower:moneyLower,
             targetType:targetType,

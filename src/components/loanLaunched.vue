@@ -75,6 +75,7 @@
 <script>
     export default {
         name: "loan-launched",
+        props:["username"],
         data(){
           return{
             tableData:[],
@@ -98,6 +99,7 @@
          var list = [];
          const self = this;
          this.$axios.post('/loan/info/released',{
+           username:self.username,
            moneyUpper:moneyUpper,
            moneyLower:moneyLower,
            targetType:targetType,

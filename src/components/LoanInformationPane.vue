@@ -3,15 +3,15 @@
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="正在进行" name="first" >
         <loanTopBar v-on:getConditionEvent="getCondition"></loanTopBar>
-        <loanUnderway ref="underway"></loanUnderway>
+        <loanUnderway :username="username" ref="underway"></loanUnderway>
       </el-tab-pane>
       <el-tab-pane label="完成项目" name="second" >
         <loanTopBar></loanTopBar>
-        <loanComplete ref="complete"></loanComplete>
+        <loanComplete :username="username" ref="complete"></loanComplete>
       </el-tab-pane>
       <el-tab-pane label="已发布项目" name="third">
         <loanTopBar></loanTopBar>
-        <loanLaunched ref="launched"></loanLaunched>
+        <loanLaunched :username="username" ref="launched"></loanLaunched>
       </el-tab-pane>
       <el-tab-pane label="违约记录" name="fourth">
         <loanTopBar></loanTopBar>
@@ -33,6 +33,7 @@
     export default {
       name: "loan-information-pane",
       components: {personalCenter,loanTopBar,loanUnderway,loanComplete,loanLaunched,loanUnbelievable},
+      props:["username"],
       mounted:function(){
         this.getUnderway();
       },

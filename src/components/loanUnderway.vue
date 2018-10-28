@@ -69,6 +69,7 @@
 <script>
     export default {
         name: "loan-underway",
+        props: ["username"],
         beforeCreate:function(){
 
         },
@@ -89,6 +90,7 @@
           var list = [];
           const self = this;
           this.$axios.post('/loan/info/ongoing',{
+            username:self.username,
             moneyUpper:moneyUpper,
             moneyLower:moneyLower,
             targetType:targetType,

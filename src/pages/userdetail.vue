@@ -29,7 +29,7 @@
               <el-tabs :tab-position="tabPosition">
                 <el-tab-pane label="投资详情">
                   <div style="padding:0px 0px 0px 20px;">
-                    <investInfoTabs></investInfoTabs>
+                    <investInfoTabs :username="username"></investInfoTabs>
                   </div>
                 </el-tab-pane>
                 <el-tab-pane label="借款详情">
