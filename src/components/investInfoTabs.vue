@@ -266,6 +266,7 @@
   export default {
     name: "invest-info-tabs",
     components: {loanTopBar},
+    props:["username"],
     mounted:function(){
       this.getUnderway();
     },
@@ -384,6 +385,7 @@
 
         const self = this;
         this.$axios.post('/loan/investment/ongoing',{
+          username:self.username,
           moneyUpper:moneyUpper,
           moneyLower:moneyLower,
           targetType:targetType,
@@ -423,6 +425,7 @@
 
         const self = this;
         this.$axios.post('/loan/investment/complete',{
+          username:self.username,
           moneyUpper:moneyUpper,
           moneyLower:moneyLower,
           targetType:targetType,
