@@ -2,11 +2,25 @@
     <el-form class="main_panel">
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane label="等额本息" name="first">
-
+          <el-card>
+            <evaluateTopPane :scheme="scheme"></evaluateTopPane>
+          </el-card>
         </el-tab-pane>
-        <el-tab-pane label="等额本金" name="second"></el-tab-pane>
-        <el-tab-pane label="一次性还本付息" name="third"></el-tab-pane>
-        <el-tab-pane label="先息后本" name="fourth"></el-tab-pane>
+        <el-tab-pane label="等额本金" name="second">
+          <el-card>
+            <evaluateTopPane :scheme="scheme"></evaluateTopPane>
+          </el-card>
+        </el-tab-pane>
+        <el-tab-pane label="一次性还本付息" name="third">
+          <el-card>
+            <evaluateTopPane :scheme="scheme"></evaluateTopPane>
+          </el-card>
+        </el-tab-pane>
+        <el-tab-pane label="先息后本" name="fourth">
+          <el-card>
+            <evaluateTopPane :scheme="scheme"></evaluateTopPane>
+          </el-card>
+        </el-tab-pane>
       </el-tabs>
       <!--<div style="display: flex;padding-bottom: 20px">
 
@@ -24,39 +38,9 @@
           先息后本
         </div>
       </div>-->
-      <el-card>
-        <evaluateTopPane :scheme="scheme"></evaluateTopPane>
-        <!--<div class="top_panel">
-          <div>
-            <div style="padding-left: 30px">
-              还款难度：
-              <i class="el-icon-star-on"></i>
-              <i class="el-icon-star-on"></i>
-              <i class="el-icon-star-on"></i>
-              <i class="el-icon-star-on"></i>
-              <el-tooltip class="item" effect="dark" content="点击查看借款难度算法" placement="bottom-start">
-                <i class="el-icon-question pointer" style="color: #409EFF"></i>
-              </el-tooltip>
 
-            </div>
-            <div style="padding-left: 50px">
-              <span style="font-size: 25px;font-weight:bold;color: #cd5f33;padding-top: 20px;padding-left: 15px">654.44</span>
-              <br>
-              <span style="color: #acacac;padding-top: -20px">每月还款金额(元)</span>
-            </div>
-            <div ></div>
-          </div>
-          <div style="margin-left: 100px">
-            贷款金额&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp <span style="font-weight: bold" v-model="scheme">{{scheme.capital}}</span>元
-            <div style="border: 1px #b7b7b7 solid"></div>
-            利息总额&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp <span style="font-weight: bold;color: red">{{scheme.interest}}</span>元
-            <div style="border: 1px #b7b7b7 solid"></div>
-            还款总额&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp <span style="font-weight: bold;color: red">{{scheme.sum}}</span>元
-          </div>
-        </div>-->
-      </el-card>
 
-      <el-card id="myChart" align="center" style="width: 500px;height: 300px;margin-top: 20px"></el-card>
+      <el-card id="myChart" v-show="scheme.show_table" align="center" style="width: 500px;height: 300px;margin-top: 20px"></el-card>
       <!--<div id="myChart" style="width: 450px;height: 300px;margin-top: 50px;margin-left: 40px">
       </div>-->
       <el-card style="margin-top: 20px;font-size: 15px">
@@ -185,7 +169,7 @@
             series : [
               {
                 name:'偿还本息',
-                type:'bar',
+                type:'line',
                 data:this.scheme.capital_and_interest_list,
                 markPoint : {
                   data : [
@@ -225,8 +209,14 @@
             var str = "第"+i+"期";
             this.scheme.period.push(str);
           }
-
           /*this.scheme.period.push("");*/
+        },
+        getActiveName(){
+          this.activeName = this.scheme.activeName;
+        },
+        handleClick(tab,event){
+          console.log("in evaluate handleClick")
+          this.$emit("getSchemeEvent",this.activeName);
         }
       },
 

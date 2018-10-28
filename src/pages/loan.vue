@@ -180,8 +180,6 @@
                       </div>
                     </el-form>
 
-
-
                   </el-form>
 
                   <div id="test" style="display: flex">
@@ -270,7 +268,7 @@
 
                     </el-form>
                     <el-form id="evaluate" class="evaluate" style="background-color: white">
-                      <evaluate ref="evaluate" :scheme="scheme" ></evaluate>
+                      <evaluate ref="evaluate" :scheme="scheme" v-on:getSchemeEvent="getScheme"></evaluate>
                     </el-form>
                   </div>
                 </div>
@@ -391,6 +389,8 @@
 
             this.visible = true;
 
+            this.scheme.show_table = true;
+
             var money = parseFloat(this.form3.money);
             var period = parseInt(this.form3.period);
             var rate = parseFloat(this.form3.rate);
@@ -403,6 +403,7 @@
             } else if (num === 2) {
               this.get_average_capital(money, period, rate);
             } else if (num === 3) {
+              this.scheme.show_table = false;
               this.get_one_off(money, period, rate);
             } else if (num === 4) {
               this.get_interest_first(money, period, rate);
@@ -458,7 +459,7 @@
                 }
 
                 self.scheme.each = self.scheme.sum / parseFloat(self.form3.period);
-
+                self.scheme.activeName = "second";
 
                 self.$refs.evaluate.drawLine();
 
@@ -512,6 +513,8 @@
                   self.scheme.capital_and_interest_list.push((month_list[i].interest + month_list[i].principal).toFixed(2));
                 }
 
+                self.scheme.activeName = "first";
+
                 self.scheme.each = self.scheme.sum / parseFloat(self.form3.period);
 
                 /*self.scheme.difficulty = 4;*/
@@ -557,6 +560,8 @@
                   self.scheme.change = true;
                 }
 
+                self.scheme.activeName = "third";
+
 
                 self.scheme.each = self.scheme.sum / parseFloat(self.form3.period);
 
@@ -601,6 +606,8 @@
                 } else {
                   self.scheme.change = true;
                 }
+
+                self.scheme.activeName = "fourth";
 
                 var month_list = res.data.monthlyData;
                 console.log("month_list");
@@ -749,6 +756,25 @@
               console.log("error in timeRange");
               console.log(error);
             });
+          },
+          getScheme(activeName){
+
+            var num;
+            if(activeName === "first"){
+              this.form3.activeName = "1";
+              num = 1;
+            }else if(activeName === "second"){
+              this.form3.activeName = "2";
+              num = 2;
+            }else if(activeName === "third"){
+              this.form3.activeName = "3";
+              num = 3;
+            }else if(activeName === "fourth"){
+              this.form3.activeName = "4";
+              num = 4;
+            }
+
+            this.get_scheme(num);
           }
 
         },
@@ -812,7 +838,9 @@
               count2: 0,
               interest_list: [],
               capital_and_interest_list: [],
-              period: []
+              period: [],
+              activeName:'first',
+              show_table : true,
             },
 
             limit: 3000,
