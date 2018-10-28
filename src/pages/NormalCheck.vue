@@ -10,11 +10,21 @@
       <hr/>
 
       <div class="NormalCheckModule">
-        <div v-if="test">
+        <div v-if="test===0">
           <alumniNormalCheck></alumniNormalCheck>
         </div>
-        <div v-else>
+        <div v-if="test===1">
           <ordinaryNormalCheck></ordinaryNormalCheck>
+        </div>
+        <div v-if="test===2">
+          <div style="padding:150px">
+            <label style="font-size: 20px;">您提交的信息正在审核！</label>
+          </div>
+        </div>
+        <div v-if="test===3">
+          <div style="padding:150px">
+            <label style="font-size: 20px;">您提交的信息已经通过审核，恭喜您升级为中级账户！</label>
+          </div>
         </div>
       </div>
 
@@ -36,8 +46,37 @@
     components: {personalCenter,alumniNormalCheck,ordinaryNormalCheck},
     data(){
       return{
-        test:true,
+        test:1,
       }
+    },
+    mounted:function(){
+      this.getState();
+    },
+    methods:{
+      getState: function(){
+        let self = this;
+        this.$axios.get('/verify/getRoles',{
+          params:{
+
+          }
+        }).then(function (response) {
+          //console.log(response)
+          var data = response.data
+          if(data[0]==="初级"){
+            if(data[1]==="校友"){
+              self.test=0;
+            }else if(data[1]==="学生"){
+              self.test=1;
+            }
+          }else if(data[0]==="初级审核中"){
+            self.test=2;
+          }else if(data[0]==="非初级"){
+            self.test=3;
+          }
+        }).catch(function (error) {
+          console.log("error:"+error)
+        });
+      },
     }
 
   }

@@ -232,8 +232,8 @@
             self.lifeOfLoan = data.lifeOfLoan
             self.totalLoan = data.totalLoan
             self.leftNeeds = data.leftNeeds
-            //   userMoney:1000,
-            //   num1: 1000,
+            //  userMoney:1000,
+            //  num1: 1000,
             switch (data.payWay) {
               case "EQUAL_PRINCIPAL": self.payWay = '等额本金'; break;
               case "EQUAL_INSTALLMENT_OF_PRINCIPAL_AND_INTEREST": self.payWay = '等额本息'; break;
@@ -262,11 +262,11 @@
 
           }else if(tab.name==="three"){
             if(this.tableData.length===0){
-              //第一次则调用
+              //无数据则调用
               var _this = this;
               this.$axios.get('/loan/investmentRecord', {
                 params: {
-                  targetId:1//_this.target_id
+                  targetId:_this.target_id
                 }
               }).then(function (response) {
                 //console.log("invest record:")
