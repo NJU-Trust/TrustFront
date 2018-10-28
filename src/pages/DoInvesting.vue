@@ -112,7 +112,7 @@
 
           </el-tab-pane>
           <el-tab-pane name="two" label="借款人借款信息" style="padding:60px 60px 10px 30px;font-size:18px;line-height: 30px;">
-            <loanInformationPane></loanInformationPane>
+            <LoanInformationPane></LoanInformationPane>
           </el-tab-pane>
           <el-tab-pane name="three" label="投标记录" style="padding:80px 60px 10px 30px;font-size:18px;line-height: 30px;">
             <el-table
@@ -148,10 +148,10 @@
     import rightBar from '@/components/rightBar.vue';
     import doInvestingLoanerInfo from '@/components/doInvestingLoanerInfo.vue';
     import footerBar from '@/components/footerBar.vue';
-    import loanInformationPane from '@/components/loanInformationPane.vue'
+    import LoanInformationPane from "../components/LoanInformationPane"
     export default {
       name: "DoInvesting",
-      components:{navi,rightBar,doInvestingLoanerInfo,footerBar,loanInformationPane},
+      components:{navi,rightBar,doInvestingLoanerInfo,footerBar,LoanInformationPane},
       data(){
         return{
           activeName:'one',

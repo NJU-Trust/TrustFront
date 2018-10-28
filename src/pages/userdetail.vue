@@ -34,7 +34,7 @@
                 </el-tab-pane>
                 <el-tab-pane label="借款详情">
                   <div style="padding:0px 0px 0px 20px;">
-                    <loanInformationPane></loanInformationPane>
+                    <loanInformationPane :username="username"></loanInformationPane>
                   </div>
                 </el-tab-pane>
                 <el-tab-pane label="个人财务">
