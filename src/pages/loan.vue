@@ -372,7 +372,15 @@
               function (response) {
                 console.log(response.data);
                 if (response.data.success === true) {
-                  alert("提交成功！");
+                  self.$message({
+                    message:'提交成功！',
+                    type:'success',
+                  });
+                }else{
+                  _this.$message({
+                    message:'提交失败！',
+                    type:'error',
+                  });
                 }
               }
             ).catch(function (error) {

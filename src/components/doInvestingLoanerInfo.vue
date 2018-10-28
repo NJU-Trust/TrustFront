@@ -4,7 +4,7 @@
 
       <el-tab-pane label="项目信息" name="two">
         <div id="loan_id">
-          <loanInformationPane :username="username"></loanInformationPane>
+          <LoanInformationPane :username="username"></LoanInformationPane>
         </div>
       </el-tab-pane>
       <el-tab-pane label="基本资料" name="three">
@@ -32,11 +32,11 @@
     import loanUnbelievable from "../components/loanUnbelievable";
     import loanerBasicInfo from "../components/loanerBasicInfo";
     import academicPerformance from "../components/academicPerformance";
-    import loanInformationPane from '../components/loanInformationPane.vue'
+    import LoanInformationPane from '../components/LoanInformationPane.vue'
 
     export default {
       name: "doInvestingLoanerInfo",
-      components: {FinAnalysis,loanTopBar,loanUnderway,loanComplete,loanLaunched,loanUnbelievable,loanerBasicInfo,academicPerformance,loanInformationPane},
+      components: {FinAnalysis,loanTopBar,loanUnderway,loanComplete,loanLaunched,loanUnbelievable,loanerBasicInfo,academicPerformance,LoanInformationPane},
       props:["username"],
       data(){
         return{
