@@ -46,7 +46,7 @@
           align="center"
           width="150">
           <template slot-scope="scope">
-            <el-button type="primary" size="mini" plain @click="seeDetail">查看详情</el-button>
+            <el-button type="primary" size="mini" plain @click="seeDetail(scope.row.id)">查看详情</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -225,25 +225,22 @@
     },
     methods: {
       getInvestManager(){
-        console.log("基础数据");
+        console.log("标的管理");
         let self = this;
-        this.$axios.get('admin/investManager',{
+        this.$axios.get('adminTarget/briefInfo',{
           params:{
-            page : 1,
-            pageSize : 20,
-            targetType : TargetType,
-            targetState : "targetState",
+
           }
         })
           .then(function (response) {
             console.log(response);
-            console.log("基础数据success");
+            console.log("标的管理success");
             console.log(response.data);
             let res = response.data;
           })
           .catch(function (response) {
             console.log(response);
-            console.log("基础数据error");
+            console.log("标的管理error");
             // alert("error")
           });
       },
@@ -251,8 +248,10 @@
         const property = column['property'];
         return row[property] === value;
       },
-      seeDetail(){
-        window.location.href='/subjectManageDetail';
+      seeDetail(id){
+        //window.location.href='/subjectManageDetail';
+        this.$router.push({name:'subjectManageDetail',params:{userID:id}})
+        console("查看"+id+"的详情");
       },
       /*addSubject() {
         this.subjects.push(this.subject)
