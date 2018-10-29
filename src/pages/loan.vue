@@ -100,6 +100,13 @@
                         <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
                       </el-upload>
                     </el-form-item>
+
+                   <!-- <el-alert
+                      title="设置了回调的 alert"
+                      type="warning"
+                      @close="testAlert"></el-alert>-->
+
+                    <!--<el-button @click="testAlert">test</el-button>-->
                   </el-form>
 
                   <el-form id="information" ref="form2" :model="form2" label-width="140px" class="primary_info" style="display: none">
@@ -331,6 +338,10 @@
         },
         methods: {
 
+          testAlert(){
+            alert("HELLO");
+          },
+
           uploadSuccess(response, file, fileList) {
             console.log("uploadSuccess");
             this.proof += 'http://localhost:8000/';
@@ -372,15 +383,18 @@
               function (response) {
                 console.log(response.data);
                 if (response.data.success === true) {
-                  self.$message({
+                  /*self.$message({
                     message:'提交成功！',
                     type:'success',
-                  });
+                  });*/
+                  alert("提交成功！");
+                  this.$router.push({name:'homepage'});
                 }else{
                   _this.$message({
                     message:'提交失败！',
                     type:'error',
                   });
+                  alert("提交失败！");
                 }
               }
             ).catch(function (error) {
