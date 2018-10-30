@@ -1,6 +1,6 @@
 <template>
   <personalCenter paneltitle="项目信息">
-    <investInfoTabs></investInfoTabs>
+    <investInfoTabs :username="username"></investInfoTabs>
 
   </personalCenter>
 </template>
@@ -16,7 +16,7 @@
     components: {investList, personalCenter,loanTopBar,investInfoTabs},
     data() {
       return {
-
+        username:localStorage.username
       };
     },
     methods:{

@@ -82,7 +82,7 @@
     components:{adminNavi,loanTopBar,loanUnderway,loanComplete,loanLaunched,loanUnbelievable,FinStanding,investInfoTabs,loanInformationPane},
     data() {
       return {
-        username:'',
+        username:this.$route.params.username,
         currentPage1: 2,
         activeName: 'first',
         tabPosition:"left",
@@ -105,7 +105,6 @@
       this.baseinfo.tel = this.$route.params.tel
       this.baseinfo.email = this.$route.params.email
       this.baseinfo.state = this.$route.params.state
-      this.username = this.$route.params.username
     },
     methods:{
       show(){

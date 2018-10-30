@@ -6,15 +6,15 @@
         <loanUnderway :username="username" ref="underway"></loanUnderway>
       </el-tab-pane>
       <el-tab-pane label="完成项目" name="second" >
-        <loanTopBar></loanTopBar>
+        <loanTopBar v-on:getConditionEvent="getCondition"></loanTopBar>
         <loanComplete :username="username" ref="complete"></loanComplete>
       </el-tab-pane>
       <el-tab-pane label="已发布项目" name="third">
-        <loanTopBar></loanTopBar>
+        <loanTopBar v-on:getConditionEvent="getCondition"></loanTopBar>
         <loanLaunched :username="username" ref="launched"></loanLaunched>
       </el-tab-pane>
       <el-tab-pane label="违约记录" name="fourth">
-        <loanTopBar></loanTopBar>
+        <loanTopBar v-on:getConditionEvent="getCondition"></loanTopBar>
         <loanUnbelievable ref="unbelievable"></loanUnbelievable>
       </el-tab-pane>
     </el-tabs>
