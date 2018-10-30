@@ -118,7 +118,41 @@
             console.log("checkState:"+res[0].checkState);
 
             let returnData = [];
+            let tmp;
             for(let i of res){
+              switch (i.checkState) {
+                case "ONGING": tmp = "进行中";break;
+                case "PASS": tmp = "已通过";break;
+                case "REJECT": tmp = "已被拒绝";break;
+                case "UPDATE": tmp = "用户再次提交信息";break;
+              };
+              i.checkState = tmp;
+
+              switch (i.classify) {
+                case "EXCHANGE_PROJECT": tmp = "交换生";break;
+                case "GMAT": tmp = "GMAT";break;
+                case "TOEFL": tmp = "TOEFL";break;
+                case "IELTS": tmp = "IELTS";break;
+                case "DAILY_EXPENSE": tmp = "日常费用";break;
+                case "CONCERT": tmp = "演唱会看比赛看剧音乐会等";break;
+                case "GAME_MOVIE_MUSIC": tmp = "游戏娱乐电影音乐";break;
+                case "TRAVEL": tmp = "旅游";break;
+                case "ELECTRONIC_DEVICE": tmp = "购买电子设备";break;
+                case "OTHER": tmp = "其他购买项比如化妆品衣服鞋";break;
+                case "CERTIFICATE_TEST": tmp = "出国所需考试的相关成绩单";break;
+                case "TRAIN": tmp = "各类考证";break;
+                case "PROFESSIONAL_QUALIFICATION": tmp = "职业资格证";break;
+              };
+              i.classify = tmp;
+
+              switch (i.returntype) {
+                case "EQUAL_PRINCIPAL": tmp = '等额本金'; break;
+                case "EQUAL_INSTALLMENT_OF_PRINCIPAL_AND_INTEREST": tmp = '等额本息'; break;
+                case "ONE_TIME_PAYMENT": tmp = '一次性还付本息'; break;
+                case "PRE_INTEREST": tmp = '先息后本'; break;
+              }
+
+              i.returntype = tmp;
               returnData.push({
                 time: i.startTime,//提交时间？？
                 name: i.name,//项目名称
