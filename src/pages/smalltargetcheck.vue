@@ -53,7 +53,7 @@
                 <el-form-item label="项目编号"><span>{{ tableData[tempindex].projectid}}</span></el-form-item>
                 <el-form-item label="项目名称">{{ tableData[tempindex].name }}</el-form-item>
                 <el-form-item label="开始时间">{{ tableData[tempindex].startTime }}</el-form-item>
-                <el-form-item label="结束时间">{{ tableData[tempindex].endTime }}</el-form-item>
+                <el-form-item label="借款期数">{{ tableData[tempindex].endTime }}</el-form-item>
               </el-form>
               <el-button style="margin-top: 12px;margin-left:35%;"type="primary" size="mini" v-show="control.part2" @click="last(control)">上一步</el-button>
               <el-button style="margin-top: 12px;margin-left:5%;" type="primary" size="mini"v-show="control.part2" @click="next(control)">下一步</el-button>
@@ -98,6 +98,75 @@
     name: "smalltargetcheck",
     components:{CheckCenter},
     methods:{
+      getSmallTargetCheckList(){
+        console.log("小额标的核审");
+        let self = this;
+        this.$axios.get('adminTarget/pendinglist',{
+          params:{
+            TargetType:0
+          }
+        })
+          .then(function (response) {
+            console.log(response);
+            console.log("小额标的核审success");
+            console.log(response.data);
+            let res = response.data;
+
+          })
+          .catch(function (response) {
+            console.log(response);
+            console.log("小额标的核审error");
+            // alert("error")
+          });
+      },//获取待审核标的列表
+      getSmallTargetCheckDetails(){
+        console.log("小额标的核审详情");
+        let self = this;
+        this.$axios.get('adminTarget/pendingTarget',{
+          params:{
+            targetType: "SMALL"
+          }
+        })
+          .then(function (response) {
+            console.log(response);
+            console.log("小额标的核审详情success");
+            console.log(response.data);
+            let res = response.data;
+            console.log("checkState:"+res[0].checkState);
+
+            let returnData = [];
+            for(let i of res){
+              returnData.push({
+                time: i.startTime,//提交时间？？
+                name: i.name,//项目名称
+                state: 1,//当前状态,待审核啥的。。//woc这里竟然是用数字表示核审状态！！
+                action:'',//unused，表理他就行
+                username:i.username,//用户名
+                risk:i.grade,//风险评级
+                userstate: i.checkState,//checkState?非结构化信息审核情况
+                projectid: i.targetId,//项目编号
+                startTime: i.startTime,//项目名称
+                endTime: i.duration,//结束时间
+                classify:i.classify,//资金用途分类
+                desc: i.explanation,//资金用途详述
+                money: i.money,//拆借金额
+                rate: '10%',//还款利率
+                repayDate:'2018-9-25',//还款日期
+                returntype: i.returntype,//还款方式
+                pics: '../../static/pic/小额1.png',//凭证路径
+              });
+            }
+            console.log("checkState:"+returnData[0].checkState);
+
+            self.tableData = returnData;
+
+          })
+          .catch(function (response) {
+            console.log(response);
+            console.log("小额标的核审详情error");
+            // alert("error")
+          });
+      },//获取待审核标详情
       check: function(index){
         this.tempindex = index;
         //console.log(index);
@@ -337,6 +406,10 @@
           pics:'',
         }]
       };
+    },
+    mounted: function() {
+      // this.getSmallTargetCheckList();
+      this.getSmallTargetCheckDetails();
     },
   }
 </script>
