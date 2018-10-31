@@ -19,9 +19,10 @@
             <span>{{info1.late_date}}</span>-->
           </el-card>
 
-          <el-card class="main_info" v-model="info2" align="center" shadow="always">
+          <div style="display: flex">
+            <el-card class="main_info" v-model="info2" align="center" shadow="always">
             <div class="content">
-              {{info2.name}}
+              下个还款日 <span>{{info1.late_date}}</span>
             </div>
             <div class="content">
               距离下次还款日剩余<span>{{info2.days}}</span>天
@@ -31,20 +32,19 @@
             </div>
             <el-button type="primary" style="margin-top: 20px">立即还款</el-button>
           </el-card>
+            <!--<el-card class="main_info" v-model="info4" align="center" shadow="always">
+            </el-card>-->
+            <el-card shadow="always" class="chart" align="center">
+              <div style="margin-top: 20px;font-size: 18px;color: #6a6a6a">
+                未还款占比：
+              </div>
 
+              <div style="margin-top: 40px;">
+                <el-progress type="circle" :percentage=percentage width="110"></el-progress>
+              </div>
+            </el-card>
+          </div>
 
-          <!--<el-card class="main_info" v-model="info4" align="center" shadow="always">
-          </el-card>-->
-
-          <el-card shadow="always" class="chart" align="center">
-            <div style="margin-top: 20px;font-size: 18px;color: #6a6a6a">
-              未还款占比：
-            </div>
-
-            <div style="margin-top: 40px;">
-              <el-progress type="circle" :percentage=percentage width="110"></el-progress>
-            </div>
-          </el-card>
         </div>
         <hr>
         <div class="title2">项目概要</div>
@@ -91,9 +91,26 @@
 
           </div>
           <div class="bubble">
-            <div style="font-size: 15px;">
+            <div v-show="return_scheme.show === 1" style="font-size: 15px;">
               <p style="margin-top: 45px;margin-left: 70px">贷款数总额等分，每月的<br>还款本金额固定利息越来越少；</p>
               <p style="margin-left: 70px"> 起初还款压力较大，但是随着<br>时间的推移每月的还款数也越来<br> <span style="margin-left: 10px">越少</span>。</p>
+            </div>
+
+            <div v-show="return_scheme.show === 2" style="font-size: 15px;">
+              <br>
+              <p style="margin-top: 45px;margin-left: 70px">每月偿还等同数额的贷款；</p>
+              <p style="margin-left: 70px"> 还款期限内压力平分，总利息<br>高于等额本金。</p>
+            </div>
+
+            <div v-show="return_scheme.show === 3" style="font-size: 15px;">
+              <p style="margin-top: 45px;margin-left: 70px">贷款到期后一次性归还<br>本金和利息；</p>
+              <p style="margin-left: 70px"> 还款期压力大，操作间大，借款<br>人资金调整弹性大，资金利用<br> <span style="margin-left: 8px">时间长</span></p>
+            </div>
+
+            <div v-show="return_scheme.show === 4" style="font-size: 15px;margin-left: 10px">
+              <br>
+              <p style="margin-top: 45px;margin-left: 70px">每月只需支付利息，期末<br>还清本金；</p>
+              <p style="margin-left: 70px"> 资金利用时间长。</p>
             </div>
 
           </div>
@@ -223,6 +240,7 @@
         return_scheme:{
           return_way:'等额本金',
           difficulty:4,
+          show:2
         },
         activeName: 'first',
         tableData:[{
@@ -296,6 +314,9 @@
       },
 
       getRepayInfo(){
+
+        //this.getRepayAnalysis();
+
         const self = this;
         this.$axios.get('/loan/repayment/info',
           {
@@ -316,7 +337,7 @@
             self.info2.days = res.data.remainingDay;
             self.info2.money = res.data.repay;
 
-            self.percentage = res.data.unrepaidProportion;
+            self.percentage = res.data.unrepaidProportion.toFixed(2);
 
             self.info3.purpose = res.data.purpose;
             self.info3.projectDescription = res.data.projectDescription;
@@ -342,6 +363,22 @@
             console.log("data in repay analysis");
             console.log(res.data);
 
+            var data = res.data;
+
+
+            if(data.repaymentType === "PRE_INTEREST"){
+              self.return_scheme.return_way = "先息后本";
+              self.return_scheme.show = 4;
+            }else if(data.repaymentType === "EQUAL_PRINCIPAL"){
+              self.return_scheme.return_way = "等额本金";
+              self.return_scheme.show = 1;
+            }else if(data.repaymentType === "EQUAL_INSTALLMENT_OF_PRINCIPAL_AND_INTEREST"){
+              self.return_scheme.return_way = "等额本息";
+              self.return_scheme.show = 2;
+            }else if(data.repaymentType === "ONE_TIME_PAYMENT"){
+              self.return_scheme.return_way = "一次性还本付息";
+              self.return_scheme.show = 3;
+            }
 
 
           }
@@ -380,6 +417,50 @@
           console.log("error in  repay default");
           console.log(error);
         });
+      },
+
+      repay(){
+        const self = this;
+        var periods = 0;
+        for(var i = 0; i < self.recordList.length; i++){
+          if(self.recordList[i].state = 'A'){
+            periods++;
+          }
+        }
+
+        this.$axios.get('/loan/repayment/repay',
+          {
+            params:{
+              targetId:this.targetId,
+              period:periods
+            }
+          }).then(
+          function (response) {
+            let res = response;
+            console.log("data in repay");
+            console.log(res.data);
+
+            if(true){
+              var now = new Date();
+              var nowYear = now.getFullYear();
+              var nowMonth = self.getCompleteNum(now.getMonth());
+              var nowDate = self.getCompleteNum(now.getDate());
+              var nowDate = nowYear+"-"+nowMonth+"-"+nowDate;
+              alert("您已于"+nowDate+"成功还款"+self.info2.money+元);
+            }
+
+          }
+        ).catch(function (error) {
+          console.log("error in  repay");
+          console.log(error);
+        });
+      },
+      getCompleteNum(num){
+        num += "";
+        if(num<=9){
+          num = "0"+num;
+        }
+        return num;
       }
 
     }// end method

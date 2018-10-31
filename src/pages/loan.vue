@@ -200,7 +200,7 @@
                          ]">
                         <div>
                           <el-input placeholder="请填写拆借金额" v-model="form3.money"></el-input>
-                          <div style="color:red;font-size: 12px;">*借款额度剩余{{limit}}</div>
+                          <!--<div style="color:red;font-size: 12px;">*借款额度剩余{{limit}}</div>-->
                         </div>
                       </el-form-item>
                       <el-form-item label="还款期数">
