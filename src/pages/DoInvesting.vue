@@ -42,7 +42,7 @@
               <br>
               <label style="font-weight: normal">还需投资：{{leftNeeds}} 元</label>
               <br/>
-              <label style="font-weight: normal">您的余额为：{{userMoney}} 元</label>
+              <!--<label style="font-weight: normal">您的余额为：{{userMoney}} 元</label>-->
               <br/>
               <br/>
               <label style="font-weight: normal">投资金额： </label>
@@ -55,7 +55,7 @@
                 </el-slider>
               </div>
               <br/>
-              <el-button type="primary" :onclick="invest()" round>我要投资</el-button>
+              <el-button type="primary" @click="invest()" round>我要投资</el-button>
             </div>
         </el-col>
       </el-row>
@@ -68,7 +68,7 @@
             <div style="display: flex;">
                 <div style="padding:25px 70px;">
                   <div>
-                    <img src="../../static/pic/TOEFL.jpg" style="width: 400px;height: 300px;"/>
+                    <img id="img" style="width: 400px;height: 300px;"/>
                   </div>
                   <label style="font-size:16px;font-style: oblique;text-align: center;font-weight: normal;color:grey">此图为用户上传的项目说明</label>
                   <br/>
@@ -89,6 +89,7 @@
                       <strong><span style="font-size: 20px;">借款项目简介</span></strong>
                     </div>
                     <div>
+                      <div>还款方式：{{username}}</div>
                       <div>还款方式：{{payWay}}</div>
                       <div>借款用途：{{useWay}}</div>
                       <div>月还本息：{{monthInterest}}</div>
@@ -98,9 +99,9 @@
                     <hr/>
                     <div>
                       <label>用户信用评级：</label>
-                      <label class="level">A&nbsp;&nbsp;</label>
+                      <label class="level">{{userLevel}}&nbsp;&nbsp;</label>
                       <label>项目风险评级:</label>
-                      <label class="level">A</label>
+                      <label class="level">{{projectLevel}}</label>
                     </div>
                   </el-card>
 
@@ -111,8 +112,8 @@
 
 
           </el-tab-pane>
-          <el-tab-pane name="two" label="借款人借款信息" style="padding:60px 60px 10px 30px;font-size:18px;line-height: 30px;">
-            <LoanInformationPane></LoanInformationPane>
+          <el-tab-pane name="two" label="借款人信息" style="padding:60px 60px 10px 30px;font-size:18px;line-height: 30px;">
+            <doInvestingLoanerInfo :username="username"></doInvestingLoanerInfo>
           </el-tab-pane>
           <el-tab-pane name="three" label="投标记录" style="padding:80px 60px 10px 30px;font-size:18px;line-height: 30px;">
             <el-table
@@ -177,6 +178,9 @@
               money: '400'
             },*/
           ],
+          userLevel:"",
+          projectLevel:"",
+          username:"",
           target_id:"723972",
           percentage:80,
           leftTime:2 * 24 * 60 * 60 * 1000,
@@ -188,8 +192,6 @@
           money: 1000,
           tabPostion:"left",
           DoInvest:"确认投资",
-
-
           payWay:"付息还本",
           useWay:"托福培训",
           monthInterest:  "180.32",
@@ -202,10 +204,14 @@
       },
       mounted: function () {
         this.target_id = this.$route.params.id;
+        //console.log("in mount:")
+        //console.log(this.target_id)
+        //console.log("detail:")
         this.getInvestmentDetail(Number(this.target_id))
       },
       methods: {
         invest: function (){
+          //console.log("l want to invest")
           let self = this;
           this.$axios.get('/loan/investment/target',{
             params:{
@@ -213,9 +219,23 @@
               money: self.money
             }
           }).then(function (response) {
-            console.log(response)
+            var data = response.data
+            //console.log("data:")
+            //console.log(data)
+            if(data.success){
+              self.$message({
+                message:'投资成功！',
+                type:'success',
+              });
+              self.getInvestmentDetail(Number(self.target_id))
+            }else {
+              self.this.$message({
+                message: data.message,
+                type: 'error',
+              });
+            }
           }).catch(function (error) {
-            console.log("error:"+error)
+            console.log(error)
           });
         },
         getInvestmentDetail(id){
@@ -225,8 +245,9 @@
               targetId : parseInt(id)
             }
           }).then(function (response) {
-            //console.log("response:"+response.data)
+            //console.log("response:")
             var data = response.data
+            //console.log(data)
             self.percentage = data.progress * 100;
             self.leftTime = data.leftDays * 24 * 60 * 60 * 1000;
             // self.revenueRate = data.interestRate
@@ -245,10 +266,14 @@
             self.useWay = data.useWay
             self.monthInterest = data.monthInterest
             self.payAll = data.payAll
-            self.PS = data.ps;
-            console.log(data)
+            self.PS = data.PS;
+            self.username = data.username
+            self.userLevel = data.userLevel
+            self.projectLevel = data.projectLevel
+            document.getElementById("img").src=data.picPath
+            //console.log(data)
           }).catch(function (error) {
-            console.log("error:"+error)
+            console.log(error)
           });
         },
         formatTooltip(val) {
@@ -267,7 +292,7 @@
               var _this = this;
               this.$axios.get('/loan/investmentRecord', {
                 params: {
-                  targetId:_this.target_id
+                  targetId:parseInt(_this.target_id)
                 }
               }).then(function (response) {
                 //console.log("invest record:")

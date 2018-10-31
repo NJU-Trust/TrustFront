@@ -3,7 +3,7 @@
     <adminNavi></adminNavi>
 
     <div style="position: relative;padding: 60px 0px;height:600px;">
-      <el-table :data="subjects"
+      <el-table :data="mockSubjects"
                 height="500"
                 border
                 style="width: 920px;margin: auto;text-align: left;">
@@ -46,7 +46,7 @@
           align="center"
           width="150">
           <template slot-scope="scope">
-            <el-button type="primary" size="mini" plain @click="seeDetail">查看详情</el-button>
+            <el-button type="primary" size="mini" plain @click="seeDetail(scope.row.id)">查看详情</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -118,84 +118,84 @@
 <script>
   import footerBar from '@/components/footerBar.vue';
   import adminNavi from '@/components/adminNavi.vue';
-  var mockSubjects = [
-    {id:'0001',
-      loanUser:'王刚',
-      investUser:'李明',
-      state:'待审核',
-      type:'学习培训类'
-    },
-    {id:'0002',
-      loanUser:'田明',
-      investUser:'张三',
-      state:'待审核',
-      type:'学习培训类'
-    },
-    {id:'0003',
-      loanUser:'杨清',
-      investUser:'马源',
-      state:'运行中',
-      type:'小额拆借类',
-    },
-    {id:'0004',
-      loanUser:'欣欣',
-      investUser:'小红',
-      state:'待审核',
-      type:'小额拆借类'
-    },
-    {id:'0005',
-      loanUser:'小兰',
-      investUser:'茵茵',
-      state:'待投标',
-      type:'学习培训类'
-    },
-    {id:'0006',
-      loanUser:'华华',
-      investUser:'天天',
-      state:'已结束',
-      type:'小额拆借类'
-    },
-    {id:'0007',
-      loanUser:'黄浩',
-      investUser:'连号',
-      state:'待审核',
-      type:'学习培训类'
-    },
-    {id:'0008',
-      loanUser:'郭小童',
-      investUser:'关云',
-      state:'待投标',
-      type:'学习培训类'
-    },
-    {id:'0009',
-      loanUser:'李顶',
-      investUser:'青樱',
-      state:'待审核',
-      type:'学习培训类'
-    },
-    {id:'0010',
-      loanUser:'Jack',
-      investUser:'Rose',
-      state:'待审核',
-      type:'小额拆借类'
-    },
-    ];
-  var STORAGE_KEY = 'subjects';
-  var subjectStorage = {
-    fetch: function () {
-      return JSON.parse(localStorage.getItem(STORAGE_KEY)) || mockSubjects
-    },
-    save: function (data) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(data))
-    }
-  };
 
   export default {
     name: "subjectManage",
     components:{adminNavi,footerBar},
     data () {
       return {
-        subjects: subjectStorage.fetch(), // subjects 数据
+        mockSubjects : [
+          {id:'0001',
+            loanUser:'王刚',
+            investUser:'李明',
+            state:'待审核',
+            type:'学习培训类'
+          },
+          {id:'0002',
+            loanUser:'田明',
+            investUser:'张三',
+            state:'待审核',
+            type:'学习培训类'
+          },
+          {id:'0003',
+            loanUser:'杨清',
+            investUser:'马源',
+            state:'运行中',
+            type:'小额拆借类',
+          },
+          {id:'0004',
+            loanUser:'欣欣',
+            investUser:'小红',
+            state:'待审核',
+            type:'小额拆借类'
+          },
+          {id:'0005',
+            loanUser:'小兰',
+            investUser:'茵茵',
+            state:'待投标',
+            type:'学习培训类'
+          },
+          {id:'0006',
+            loanUser:'华华',
+            investUser:'天天',
+            state:'已结束',
+            type:'小额拆借类'
+          },
+          {id:'0007',
+            loanUser:'黄浩',
+            investUser:'连号',
+            state:'待审核',
+            type:'学习培训类'
+          },
+          {id:'0008',
+            loanUser:'郭小童',
+            investUser:'关云',
+            state:'待投标',
+            type:'学习培训类'
+          },
+          {id:'0009',
+            loanUser:'李顶',
+            investUser:'青樱',
+            state:'待审核',
+            type:'学习培训类'
+          },
+          {id:'0010',
+            loanUser:'Jack',
+            investUser:'Rose',
+            state:'待审核',
+            type:'小额拆借类'
+          },
+        ],
+        // STORAGE_KEY : 'subjects',
+        // subjectStorage : {
+        //   fetch: function () {
+        //     return JSON.parse(localStorage.getItem(STORAGE_KEY)) || mockSubjects
+        //   },
+        //   save: function (data) {
+        //     localStorage.setItem(STORAGE_KEY, JSON.stringify(data))
+        //   }
+        // },
+        // subjects: subjectStorage.fetch(), // subjects 数据
         /*selectedSubjects: [], // 保存选中的 users 数组
         selectedSubject: {}, // 选中 user
         limit: 9, // 每页显示行数
@@ -225,25 +225,48 @@
     },
     methods: {
       getInvestManager(){
-        console.log("基础数据");
+        console.log("标的管理");
         let self = this;
-        this.$axios.get('admin/investManager',{
+        this.$axios.get('adminTarget/briefInfo',{
           params:{
-            page : 1,
-            pageSize : 20,
-            targetType : TargetType,
-            targetState : "targetState",
+
           }
         })
           .then(function (response) {
             console.log(response);
-            console.log("基础数据success");
+            console.log("标的管理success");
             console.log(response.data);
             let res = response.data;
+            console.log("mockSubjects "+self.mockSubjects);
+            self.mockSubjects[0].id = "6666";
+
+            let returnValue = [];
+
+
+            for(let i of res){
+              let investor ="";
+              for(let j of i.investors){
+                investor += (j+",");
+              }
+              returnValue.push(
+                {
+                  id:"0001",
+                  loanUser:i.borrower,
+                  investUser:investor,
+                  state:'待审核',
+                  type:'学习培训类'
+                });
+            }
+            for(let i of returnValue){
+              console.log(i);
+            }
+
+            self.mockSubjects = returnValue;
+
           })
           .catch(function (response) {
             console.log(response);
-            console.log("基础数据error");
+            console.log("标的管理error");
             // alert("error")
           });
       },
@@ -251,8 +274,10 @@
         const property = column['property'];
         return row[property] === value;
       },
-      seeDetail(){
-        window.location.href='/subjectManageDetail';
+      seeDetail(id){
+        //window.location.href='/subjectManageDetail';
+        this.$router.push({name:'subjectManageDetail',params:{userID:id}})
+        console.log("查看"+id+"的详情");
       },
       /*addSubject() {
         this.subjects.push(this.subject)

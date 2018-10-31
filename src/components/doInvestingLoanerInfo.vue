@@ -4,24 +4,7 @@
 
       <el-tab-pane label="项目信息" name="two">
         <div id="loan_id">
-          <el-tabs v-model="activeChild" @tab-click="handleClick">
-            <el-tab-pane label="正在进行" name="first">
-              <loanTopBar></loanTopBar>
-              <loanUnderway></loanUnderway>
-            </el-tab-pane>
-            <el-tab-pane label="完成项目" name="second">
-              <loanTopBar></loanTopBar>
-              <loanComplete></loanComplete>
-            </el-tab-pane>
-            <el-tab-pane label="已发布项目" name="third">
-              <loanTopBar></loanTopBar>
-              <loanLaunched></loanLaunched>
-            </el-tab-pane>
-            <el-tab-pane label="违约记录" name="fourth">
-              <loanTopBar></loanTopBar>
-              <loanUnbelievable></loanUnbelievable>
-            </el-tab-pane>
-          </el-tabs>
+          <LoanInformationPane :username="username"></LoanInformationPane>
         </div>
       </el-tab-pane>
       <el-tab-pane label="基本资料" name="three">
@@ -30,10 +13,10 @@
       <el-tab-pane label="学业表现" name = "four">
       </el-tab-pane>
       <div v-if="showGraph">
-        <academicPerformance></academicPerformance>
+        <academicPerformance :username="username"></academicPerformance>
       </div>
       <el-tab-pane label="财务分析" name="one">
-        <fin-analysis></fin-analysis>
+        <fin-analysis :username="username"></fin-analysis>
       </el-tab-pane>
     </div>
 
@@ -49,11 +32,12 @@
     import loanUnbelievable from "../components/loanUnbelievable";
     import loanerBasicInfo from "../components/loanerBasicInfo";
     import academicPerformance from "../components/academicPerformance";
-
+    import LoanInformationPane from '../components/LoanInformationPane.vue'
 
     export default {
       name: "doInvestingLoanerInfo",
-      components: {FinAnalysis,loanTopBar,loanUnderway,loanComplete,loanLaunched,loanUnbelievable,loanerBasicInfo,academicPerformance},
+      components: {FinAnalysis,loanTopBar,loanUnderway,loanComplete,loanLaunched,loanUnbelievable,loanerBasicInfo,academicPerformance,LoanInformationPane},
+      props:["username"],
       data(){
         return{
           activeParent: 'three',

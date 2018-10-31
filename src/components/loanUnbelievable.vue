@@ -64,9 +64,9 @@
         <div class="projectPages">
 
         </div>
-        <div id="poj_pagination" class="poj_pagination">
+        <!--<div id="poj_pagination" class="poj_pagination">
           <div class="block">
-            <!--<span class="demonstration">完整功能</span>-->
+            &lt;!&ndash;<span class="demonstration">完整功能</span>&ndash;&gt;
             <el-pagination
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
@@ -77,7 +77,7 @@
               :total="40">
             </el-pagination>
           </div>
-        </div>
+        </div>-->
 
       </div>
     </div>
@@ -87,6 +87,7 @@
 <script>
     export default {
         name: "loan-unbelievable",
+        props:["username"],
         data(){
           return{
             a:{
@@ -117,6 +118,7 @@
           var list = [];
           const self = this;
           this.$axios.post('/loan/info/default',{
+            username:self.username,
             moneyUpper:moneyUpper,
             moneyLower:moneyLower,
             targetType:targetType,

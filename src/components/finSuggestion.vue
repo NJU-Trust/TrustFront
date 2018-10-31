@@ -97,8 +97,7 @@
         </template>
         <br/>
       </div>
-      <p>因此，在第1、2、4、5、6、7、8、10、11、12个月内，建议您酌情调整下各项支出中占比较大的几项。</p>
-      <p>暂无需考虑额外收入。</p>
+      <p>因此，建议您酌情调整下在各项支出中占比较大的几项。</p>
     </div>
   </div>
 </template>
@@ -227,12 +226,12 @@
             let res = response.data;
             this.nextRepayAmount = res.nextPayment;
             this.nextRepayTime = res.nextPayTime;
-            this.user.solvency = res.user.solvency/100;
-            this.user.engel = res.user.engel*100;
-            this.user.leverage = res.user.leverage/100;
-            this.user.rigid = res.user.rigid/100;
-            this.user.monthCusumptionRatio = res.user.monthConsumptionRatio*100;
-            this.user.assetLiabilityRatio = res.user.assetLiabilityRatio*100;
+            this.user.solvency = res.user.solvency;
+            this.user.engel = res.user.engel;
+            this.user.leverage = res.user.leverage;
+            this.user.rigid = res.user.rigid;
+            this.user.monthCusumptionRatio = res.user.monthConsumptionRatio;
+            this.user.assetLiabilityRatio = res.user.assetLiabilityRatio;
             this.user.monthSavingRatio = res.user.monthSavingRatio;
 
             //this.NextpayList = res.nextPayList; Some bugs,try another method
@@ -269,6 +268,11 @@
       getPredictSurplus(){
         console.log("预测");
         let self = this;
+
+        let testNum = 0.151313213212;
+        testNum *= 100;
+        testNum = testNum.toFixed(2);
+        console.log("testNum"+testNum);
         this.$axios.get('/loan/repayment/predictSurplus',{
           params:{
             username:self.username,
@@ -285,6 +289,14 @@
             this.drawK(time,kn);
             this.drawA(time,an);
             console.log("after draw");
+            for(let i of response.data.tableData){
+              i.valX *=100;
+              i.valY *=100;
+              i.valZ *=100;
+              i.valX = i.valX.toFixed(2);
+              i.valY = i.valY.toFixed(2);
+              i.valZ = i.valZ.toFixed(2);
+            }
             this.tableData = response.data.tableData;
           })
           .catch((response) => {

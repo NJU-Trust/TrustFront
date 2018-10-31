@@ -32,6 +32,10 @@
             <el-button type="primary" style="margin-top: 20px">立即还款</el-button>
           </el-card>
 
+
+          <!--<el-card class="main_info" v-model="info4" align="center" shadow="always">
+          </el-card>-->
+
           <el-card shadow="always" class="chart" align="center">
             <div style="margin-top: 20px;font-size: 18px;color: #6a6a6a">
               未还款占比：

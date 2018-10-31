@@ -33,29 +33,29 @@
 
         </div>
       </el-tab-pane>
-      <el-tab-pane label="安全服务" name="third">
-        <div class="user_sec">
-          <div class="chooseButton">
-            <el-radio v-model="secService" label="1" >修改密码</el-radio>
-            <el-radio v-model="secService" label="2" >修改绑定邮箱</el-radio>
-            <el-radio v-model="secService" label="3" >修改绑定手机</el-radio>
-            <el-radio v-model="secService" label="4"  >设置密保问题</el-radio>
-          </div><hr/><br/>
-          <div v-show="secService=='1'">
-            <changepassword></changepassword>
-          </div>
-          <div v-show="secService=='2'">
-            <modifymailbox></modifymailbox>
-          </div>
-          <div v-show="secService=='3'">
-            <modifyphone></modifyphone>
-          </div>
-          <div v-show="secService=='4'">
-            <set-password-protection></set-password-protection>
-          </div>
-        </div>
+      <!--<el-tab-pane label="安全服务" name="third">-->
+        <!--<div class="user_sec">-->
+          <!--<div class="chooseButton">-->
+            <!--<el-radio v-model="secService" label="1" >修改密码</el-radio>-->
+            <!--<el-radio v-model="secService" label="2" >修改绑定邮箱</el-radio>-->
+            <!--<el-radio v-model="secService" label="3" >修改绑定手机</el-radio>-->
+            <!--<el-radio v-model="secService" label="4"  >设置密保问题</el-radio>-->
+          <!--</div><hr/><br/>-->
+          <!--<div v-show="secService=='1'">-->
+            <!--<changepassword></changepassword>-->
+          <!--</div>-->
+          <!--<div v-show="secService=='2'">-->
+            <!--<modifymailbox></modifymailbox>-->
+          <!--</div>-->
+          <!--<div v-show="secService=='3'">-->
+            <!--<modifyphone></modifyphone>-->
+          <!--</div>-->
+          <!--<div v-show="secService=='4'">-->
+            <!--<set-password-protection></set-password-protection>-->
+          <!--</div>-->
+        <!--</div>-->
 
-      </el-tab-pane>
+      <!--</el-tab-pane>-->
     </el-tabs>
   </personalCenter>
 </template>
@@ -116,7 +116,7 @@
         let self = this;
         this.$axios.get('/profile/personalInformation',{
           params:{
-            username:"test"
+            username:localStorage.username
           }
         })
           .then(function (response) {

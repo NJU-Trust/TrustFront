@@ -13,18 +13,18 @@
 
       </div>
       <div style="padding-left: 50px">
-        <span style="font-size: 25px;font-weight:bold;color: #cd5f33;padding-top: 20px;padding-left: 15px">{{scheme.each}}</span>
+        <span style="font-size: 25px;font-weight:bold;color: #cd5f33;padding-top: 20px;padding-left: 15px">{{scheme.sum}}</span>
         <br>
-        <span style="color: #acacac;padding-top: -20px">每月还款金额(元)</span>
+        <span style="color: #acacac;padding-top: -20px">还款总额(元)</span>
       </div>
       <div ></div>
     </div>
-    <div style="margin-left: 100px">
-      贷款金额&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp <span style="font-weight: bold" v-model="scheme">{{scheme.capital}}</span>元
-      <div style="border: 1px #b7b7b7 solid"></div>
+    <div style="margin-left: 100px;font-size: 17px;padding-top: 5px">
+      贷款金额&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp <span style="font-weight: bold;color: red" v-model="scheme">{{scheme.capital}}</span>元
+      <div style="border: 1px #b7b7b7 solid;margin-top: 3px;margin-bottom: 5px"></div>
       利息总额&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp <span style="font-weight: bold;color: red">{{scheme.interest}}</span>元
-      <div style="border: 1px #b7b7b7 solid"></div>
-      还款总额&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp <span style="font-weight: bold;color: red">{{scheme.sum}}</span>元
+      <div style="border: 1px #b7b7b7 solid;margin-top: 3px;margin-bottom: 5px"></div>
+      <!--还款总额&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp <span style="font-weight: bold;color: red">{{scheme.sum}}</span>元-->
     </div>
   </div>
 </template>

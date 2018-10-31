@@ -201,9 +201,10 @@
         // alert("用户总览");
         console.log("用户总览");
         let self = this;
+        console.log("usernameTest:"+localStorage.username);
         this.$axios.get('/profile/investAndLoan',{
           params:{
-            username:"test"
+            username:localStorage.username
           }
         })
           .then(function (response) {
@@ -249,10 +250,10 @@
             console.log(response);
             // alert("error")
           });
-
+        console.log("usernameTest:"+localStorage.username);
         this.$axios.get('/profile/totalAccount',{
           params:{
-            username:"test"
+            username:localStorage.username
           }
         })
           .then(function (response) {
@@ -303,9 +304,10 @@
         // alert("用户总览");
         console.log("用户总览");
         let self = this;
+        console.log("usernameTest:"+localStorage.username);
         this.$axios.get('/profile/todo',{
           params:{
-            username:"test"
+            username:localStorage.username
           }
         })
           .then(function (response) {

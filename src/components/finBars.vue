@@ -15,7 +15,7 @@
               <el-radio label="支出" v-bind:title="'顾名思义，支出就是支出'"></el-radio>
               <el-radio label="刚性支出" v-bind:title="'“必需品”性质的支出\n'"></el-radio>
               <el-radio label="可调支出" v-bind:title="'可调整的支出'"></el-radio>
-              <el-radio label="投资额结余" v-bind:title="'顾名思义，结余就是剩下的资金'"></el-radio>
+              <!--<el-radio label="投资额结余" v-bind:title="'顾名思义，结余就是剩下的资金'"></el-radio>-->
               <el-radio label="负债" v-bind:title="'负债'"></el-radio>
               <el-radio label="净资产" v-bind:title="'结余—负债\n'"></el-radio>
             </el-radio-group>

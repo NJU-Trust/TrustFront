@@ -100,6 +100,13 @@
                         <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
                       </el-upload>
                     </el-form-item>
+
+                   <!-- <el-alert
+                      title="设置了回调的 alert"
+                      type="warning"
+                      @close="testAlert"></el-alert>-->
+
+                    <!--<el-button @click="testAlert">test</el-button>-->
                   </el-form>
 
                   <el-form id="information" ref="form2" :model="form2" label-width="140px" class="primary_info" style="display: none">
@@ -179,8 +186,6 @@
                         </el-form-item>
                       </div>
                     </el-form>
-
-
 
                   </el-form>
 
@@ -270,7 +275,7 @@
 
                     </el-form>
                     <el-form id="evaluate" class="evaluate" style="background-color: white">
-                      <evaluate ref="evaluate" :scheme="scheme" ></evaluate>
+                      <evaluate ref="evaluate" :scheme="scheme" v-on:getSchemeEvent="getScheme"></evaluate>
                     </el-form>
                   </div>
                 </div>
@@ -333,6 +338,10 @@
         },
         methods: {
 
+          testAlert(){
+            alert("HELLO");
+          },
+
           uploadSuccess(response, file, fileList) {
             console.log("uploadSuccess");
             this.proof += 'http://localhost:8000/';
@@ -374,7 +383,18 @@
               function (response) {
                 console.log(response.data);
                 if (response.data.success === true) {
+                  /*self.$message({
+                    message:'提交成功！',
+                    type:'success',
+                  });*/
                   alert("提交成功！");
+                  this.$router.push({name:'homepage'});
+                }else{
+                  _this.$message({
+                    message:'提交失败！',
+                    type:'error',
+                  });
+                  alert("提交失败！");
                 }
               }
             ).catch(function (error) {
@@ -391,6 +411,8 @@
 
             this.visible = true;
 
+            this.scheme.show_table = true;
+
             var money = parseFloat(this.form3.money);
             var period = parseInt(this.form3.period);
             var rate = parseFloat(this.form3.rate);
@@ -403,6 +425,7 @@
             } else if (num === 2) {
               this.get_average_capital(money, period, rate);
             } else if (num === 3) {
+              this.scheme.show_table = false;
               this.get_one_off(money, period, rate);
             } else if (num === 4) {
               this.get_interest_first(money, period, rate);
@@ -416,6 +439,7 @@
 
           get_average_capital(money, period, rate) {
             console.log("等额本金");
+            console.log(money, period, rate);
             const self = this;
             this.$axios.post('/loan/repayment/ep', {money: money, duration: period, interestRate: rate}).then(
               function (response) {
@@ -431,8 +455,8 @@
                   self.scheme.capital_and_interest_list.push((month_list[i].interest + month_list[i].principal).toFixed(2));
                 }
 
-                self.scheme.interest = res.data.interest;
-                self.scheme.sum = res.data.sum;
+                self.scheme.interest = res.data.interest.toFixed(2);
+                self.scheme.sum = res.data.sum.toFixed(2);
                 self.scheme.difficulty = parseInt(res.data.note.difficulty);
                 self.scheme.capital = parseFloat(self.form3.money);
                 /*self.scheme.enough = res.data.note.exceedSurplus;
@@ -458,7 +482,7 @@
                 }
 
                 self.scheme.each = self.scheme.sum / parseFloat(self.form3.period);
-
+                self.scheme.activeName = "second";
 
                 self.$refs.evaluate.drawLine();
 
@@ -473,13 +497,14 @@
           get_average_capital_plus_interest(money, period, rate) {
 
             console.log("等额本息");
+            console.log(money, period, rate);
             const self = this;
             this.$axios.post('/loan/repayment/eipi', {money: money, duration: period, interestRate: rate}).then(
               function (response) {
                 var res = response;
                 console.log(res.data);
-                self.scheme.interest = res.data.interest;
-                self.scheme.sum = res.data.sum;
+                self.scheme.interest = res.data.interest.toFixed(2);
+                self.scheme.sum = res.data.sum.toFixed(2);
                 self.scheme.difficulty = parseInt(res.data.note.difficulty);
                 self.scheme.capital = parseFloat(self.form3.money);
                 /*self.scheme.enough = res.data.note.exceedSurplus;
@@ -511,6 +536,8 @@
                   self.scheme.interest_list.push(month_list[i].interest.toFixed(2));
                   self.scheme.capital_and_interest_list.push((month_list[i].interest + month_list[i].principal).toFixed(2));
                 }
+
+                self.scheme.activeName = "first";
 
                 self.scheme.each = self.scheme.sum / parseFloat(self.form3.period);
 
@@ -526,13 +553,14 @@
 
           get_one_off(money, period, rate) {
             console.log("一次性还本付息");
+            console.log(money, period, rate);
             const self = this;
             this.$axios.post('/loan/repayment/ep', {money: money, duration: period, interestRate: rate}).then(
               function (response) {
                 var res = response;
                 console.log(res.data);
-                self.scheme.interest = res.data.interest;
-                self.scheme.sum = res.data.sum;
+                self.scheme.interest = res.data.interest.toFixed(2);
+                self.scheme.sum = res.data.sum.toFixed(2);
                 self.scheme.difficulty = parseInt(res.data.note.difficulty);
                 self.scheme.capital = parseFloat(self.form3.money);
                 /*self.scheme.enough = res.data.note.exceedSurplus;
@@ -556,6 +584,8 @@
                 } else {
                   self.scheme.change = true;
                 }
+
+                self.scheme.activeName = "third";
 
 
                 self.scheme.each = self.scheme.sum / parseFloat(self.form3.period);
@@ -571,13 +601,14 @@
 
           get_interest_first(money, period, rate) {
             console.log("先息后本");
+            console.log(money, period, rate);
             const self = this;
-            this.$axios.post('/loan/repayment/pi', {money: money, duration: period, interestRate: rate}).then(
+            this.$axios.post('/loan/repayment/ep', {money: money, duration: period, interestRate: rate}).then(
               function (response) {
                 var res = response;
                 console.log(res.data);
-                self.scheme.interest = res.data.interest;
-                self.scheme.sum = res.data.sum;
+                self.scheme.interest = res.data.interest.toFixed(2);
+                self.scheme.sum = res.data.sum.toFixed(2);
                 self.scheme.difficulty = parseInt(res.data.note.difficulty);
                 self.scheme.capital = parseFloat(self.form3.money);
                 /*self.scheme.enough = res.data.note.exceedSurplus;
@@ -601,6 +632,8 @@
                 } else {
                   self.scheme.change = true;
                 }
+
+                self.scheme.activeName = "fourth";
 
                 var month_list = res.data.monthlyData;
                 console.log("month_list");
@@ -749,6 +782,25 @@
               console.log("error in timeRange");
               console.log(error);
             });
+          },
+          getScheme(activeName){
+
+            var num;
+            if(activeName === "first"){
+              this.form3.activeName = "1";
+              num = 1;
+            }else if(activeName === "second"){
+              this.form3.activeName = "2";
+              num = 2;
+            }else if(activeName === "third"){
+              this.form3.activeName = "3";
+              num = 3;
+            }else if(activeName === "fourth"){
+              this.form3.activeName = "4";
+              num = 4;
+            }
+
+            this.get_scheme(num);
           }
 
         },
@@ -812,7 +864,9 @@
               count2: 0,
               interest_list: [],
               capital_and_interest_list: [],
-              period: []
+              period: [],
+              activeName:'first',
+              show_table : true,
             },
 
             limit: 3000,

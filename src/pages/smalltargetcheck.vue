@@ -75,14 +75,14 @@
                          style="margin-left:30%">
                 <el-form-item label="拆借金额"><span>{{ tableData[tempindex].money}}</span></el-form-item>
                 <el-form-item label="还款利率">{{ tableData[tempindex].rate }}</el-form-item>
-                <el-form-item label="还款日期">{{ tableData[tempindex].repayDate }}</el-form-item>
+                <el-form-item label="借款期数">{{ tableData[tempindex].repayDate }}</el-form-item>
                 <el-form-item label="还款方式">{{ tableData[tempindex].returntype }}</el-form-item>
               </el-form>
               <el-button style="margin-top: 12px;margin-left:45%;"type="primary" size="mini" v-show="control.part4"@click="last(control)">上一步</el-button>
 
               <div slot="footer" class="dialog-footer">
                 <el-button
-                  v-show="control.part4" type="primary" @click="dialogFormVisible = send1()">确 定</el-button>
+                  v-show="control.part4" type="primary" @click="dialogFormVisible = send1(tableData[tempindex].projectid)">确 定</el-button>
               </div>
             </el-dialog>
           </template>
@@ -98,6 +98,113 @@
     name: "smalltargetcheck",
     components:{CheckCenter},
     methods:{
+      getSmallTargetCheckList(){
+        console.log("小额标的核审");
+        let self = this;
+        this.$axios.get('adminTarget/pendinglist',{
+          params:{
+            TargetType:0
+          }
+        })
+          .then(function (response) {
+            console.log(response);
+            console.log("小额标的核审success");
+            console.log(response.data);
+            let res = response.data;
+
+          })
+          .catch(function (response) {
+            console.log(response);
+            console.log("小额标的核审error");
+            // alert("error")
+          });
+      },//获取待审核标的列表
+      getSmallTargetCheckDetails(){
+        console.log("小额标的核审详情");
+        let self = this;
+        this.$axios.get('adminTarget/pendingTarget',{
+          params:{
+            targetType: "SMALL"
+          }
+        })
+          .then(function (response) {
+            console.log(response);
+            console.log("小额标的核审详情success");
+            console.log(response.data);
+            let res = response.data;
+            console.log("checkState:"+res[0].checkState);
+
+            let returnData = [];
+            let tmp;
+            for(let i of res){
+
+              // switch (i.checkState) {
+              //   case "ONGING": tmp = "进行中";break;
+              //   case "PASS": tmp = "已通过";break;
+              //   case "REJECT": tmp = "已被拒绝";break;
+              //   case "UPDATE": tmp = "用户再次提交信息";break;
+              // };
+              // i.checkState = tmp;
+              //
+              // switch (i.classify) {
+              //   case "EXCHANGE_PROJECT": tmp = "交换生";break;
+              //   case "GMAT": tmp = "GMAT";break;
+              //   case "TOEFL": tmp = "TOEFL";break;
+              //   case "IELTS": tmp = "IELTS";break;
+              //   case "DAILY_EXPENSE": tmp = "日常费用";break;
+              //   case "CONCERT": tmp = "演唱会看比赛看剧音乐会等";break;
+              //   case "GAME_MOVIE_MUSIC": tmp = "游戏娱乐电影音乐";break;
+              //   case "TRAVEL": tmp = "旅游";break;
+              //   case "ELECTRONIC_DEVICE": tmp = "购买电子设备";break;
+              //   case "OTHER": tmp = "其他购买项比如化妆品衣服鞋";break;
+              //   case "CERTIFICATE_TEST": tmp = "出国所需考试的相关成绩单";break;
+              //   case "TRAIN": tmp = "各类考证";break;
+              //   case "PROFESSIONAL_QUALIFICATION": tmp = "职业资格证";break;
+              // };
+              // i.classify = tmp;
+              //
+              // switch (i.returntype) {
+              //   case "EQUAL_PRINCIPAL": tmp = '等额本金'; break;
+              //   case "EQUAL_INSTALLMENT_OF_PRINCIPAL_AND_INTEREST": tmp = '等额本息'; break;
+              //   case "ONE_TIME_PAYMENT": tmp = '一次性还付本息'; break;
+              //   case "PRE_INTEREST": tmp = '先息后本'; break;
+              // }
+              //
+              // i.returntype = tmp;
+
+
+
+              returnData.push({
+                time: i.startTime,//提交时间？？
+                name: i.name,//项目名称
+                state: 1,//当前状态,待审核啥的。。//woc这里竟然是用数字表示核审状态！！
+                action:'',//unused，表理他就行
+                username:i.username,//用户名
+                risk:i.grade,//风险评级
+                userstate: i.checkState,//checkState?非结构化信息审核情况
+                projectid: i.targetId,//项目编号
+                startTime: i.startTime,//项目名称
+                endTime: i.endTime,//结束时间
+                classify:i.classify,//资金用途分类
+                desc: i.explanation,//资金用途详述
+                money: i.money,//拆借金额
+                rate: i.creditRating,//还款利率
+                repayDate: i.duration,//还款日期
+                returntype: i.returntype,//还款方式
+                pics: i.proof,//凭证路径
+              });
+            }
+            console.log("checkState:"+returnData[0].checkState);
+
+            self.tableData = returnData;
+
+          })
+          .catch(function (response) {
+            console.log(response);
+            console.log("小额标的核审详情error");
+            // alert("error")
+          });
+      },//获取待审核标详情
       check: function(index){
         this.tempindex = index;
         //console.log(index);
@@ -161,12 +268,33 @@
         return false;
 
       },
-      send1: function () {
+      send1: function (targetId) {
+        let flag = false;
+        console.log(targetId+"号核审状态修改，准备发送");
         //这里会将状态改变传给后端，重新加载页面的时候状态就会传过来，自动跳转到状态2的情况
-        this.$message({
-          message:'提交成功',
-          type:'success',
-        });
+        this.$axios.get('adminTarget/targetcheck', {
+          params:{
+            targetId: targetId,
+            result: "PASS"
+          }
+        })
+          .then(function (response) {
+            console.log(response);
+            alert("修改成功！");
+            flag = true;
+            //self.getUserDetails();
+          })
+          .catch(function (response) {
+            console.log(response);
+            alert("修改失败！请检测您的网络连接");
+          })
+
+        if(flag){
+          this.$message({
+            message:'提交成功',
+            type:'success',
+          });
+        }
         this.tableData.splice(this.tempindex, 1);
         this.active = 1;
         this.control.part1=true;
@@ -337,6 +465,10 @@
           pics:'',
         }]
       };
+    },
+    mounted: function() {
+      // this.getSmallTargetCheckList();
+      this.getSmallTargetCheckDetails();
     },
   }
 </script>

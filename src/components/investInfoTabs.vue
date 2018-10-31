@@ -266,6 +266,7 @@
   export default {
     name: "invest-info-tabs",
     components: {loanTopBar},
+    props:["username"],
     mounted:function(){
       this.getUnderway();
     },
@@ -344,7 +345,8 @@
           targetType:null,
           name:null,
           startDate:null,
-          endDate:null
+          endDate:null,
+          state:null
         },
       };
     },
@@ -384,6 +386,7 @@
 
         const self = this;
         this.$axios.post('/loan/investment/ongoing',{
+          username:self.username,
           moneyUpper:moneyUpper,
           moneyLower:moneyLower,
           targetType:targetType,
@@ -393,7 +396,7 @@
         }).then(
           function(response){
             console.log(response.data);
-            list = response.data;
+            var list = response.data;
 
             for(var i=0;i<list.length;i++){
               self.tableDataUnderway.push({projectName:list[i].projectName, loanFrom:list[i].loanFrom, loanDate:list[i].loanDate,
@@ -423,6 +426,7 @@
 
         const self = this;
         this.$axios.post('/loan/investment/complete',{
+          username:self.username,
           moneyUpper:moneyUpper,
           moneyLower:moneyLower,
           targetType:targetType,
@@ -432,7 +436,7 @@
         }).then(
           function(response){
             console.log(response.data);
-            list = response.data;
+            var list = response.data;
 
             for(var i=0;i<list.length;i++){
               self.tableDataDone.push({projectName:list[i].projectName, loanFrom:list[i].loanFrom,
@@ -456,16 +460,75 @@
 
         var moneyUpper = this.condition.moneyUpper;
         var moneyLower = this.condition.moneyLower;
-        var targetType = this.condition.targetType;
-        var name = this.condition.name;
-        var startDate = this.condition.startDate;
-        var endDate = this.condition.endDate;
+        var state = this.condition.state;
 
+        const self = this;
+        this.$axios.post('/loan/investment/bad',{
+          username:self.username,
+          moneyUpper:moneyUpper,
+          moneyLower:moneyLower,
+          state:state
+        }).then(
+          function(response){
+            console.log(response.data);
+            var list = response.data;
 
+            for(var i=0;i<list.length;i++){
+              self.tableDataBad.push({projectName:list[i].projectName, loanFrom:list[i].loanFrom,
+                badStartDate:list[i].badStartDate, investAmount:list[i].investAmount, lossAmount:list[i].lossAmount,
+                state:list[i].state,targetId:list[i].targetId});
+            }
+            console.log("tableDataBad:");
+            console.log(self.tableDataBad);
+
+          }
+        ).catch(function (error) {
+          console.log("error in Bad");
+          console.log(error);
+        });
 
       }
-
     }// end method
+    ,
+    watch: {
+      bad_form:{
+        handler(a){
+          var money_str = this.bad_form.money;
+          var state_str = this.bad_form.state;
+
+          var moneyUpper = null;
+          var moneyLower = null;
+          var state = null;
+
+          if(money_str === "全部"){
+
+          }else if(money_str === "50以下"){
+            moneyUpper = 50;
+          }else if(money_str === "50-100"){
+            moneyUpper = 100;
+            moneyLower = 50;
+          }else if(money_str === "100-500"){
+            moneyUpper = 500;
+            moneyLower = 100;
+          }else if(money_str === "500以上"){
+            moneyUpper = null;
+            moneyLower = 500;
+          }
+
+          if(state_str !== "全部"){
+            state = state_str;
+          }
+
+          this.condition.moneyUpper = moneyUpper;
+          this.condition.moneyLower = moneyLower;
+          this.condition.state = state;
+
+          this.getBad();
+
+        },
+        deep:true
+      }
+    }
   }
 </script>
 

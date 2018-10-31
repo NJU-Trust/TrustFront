@@ -75,7 +75,7 @@
                 <span style="font-size: 24px;padding:50px 0px;">项目描述</span>
               </div>
               <div style="padding: 30px;font-size:18px;">
-                想要报名托福学习课程，无奈费用太高，想请有缘人帮助
+                {{ detailData[0].description }}
               </div>
             </el-card>
           </td>
@@ -145,7 +145,7 @@
       return {
         detailData:[
           {
-            id:"0001",
+            id:"0002",
             name:'王刚',
             time:'2018-09-01',
             total:1000,
@@ -153,12 +153,49 @@
             projectState:'运行中',
             profit:'5.55%',
             projectLevel:'A',
-            payPlan:'每月10%'
+            payPlan:'每月10%',
+            description:'想要报名托福学习课程，无奈费用太高，想请有缘人帮助'
           },
         ],
       }
     },
+    mounted: function() {
+      this.getSubjectManageDetail();
+    },
     methods:{
+      getSubjectManageDetail(){
+        console.log("标的详情查看");
+        let self = this;
+        self.detailData[0].id = this.$route.params.userID;
+        console.log("Get id from up is "+ self.detailData[0].id);
+        this.$axios.get('adminTarget/detailInfo',{
+          params:{
+            id: this.detailData[0].id
+          }
+        })
+          .then(function (response) {
+            console.log(response);
+            console.log("标的详情查看success");
+            console.log(response.data);
+            let res = response.data;
+            self.detailData[0].id = res.id;
+            self.detailData[0].name = res.username;
+            self.detailData[0].time = res.startTime;
+            self.detailData[0].total = res.money;
+            self.detailData[0].gainMoney = res.collectedMoney;
+            self.detailData[0].projectState = res.state;
+            self.detailData[0].profit = res.interestRate;
+            self.detailData[0].projectLevel = res.riskRating;
+            self.detailData[0].payPlan = res.type;
+            self.detailData[0].description = res.projectDescription;
+            // self.detailData[0].description = '想要报名托福学习课程，无奈费用太高，想请有缘人帮助';
+          })
+          .catch(function (response) {
+            console.log(response);
+            console.log("标的详情查看error");
+            // alert("error")
+          });
+      },
       seeList(){
         window.location.href='/subjectManage';
       },
