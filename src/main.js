@@ -27,7 +27,7 @@ Vue.component('font-awesome-layers', FontAwesomeLayers)
 Vue.component('font-awesome-layers-text', FontAwesomeLayersText)
 Vue.use(Progress)
 Vue.component(VueCountdown.name, VueCountdown);
-
+Vue.prototype.url_config = '193.112.82.110'
 // import store from './store/index'; //引入store
 
 

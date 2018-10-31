@@ -304,8 +304,8 @@
     components: {personalCenter},
     data() {
       return {
-        url: "http://localhost:8000/upload/image",
-        csv_url: "http://localhost:8000/upload/csv",
+        url: "http://"+ this.url_config +  ":8000/upload/image",
+        csv_url: "http://"+ this.url_config +  ":8000/upload/csv",
         alipay: '',
         card: '',
         reportFileList:[],
@@ -356,13 +356,13 @@
     methods: {
       /*支付宝*/
       uploadCardSuccess(response){
-        this.card += 'http://localhost:8000/'
+        this.card += 'http://'+ this.url_config +  ':8000/'
         this.card += response
         console.log(response)
       },
 
       uploadAlipaySuccess(response) {
-        this.alipay += 'http://localhost:8000/'
+        this.alipay += 'http://'+ this.url_config +  ':8000/'
         this.alipay += response
         console.log(response)
         this.fileList.push({name: response, url: this.alipay})
@@ -379,7 +379,7 @@
       },
       /*上传志愿时长*/
       uploadVolunteer(response, file, fileList){
-        this.selfinfo_form.volunteer_img += 'http://localhost:8000/'
+        this.selfinfo_form.volunteer_img += 'http://' + this.url_config +  ':8000/'
         this.selfinfo_form.volunteer_img += response;
       },
       removeVolunteer(file, fileList){
@@ -503,25 +503,25 @@
             if (valid) {
               //console.log(this.reportFileList)
               for(var i=0;i<this.reportFileList.length;i++){
-                this.selfinfo_form.report_cards[i]=('http://localhost:8000/'+this.reportFileList[i].response)
+                this.selfinfo_form.report_cards[i]=('http://' + this.url_config +  ':8000/'+this.reportFileList[i].response)
               }
               //console.log(this.selfinfo_form.report_cards)
               //console.log(this.selfinfo_form.school_rewards)
               for(var i=0;i<this.schoolRewardList.length;i++){
-                this.selfinfo_form.school_rewards[i].file=('http://localhost:8000/'+this.schoolRewardList[i].response)
+                this.selfinfo_form.school_rewards[i].file=('http://' + this.url_config +  ':8000/'+this.schoolRewardList[i].response)
               }
               //console.log(this.selfinfo_form.school_rewards)
               for(var i=0;i<this.cityRewardList.length;i++){
-                this.selfinfo_form.city_rewards[i].file=('http://localhost:8000/'+this.cityRewardList[i].response)
+                this.selfinfo_form.city_rewards[i].file=('http://' + this.url_config +  ':8000/'+this.cityRewardList[i].response)
               }
               for(var i=0;i<this.provinceRewardList.length;i++){
-                this.selfinfo_form.province_rewards[i].file=('http://localhost:8000/'+this.provinceRewardList[i].response)
+                this.selfinfo_form.province_rewards[i].file=('http://'+ this.url_config +  ':8000/'+this.provinceRewardList[i].response)
               }
               for(var i=0;i<this.countryRewardList.length;i++){
-                this.selfinfo_form.country_rewards[i].file=('http://localhost:8000/'+this.countryRewardList[i].response)
+                this.selfinfo_form.country_rewards[i].file=('http://'+ this.url_config +  ':8000/'+this.countryRewardList[i].response)
               }
               for(var i=0;i<this.qualificationList.length;i++){
-                this.selfinfo_form.self_qualifications[i].file=('http://localhost:8000/'+this.qualificationList[i].response)
+                this.selfinfo_form.self_qualifications[i].file=('http://'+ this.url_config +  ':8000/'+this.qualificationList[i].response)
               }
 
               var _this = this;

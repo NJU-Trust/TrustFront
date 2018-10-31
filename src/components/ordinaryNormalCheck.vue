@@ -84,7 +84,7 @@
     data() {
       return {
         count:0,
-        url: "http://localhost:8000/upload/image",
+        url: "http://"+ this.url_config +  ":8000/upload/image",
         base_form: {
           name: '',
           gender: '男',
@@ -145,13 +145,13 @@
     methods: {
       uploadSchoolCardSuccess(response, file, fileList) {
         console.log("uploadSuccess");
-        this.base_form.school_card_proof += 'http://localhost:8000/';
+        this.base_form.school_card_proof += 'http://'+ this.url_config +  ':8000/';
         this.base_form.school_card_proof += response;
         //console.log("school_card_proof:" + this.base_form.school_card_proof);
       },
       uploadStuCardSuccess(response, file, fileList){
         console.log("uploadSuccess");
-        this.base_form.stu_card_proof += 'http://localhost:8000/';
+        this.base_form.stu_card_proof += 'http://'+ this.url_config +  ':8000/';
         this.base_form.stu_card_proof += response;
         //console.log("stu_card_proof:" + this.base_form.stu_card_proof);
       },

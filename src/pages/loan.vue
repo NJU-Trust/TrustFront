@@ -344,7 +344,7 @@
 
           uploadSuccess(response, file, fileList) {
             console.log("uploadSuccess");
-            this.proof += 'http://localhost:8000/';
+            this.proof += 'http://'+ this.url_config +   ':8000/';
             this.proof += response;
             console.log("this.proof:" + this.proof);
           },
@@ -813,7 +813,7 @@
                 return time.getTime() > Date.now();
               },
             },
-            url: "http://localhost:8000/upload/image",
+            url: "http://" + this.url_config +  ":8000/upload/image",
             proof: '',
             visible: false,
             form1: {

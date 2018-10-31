@@ -138,7 +138,7 @@
           backgroundSize:"100% auto",
           backgroundPosition: "0% 0%",
         },
-        url: "http://localhost:8000/upload/image",
+        url: "http://" + this.url_config +  ":8000/upload/image",
         proof: '',
         sizeForm: {
           name: '',
@@ -179,7 +179,7 @@
     },
     methods: {
       uploadSuccess(response) {
-        this.proof += 'http://localhost:8000/'
+        this.proof += 'http://' + this.url_config +  ':8000/'
         this.proof += response
         console.log(response)
       },
