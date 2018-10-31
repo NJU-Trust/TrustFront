@@ -4,16 +4,19 @@
     <div class="mainbox">
     <img id="ad" src="/static/pic/loginPic.png" style="width:32%;display: inline-block;margin-left: 16%">
 
-      <el-card class="box-card loginbody">
+      <el-card class="box-card loginbody"
+               v-loading="loading"
+               element-loading-text="拼命加载中"
+               element-loading-spinner="el-icon-loading">
         <h3 style="float: top;" align="center">登录</h3>
         <el-input id="account" class="loginInput" v-model="account" style="margin-top: 6%;" placeholder="账户/邮箱"></el-input>
         <el-input id="password" type="password" v-model="password" class="loginInput" style="margin-top: 8%;" align="center" placeholder="请输入密码"></el-input><br>
         <el-checkbox id="remember" v-model="remember" style="margin-top: 3%;margin-left: 8%"></el-checkbox>
         <p style="display: inline;">记住密码</p>
-        <a href="/findPassword" style="float: right;margin-right: 8%;display: inline;margin-top: 3%">忘记密码？</a>
+        <a style="float: right;margin-right: 8%;display: inline;margin-top: 3%" v-on:click="prompt">忘记密码？</a>
         <el-button type="primary" id="login" v-on:click="login()" round>登录</el-button>
         <div style="width: 100%;text-align: center;margin-top: 20px">
-          <a href="/signup" style="font-size: 16px;color: lightskyblue;">即刻注册</a>
+          <a style="font-size: 16px;color: lightskyblue;" v-on:click="prompt2">即刻注册</a>
         </div>
       </el-card>
 
@@ -45,26 +48,26 @@
       mounted() {
         store.commit(types.LOGOUT)
         if(store.getters.isRemember) {
-          console.log("wocao");
           this.account = localStorage.username;
           this.password = window.atob(localStorage.password)
           this.remember = true;
         }
-        let self = this
-        this.$axios.get('/user/gettoken').then(
-          res => {
-            console.log(res)
-            self.modulus = res.data.modulus
-            self.exponent = res.data.exponent
-            self.eventId = res.data.eventId
-          }).catch(err => {
-          console.log(err)
-        });
-
       },
       methods: {
+        prompt() {
+          this.$alert('您可以使用以下花旗虚拟用户<br/> 用户:SandboxUser1 密码:P@ssUser1$ <br/> 用户:SandboxUser2 密码:P@ssUser2$ <br/> 用户:SandboxUser3 密码:P@ssUser3$ ', '注意', {
+            confirmButtonText: '确定',
+            dangerouslyUseHTMLString: true
+          });
+        },
+        prompt2() {
+          this.$alert('由于花旗用户的限制，暂时不提供注册', '注意', {
+            confirmButtonText: '确定',
+          });
+        },
         login: function () {
           let self = this;
+          self.loading = true;
           this.$axios.post('/user/signin', {username: self.account, password: self.password}).then(
             res => {
               store.commit(types.LOGIN, res.data);
@@ -81,28 +84,6 @@
           } else {
             store.commit(types.CANCELREMEMBER)
           }
-
-          let citi_username = 'SandboxUser1'
-          let citi_password = 'P@ssUser1$'
-          let pub = new RSAKey();
-          pub.setPublic(self.modulus, self.exponent);
-          let unencrypted_data = self.eventId +",b"+ citi_password;
-          citi_password = pub.encryptB(getByteArray(unencrypted_data)).toString(16);
-          self.$axios.get('/user/presignin', {
-            params:{
-              username: citi_username,
-              password: citi_password
-            }
-          }).then(res => {
-            console.log(res)
-          }).catch(err => {
-            console.log(err)
-          });
-
-
-
-
-
         }
       },
       data() {
@@ -110,12 +91,7 @@
           account: "",
           password: "",
           remember: false,
-
-          modulus: '',
-          exponent: '',
-          eventId: ''
-
-
+          loading: false
 
         }
       },

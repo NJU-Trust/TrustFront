@@ -18,11 +18,12 @@
                   <el-upload
                     class="upload-demo"
                     drag
-                    action="https://jsonplaceholder.typicode.com/posts/"
+                    :action='url'
+                    :onSuccess="uploadCardSuccess"
                     multiple>
                     <i class="el-icon-upload"></i>
                     <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-                    <div class="el-upload__tip" slot="tip">上传消费数据excel表格，且不超过500kb</div>
+                    <div class="el-upload__tip" slot="tip">上传消费数据excel表格</div>
                     <div class="el-upload__tip" slot="tip">会进行脱敏处理，不会泄露个人隐私</div>
                   </el-upload>
                 </div>
@@ -31,11 +32,15 @@
                   <el-upload
                     class="upload-demo"
                     drag
-                    action="https://jsonplaceholder.typicode.com/posts/"
-                    multiple>
+                    :action='csv_url'
+                    :onSuccess="uploadAlipaySuccess"
+                    multiple
+                    :file-list="fileList"
+
+                  >
                     <i class="el-icon-upload"></i>
                     <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-                    <div class="el-upload__tip" slot="tip">上传支付宝的消费记录excel表格，且不超过500kb</div>
+                    <div class="el-upload__tip" slot="tip">上传支付宝的消费记录csv数据</div>
                     <div class="el-upload__tip" slot="tip">会进行脱敏处理，不会泄露个人隐私</div>
                   </el-upload>
                 </div>
@@ -300,13 +305,16 @@
     data() {
       return {
         url: "http://localhost:8000/upload/image",
+        csv_url: "http://localhost:8000/upload/csv",
+        alipay: '',
+        card: '',
         reportFileList:[],
         schoolRewardList:[],
         cityRewardList:[],
         provinceRewardList:[],
         countryRewardList:[],
         qualificationList:[],
-
+        fileList: [],
         activeName: 'first',
         activeNames: ['1'],
         selfinfo_form:{
@@ -346,6 +354,20 @@
         };
     },
     methods: {
+      /*支付宝*/
+      uploadCardSuccess(response){
+        this.card += 'http://localhost:8000/'
+        this.card += response
+        console.log(response)
+      },
+
+      uploadAlipaySuccess(response) {
+        this.alipay += 'http://localhost:8000/'
+        this.alipay += response
+        console.log(response)
+        this.fileList.push({name: response, url: this.alipay})
+
+      },
       /*上传成绩*/
       uploadReportCardSuccess(response, file, fileList){
         console.log("upload")
@@ -470,7 +492,7 @@
         }else if(this.selfinfo_form.school_rewards.length!=this.schoolRewardList.length||
           this.selfinfo_form.city_rewards.length!=this.cityRewardList.length||
           this.selfinfo_form.province_rewards.length!=this.provinceRewardList.length||
-          this.selfinfo_form.country_rewards.length!=this.countryRewardList.length||
+          this.selfinfo_form.country_rewards.lengtRdwfh!=this.countryRewardList.length||
           this.selfinfo_form.self_qualifications.length!=this.qualificationList.length){
           this.$message({
             message:"上传的奖项、证书凭证与描述个数不匹配！",

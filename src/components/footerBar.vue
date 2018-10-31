@@ -3,27 +3,26 @@
     <div id="insult" style="width: 100%;padding: 20px;">
       <div class="insultSession" style="margin-left: 5%">
         <h4>规则中心</h4>
-        <a>借款规则</a>
-        <a>投资规则</a>
-        <a>发布规则</a>
-        <a>交易规则</a>
+        <a href="guide">借款规则</a>
+        <a href="guide">投资规则</a>
+        <a href="guide">发布规则</a>
+        <a href="guide">交易规则</a>
       </div>
       <div class="insultSession">
         <h4>帮助中心</h4>
-        <a>用户须知</a>
-        <a>常见问题</a>
-        <a>费用说明</a>
+        <a href="guide">用户须知</a>
+        <a href="guide">常见问题</a>
       </div>
       <div class="insultSession">
         <h4>安全中心</h4>
-        <a>政策法规</a>
-        <a>隐私保护</a>
+        <a href="guide">政策法规</a>
+        <a href="guide">隐私保护</a>
       </div>
       <div class="insultSession">
         <h4>关于我们</h4>
-        <a>平台定位</a>
-        <a>团队简介</a>
-        <a>合作机构</a>
+        <a href="guide">平台定位</a>
+        <a href="guide">团队简介</a>
+        <a href="guide">合作机构</a>
       </div>
       <div class="rightSession">
         <div style="display: inline-block"></div>
