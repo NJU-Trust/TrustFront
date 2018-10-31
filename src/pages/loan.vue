@@ -439,6 +439,7 @@
 
           get_average_capital(money, period, rate) {
             console.log("等额本金");
+            console.log(money, period, rate);
             const self = this;
             this.$axios.post('/loan/repayment/ep', {money: money, duration: period, interestRate: rate}).then(
               function (response) {
@@ -454,8 +455,8 @@
                   self.scheme.capital_and_interest_list.push((month_list[i].interest + month_list[i].principal).toFixed(2));
                 }
 
-                self.scheme.interest = res.data.interest;
-                self.scheme.sum = res.data.sum;
+                self.scheme.interest = res.data.interest.toFixed(2);
+                self.scheme.sum = res.data.sum.toFixed(2);
                 self.scheme.difficulty = parseInt(res.data.note.difficulty);
                 self.scheme.capital = parseFloat(self.form3.money);
                 /*self.scheme.enough = res.data.note.exceedSurplus;
@@ -496,13 +497,14 @@
           get_average_capital_plus_interest(money, period, rate) {
 
             console.log("等额本息");
+            console.log(money, period, rate);
             const self = this;
             this.$axios.post('/loan/repayment/eipi', {money: money, duration: period, interestRate: rate}).then(
               function (response) {
                 var res = response;
                 console.log(res.data);
-                self.scheme.interest = res.data.interest;
-                self.scheme.sum = res.data.sum;
+                self.scheme.interest = res.data.interest.toFixed(2);
+                self.scheme.sum = res.data.sum.toFixed(2);
                 self.scheme.difficulty = parseInt(res.data.note.difficulty);
                 self.scheme.capital = parseFloat(self.form3.money);
                 /*self.scheme.enough = res.data.note.exceedSurplus;
@@ -551,13 +553,14 @@
 
           get_one_off(money, period, rate) {
             console.log("一次性还本付息");
+            console.log(money, period, rate);
             const self = this;
             this.$axios.post('/loan/repayment/ep', {money: money, duration: period, interestRate: rate}).then(
               function (response) {
                 var res = response;
                 console.log(res.data);
-                self.scheme.interest = res.data.interest;
-                self.scheme.sum = res.data.sum;
+                self.scheme.interest = res.data.interest.toFixed(2);
+                self.scheme.sum = res.data.sum.toFixed(2);
                 self.scheme.difficulty = parseInt(res.data.note.difficulty);
                 self.scheme.capital = parseFloat(self.form3.money);
                 /*self.scheme.enough = res.data.note.exceedSurplus;
@@ -598,13 +601,14 @@
 
           get_interest_first(money, period, rate) {
             console.log("先息后本");
+            console.log(money, period, rate);
             const self = this;
-            this.$axios.post('/loan/repayment/pi', {money: money, duration: period, interestRate: rate}).then(
+            this.$axios.post('/loan/repayment/ep', {money: money, duration: period, interestRate: rate}).then(
               function (response) {
                 var res = response;
                 console.log(res.data);
-                self.scheme.interest = res.data.interest;
-                self.scheme.sum = res.data.sum;
+                self.scheme.interest = res.data.interest.toFixed(2);
+                self.scheme.sum = res.data.sum.toFixed(2);
                 self.scheme.difficulty = parseInt(res.data.note.difficulty);
                 self.scheme.capital = parseFloat(self.form3.money);
                 /*self.scheme.enough = res.data.note.exceedSurplus;
