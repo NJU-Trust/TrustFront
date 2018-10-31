@@ -116,7 +116,7 @@
         let self = this;
         this.$axios.get('/profile/personalInformation',{
           params:{
-            username:"test"
+            username:localStorage.username
           }
         })
           .then(function (response) {
