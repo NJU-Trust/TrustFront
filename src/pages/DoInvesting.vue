@@ -229,7 +229,7 @@
               });
               self.getInvestmentDetail(Number(self.target_id))
             }else {
-              self.this.$message({
+              self.$message({
                 message: data.message,
                 type: 'error',
               });
