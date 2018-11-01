@@ -63,7 +63,7 @@
               <el-table-column label="查看详情" align="center">
 
                 <template slot-scope="scope">
-                  <el-button size="mini" @click="goTODoingInvestin(scope.row.targetId,false)">查看详情</el-button>
+                  <el-button size="mini" @click="goTODoingInvestin(scope.row.targetId,true)">查看详情</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -116,7 +116,7 @@
               </el-table-column>
               <el-table-column label="查看详情" align="center">
                 <template slot-scope="scope">
-                  <el-button size="mini" @click="goTODoingInvestin(scope.row.targetId,true)">查看详情</el-button>
+                  <el-button size="mini" @click="goTODoingInvestin(scope.row.targetId,false)">查看详情</el-button>
                 </template>
               </el-table-column>
             </el-table>
