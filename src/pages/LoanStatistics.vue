@@ -15,14 +15,14 @@
           <span style="font-size:18px">加权平均投资利率:{{rate_invest}}%</span>
         </div>
       </el-header>
-      
+
       <el-main class="inform1" >
         <div shadow="always" style="font-size:30px;background-color:#E4E7ED">&nbsp;还款统计</div>
         <el-card shadow="always" class="sum_repay">
           <el-row :gutter="2">
             <el-col :span="8" style="width:50%">
               <p>已还本息:<span>{{r_money_done}}</span> 元</p>
-              <p>待还项目数:<span>{{r_pro_topay}}</span> 元</p>
+              <p>待还金额:<span>{{r_pro_topay}}</span> 元</p>
               <p>成功借款项目数:<span>{{r_pro_loanDone}}</span> 元</p>
               <p>提前还清项目数:<span>{{r_pro_fore}}</span> 元</p>
             </el-col>
@@ -45,9 +45,9 @@
               <p>待处理逾期次数:<span>{{b_times_to}}</span> 元</p>
               <p>待缴逾期服务费:<span>{{b_money_serveTo}}</span> 元</p>
             </el-col>
-          </el-row>  
+          </el-row>
         </el-card>
-      </el-main>  
+      </el-main>
     </el-container>
   </personalCenter>
 </template>

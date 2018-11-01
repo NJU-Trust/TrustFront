@@ -116,7 +116,7 @@
               </el-table-column>
               <el-table-column label="查看详情" align="center">
                 <template slot-scope="scope">
-                  <el-button size="mini"><a href="DoInvesting.vue">查看详情</a></el-button>
+                  <el-button size="mini" @click="goTODoingInvestin(scope.row.targetId)">查看详情</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -274,6 +274,9 @@
       return {
         currentPage1: 1,
         activeName: 'first',
+        a:{
+          id:0
+        },
 
         bad_form:{
           money:'',
@@ -371,6 +374,7 @@
 
       getCondition(moneyUpper,moneyLower,targetType,name,startDate,endDate){
         console.log(moneyUpper,moneyLower,targetType,name,startDate,endDate);
+        this.getTargets();
       },
 
       getUnderway(){
@@ -487,6 +491,14 @@
           console.log(error);
         });
 
+      },
+
+      goTODoingInvestin(target_id){
+        a.id = target_id;
+        this.$router.push({
+          path:'/DoInvesting',
+          params:this.a
+        })
       }
     }// end method
     ,
