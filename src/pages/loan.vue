@@ -999,13 +999,13 @@
     @-webkit-keyframes move_left /* Safari and Chrome */
     {
       0%   {left:0;  width:750px;}
-      100% {left:-150px; width:500px;}
+      100% {left:-10%; width:54%;}
     }
 
     .evaluate{
       display: none;
       margin-top: 50px;
-      margin-left: -80px;
+      margin-left: -8%;
       border:2px #d6d6d6 solid;
       border-radius:20px;
       padding:30px 20px 20px 20px;

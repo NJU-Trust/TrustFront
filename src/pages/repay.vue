@@ -54,6 +54,16 @@
                 <el-progress type="circle" :percentage=info5.percentage width="110"></el-progress>
               </div>
             </el-card>
+
+            <el-card class="main_info" align="center" shadow="always">
+              <div v-show="isDefault === false">
+                该项目没有违约记录！
+              </div>
+
+              <div v-show="isDefault === true">
+                该项目存在违约记录，请及时处理!
+              </div>
+            </el-card>
           </div>
 
         </div>

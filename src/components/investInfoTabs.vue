@@ -124,7 +124,7 @@
 
         </div>
       </el-tab-pane>
-      <el-tab-pane label="收藏项目" name="third">
+      <!--<el-tab-pane label="收藏项目" name="third">
 
         <div class="projectPanel">
           <div class="projectPages">
@@ -188,7 +188,7 @@
             </el-table>
           </div>
         </div>
-      </el-tab-pane>
+      </el-tab-pane>-->
       <el-tab-pane label="坏账记录" name="fourth">
         <div class="ChooseBar">
           <el-form v-model="bad_form">
