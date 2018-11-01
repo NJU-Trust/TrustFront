@@ -123,7 +123,7 @@
 
           var now = new Date();
           var nowYear = now.getFullYear();
-          var nowMonth = this.getCompleteNum(now.getMonth());
+          var nowMonth = this.getCompleteNum(now.getMonth()+1);
           var nowDate = this.getCompleteNum(now.getDate());
           var nowTime = now.getTime();
           this.condition.endDate = nowYear+"-"+nowMonth+"-"+nowDate;

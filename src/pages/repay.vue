@@ -19,7 +19,7 @@
             <span>{{info1.late_date}}</span>-->
           </el-card>
 
-          <div style="display: flex">
+          <div style="display: flex" v-show="targetState === '正在进行' || targetState === '还款中'">
             <el-card class="main_info" v-model="info2" align="center" shadow="always">
             <div class="content">
               下个还款日 <span>{{info1.late_date}}</span>
@@ -32,8 +32,7 @@
             </div>
             <el-button type="primary" style="margin-top: 20px">立即还款</el-button>
           </el-card>
-            <!--<el-card class="main_info" v-model="info4" align="center" shadow="always">
-            </el-card>-->
+
             <el-card shadow="always" class="chart" align="center">
               <div style="margin-top: 20px;font-size: 18px;color: #6a6a6a">
                 未还款占比：
@@ -41,6 +40,18 @@
 
               <div style="margin-top: 40px;">
                 <el-progress type="circle" :percentage=percentage width="110"></el-progress>
+              </div>
+            </el-card>
+          </div>
+
+          <div v-show="targetState === '已完成' || targetState === '违约'">
+            <el-card class="main_info" v-model="info5" align="center" shadow="always">
+              <div style="margin-top: 20px;font-size: 18px;color: #6a6a6a">
+                已还款占比：
+              </div>
+
+              <div style="margin-top: 40px;">
+                <el-progress type="circle" :percentage=info5.percentage width="110"></el-progress>
               </div>
             </el-card>
           </div>
@@ -211,6 +222,7 @@
     },
     data() {
       return {
+        targetState:'正在进行',
         targetId:0,
         targetName:'',
         percentage:25,
@@ -237,6 +249,10 @@
           remainMoney:'',
           layer:''
         },
+        info5:{
+          percentage:100,
+          isShow:true
+        },
         return_scheme:{
           return_way:'等额本金',
           difficulty:4,
@@ -261,39 +277,39 @@
           current_state:'待办'
       }],
 
-        recordList:[{//A:刻度;B:左边;C:右边
-          state:'B',
+        recordList:[{//time:刻度;normal:左边;overdue:右边
+          state:'normal',
           date:'2018/3/27',
           money:100,
           period:1
 
         },{
-          state:'A',
+          state:'time',
           date:'2018/4/1',
           money:0,
           period:0
         },{
-          state:'A',
+          state:'time',
           date:'2018/5/1',
           money:0,
           period:0
         },{
-          state:'C',
+          state:'overdue',
           date:'2018/5/1',
           money:'100',
           period:1
         },{
-          state:'B',
+          state:'normal',
           date:'2018/5/7',
           money:200,
           period:2
         },{
-          state:'A',
+          state:'time',
           date:'2018/6/1',
           money:0,
           period:0
         },{
-          state:'B',
+          state:'normal',
           date:'2018/6/1',
           money:100,
           period:3
@@ -315,7 +331,8 @@
 
       getRepayInfo(){
 
-        //this.getRepayAnalysis();
+        this.getRepayAnalysis();
+        this.getUnbelieve();
 
         const self = this;
         this.$axios.get('/loan/repayment/info',
@@ -341,6 +358,29 @@
 
             self.info3.purpose = res.data.purpose;
             self.info3.projectDescription = res.data.projectDescription;
+
+            if(res.data.targetType === "SMALL"){
+              self.info4.type = "小额借款";
+            }else if(res.data.targetType === "LARGE"){
+              self.info4.type = "大额借款";
+            }
+
+            self.info4.rate = res.data.interest.toFixed(2);
+            self.info4.period = res.data.remainingPeriod;
+            self.info4.remainMoney = res.data.remainingMoney;
+
+            if(res.data.identityOption === "ONE"){
+              self.info4.layer = "第一层级";
+            }else if(res.data.identityOption === "ONE"){
+              self.info4.layer = "第二层级";
+            }else if(res.data.identityOption === "ONE"){
+              self.info4.layer = "第三层级";
+            }else if(res.data.identityOption === "ONE"){
+              self.info4.layer = "第四层级";
+            }
+
+            self.info5.percentage = 100 - self.percentage;
+            self.info5.isShow = self.isDefault;
 
           }
         ).catch(function (error) {
@@ -380,10 +420,21 @@
               self.return_scheme.show = 3;
             }
 
+            if(data.difficulty >= 5){
+              self.return_scheme.difficulty = 5;
+            }else{
+              self.return_scheme.difficulty = parseInt(data.difficulty);
+            }
+
+            self.recordList = [];
+            for(var i = 0; i < data.timeline.length; i++){
+              self.recordList.push({state:data.timeline[i].state, date:data.timeline[i].date,
+                period:data.timeline[i].period, money:data.timeline[i].money,})
+            }
 
           }
         ).catch(function (error) {
-          console.log("error in  repay info");
+          console.log("error in  repay analysis");
           console.log(error);
         });
       },
@@ -440,14 +491,14 @@
             console.log("data in repay");
             console.log(res.data);
 
-            if(true){
+            /*if(true){
               var now = new Date();
               var nowYear = now.getFullYear();
               var nowMonth = self.getCompleteNum(now.getMonth());
               var nowDate = self.getCompleteNum(now.getDate());
               var nowDate = nowYear+"-"+nowMonth+"-"+nowDate;
               alert("您已于"+nowDate+"成功还款"+self.info2.money+元);
-            }
+            }*/
 
           }
         ).catch(function (error) {

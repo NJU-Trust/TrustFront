@@ -54,7 +54,7 @@
           <template slot-scope="scope">
             <el-button
               size="mini"
-              @click="getRepayDetail(scope.row.targetId,scope.row.name)">查看</el-button>
+              @click="getRepayDetail(scope.row.targetId,scope.row.name,'违约')">查看</el-button>
           </template>
         </el-table-column>
 

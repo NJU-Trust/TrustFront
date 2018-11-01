@@ -6,12 +6,12 @@
           <div>
 
             <div v-for="(record,index) in recordList">
-              <div v-if="record.state==='A'">
+              <div v-if="record.state==='time'">
                 <span class="timeline-label" style="padding-top: 80px;">
                   <div class="label label-primary">还款日{{record.date}}</div>
                 </span>
               </div>
-              <div v-if="record.state==='B'">
+              <div v-if="record.state==='normal'">
                 <div class="timeline-item" style="margin-top: 20px;">
                   <div class="timeline-point timeline-point-success">
                     <i class="fa fa-money"></i>
@@ -30,7 +30,7 @@
                 </div>
               </div>
 
-              <div v-if="record.state === 'C'">
+              <div v-if="record.state === 'overdue'">
                 <div v-for="i in 1" class="timeline-item" style="margin-top: 200px;"></div>
                 <div class="timeline-item" style="">
                   <div class="timeline-point timeline-point-danger">

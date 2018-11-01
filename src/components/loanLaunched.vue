@@ -42,7 +42,7 @@
           <template slot-scope="scope">
             <el-button
               size="mini"
-              @click="getRepayDetail(scope.row.targetId,scope.row.name)">查看</el-button>
+              @click="getRepayDetail(scope.row.targetId,scope.row.name,scope.row.state)">查看</el-button>
           </template>
         </el-table-column>
 
@@ -81,7 +81,8 @@
             tableData:[],
             a:{
               targetId:0,
-              targetName:''
+              targetName:'',
+              state:''
             },
             currentPage1:1
           }// end return
@@ -112,6 +113,13 @@
              list = response.data;
 
              for(var i=0;i<list.length;i++){
+
+               if(list[i].state === "ON_GOING"){
+                 list[i].state = "正在进行";
+               }else if(list[i].state === "IN_THE_PAYMENT"){
+                 list[i].state = "还款中";
+               }
+
                self.tableData.push({name:list[i].name, money:list[i].money, year_rate:list[i].interestRate,
                  launch_date:list[i].duration[0],state:list[i].state,targetId:list[i].targetId});
              }
