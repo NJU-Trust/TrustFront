@@ -9,7 +9,7 @@
           <br/>
           <el-form ref="userName"  :model="userName" label-width="80px" :label-position="labelPosition">
             <el-form-item label="用户名" prop="name">
-              <el-input v-model="userName.name"></el-input>
+              <el-input v-model="userName.name" :disabled="true"></el-input>
             </el-form-item>
             <el-form-item label="性别" prop="sex">
               <template>
