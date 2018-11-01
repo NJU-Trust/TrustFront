@@ -23,7 +23,7 @@
         </template>
         <el-menu-item-group>
           <el-menu-item index="/UserSpace/LoanInformation">项目信息</el-menu-item>
-          <el-menu-item index="/UserSpace/LoanStatistics">借款统计</el-menu-item>
+          <el-menu-item index="/UserSpace/LoanStatistics">融资统计</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
       <el-submenu index="3" class="bar-main">

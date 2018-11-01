@@ -60,7 +60,8 @@
       </div>
       <div id="myDebtBar" :style="{width: '600px', height: '450px'}"></div>
     </div>
-    <div v-show="selectBar=='净资产' && user.income!=-1"> //使用income，因为净资产可能是负数
+    <div v-show="selectBar=='净资产' && user.income!=-1">
+      <!--//使用income，因为净资产可能是负数-->
       <div v-if="selectBar=='净资产'">
         <h4><b>您的净资产总额为：<i class="el-icon-tickets"></i>&nbsp {{ user.asset }} 元, 每月变化情况如下</b></h4>
       </div>

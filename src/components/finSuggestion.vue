@@ -80,17 +80,17 @@
             </el-table-column>
             <el-table-column
               prop="valX"
-              label="结余占用率X"
+              label="结余占用率X%"
               width="200">
             </el-table-column>
             <el-table-column
               prop="valY"
-              label="可调支出占用率Y"
+              label="可调支出占用率Y%"
               width="200">
             </el-table-column>
             <el-table-column
               prop="valZ"
-              label="额外收入金额Z"
+              label="额外收入金额Z%"
               width="200">
             </el-table-column>
           </el-table>
