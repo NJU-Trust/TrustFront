@@ -4,7 +4,6 @@
       <el-table
         :data="tableData"
         max-height="500"
-        :default-sort = "{prop: 'time', order: 'descending'}"
         style="width: 100%">
         <el-table-column
           prop="time"
@@ -26,11 +25,9 @@
           prop="action"
           label="操作">
           <template slot-scope="scope">
-            <router-link to="/userverify">
               <i class="el-icon-view"></i>
-              <el-button  type="text">审核
+              <el-button  type="text" @click="check(scope.row)">审核
               </el-button>
-            </router-link>
           </template>
         </el-table-column>
       </el-table>
@@ -43,8 +40,23 @@
   export default {
     name: "EnterVerify",
     components:{CheckCenter},
-    methods:{
+    mounted() {
+      // this.getUsers()
+      let data = []
+      const self = this
+      this.$axios.get('/adminUser/userlist')
+        .then(res=>{
+          self.tableData.push({
+            time: res.data[0].time,
+            name: res.data[0].username,
+            state: self.getStatus(res.data[0].checkState),
+            action: ''
+          })
+          console.log(res)
 
+        }).catch(e=>{
+        console.log(e)
+      })
     },
     filters: {
       // el-tag类型转换
@@ -52,6 +64,8 @@
         const statusMap = {
           1: '',
           2: 'warning',
+          3: 'success',
+          4: 'danger'
         }
         return statusMap[status]
       },
@@ -63,6 +77,8 @@
         const statusMap = {
           1: '待审核',
           2: '初审未通过',
+          3: '通过',
+          4: '未通过'
         }
         return statusMap[status]
       }
@@ -84,29 +100,65 @@
           region: ''
         },
 
-        tableData: [{
-          time:'2018-08-06',
-          name: '马俊豪',
-          state: 1,
-          action:''
-        }, {
-          time:'2018-08-13',
-          name: '彦志',
-          state: 1,
-          action:''
-        }, {
-          time:'2018-08-24',
-          name: '付闫博',
-          state: 1,
-          action:''
-        },{
-          time:'2018-09-08',
-          name: '刘美璇',
-          state: 2,
-          action:''
-        }]
+        tableData: [
+        //   {
+        //   time:'2018-08-06',
+        //   name: '马俊豪',
+        //   state: 1,
+        //   action:''
+        // }, {
+        //   time:'2018-08-13',
+        //   name: '彦志',
+        //   state: 1,
+        //   action:''
+        // }, {
+        //   time:'2018-08-24',
+        //   name: '付闫博',
+        //   state: 1,
+        //   action:''
+        // },{
+        //   time:'2018-09-08',
+        //   name: '刘美璇',
+        //   state: 2,
+        //   action:''
+        // }
+        ]
       };
     },
+    methods: {
+      getUsers() {
+        let data = []
+        const self = this
+        this.$axios.get('/adminUser/userlist')
+          .then(res=>{
+            data.push({
+              time: res.data.time,
+              name: res.data.username,
+              state: self.getStatus(res.data.checkState),
+              action: ''
+            })
+            console.log(res)
+            self.tableData = data
+
+          }).catch(e=>{
+            console.log(e)
+        })
+      },
+      getStatus(s){
+        switch (s) {
+          case 'UPDATE': return 2;
+          case 'REJECT': return 4;
+          case 'ONGOING': return 1;
+          case 'PASS': return 3;
+        }
+      },
+      check(row) {
+        console.log(row)
+        this.$router.push({name:'userverify',params:{username: row.name}})
+      }
+
+
+    }
   }
 </script>
 
