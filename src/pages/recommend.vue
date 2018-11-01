@@ -1,32 +1,34 @@
 <template>
-  <div class="col-xs-12 col-md-12" style="padding: 0;">
+  <div class="col-xs-12 col-md-12 back" :style="back" style="padding: 0;">
     <div style="width: 100%;float: top;">
       <navi></navi>
     </div>
     <div>
       <right-bar></right-bar>
     </div>
-    <div class="col-xs-12 col-md-12" style="padding: 0; margin-top:100px;">
+    <div class="col-xs-12 col-md-12" style="padding: 0; margin-top:40px;">
       <div style="margin-bottom: 50px;text-align: center;">
         <h1>个性推荐</h1>
         <p>Trust平台根据您输入的金额及预期收益率，结合投资风险为您推荐投资标的方案</p>
       </div>
-      <div style="width:50%;float:left;">
-        <div style="margin-left:2%;width:95%;">
-          <invest-list
-            v-for="item in investInformation"
-            v-bind:investList="item"
-            v-bind:key="item.id"
-          ></invest-list>
+      <div style="width:100%;">
+        <div style="width:50%;float:left;">
+          <div style="margin-left:11%;width:90%;">
+            <invest-list3
+              v-for="item in investInformation"
+              v-bind:investList="item"
+              v-bind:key="item.id"
+            ></invest-list3>
+          </div>
         </div>
-      </div>
-      <div style="width:50%;float:left;">
-        <div style="margin-left:5%;width:95%;">
-          <invest-list
-            v-for="item in investInformation2"
-            v-bind:investList="item"
-            v-bind:key="item.id"
-          ></invest-list>
+        <div style="width:50%;float:left;">
+          <div style="margin-left:3%;width:90%;">
+            <invest-list3
+              v-for="item in investInformation2"
+              v-bind:investList="item"
+              v-bind:key="item.id"
+            ></invest-list3>
+          </div>
         </div>
       </div>
     </div>
@@ -41,11 +43,20 @@
   import navi from '@/components/navi.vue';
   import footerBar from '@/components/footerBar.vue';
   import rightBar from '@/components/rightBar.vue';
+  import investList3 from '@/components/investList3.vue';
     export default {
       name: "recommend",
-      components:{navi, footerBar, rightBar,investList},
+      components:{navi, footerBar, rightBar,investList,investList3},
       data() {
         return {
+          /* 推荐页面背景图片 */
+          back:{
+            backgroundImage:"url(" + require("../../static/pic/investListBack.jpg") + ")",
+            backgroundRepeat:"no-repeat",
+            backgroundAttachment:"fixed",
+            backgroundSize:"100% auto",
+            backgroundPosition: "0% 0%",
+          },
           investInformation: [
             {id:"0001", beginTime:"2018.09.01", endTime:"2018.10.08", name:"AJ13熊猫", type:"SHOES", profit:"5.55%", money:"1800", remainMoney:"360", finishProgress:0.8,range:"AA"},
             {id:"0002", beginTime:"2018.09.14", endTime:"2018.10.03", name:"炉石砰砰计划", type:"GAME", profit:"9.99%", money:"388", remainMoney:"88", finishProgress:0.7731,range:"AA"},
