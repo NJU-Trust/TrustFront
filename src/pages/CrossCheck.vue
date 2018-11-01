@@ -101,7 +101,7 @@
         <div v-else-if="userstate === 2">
         <br/><br/>
         <h3>
-          &nbsp;&nbsp;&nbsp;&nbsp;您的问卷已发送至用户邮箱中，相关用户正在填写。
+          &nbsp;&nbsp;&nbsp;&nbsp;您的问卷已发送至用户“待填问卷”中，相关用户正在填写。
         </h3>
       </div>
         <!--<div v-else-if="userstate === 3">
