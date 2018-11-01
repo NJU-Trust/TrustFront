@@ -19,6 +19,7 @@
                     class="upload-demo"
                     drag
                     :action='url'
+                    :file-list="fileList2"
                     :onSuccess="uploadCardSuccess"
                     multiple>
                     <i class="el-icon-upload"></i>
@@ -304,7 +305,7 @@
     components: {personalCenter},
     data() {
       return {
-        url: "http://"+ this.url_config +  ":8000/upload/image",
+        url: "http://"+ this.url_config +  ":8000/upload/csv",
         csv_url: "http://"+ this.url_config +  ":8000/upload/csv",
         alipay: '',
         card: '',
@@ -315,6 +316,7 @@
         countryRewardList:[],
         qualificationList:[],
         fileList: [],
+        fileList2: [],
         activeName: 'first',
         activeNames: ['1'],
         selfinfo_form:{
@@ -359,12 +361,37 @@
         this.card += 'http://'+ this.url_config +  ':8000/'
         this.card += response
         console.log(response)
+        console.log(localStorage.username)
+        this.$axios.get('/upload/csvconfirm',{
+          params: {
+            filename: response,
+            username: localStorage.username
+          }
+        }).then(function (res) {
+          console.log(res)
+        }).catch(function (error) {
+          console.log(error)
+        });
+        this.fileList2.push({name: response, url: this.card})
+
+
       },
 
       uploadAlipaySuccess(response) {
         this.alipay += 'http://'+ this.url_config +  ':8000/'
         this.alipay += response
         console.log(response)
+        console.log(localStorage.username)
+        this.$axios.get('/upload/csvconfirm',{
+          params: {
+            filename: response,
+            username: localStorage.username
+          }
+        }).then(function (res) {
+          console.log(res)
+        }).catch(function (error) {
+          console.log(error)
+        });
         this.fileList.push({name: response, url: this.alipay})
 
       },
