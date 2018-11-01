@@ -70,7 +70,7 @@
     <div style="width: 100%;text-align: center;margin-top: 60px">
       <h2>优质标量身推荐</h2>
       <br><br>
-      <el-button type="plain" id="shiftRecommend"  v-on:click="shiftRecommend()" round>小额/大额推荐</el-button>
+      <!--<el-button type="plain" id="shiftRecommend"  v-on:click="shiftRecommend()" round>小额/大额推荐</el-button>-->
       <a href="/enterInvest"><el-button type="plain" id="goInvest" style="margin-left: 60%" round>进入投资中心</el-button></a>
       <br><br>
       <el-card id="recommend" style="height: 600px;width: 90%;margin-left:5%;overflow-y: auto;overflow-x: hidden">
@@ -83,10 +83,10 @@
     </div>
 
 
-    <div style="width: 100%;text-align: center;margin-top: 60px">
-      <h2>校友投资排行榜</h2>
-      <top-range></top-range>
-    </div>
+    <!--<div style="width: 100%;text-align: center;margin-top: 60px">-->
+      <!--<h2>校友投资排行榜</h2>-->
+      <!--&lt;!&ndash;<top-range></top-range>&ndash;&gt;-->
+    <!--</div>-->
 
     <footerBar style="float: bottom"></footerBar>
     </div>
@@ -111,15 +111,15 @@
       data() {
         return {
           investInformation: [
-            {id:"0001", beginTime:"2018.09.01", endTime:"2018.10.08", name:"AJ13熊猫", type:"SHOES", profit:"5.55%", money:"1800", remainMoney:"360", finishProgress:0.8,range:"AA"},
-            {id:"0002", beginTime:"2018.09.14", endTime:"2018.10.03", name:"炉石砰砰计划", type:"GAME", profit:"9.99%", money:"388", remainMoney:"88", finishProgress:0.7731,range:"AA"},
-            {id:"0003", beginTime:"2018.09.17", endTime:"2018.10.28", name:"国庆省内", type:"TRAVEL", profit:"6.73%", money:"2000", remainMoney:"400", finishProgress:0.8,range:"A"},
-            {id:"0004", beginTime:"2018.10.12", endTime:"2018.10.25", name:"托福考试", type:"EXAM", profit:"5.85%", money:"1800", remainMoney:"360", finishProgress:0.8,range:"A"},
-            {id:"0005", beginTime:"2018.10.15", endTime:"2018.11.20", name:"方大同演唱会", type:"CONCERT", profit:"7.67%", money:"1000", remainMoney:"470", finishProgress:0.53,range:"A"},
-            {id:"0006", beginTime:"2018.10.22", endTime:"2018.11.21", name:"d'zzit地素连衣裙", type:"CLOTH", profit:"7.06%", money:"1300", remainMoney:"741", finishProgress:0.43,range:"B"},
-            {id:"0007", beginTime:"2018.10.26", endTime:"2018.11.22", name:"预购", type:"GAME", profit:"6.45%", money:"1800", remainMoney:"1116", finishProgress:0.38,range:"B"},
-            {id:"0008", beginTime:"2018.10.30", endTime:"2018.11.23", name:"生活费周转", type:"TURNOVER", profit:"5.27%", money:"1000", remainMoney:"140", finishProgress:0.86,range:"C"},
-            {id:"0009", beginTime:"2018.11.03", endTime:"2018.12.01", name:"Chanel香水", type:"CONSMETIC", profit:"8.56%", money:"800", remainMoney:"320", finishProgress:0.6,range:"C"},
+          //   {id:"0001", beginTime:"2018.09.01", endTime:"2018.10.08", name:"AJ13熊猫", type:"SHOES", profit:"5.55%", money:"1800", remainMoney:"360", finishProgress:0.8,range:"AA"},
+          //   {id:"0002", beginTime:"2018.09.14", endTime:"2018.10.03", name:"炉石砰砰计划", type:"GAME", profit:"9.99%", money:"388", remainMoney:"88", finishProgress:0.7731,range:"AA"},
+          //   {id:"0003", beginTime:"2018.09.17", endTime:"2018.10.28", name:"国庆省内", type:"TRAVEL", profit:"6.73%", money:"2000", remainMoney:"400", finishProgress:0.8,range:"A"},
+          //   {id:"0004", beginTime:"2018.10.12", endTime:"2018.10.25", name:"托福考试", type:"EXAM", profit:"5.85%", money:"1800", remainMoney:"360", finishProgress:0.8,range:"A"},
+          //   {id:"0005", beginTime:"2018.10.15", endTime:"2018.11.20", name:"方大同演唱会", type:"CONCERT", profit:"7.67%", money:"1000", remainMoney:"470", finishProgress:0.53,range:"A"},
+          //   {id:"0006", beginTime:"2018.10.22", endTime:"2018.11.21", name:"d'zzit地素连衣裙", type:"CLOTH", profit:"7.06%", money:"1300", remainMoney:"741", finishProgress:0.43,range:"B"},
+          //   {id:"0007", beginTime:"2018.10.26", endTime:"2018.11.22", name:"预购", type:"GAME", profit:"6.45%", money:"1800", remainMoney:"1116", finishProgress:0.38,range:"B"},
+          //   {id:"0008", beginTime:"2018.10.30", endTime:"2018.11.23", name:"生活费周转", type:"TURNOVER", profit:"5.27%", money:"1000", remainMoney:"140", finishProgress:0.86,range:"C"},
+          //   {id:"0009", beginTime:"2018.11.03", endTime:"2018.12.01", name:"Chanel香水", type:"CONSMETIC", profit:"8.56%", money:"800", remainMoney:"320", finishProgress:0.6,range:"C"},
           ],
           investInformation2: [
             {id:"0001", beginTime:"2018.09.17", endTime:"2018.10.17", name:"托福培训", type:"TOEFL", profit:"2.25%", money:"8000", remainMoney:"1600", finishProgress:0.8,range:"AA"},
@@ -143,7 +143,47 @@
         if (document.documentElement && document.documentElement.clientHeight)
           winHeight = document.documentElement.clientHeight;
         document.getElementById("mainPic").style.height= winHeight +"px";
+        let self = this;
+        let small_data = {
+          page: 0,
+          size: 8,
+          properties: 'targetRatingScore',
+          money: [0, 0],
+          time: [null, null],
+          interestRate: [0, 0],
+          repaymentDuration: [null, null],
+          userCreditRating: [] ,
+          targetRating: [],
+          useOfFunds: []
+        }
 
+        this.$axios.post("/loan/recommendSmall",small_data )
+          .then(res => {
+            console.log(res)
+            let invests = []
+            for(let i of res.data) {
+              invests.push({
+                id: i.id,
+                name: i.name,
+                profit: (i.interestRate + "%"),
+                money: i.money,
+                remainMoney: (i.money-i.collectedMoney),
+                type: i.classification,
+                finishProgress: i.completionRate*1.0/100,
+                range: i.riskRating,
+                beginTime: i.startTime,
+              })
+            }
+            console.log(invests)
+            // if(invests.length > 4) {
+            //   self.investInformation = invests.slice(0, 4)
+              // self.investInformation2 = invests.slice(4, invests.length)
+            // }else {
+              self.investInformation = invests
+              // self.investInformation2 = []
+            // }
+          })
+          .catch(e => {console.log(e)})
       },
       beforeCreate: function () {
         localStorage.route="#homepage";

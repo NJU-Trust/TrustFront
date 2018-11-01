@@ -215,31 +215,41 @@
       },
       methods: {
         invest: function (){
-          //console.log("l want to invest")
           let self = this;
-          this.$axios.get('/loan/investment/target',{
-            params:{
-              targetId : parseInt(self.target_id),
-              money: self.money
-            }
-          }).then(function (response) {
-            var data = response.data
-            //console.log("data:")
-            //console.log(data)
-            if(data.success){
-              self.$message({
-                message:'投资成功！',
-                type:'success',
-              });
-              self.getInvestmentDetail(Number(self.target_id))
-            }else {
-              self.$message({
-                message: data.message,
-                type: 'error',
-              });
-            }
-          }).catch(function (error) {
-            console.log(error)
+          this.$confirm('您真的要投资吗?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            self.$axios.get('/loan/investment/target',{
+              params:{
+                targetId : parseInt(self.target_id),
+                money: self.money
+              }
+            }).then(function (response) {
+              var data = response.data
+              //console.log("data:")
+              //console.log(data)
+              if(data.success){
+                self.$message({
+                  message:'投资成功！',
+                  type:'success',
+                });
+                self.getInvestmentDetail(Number(self.target_id))
+              }else {
+                self.$message({
+                  message: data.message,
+                  type: 'error',
+                });
+              }
+            }).catch(function (error) {
+              console.log(error)
+            });
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消投资'
+            });
           });
         },
         getInvestmentDetail(id){
