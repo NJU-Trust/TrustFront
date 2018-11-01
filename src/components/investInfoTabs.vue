@@ -63,7 +63,7 @@
               <el-table-column label="查看详情" align="center">
 
                 <template slot-scope="scope">
-                  <el-button size="mini" @click="goTODoingInvestin(scope.row.targetId)">查看详情</el-button>
+                  <el-button size="mini" @click="goTODoingInvestin(scope.row.targetId,false)">查看详情</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -114,11 +114,11 @@
                 align="center"
                 label="项目收益额(元)">
               </el-table-column>
-              <!--<el-table-column label="查看详情" align="center">
+              <el-table-column label="查看详情" align="center">
                 <template slot-scope="scope">
-                  <el-button size="mini" @click="goTODoingInvestin(scope.row.targetId)">查看详情</el-button>
+                  <el-button size="mini" @click="goTODoingInvestin(scope.row.targetId,true)">查看详情</el-button>
                 </template>
-              </el-table-column>-->
+              </el-table-column>
             </el-table>
           </div>
 
@@ -275,7 +275,8 @@
         currentPage1: 1,
         activeName: 'first',
         a:{
-          id:0
+          id:0,
+          isShow:false
         },
 
         bad_form:{
@@ -511,15 +512,16 @@
 
       },
 
-      goTODoingInvestin(target_id){
+      goTODoingInvestin(target_id,is_show){
         this.a.id = target_id;
-        console.log("target_id:"+target_id);
-        console.log("this.a.id:"+this.a.id);
+        this.a.isShow = is_show;
+        console.log("is_show:"+is_show);
+        console.log("this.a.isShow:"+this.a.isShow);
         /*this.$router.push({
           path:'/DoInvesting',
           params:this.a.id
         });*/
-        this.$router.push({name:'DoInvesting',params:{id:this.a.id}})
+        this.$router.push({name:'DoInvesting',params:{id:this.a.id,isShow:this.a.isShow}})
       }
     }// end method
     ,

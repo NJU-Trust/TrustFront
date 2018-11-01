@@ -53,10 +53,20 @@
   export default {
     name: "investList3",
     props:['investList'],
+    data(){
+      return{
+        a:{
+          id:0,
+          isShow:true
+        }
+      }
+    },
     methods: {
       showDetails(){
         //console.log(this.investList.id)
-        this.$router.push({name:'DoInvesting',params:{id:this.investList.id}})
+        this.a.id = this.investList.id;
+        this.a.isShow = true;
+        this.$router.push({name:'DoInvesting',params:{id:this.a.id, isShow:this.a.isShow}})
       }
     },
 

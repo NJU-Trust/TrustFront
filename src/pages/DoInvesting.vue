@@ -34,7 +34,7 @@
           </div>
         </el-col>
         <el-col :span="12">
-            <div style="color: white; ">
+            <div style="color: white; " v-show="isShow">
               <countdown :time="leftTime">
                 <template slot-scope="props">剩余时间：<span class="keypoint">{{ props.days }}</span> 天 <span class="keypoint">{{ props.hours }}</span> 小时 <span class="keypoint">{{ props.minutes }}</span> 分钟 <span class="keypoint">{{ props.seconds }}</span> 秒</template>
               </countdown>
@@ -155,6 +155,7 @@
       components:{navi,rightBar,doInvestingLoanerInfo,footerBar,LoanInformationPane},
       data(){
         return{
+          isShow:true,
           activeName:'one',
           tableData:[
             /*{date: '2018-05-03',
@@ -204,6 +205,9 @@
       },
       mounted: function () {
         this.target_id = this.$route.params.id;
+        this.isShow = this.$route.params.isShow;
+        console.log("this.isShow:"+this.isShow);
+        console.log(this.$route.params);
         //console.log("in mount:")
         //console.log(this.target_id)
         //console.log("detail:")
