@@ -232,7 +232,7 @@
     },
     data() {
       return {
-        targetState:'正在进行',
+        targetState:'已完成',
         targetId:0,
         targetName:'',
         percentage:25,
@@ -342,7 +342,7 @@
       getRepayInfo(){
 
         this.getRepayAnalysis();
-        this.getUnbelieve();
+        this.getUnbelievable();
 
         const self = this;
         this.$axios.get('/loan/repayment/info',

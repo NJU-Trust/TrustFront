@@ -118,8 +118,17 @@
                  list[i].state = "正在进行";
                }else if(list[i].state === "IN_THE_PAYMENT"){
                  list[i].state = "还款中";
+               }else if(list[i].state === "PAY_OFF"){
+                 list[i].state = "已还款";
+               }else if(list[i].state === "PENDING"){
+                 list[i].state = "审核中";
+               }else if(list[i].state === "HARMFUL"){
+                 list[i].state = "含有恶意信息审核不通过";
+               }else if(list[i].state === "LACK_INFO"){
+                 list[i].state = "信息缺失审核不通过";
+               }else if(list[i].state === "INFORMAL"){
+                 list[i].state = "信息不规范审核不通过";
                }
-
                self.tableData.push({name:list[i].name, money:list[i].money, year_rate:list[i].interestRate,
                  launch_date:list[i].duration[0],state:list[i].state,targetId:list[i].targetId});
              }

@@ -63,7 +63,7 @@
               <el-table-column label="查看详情" align="center">
 
                 <template slot-scope="scope">
-                  <a href="/userSpace\checkInvest"><el-button size="mini">查看详情</el-button></a>
+                  <el-button size="mini" @click="goTODoingInvestin(scope.row.targetId)">查看详情</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -114,11 +114,11 @@
                 align="center"
                 label="项目收益额(元)">
               </el-table-column>
-              <el-table-column label="查看详情" align="center">
+              <!--<el-table-column label="查看详情" align="center">
                 <template slot-scope="scope">
                   <el-button size="mini" @click="goTODoingInvestin(scope.row.targetId)">查看详情</el-button>
                 </template>
-              </el-table-column>
+              </el-table-column>-->
             </el-table>
           </div>
 
@@ -246,11 +246,11 @@
                 align="center"
                 label="状态">
               </el-table-column>
-              <el-table-column label="查看详情" align="center">
+              <!--<el-table-column label="查看详情" align="center">
                 <template slot-scope="scope">
                   <el-button size="mini"><a href="DoInvesting.vue">查看详情</a></el-button>
                 </template>
-              </el-table-column>
+              </el-table-column>-->
             </el-table>
           </div>
 
@@ -403,9 +403,27 @@
             var list = response.data;
 
             for(var i=0;i<list.length;i++){
+
+              if(list[i].state === "ON_GOING"){
+                list[i].state = "正在进行";
+              }else if(list[i].state === "IN_THE_PAYMENT"){
+                list[i].state = "还款中";
+              }else if(list[i].state === "PAY_OFF"){
+                list[i].state = "已还款";
+              }else if(list[i].state === "PENDING"){
+                list[i].state = "审核中";
+              }else if(list[i].state === "HARMFUL"){
+                list[i].state = "含有恶意信息审核不通过";
+              }else if(list[i].state === "LACK_INFO"){
+                list[i].state = "信息缺失审核不通过";
+              }else if(list[i].state === "INFORMAL"){
+                list[i].state = "信息不规范审核不通过";
+              }
+
+
               self.tableDataUnderway.push({projectName:list[i].projectName, loanFrom:list[i].loanFrom, loanDate:list[i].loanDate,
-                investAmount:list[i].num, deadline:list[i].deadlineDate,interest:list[i].interest+"%",
-                repayAmountMonth:list[i].repayAmountMonth,deadlineAmount:list[i].deadlineAmount,targetId:list[i].targetId});
+                investAmount:list[i].investAmount, deadlineDate:list[i].deadlineDate,interest:list[i].interest+"%",deadline:list[i].num,
+                repayAmountMonth:list[i].repaymentAmountMonth,deadlineAmount:list[i].deadlineAmount,targetId:list[i].targetId,state:list[i].state});
             }
             console.log("tableDataUnderway:");
             console.log(self.tableDataUnderway);
@@ -494,11 +512,14 @@
       },
 
       goTODoingInvestin(target_id){
-        a.id = target_id;
-        this.$router.push({
+        this.a.id = target_id;
+        console.log("target_id:"+target_id);
+        console.log("this.a.id:"+this.a.id);
+        /*this.$router.push({
           path:'/DoInvesting',
-          params:this.a
-        })
+          params:this.a.id
+        });*/
+        this.$router.push({name:'DoInvesting',params:{id:this.a.id}})
       }
     }// end method
     ,
