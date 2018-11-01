@@ -8,7 +8,7 @@
     </div>
     <div style="margin: 20px 40px 20px 40px;">
       <el-row>
-        <el-col span="16">
+        <el-col span="24">
           <el-tabs type="border-card" style="margin-left:7%;"><!--左侧留白7%-->
               <div class="form">
                 <el-form :inline="true" label-width="100px">
@@ -21,121 +21,88 @@
                       <el-radio-button label="大额考证"></el-radio-button>
                     </el-radio-group>
                   </el-form-item>
-                  <el-form-item label="用户信用等级">
-                    <el-select multiple placeholder="请选择">
+                  <el-form-item label="用户信用等级" class="form_item">
+                    <el-select v-model="largeUserRating" multiple placeholder="请选择">
                       <el-option
-                        v-for="item in options"
+                        v-for="item in userOptions"
                         :key="item.value"
                         :label="item.label"
                         :value="item.value">
                       </el-option>
                     </el-select>
                   </el-form-item>
-                  <el-form-item label="利率">
-                    <input type="number" class="selectInput" style="width:70px;"/>
+                  <el-form-item label="利率" class="form_item">
+                    <input type="number" v-model="largeInterestDown" class="selectInput" style="width:70px;"/>
                     <p style="display: inline;margin-left:5px;margin-right:5px;">-</p>
-                    <input type="number" class="selectInput" style="width:70px;"/>
+                    <input type="number" v-model="largeInterestUp" class="selectInput" style="width:70px;"/>
                   </el-form-item>
-                  <el-form-item label="项目风险评级">
-                    <el-select multiple placeholder="请选择">
+                  <el-form-item label="项目风险评级" class="form_item">
+                    <el-select v-model="largeTargetRating" multiple placeholder="请选择">
                       <el-option
-                        v-for="item in options"
+                        v-for="item in targetOptions"
                         :key="item.value"
                         :label="item.label"
                         :value="item.value">
                       </el-option>
                     </el-select>
                   </el-form-item>
-                  <el-form-item label="投资金额">
-                    <input type="number" class="selectInput" style="width:100px;"/>
+                  <el-form-item label="投资金额" class="form_item">
+                    <input type="number" v-model="largeInvestDown"  class="selectInput" style="width:100px;"/>
                     <p style="display: inline;margin-left:5px;margin-right:5px;">-</p>
-                    <input type="number" class="selectInput" style="width:100px;"/>
+                    <input type="number" v-model="largeInvestUp" class="selectInput" style="width:100px;"/>
                   </el-form-item>
-                  <el-form-item label="还款期限">
-                    <input type="number" class="selectInput" style="width:83px;"/>
+                  <el-form-item label="还款期限" class="form_item">
+                    <input type="number" v-model="largeDayDown" class="selectInput" style="width:83px;"/>
                     <p style="display: inline;margin-left:5px;margin-right:5px;">-</p>
-                    <input type="number" class="selectInput" style="width:83px;"/>
+                    <input type="number" v-model="largeDayUp" class="selectInput" style="width:83px;"/>
                     <p style="display: inline;margin-left:5px;margin-right:5px;">天</p>
                   </el-form-item>
-                  <el-form-item label="开始时间">
-                    <input type="date" class="selectInput" style="width:120px;"/>
+                  <el-form-item label="挂科数" class="form_item">
+                    <input type="number" v-model="failSubjectDown" class="selectInput" style="width:83px;"/>
                     <p style="display: inline;margin-left:5px;margin-right:5px;">-</p>
-                    <input type="date" class="selectInput" style="width:120px;"/>
+                    <input type="number" v-model="failSubjectUp" class="selectInput" style="width:83px;"/>
+                    <p style="display: inline;margin-left:5px;margin-right:5px;">天</p>
+                  </el-form-item>
+                  <el-form-item label="用户评分" class="form_item">
+                    <input type="number" v-model="userRankingDown" class="selectInput" style="width:83px;"/>
+                    <p style="display: inline;margin-left:5px;margin-right:5px;">-</p>
+                    <input type="number" v-model="userRankingUp" class="selectInput" style="width:83px;"/>
+                    <p style="display: inline;margin-left:5px;margin-right:5px;">天</p>
+                  </el-form-item>
+                  <el-form-item label="开始时间" class="form_item">
+                    <el-date-picker
+                      v-model="largeDateDown"
+                      type="date"
+                      placeholder="选择日期">
+                    </el-date-picker>
+                    <p style="display: inline;margin-left:5px;margin-right:5px;">-</p>
+                    <el-date-picker
+                      v-model="largeDateUp"
+                      type="date"
+                      placeholder="选择日期">
+                    </el-date-picker>
+                  </el-form-item>
+                  <el-form-item style="width:60px;margin: auto;">
+                    <el-button type="primary" @click="large_fil">过滤</el-button>
                   </el-form-item>
                 </el-form>
               </div>
               <div style="margin-top: 10px;">
                 <el-radio-group v-model="value_radio">
-                  <el-radio-button label="标的金额" ></el-radio-button>
-                  <el-radio-button label="开始时间"></el-radio-button>
-                  <el-radio-button label="利率"></el-radio-button>
-                  <el-radio-button label="用户信用分数"></el-radio-button>
-                  <el-radio-button label="项目风险评级"></el-radio-button>
+                  <el-radio-button label="money" >标的金额</el-radio-button>
+                  <el-radio-button label="target_rating_score">标的评价</el-radio-button>
                 </el-radio-group>
-                <div style="float:right;">
-                  <el-autocomplete
-                    popper-class="my-autocomplete"
-                    placeholder="请输入内容" >
-                    <i class="el-icon-edit el-input__icon"
-                       slot="suffix"
-                       @click="handleIconClick">
-                    </i>
-                    <!--<template slot-scope="{ item }">-->
-                    <!--<div class="name">{{ item.value }}</div>-->
-                    <!--<span class="addr">{{ item.address }}</span>-->
-                    <!--</template>-->
-                  </el-autocomplete>
-                </div>
               </div>
               <invest-list
                 v-for="item in investInformation"
                 v-bind:investList="item"
                 v-bind:key="item.id"
               ></invest-list>
+            <el-pagination style="width: 100px;margin: auto" @current-change="largeCurrentChange"
+                           layout="prev, pager, next" :current-page.sync="page"
+                           :page-size="size" :total="5">
+            </el-pagination>
           </el-tabs>
-        </el-col>
-        <el-col span="8">
-          <el-card shadow="hover" style="margin-left: 10px;margin-right: 9%"><!--右侧留白9%-->
-            <el-tabs>
-              <el-tab-pane label="标的推荐" >
-                <el-form>
-                  <el-form-item label="投资金额">
-                    <el-input placeholder="请输入内容"></el-input>
-                  </el-form-item>
-                  <el-form-item label="利率">
-                    <el-input placeholder="请输入内容"></el-input>
-                  </el-form-item>
-                  <el-form-item>
-                    <template slot-scope="scope">
-                      <router-link to="/recommend">
-                        <el-button type="primary">个性推荐</el-button>
-                      </router-link>
-                    </template>
-                  </el-form-item>
-                </el-form>
-              </el-tab-pane>
-            </el-tabs>
-            <el-tabs>
-              <el-tab-pane label="标的比较" >
-                <el-form :inline="true">
-                  <el-form-item label="编号">
-                    <el-input placeholder="" style="width: 80px"></el-input>
-                  </el-form-item>
-                  <el-form-item label="编号" style="margin-left: 20px;">
-                    <el-input placeholder="" style="width: 80px"></el-input>
-                  </el-form-item>
-                  <el-form-item>
-                    <div id="myradar" style="width: 310px;height: 350px;margin-left:3%;"></div>
-                  </el-form-item>
-                  <el-form-item>
-                    <el-button type="primary">
-                      标的比较
-                    </el-button>
-                  </el-form-item>
-                </el-form>
-              </el-tab-pane>
-            </el-tabs>
-          </el-card>
         </el-col>
       </el-row>
     </div>
@@ -166,32 +133,56 @@
     name: "invest",
     components:{navi, footerBar, rightBar,investList,ProjectList,investList2},
     mounted() {
-      this.drawRadar();
+      let self = this;
+      let large_data = {
+        page: (self.page - 1),
+        size: self.size,
+        properties: 'money',
+        money: [self.largeInvestDown, self.largeInvestUp],
+        time: [self.largeDateDown, self.largeDateUp],
+        userFailedSubject: [self.failSubjectDown, self.failSubjectUp],
+        userRankingRate: [self.userRankingDown, self.userRankingUp],
+        interestRate: [self.largeInterestDown, self.largeInterestUp],
+        repaymentDuration: [self.largeDayDown, self.largeDayUp],
+        userCreditRating: self.largeUserRating == null? []:self.largeUserRating ,
+        targetRating: self.largeTargetRating == null? []:self.largeTargetRating,
+        useOfFunds: [self.filter_radio]
+      }
+      this.$axios.post("/loan/largeTargetList",large_data )
+        .then(res => {
+          console.log(res)
+          let invests = []
+          for(let i of res.data) {
+            invests.push({
+              id: i.id,
+              name: i.name,
+              profit: (i.interestRate + "%"),
+              money: i.money,
+              remainMoney: (i.money-i.collectedMoney),
+              type: i.classification,
+              finishProgress: i.completionRate*1.0/100,
+              range: i.riskRating,
+              beginTime: i.startTime,
+            })
+          }
+          console.log(invests)
+          self.investInformation = invests
+        })
+        .catch(e => {console.log(e)})
     },
     data(){
       return{
         /* 未成交数据*/
         investInformation: [
-          {id:"0001", beginTime:"2018.09.01", endTime:"2018.10.08", name:"AJ13熊猫", type:"SHOES", profit:"5.55%", money:"1800", remainMoney:"360", finishProgress:0.8,range:"AA"},
-          {id:"0002", beginTime:"2018.09.14", endTime:"2018.10.03", name:"炉石砰砰计划", type:"GAME", profit:"9.99%", money:"388", remainMoney:"88", finishProgress:0.7731,range:"AA"},
-          {id:"0003", beginTime:"2018.09.17", endTime:"2018.10.28", name:"国庆省内", type:"TRAVEL", profit:"6.73%", money:"2000", remainMoney:"400", finishProgress:0.8,range:"A"},
-          {id:"0004", beginTime:"2018.10.12", endTime:"2018.10.25", name:"托福考试", type:"EXAM", profit:"5.85%", money:"1800", remainMoney:"360", finishProgress:0.8,range:"A"},
-          {id:"0005", beginTime:"2018.10.15", endTime:"2018.11.20", name:"方大同演唱会", type:"CONCERT", profit:"7.67%", money:"1000", remainMoney:"470", finishProgress:0.53,range:"A"},
-          {id:"0006", beginTime:"2018.10.22", endTime:"2018.11.21", name:"d'zzit地素连衣裙", type:"CLOTH", profit:"7.06%", money:"1300", remainMoney:"741", finishProgress:0.43,range:"B"},
-          {id:"0007", beginTime:"2018.10.26", endTime:"2018.11.22", name:"预购", type:"GAME", profit:"6.45%", money:"1800", remainMoney:"1116", finishProgress:0.38,range:"B"},
-          {id:"0008", beginTime:"2018.10.30", endTime:"2018.11.23", name:"生活费周转", type:"TURNOVER", profit:"5.27%", money:"1000", remainMoney:"140", finishProgress:0.86,range:"C"},
-          {id:"0009", beginTime:"2018.11.03", endTime:"2018.12.01", name:"Chanel香水", type:"CONSMETIC", profit:"8.56%", money:"800", remainMoney:"320", finishProgress:0.6,range:"C"},
-        ],
-        /* 待转让数据*/
-        investInformation2: [
-          {id:"0002", beginTime:"2018.09.14", endTime:"2018.10.03", name:"炉石砰砰计划", type:"GAME", profit:"9.99%", money:"388", remainMoney:"88", finishProgress:0.7731,range:"AA"},
-          {id:"0003", beginTime:"2018.09.17", endTime:"2018.10.28", name:"国庆省内", type:"TRAVEL", profit:"6.73%", money:"2000", remainMoney:"400", finishProgress:0.8,range:"A"},
-          {id:"0004", beginTime:"2018.10.12", endTime:"2018.10.25", name:"托福考试", type:"EXAM", profit:"5.85%", money:"1800", remainMoney:"360", finishProgress:0.8,range:"A"},
-          {id:"0005", beginTime:"2018.10.15", endTime:"2018.11.20", name:"方大同演唱会", type:"CONCERT", profit:"7.67%", money:"1000", remainMoney:"470", finishProgress:0.53,range:"A"},
-          {id:"0006", beginTime:"2018.10.22", endTime:"2018.11.21", name:"d'zzit地素连衣裙", type:"CLOTH", profit:"7.06%", money:"1300", remainMoney:"741", finishProgress:0.43,range:"B"},
-          {id:"0007", beginTime:"2018.10.26", endTime:"2018.11.22", name:"预购", type:"GAME", profit:"6.45%", money:"1800", remainMoney:"1116", finishProgress:0.38,range:"B"},
-          {id:"0008", beginTime:"2018.10.30", endTime:"2018.11.23", name:"生活费周转", type:"TURNOVER", profit:"5.27%", money:"1000", remainMoney:"140", finishProgress:0.86,range:"C"},
-          {id:"0009", beginTime:"2018.11.03", endTime:"2018.12.01", name:"Chanel香水", type:"CONSMETIC", profit:"8.56%", money:"800", remainMoney:"320", finishProgress:0.6,range:"C"},
+        //   {id:"0001", beginTime:"2018.09.01", endTime:"2018.10.08", name:"AJ13熊猫", type:"SHOES", profit:"5.55%", money:"1800", remainMoney:"360", finishProgress:0.8,range:"AA"},
+        //   {id:"0002", beginTime:"2018.09.14", endTime:"2018.10.03", name:"炉石砰砰计划", type:"GAME", profit:"9.99%", money:"388", remainMoney:"88", finishProgress:0.7731,range:"AA"},
+        //   {id:"0003", beginTime:"2018.09.17", endTime:"2018.10.28", name:"国庆省内", type:"TRAVEL", profit:"6.73%", money:"2000", remainMoney:"400", finishProgress:0.8,range:"A"},
+        //   {id:"0004", beginTime:"2018.10.12", endTime:"2018.10.25", name:"托福考试", type:"EXAM", profit:"5.85%", money:"1800", remainMoney:"360", finishProgress:0.8,range:"A"},
+        //   {id:"0005", beginTime:"2018.10.15", endTime:"2018.11.20", name:"方大同演唱会", type:"CONCERT", profit:"7.67%", money:"1000", remainMoney:"470", finishProgress:0.53,range:"A"},
+        //   {id:"0006", beginTime:"2018.10.22", endTime:"2018.11.21", name:"d'zzit地素连衣裙", type:"CLOTH", profit:"7.06%", money:"1300", remainMoney:"741", finishProgress:0.43,range:"B"},
+        //   {id:"0007", beginTime:"2018.10.26", endTime:"2018.11.22", name:"预购", type:"GAME", profit:"6.45%", money:"1800", remainMoney:"1116", finishProgress:0.38,range:"B"},
+        //   {id:"0008", beginTime:"2018.10.30", endTime:"2018.11.23", name:"生活费周转", type:"TURNOVER", profit:"5.27%", money:"1000", remainMoney:"140", finishProgress:0.86,range:"C"},
+        //   {id:"0009", beginTime:"2018.11.03", endTime:"2018.12.01", name:"Chanel香水", type:"CONSMETIC", profit:"8.56%", money:"800", remainMoney:"320", finishProgress:0.6,range:"C"},
         ],
         /* 投资页面背景图片 */
         back:{
@@ -204,56 +195,122 @@
         /*单选按钮默认值及样式*/
         value_radio: '标的金额',
         filter_radio:'交换生',
+
+        userOptions: [
+          { label: 'AA', value: 'AA'},
+          { label: 'A', value: 'A'},
+          { label: 'B', value: 'B'},
+          { label: 'C', value: 'C'},
+          { label: 'D', value: 'D'}
+        ],
+        targetOptions: [
+          { label: 'A', value: 'A'},
+          { label: 'B', value: 'B'},
+          { label: 'C', value: 'C'},
+          { label: 'D', value: 'D'}
+        ],
+        /*评级信息*/
+        largeTargetRating: [],
+        largeUserRating: [],
+
+        failSubjectDown: 0,
+        failSubjectUp: 0,
+        userRankingDown: 0,
+        userRankingUp: 100,
+        /*pages*/
+        page: 1,
+        size: 10,
+        /*数字信息*/
+        largeInterestDown: 0,
+        largeInterestUp: 100,
+        largeInvestDown: 0,
+        largeInvestUp: 10000,
+        largeDayDown: 0,
+        largeDayUp: 100,
+        largeDateDown: "",
+        largeDateUp: "",
+
       };
     },
     beforeCreate:function(){
       localStorage.route = "#invest";
     },
     methods:{
-      /* 绘制雷达图*/
-      drawRadar() {
-        let myChart = echarts.init(document.getElementById('myradar'),'infographic')
-        myChart.setOption({
-          title: {
-            text: '比较'
-          },
-          tooltip: {},
-          legend: {
-            data: ['A', 'B']
-          },
-          radar: {
-            // shape: 'circle',
-            name: {
-              textStyle: {
-                color: '#fff',
-                backgroundColor: '#999',
-                borderRadius: 3,
-                padding: [3, 5],
-              }
-            },
-            indicator: [
-              { name: '金额', max: 100},
-              { name: '期限', max: 100},
-              { name: '成功借款次数', max: 100},
-              { name: '信用等级', max: 100},
-              { name: '利率', max: 100}
-            ]
-          },
-          series: [{
-            name: '两个标的比较',
-            type: 'radar',
-            data : [
-              {
-                value : [80, 76, 65, 89, 77, 66],
-                name : 'A'
-              },
-              {
-                value : [60, 70, 45, 80, 85, 27],
-                name : 'B'
-              }
-            ]
-          }]
-        });
+      large_fil() {
+        let self = this;
+        let large_data = {
+          page: (self.page - 1),
+          size: self.size,
+          properties: 'money',
+          money: [self.largeInvestDown, self.largeInvestUp],
+          time: [self.largeDateDown, self.largeDateUp],
+          interestRate: [self.largeInterestDown, self.largeInterestUp],
+          userFailedSubject: [self.failSubjectDown, self.failSubjectUp],
+          userRankingRate: [self.userRankingDown, self.userRankingUp],
+          repaymentDuration: [self.largeDayDown, self.largeDayUp],
+          userCreditRating: self.largeUserRating == null? []:self.largeUserRating ,
+          targetRating: self.largeTargetRating == null? []:self.largeTargetRating,
+          useOfFunds: [self.filter_radio]
+        }
+        this.$axios.post("/loan/largeTargetList",large_data )
+          .then(res => {
+            console.log(res)
+            let invests = []
+            for(let i of res.data) {
+              invests.push({
+                id: i.id,
+                name: i.name,
+                profit: (i.interestRate + "%"),
+                money: i.money,
+                remainMoney: (i.money-i.collectedMoney),
+                type: i.classification,
+                finishProgress: i.completionRate*1.0/100,
+                range: i.riskRating,
+                beginTime: i.startTime,
+              })
+            }
+            console.log(invests)
+            self.investInformation = invests
+          })
+          .catch(e => {console.log(e)})
+      },
+      largeCurrentChange() {
+        let self = this;
+        let large_data = {
+          page: (self.page - 1),
+          size: self.size,
+          properties: self.value_radio,
+          money: [self.largeInvestDown, self.largeInvestUp],
+          time: [self.largeDateDown, self.largeDateUp],
+          userFailedSubject: [self.failSubjectDown, self.failSubjectUp],
+          userRankingRate: [self.userRankingDown, self.userRankingUp],
+          interestRate: [self.largeInterestDown, self.largeInterestUp],
+          repaymentDuration: [self.largeDayDown, self.largeDayUp],
+          userCreditRating: self.largeUserRating == null? []:self.largeUserRating ,
+          targetRating: self.largeTargetRating == null? []:self.largeTargetRating,
+          useOfFunds: [self.filter_radio]
+        }
+        this.$axios.post("/loan/largeTargetList",large_data )
+          .then(res => {
+            console.log(res)
+            let invests = []
+            for(let i of res.data) {
+              invests.push({
+                id: i.id,
+                name: i.name,
+                profit: (i.interestRate + "%"),
+                money: i.money,
+                remainMoney: (i.money-i.collectedMoney),
+                type: i.classification,
+                finishProgress: i.completionRate*1.0/100,
+                range: i.riskRating,
+                beginTime: i.startTime,
+              })
+            }
+            console.log(invests)
+            self.investInformation = invests
+          })
+          .catch(e => {console.log(e)})
       },
     }
   }

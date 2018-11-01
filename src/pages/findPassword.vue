@@ -34,7 +34,7 @@
       methods: {
         sendCode: function () {
           var account = $('#account').val();
-          this.$axios.post("http://localhost:8000/api/auth/findPW/sendCode", {"account": account}).then(res => {
+          this.$axios.post("http://" + this.url_config +  ":8000/api/auth/findPW/sendCode", {"account": account}).then(res => {
             var data = res.data;
             if (data.result == 1) {
               $('#sendCode').attr("disabled", true);

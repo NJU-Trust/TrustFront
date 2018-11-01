@@ -18,11 +18,12 @@
                   <el-upload
                     class="upload-demo"
                     drag
-                    action="https://jsonplaceholder.typicode.com/posts/"
+                    :action='url'
+                    :onSuccess="uploadCardSuccess"
                     multiple>
                     <i class="el-icon-upload"></i>
                     <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-                    <div class="el-upload__tip" slot="tip">上传消费数据excel表格，且不超过500kb</div>
+                    <div class="el-upload__tip" slot="tip">上传消费数据excel表格</div>
                     <div class="el-upload__tip" slot="tip">会进行脱敏处理，不会泄露个人隐私</div>
                   </el-upload>
                 </div>
@@ -31,11 +32,15 @@
                   <el-upload
                     class="upload-demo"
                     drag
-                    action="https://jsonplaceholder.typicode.com/posts/"
-                    multiple>
+                    :action='csv_url'
+                    :onSuccess="uploadAlipaySuccess"
+                    multiple
+                    :file-list="fileList"
+
+                  >
                     <i class="el-icon-upload"></i>
                     <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-                    <div class="el-upload__tip" slot="tip">上传支付宝的消费记录excel表格，且不超过500kb</div>
+                    <div class="el-upload__tip" slot="tip">上传支付宝的消费记录csv数据</div>
                     <div class="el-upload__tip" slot="tip">会进行脱敏处理，不会泄露个人隐私</div>
                   </el-upload>
                 </div>
@@ -299,14 +304,17 @@
     components: {personalCenter},
     data() {
       return {
-        url: "http://localhost:8000/upload/image",
+        url: "http://"+ this.url_config +  ":8000/upload/image",
+        csv_url: "http://"+ this.url_config +  ":8000/upload/csv",
+        alipay: '',
+        card: '',
         reportFileList:[],
         schoolRewardList:[],
         cityRewardList:[],
         provinceRewardList:[],
         countryRewardList:[],
         qualificationList:[],
-
+        fileList: [],
         activeName: 'first',
         activeNames: ['1'],
         selfinfo_form:{
@@ -346,6 +354,20 @@
         };
     },
     methods: {
+      /*支付宝*/
+      uploadCardSuccess(response){
+        this.card += 'http://'+ this.url_config +  ':8000/'
+        this.card += response
+        console.log(response)
+      },
+
+      uploadAlipaySuccess(response) {
+        this.alipay += 'http://'+ this.url_config +  ':8000/'
+        this.alipay += response
+        console.log(response)
+        this.fileList.push({name: response, url: this.alipay})
+
+      },
       /*上传成绩*/
       uploadReportCardSuccess(response, file, fileList){
         console.log("upload")
@@ -357,7 +379,7 @@
       },
       /*上传志愿时长*/
       uploadVolunteer(response, file, fileList){
-        this.selfinfo_form.volunteer_img += 'http://localhost:8000/'
+        this.selfinfo_form.volunteer_img += 'http://' + this.url_config +  ':8000/'
         this.selfinfo_form.volunteer_img += response;
       },
       removeVolunteer(file, fileList){
@@ -470,7 +492,7 @@
         }else if(this.selfinfo_form.school_rewards.length!=this.schoolRewardList.length||
           this.selfinfo_form.city_rewards.length!=this.cityRewardList.length||
           this.selfinfo_form.province_rewards.length!=this.provinceRewardList.length||
-          this.selfinfo_form.country_rewards.length!=this.countryRewardList.length||
+          this.selfinfo_form.country_rewards.lengtRdwfh!=this.countryRewardList.length||
           this.selfinfo_form.self_qualifications.length!=this.qualificationList.length){
           this.$message({
             message:"上传的奖项、证书凭证与描述个数不匹配！",
@@ -481,25 +503,25 @@
             if (valid) {
               //console.log(this.reportFileList)
               for(var i=0;i<this.reportFileList.length;i++){
-                this.selfinfo_form.report_cards[i]=('http://localhost:8000/'+this.reportFileList[i].response)
+                this.selfinfo_form.report_cards[i]=('http://' + this.url_config +  ':8000/'+this.reportFileList[i].response)
               }
               //console.log(this.selfinfo_form.report_cards)
               //console.log(this.selfinfo_form.school_rewards)
               for(var i=0;i<this.schoolRewardList.length;i++){
-                this.selfinfo_form.school_rewards[i].file=('http://localhost:8000/'+this.schoolRewardList[i].response)
+                this.selfinfo_form.school_rewards[i].file=('http://' + this.url_config +  ':8000/'+this.schoolRewardList[i].response)
               }
               //console.log(this.selfinfo_form.school_rewards)
               for(var i=0;i<this.cityRewardList.length;i++){
-                this.selfinfo_form.city_rewards[i].file=('http://localhost:8000/'+this.cityRewardList[i].response)
+                this.selfinfo_form.city_rewards[i].file=('http://' + this.url_config +  ':8000/'+this.cityRewardList[i].response)
               }
               for(var i=0;i<this.provinceRewardList.length;i++){
-                this.selfinfo_form.province_rewards[i].file=('http://localhost:8000/'+this.provinceRewardList[i].response)
+                this.selfinfo_form.province_rewards[i].file=('http://'+ this.url_config +  ':8000/'+this.provinceRewardList[i].response)
               }
               for(var i=0;i<this.countryRewardList.length;i++){
-                this.selfinfo_form.country_rewards[i].file=('http://localhost:8000/'+this.countryRewardList[i].response)
+                this.selfinfo_form.country_rewards[i].file=('http://'+ this.url_config +  ':8000/'+this.countryRewardList[i].response)
               }
               for(var i=0;i<this.qualificationList.length;i++){
-                this.selfinfo_form.self_qualifications[i].file=('http://localhost:8000/'+this.qualificationList[i].response)
+                this.selfinfo_form.self_qualifications[i].file=('http://'+ this.url_config +  ':8000/'+this.qualificationList[i].response)
               }
 
               var _this = this;

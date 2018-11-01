@@ -3,7 +3,7 @@
     <el-menu
       default-active="2"
       class="el-menu-vertical-demo"
-      router="true">
+      :router="routerBool">
       <el-submenu index="1" class="bar-main">
         <template slot="title">
           <i class="el-icon-location-outline bar-icon"></i>
@@ -54,6 +54,11 @@
 <script>
   export default {
       name: "leftUserBar",
+      data(){
+        return{
+          routerBool:true
+        }
+      },
       methods:{
         setA: function () {
           this.$store.commit('newAuthor','基本信息')

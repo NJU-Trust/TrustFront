@@ -44,7 +44,9 @@
   export default {
     name: 'nextpay',
     data () {
+      return{
 
+      }
     },
     // props:['paytitle','projectTime','times','interestPlus'
     //   , 'timesA','timeA','amountA'

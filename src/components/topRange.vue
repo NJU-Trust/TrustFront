@@ -61,7 +61,7 @@
             ['徐新','女','风险投资家','南京大学','徐新，女，1988年毕业于南京大学外语系，中华英才网的初始投资者和董事会主席，中国风险投资协会理事会理事，中国最优秀的风险投资家之一。拥有在中国10年以上的风险投资经验。','35000','1.05%','124545\n125456\n156875']
           ];
           i=0;
-          this.$axios.get("http://localhost:8000/api/auth/topRange",).then(res => {
+          this.$axios.get("http://"+ this.url_config +  ":8000/api/auth/topRange",).then(res => {
             basicInfo=res.data.basic;
           });
           items=$(".basic");

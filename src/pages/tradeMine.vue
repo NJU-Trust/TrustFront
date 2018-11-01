@@ -113,7 +113,7 @@
     data() {
       return {
         proof: '',
-        url: "http://localhost:8000/upload/image",
+        url: "http://"+ this.url_config +  ":8000/upload/image",
         back:{
           backgroundImage:"url(" + require("../../static/pic/investListBack.jpg") + ")",
           backgroundRepeat:"no-repeat",
@@ -153,7 +153,7 @@
     },
     methods: {
       uploadSuccess(response, file, fileList) {
-        this.proof += 'http://localhost:8000/'
+        this.proof += 'http://' + this.url_config +  ':8000/'
         this.proof += response
       },
       onSubmit() {

@@ -52,9 +52,9 @@
           $("#favourite").click(function() {
             var ctrl = (navigator.userAgent.toLowerCase()).indexOf('mac') != -1 ? 'Command/Cmd': 'CTRL';
             if (document.all) {
-              window.external.addFavorite('http://localhost:8080', 'trust平台')
+              window.external.addFavorite('http://'+ this.url_config +  ':8080', 'trust平台')
             } else if (window.sidebar) {
-              window.sidebar.addPanel('trust平台', 'http://localhost:8080', "")
+              window.sidebar.addPanel('trust平台', 'http://'+ this.url_config +  ':8080', "")
             } else {
               alert('您可以尝试通过快捷键' + ctrl + ' + D 加入到收藏夹~')
             }

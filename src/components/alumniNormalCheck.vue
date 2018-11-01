@@ -64,7 +64,7 @@
       name: "alumniNormalCheck",
       data() {
         return {
-          url: "http://localhost:8000/upload/image",
+          url: "http://"+ this.url_config +  ":8000/upload/image",
           base_form: {
             name: '',
             gender: '男',
@@ -103,7 +103,7 @@
       methods: {
         uploadGraduate(response, file, fileList){
           console.log("uploadSuccess");
-          this.base_form.evidence+= 'http://localhost:8000/';
+          this.base_form.evidence+= 'http://'+ this.url_config +  ':8000/';
           this.base_form.evidence+=response;
         },
         submitForm(formName) {
