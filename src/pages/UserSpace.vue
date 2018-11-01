@@ -52,7 +52,7 @@
             <el-card shadow="always" class="mycard card_B">
               <el-row :gutter="2">
                 <el-col :span="8">
-                  <el-progress type="circle" :percentage= user.captial.progress width=81></el-progress>
+                  <el-progress type="circle" :percentage="user.captial.progress" :width="81"></el-progress>
                 </el-col>
                 <el-col :span="16">
                   <p>待收回本息 <span>{{ user.captial.amountToCover }}</span> 元</p>
@@ -64,7 +64,7 @@
             <el-card shadow="always" class="mycard card_B">
               <el-row :gutter="2">
                 <el-col :span="8">
-                  <el-progress type="circle" :percentage= user.interest.progress width=81></el-progress>
+                  <el-progress type="circle" :percentage="user.interest.progress" :width="81"></el-progress>
                 </el-col>
                 <el-col :span="16">
                   <p>待偿还本息 <span>{{ user.interest.amountToCove }}</span> 元</p>
@@ -97,7 +97,7 @@
             <el-card shadow="always" class="mycard card_B">
               <el-row :gutter="2">
                 <el-col :span="8">
-                  <el-progress type="circle" :percentage=user.captial.progress width=81></el-progress>
+                  <el-progress type="circle" :percentage=user.captial.progress :width="81"></el-progress>
                 </el-col>
                 <el-col :span="16">
                   <p>待收回本息 <span>{{ user.captial.amountToCover }}</span> 元</p>
@@ -110,7 +110,7 @@
             <el-card shadow="always" class="mycard card_B">
               <el-row :gutter="2">
                 <el-col :span="8">
-                  <el-progress type="circle" :percentage=user.interest.progress width=81></el-progress>
+                  <el-progress type="circle" :percentage=user.interest.progress :width="81"></el-progress>
                 </el-col>
                 <el-col :span="16">
                   <p>待偿还本息 <span>{{ user.interest.amountToCove }}</span> 元</p>
