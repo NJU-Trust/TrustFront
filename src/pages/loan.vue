@@ -999,7 +999,7 @@
     @-webkit-keyframes move_left /* Safari and Chrome */
     {
       0%   {left:0;  width:750px;}
-      100% {left:-10%; width:54%;}
+      100% {left:-10%; width:40%;}
     }
 
     .evaluate{

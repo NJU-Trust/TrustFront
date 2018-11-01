@@ -40,7 +40,7 @@
       </div>-->
 
 
-      <el-card id="myChart" v-show="scheme.show_table" align="center" style="width: 450px;height: 300px;margin-top: 20px"></el-card>
+      <el-card id="myChart" v-show="scheme.show_table" align="center" style="width: 470px;height: 300px;margin-top: 20px"></el-card>
       <!--<div id="myChart" style="width: 450px;height: 300px;margin-top: 50px;margin-left: 40px">
       </div>-->
       <el-card style="margin-top: 20px;font-size: 15px">
@@ -226,7 +226,7 @@
 <style scoped>
 
   .main_panel{
-    width:450px;
+    width:470px;
     background-color: white;
     /*height:600px;*/
   }
