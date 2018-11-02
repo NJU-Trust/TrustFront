@@ -364,8 +364,15 @@
             //   title: '已收款',
             //   desc: '您已在7月5日收款'
             // }, ];
-
-            self.demoEvents = response.data;
+            let todoList = [];
+            for(let i of response.data){
+              todoList.push({
+                date:i.date,
+                title:i.title,
+                desc:i.description
+              });
+            }
+            self.demoEvents = todoList;
 
           })
           .catch(function (response) {

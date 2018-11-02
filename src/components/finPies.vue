@@ -137,10 +137,10 @@
                 {value:0, name:'娱乐'},
               ],
               data3:[
-                {value:0, name:'食堂条数'},
-                {value:0, name:'外卖单数'},
-                {value:0, name:'外出次数'},
-                {value:0, name:'零食数目'}
+                {value:0, name:'食堂'},
+                {value:0, name:'外卖'},
+                {value:0, name:'外出'},
+                {value:0, name:'零食'}
               ]
             };
 
