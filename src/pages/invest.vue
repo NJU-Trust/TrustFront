@@ -244,7 +244,7 @@
               money: i.money,
               remainMoney: (i.money-i.collectedMoney),
               type: i.classification,
-              finishProgress: i.completionRate*1.0/100,
+              finishProgress: i.collectedMoney* 100/i.money ,
               range: i.riskRating,
               beginTime: i.startTime,
             })
@@ -360,7 +360,7 @@
                 money: i.money,
                 remainMoney: (i.money-i.collectedMoney),
                 type: i.classification,
-                finishProgress: i.collectedMoney*1.0/i.money,
+                finishProgress: i.collectedMoney* 100/i.money ,
                 range: i.riskRating,
                 beginTime: i.startTime,
               })
@@ -410,7 +410,7 @@
                 money: i.money,
                 remainMoney: (i.money-i.collectedMoney),
                 type: i.classification,
-                finishProgress: i.collectedMoney*1.0/i.money,
+                finishProgress: i.collectedMoney* 100/i.money ,
                 range: i.riskRating,
                 beginTime: i.startTime,
               })
@@ -447,7 +447,7 @@
                 money: i.money,
                 remainMoney: (i.money-i.collectedMoney),
                 type: i.classification,
-                finishProgress: i.collectedMoney*1.0/i.money,
+                finishProgress: i.collectedMoney* 100/i.money ,
                 range: i.riskRating,
                 beginTime: i.startTime,
               })

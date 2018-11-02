@@ -13,7 +13,7 @@
           <div style="min-height: 300px">
             <div class="ad_checkpanel" id="ad_checkid" style="margin-top: 30px;margin-bottom: 30px;display: inline;" >
               <div style="position: relative">
-                <div class="col-xs-12 col-sm-6 placeholder" style="min-height: 200px">
+                <div class="col-xs-12 col-sm-6 placeholder" style="min-height: 200px" v-if="!xlsx">
                   <label>请导入校园卡数据</label><br>
                   <el-upload
                     class="upload-demo"
@@ -28,7 +28,10 @@
                     <div class="el-upload__tip" slot="tip">会进行脱敏处理，不会泄露个人隐私</div>
                   </el-upload>
                 </div>
-                <div class="col-xs-12 col-sm-6 placeholder" style="min-height: 200px">
+                <div v-else>
+                  您已经上传了该项数据
+                </div>
+                <div class="col-xs-12 col-sm-6 placeholder" style="min-height: 200px" v-if="!csv">
                   <label>请导入支付宝数据</label><br>
                   <el-upload
                     class="upload-demo"
@@ -45,12 +48,15 @@
                     <div class="el-upload__tip" slot="tip">会进行脱敏处理，不会泄露个人隐私</div>
                   </el-upload>
                 </div>
+                <div v-else>
+                  您已经上传了该项数据
+                </div>
               </div>
             </div>
           </div>
           <hr/>
           <div style="text-align: justify;float:right;">
-            <el-button type="primary" round>&nbsp;提交&nbsp;</el-button>
+            <el-button type="primary" @click="confirm" round>&nbsp;提交&nbsp;</el-button>
           </div>
         </div>
       </el-tab-pane>
@@ -303,12 +309,17 @@
   export default {
     name:"advancedcheck",
     components: {personalCenter},
+    mounted() {
+
+    },
     data() {
       return {
         url: "http://"+ this.url_config +  ":8000/upload/csv",
         csv_url: "http://"+ this.url_config +  ":8000/upload/csv",
         alipay: '',
         card: '',
+        csv: false,
+        xlsx: false,
         reportFileList:[],
         schoolRewardList:[],
         cityRewardList:[],
@@ -356,6 +367,9 @@
         };
     },
     methods: {
+      confirm() {
+
+      },
       /*支付宝*/
       uploadCardSuccess(response){
         this.card += 'http://'+ this.url_config +  ':8000/'

@@ -14,9 +14,9 @@
                 <el-form :inline="true" label-width="100px">
                   <el-form-item label="标的分类">
                     <el-radio-group v-model="filter_radio">
+                      <el-radio-button label="托福培训"></el-radio-button>
                       <el-radio-button label="交换生" ></el-radio-button>
                       <el-radio-button label="GMAT"></el-radio-button>
-                      <el-radio-button label="TOFEL"></el-radio-button>
                       <el-radio-button label="IELTS"></el-radio-button>
                       <el-radio-button label="大额考证"></el-radio-button>
                     </el-radio-group>
@@ -160,7 +160,7 @@
               money: i.money,
               remainMoney: (i.money-i.collectedMoney),
               type: i.classification,
-              finishProgress: i.collectedMoney*1.0/i.money,
+              finishProgress: i.collectedMoney* 100/i.money ,
               range: i.riskRating,
               beginTime: i.startTime,
             })
@@ -214,7 +214,7 @@
         largeUserRating: [],
 
         failSubjectDown: 0,
-        failSubjectUp: 0,
+        failSubjectUp: 10,
         userRankingDown: 0,
         userRankingUp: 100,
         /*pages*/
@@ -227,8 +227,8 @@
         largeInvestUp: 10000,
         largeDayDown: 0,
         largeDayUp: 100,
-        largeDateDown: "",
-        largeDateUp: "",
+        largeDateDown: null,
+        largeDateUp: null,
 
       };
     },
@@ -252,6 +252,7 @@
           targetRating: self.largeTargetRating == null? []:self.largeTargetRating,
           useOfFunds: [self.filter_radio]
         }
+        console.log(large_data)
         this.$axios.post("/loan/largeTargetList",large_data )
           .then(res => {
             console.log(res)
@@ -264,7 +265,7 @@
                 money: i.money,
                 remainMoney: (i.money-i.collectedMoney),
                 type: i.classification,
-                finishProgress: i.collectedMoney*1.0/i.money,
+                finishProgress: i.collectedMoney* 100/i.money ,
                 range: i.riskRating,
                 beginTime: i.startTime,
               })
@@ -302,7 +303,7 @@
                 money: i.money,
                 remainMoney: (i.money-i.collectedMoney),
                 type: i.classification,
-                finishProgress: i.collectedMoney*1.0/i.money,
+                finishProgress: i.collectedMoney* 100/i.money ,
                 range: i.riskRating,
                 beginTime: i.startTime,
               })

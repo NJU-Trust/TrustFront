@@ -7,9 +7,9 @@
           <div class="grid-content bg-purple wel_left">
             <br>
             <!--{{ hours }}-->
-            <p class="wel_words" v-if="morning">早上好，</p>
-            <p class="wel_words" v-if="afternoon">下午好，</p>
-            <p class="wel_words" v-if="evening">晚上好，</p>
+            <p class="wel_words" v-if="morning">早上好，{{realName}}</p>
+            <p class="wel_words" v-if="afternoon">下午好，{{realName}}</p>
+            <p class="wel_words" v-if="evening">晚上好，{{realName}}</p>
             <p class="wel_words wel_texts">欢迎进入个人中心</p>
             <br/>
             <!--<p> 最近回款时间：无</p>-->
@@ -21,10 +21,10 @@
             <br/>
             <br/>
             <br/>
-            <el-row>
-              <el-button type="primary" plain class="wel_right_btn">充值</el-button>
-              <el-button type="primary" plain class="wel_right_btn">提现</el-button>
-            </el-row>
+            <!--<el-row>-->
+              <!--<el-button type="primary" plain class="wel_right_btn">充值</el-button>-->
+              <!--<el-button type="primary" plain class="wel_right_btn">提现</el-button>-->
+            <!--</el-row>-->
             <!--<div class="wel_right_text">-->
               <!--<p>账户总额</p>-->
               <!--<p><b style="font-size: 28px">0</b> 元</p>-->
@@ -193,10 +193,20 @@
     name:"userspace",
     components: {personalCenter},
     mounted: function() {
+      this.getName();
       this.getOverview();
       this.getTodo();
     },
     methods:{
+      getName(){
+        const self = this;
+        this.$axios.get('/citi/basic')
+          .then(res=>{
+            self.realName = res.data
+          }).catch(e=>{
+            console.log(e)
+        })
+      },
       getOverview(){
         // alert("用户总览");
         console.log("用户总览");
@@ -385,6 +395,7 @@
         morning,
         afternoon,
         evening,
+        realName: '',
         user: {
           investAmount: 12869,
           loanAmount: 19857,

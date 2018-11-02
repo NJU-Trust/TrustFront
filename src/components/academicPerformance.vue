@@ -197,6 +197,9 @@
     <div id="interGraph">
       <div id="myGraph" style="height: 600px;width:88%;"></div>
     </div>
+    <div>
+      组内罚分: {{ group_rating }}
+    </div>
   </div>
 </template>
 
@@ -220,6 +223,8 @@
       var person;
       var average;
       return{
+        group_rating: 0,
+
         user:{
           schoolClass: '985',
           majorCondition: '综合',
