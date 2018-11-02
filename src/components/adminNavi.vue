@@ -19,8 +19,8 @@
                 <a  v-on:click="logout"><el-dropdown-item >退出登录</el-dropdown-item></a>
               </el-dropdown-menu>
             </el-dropdown>
-            <li id="last" style="float: right;min-width: 8%;"><a id="signup" href="/signup">注册</a></li>
-            <li id="secondLast" style="float: right;min-width: 8%;"><a id="login" href="/login">登录</a></li>
+            <!--<li id="last" style="float: right;min-width: 8%;"><a id="signup" href="/signup">注册</a></li>-->
+            <!--<li id="secondLast" style="float: right;min-width: 8%;"><a id="login" href="/login">登录</a></li>-->
           </ul>
         </div>
       </div>

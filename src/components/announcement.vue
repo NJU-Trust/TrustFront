@@ -3,16 +3,11 @@
     <h2>Trust平台公告</h2>
     <div id="announceBox" ref="announceBox">
       <ul id="con1" ref="con1">
-        <li><a href="#">1.关于平台后台修复通知</a><span>2018-09-09</span></li>
-        <li><a href="#">2.平台交易利息计算细则</a><span>2018-09-07</span></li>
-        <li><a href="#">3.2018年8月交易违约名单公示</a><span>2018-09-01</span></li>
-        <li><a href="#">4.关于用户完善个人信息通知</a><span>2018-08-19</span></li>
-        <li><a href="#">5.平台信用分调整规则公示</a><span>2018-08-12</span></li>
-        <li><a href="#">6.2018年7月交易违约名单公示</a><span>2018-08-01</span></li>
-        <li><a href="#">7.各信用评级对应额度公示</a><span>2018-07-18</span></li>
-        <li><a href="#">8.2018年6月交易违约名单公示</a><span>2018-07-01</span></li>
-        <li><a href="#">9.关于失物/寻物页面更新的说明</a><span>2018-06-25</span></li>
-        <li><a href="#">10.标的内容限制说明</a><span>2018-06-22</span></li>
+        <li><a href="/guide">1.关于平台后台</a><span>2018-09-09</span></li>
+        <li><a href="/guide">2.平台交易利息计算细则</a><span>2018-09-07</span></li>
+        <li><a href="/guide">3.平台信用分调整规则公示</a><span>2018-08-12</span></li>
+        <li><a href="/guide">4.各信用评级对应额度公示</a><span>2018-07-18</span></li>
+        <li><a href="/notice">5.关于失物/寻物页面</a><span>2018-06-25</span></li>
       </ul>
       <ul id="con2" ref="con2"></ul>
     </div>

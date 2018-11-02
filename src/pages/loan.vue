@@ -30,12 +30,12 @@
 
                 <div class="primary_panel" style="margin-top: 20px">
 
-                  <el-form id="primary" ref="form1" :model="form1" label-width="100px" class="primary_info " >
+                  <el-form id="primary" :rules="rules1" ref="form1" :model="form1" label-width="100px" class="primary_info " >
                     <div class="title">基本信息</div>
 
                     <el-form-item label="项目名称">
                       <div>
-                        <el-input placeholder="请填写项目名称" v-model="form1.name"></el-input>
+                        <el-input placeholder="请填写项目名称" v-model="form1.name" prop="name"></el-input>
                         <div style="color:red;font-size: 12px;">*项目名称不超过20字 例：2018年9月16号Jessie J演唱会</div>
                       </div>
 
@@ -43,14 +43,14 @@
 
                     <el-form-item label="开始日期">
                       <div>
-                        <el-date-picker type="date" placeholder="选择开始日期" v-model="form1.date1" style="width: 100%;"></el-date-picker>
+                        <el-date-picker type="date" placeholder="选择开始日期" v-model="form1.date1" prop="date1" style="width: 100%;"></el-date-picker>
                         <div style="color:red;font-size: 12px;">*标的审核通过后的发布时间</div>
                       </div>
 
                     </el-form-item>
                     <el-form-item label="截止日期">
                       <div>
-                        <el-date-picker type="date" placeholder="选择截止日期" v-model="form1.date2" style="width: 100%;"></el-date-picker>
+                        <el-date-picker type="date" placeholder="选择截止日期" v-model="form1.date2" prop="date2" style="width: 100%;"></el-date-picker>
                         <div style="color:red;font-size: 12px;">*标的发布后筹资结束时间</div>
                       </div>
 
@@ -58,7 +58,7 @@
 
                     <el-form-item label="最低达标率">
                       <div>
-                        <el-input placeholder="请填写项目最低达标率" v-model="form1.least_rate"></el-input>
+                        <el-input placeholder="请填写项目最低达标率" prop="least_rate" v-model="form1.least_rate"></el-input>
                         <div style="color:red;font-size: 12px;">*截止日期时，标的已筹金额占目标金额的最低比率</div>
                       </div>
 
@@ -189,95 +189,103 @@
 
                   </el-form>
 
-                  <div id="test" style="display: flex">
-                    <el-form id="small_loan" ref="form3" :model="form3" label-width="100px" class="primary_info" style="display: none">
-                      <div class="title">关于贷款</div>
-                      <el-form-item
-                        label="拆借金额"
-                        :rules="[
+                  <el-row id="test" >
+
+                    <el-col :span="12">
+                      <el-form id="small_loan" ref="form3" :model="form3" label-width="100px" class="primary_info" style="display: none">
+                        <div class="title">关于贷款</div>
+                        <el-form-item
+                          label="拆借金额"
+                          :rules="[
                             { required: true, message: '金额不能为空'},
                             { type: 'number', message: '金额必须为数字值'}
                          ]">
-                        <div>
-                          <el-input placeholder="请填写拆借金额" v-model="form3.money"></el-input>
-                          <!--<div style="color:red;font-size: 12px;">*借款额度剩余{{limit}}</div>-->
-                        </div>
-                      </el-form-item>
-                      <el-form-item label="还款期数">
-                        <div>
-                          <el-input placeholder="请填写还款期数(一期时长为一个月)" v-model="form3.period"></el-input>
-                          <div style="color:red;font-size: 12px;">*小额贷款最长期限为1年，建议范围为[{{form3.lowerPeriod}},{{form3.upperPeriod}}]</div>
-                        </div>
-
-                      </el-form-item>
-                      <el-form-item label="基准还款利率">
-                        <div>
-                          <el-input placeholder="请设置还款利率" v-model="form3.rate"></el-input>
-                          <div style="color:red;font-size: 12px;">*利率上下限为[{{form3.lowerRate}},{{form3.upperRate}}],建议设置为{{form3.recommendRate}}</div>
-                        </div>
-                      </el-form-item>
-
-                      <el-form-item label="还款方式">
-                        <el-collapse v-model="form3.activeName" accordion>
-
-                          <div @click="get_scheme(1)">
-                            <el-collapse-item title="等额本息" name="1">
-                              <div>每月偿还等同数额的贷款；</div>
-                              <div>还款期限内压力平分，总利息高于等额本金。</div>
-                            </el-collapse-item>
+                          <div>
+                            <el-input placeholder="请填写拆借金额" v-model="form3.money"></el-input>
+                            <!--<div style="color:red;font-size: 12px;">*借款额度剩余{{limit}}</div>-->
                           </div>
-
-                          <div @click="get_scheme(2)">
-                            <el-collapse-item title="等额本金" name="2" >
-                              <div>贷款数总额等分，每月的还款本金额固定，利息越来越少；</div>
-                              <div>起初还款压力较大，但是随着时间的推移每月的还款数也越来越少。</div>
-                            </el-collapse-item>
-                          </div>
-
-                          <div @click="get_scheme(3)">
-                            <el-collapse-item title="一次性还本付息" name="3">
-                              <div>贷款到期后一次性归还本金和利息；</div>
-                              <div>还款期压力大，操作间大，借款人资金调整弹性大，资金利用时间长</div>
-                            </el-collapse-item>
-                          </div>
-
-                          <div @click="get_scheme(4)">
-                            <el-collapse-item title="先息后本" name="4">
-                              <div>每月只需支付利息，期末还清本金；</div>
-                              <div>资金利用时间长。</div>
-                            </el-collapse-item>
-                          </div>
-
-                        </el-collapse>
-                      </el-form-item>
-
-                      <!--<el-form-item>
-                        <div v-if="this.form3.activeName==='1'">
-                          <evaluate :scheme="scheme"></evaluate>
-                        </div>
-                        <div v-else-if="this.form3.activeName==='2'">
-                          <evaluate :scheme="scheme"></evaluate>
-                        </div>
-                        <div v-else-if="this.form3.activeName==='3'">
-                          C
-                        </div>
-                        <div v-else-if="this.form3.activeName==='4'">
-                          <evaluate :scheme="scheme"></evaluate>
-                        </div>
-                      </el-form-item>-->
-
-                      <div style="padding-top: 30px">
-                        <el-form-item style="padding-left: 20%;">
-                          <el-button type="primary" @click="onSubmit">确定贷款</el-button>
-                          <el-button @click="clean_form3">清空重写</el-button>
                         </el-form-item>
-                      </div>
+                        <el-form-item label="还款期数">
+                          <div>
+                            <el-input placeholder="请填写还款期数(一期时长为一个月)" v-model="form3.period"></el-input>
+                            <div style="color:red;font-size: 12px;">*小额贷款最长期限为1年，建议范围为[{{form3.lowerPeriod}},{{form3.upperPeriod}}]</div>
+                          </div>
 
-                    </el-form>
-                    <el-form id="evaluate" class="evaluate" style="background-color: white">
-                      <evaluate ref="evaluate" :scheme="scheme" v-on:getSchemeEvent="getScheme"></evaluate>
-                    </el-form>
-                  </div>
+                        </el-form-item>
+                        <el-form-item label="基准还款利率">
+                          <div>
+                            <el-input placeholder="请设置还款利率" v-model="form3.rate"></el-input>
+                            <div style="color:red;font-size: 12px;">*利率上下限为[{{form3.lowerRate}},{{form3.upperRate}}],建议设置为{{form3.recommendRate}}</div>
+                          </div>
+                        </el-form-item>
+
+                        <el-form-item label="还款方式">
+                          <el-collapse v-model="form3.activeName" accordion>
+
+                            <div @click="get_scheme(1)">
+                              <el-collapse-item title="等额本息" name="1">
+                                <div>每月偿还等同数额的贷款；</div>
+                                <div>还款期限内压力平分，总利息高于等额本金。</div>
+                              </el-collapse-item>
+                            </div>
+
+                            <div @click="get_scheme(2)">
+                              <el-collapse-item title="等额本金" name="2" >
+                                <div>贷款数总额等分，每月的还款本金额固定，利息越来越少；</div>
+                                <div>起初还款压力较大，但是随着时间的推移每月的还款数也越来越少。</div>
+                              </el-collapse-item>
+                            </div>
+
+                            <div @click="get_scheme(3)">
+                              <el-collapse-item title="一次性还本付息" name="3">
+                                <div>贷款到期后一次性归还本金和利息；</div>
+                                <div>还款期压力大，操作间大，借款人资金调整弹性大，资金利用时间长</div>
+                              </el-collapse-item>
+                            </div>
+
+                            <div @click="get_scheme(4)">
+                              <el-collapse-item title="先息后本" name="4">
+                                <div>每月只需支付利息，期末还清本金；</div>
+                                <div>资金利用时间长。</div>
+                              </el-collapse-item>
+                            </div>
+
+                          </el-collapse>
+                        </el-form-item>
+
+                        <!--<el-form-item>
+                          <div v-if="this.form3.activeName==='1'">
+                            <evaluate :scheme="scheme"></evaluate>
+                          </div>
+                          <div v-else-if="this.form3.activeName==='2'">
+                            <evaluate :scheme="scheme"></evaluate>
+                          </div>
+                          <div v-else-if="this.form3.activeName==='3'">
+                            C
+                          </div>
+                          <div v-else-if="this.form3.activeName==='4'">
+                            <evaluate :scheme="scheme"></evaluate>
+                          </div>
+                        </el-form-item>-->
+
+                        <div style="padding-top: 30px">
+                          <el-form-item style="padding-left: 20%;">
+                            <el-button type="primary" @click="onSubmit">确定贷款</el-button>
+                            <el-button @click="clean_form3">清空重写</el-button>
+                          </el-form-item>
+                        </div>
+
+                      </el-form>
+                    </el-col>
+
+                    <el-col :span="12">
+                      <el-form id="evaluate" class="evaluate" style="background-color: white">
+                        <evaluate ref="evaluate" :scheme="scheme" v-on:getSchemeEvent="getScheme"></evaluate>
+                      </el-form>
+                    </el-col>
+
+
+                  </el-row>
                 </div>
 
                 <div style="margin: auto;width: 210px;padding-top: 40px;padding-bottom: 20px">
@@ -822,6 +830,20 @@
               date2: '',
               least_rate: ''
             },
+            rules1:{
+              name:[
+
+              ],
+              date1:[
+
+              ],
+              date2:[
+
+              ],
+              least_rate:[
+
+              ]
+            },
             form2: {
               user: '',
               region: '',
@@ -999,8 +1021,10 @@
     @-webkit-keyframes move_left /* Safari and Chrome */
     {
       0%   {left:0;  width:750px;}
-      100% {left:-10%; width:40%;}
+      100% {left:-10%; width:85%;height: 850px}
     }
+
+
 
     .evaluate{
       display: none;
@@ -1009,6 +1033,8 @@
       border:2px #d6d6d6 solid;
       border-radius:20px;
       padding:30px 20px 20px 20px;
+      width:94%;
+      height: 850px;
     }
 
     .test{
