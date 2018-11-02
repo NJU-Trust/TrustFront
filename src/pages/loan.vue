@@ -31,35 +31,39 @@
                 <div class="primary_panel" style="margin-top: 20px">
 
                   <el-form id="primary" :rules="rules1" ref="form1" :model="form1" label-width="100px" class="primary_info " >
+                    <el-form>
+
+                    </el-form>
                     <div class="title">基本信息</div>
 
-                    <el-form-item label="项目名称">
+                    <el-form-item label="项目名称" prop="name">
                       <div>
-                        <el-input placeholder="请填写项目名称" v-model="form1.name" prop="name"></el-input>
-                        <div style="color:red;font-size: 12px;">*项目名称不超过20字 例：2018年9月16号Jessie J演唱会</div>
+                        <el-input placeholder="请填写项目名称" v-model="form1.name" ></el-input>
+                        <div class="tips">*项目名称不超过20字 例：2018年9月16号Jessie J演唱会</div>
                       </div>
 
                     </el-form-item>
 
-                    <el-form-item label="开始日期">
+                    <el-form-item label="开始日期" prop="date1">
                       <div>
-                        <el-date-picker type="date" placeholder="选择开始日期" v-model="form1.date1" prop="date1" style="width: 100%;"></el-date-picker>
-                        <div style="color:red;font-size: 12px;">*标的审核通过后的发布时间</div>
+                        <el-date-picker type="date" placeholder="选择开始日期" v-model="form1.date1"  style="width: 100%;"></el-date-picker>
+                        <div class="tips">*标的审核通过后的发布时间</div>
                       </div>
 
                     </el-form-item>
-                    <el-form-item label="截止日期">
+                    <el-form-item label="截止日期" prop="date2">
                       <div>
-                        <el-date-picker type="date" placeholder="选择截止日期" v-model="form1.date2" prop="date2" style="width: 100%;"></el-date-picker>
-                        <div style="color:red;font-size: 12px;">*标的发布后筹资结束时间</div>
+                        <el-date-picker type="date" placeholder="选择截止日期" v-model="form1.date2"  style="width: 100%;"></el-date-picker>
+                        <div class="tips">*标的发布后筹资结束时间</div>
                       </div>
 
                     </el-form-item>
 
-                    <el-form-item label="最低达标率">
+                    <el-form-item label="最低达标率" prop="least_rate">
                       <div>
-                        <el-input placeholder="请填写项目最低达标率" prop="least_rate" v-model="form1.least_rate"></el-input>
-                        <div style="color:red;font-size: 12px;">*截止日期时，标的已筹金额占目标金额的最低比率</div>
+                        <el-input-number v-model="form1.least_rate" :precision="2" :step="0.01" :max="1" ></el-input-number>
+                        <!--<el-input placeholder="请填写项目最低达标率" prop="least_rate" v-model="form1.least_rate"></el-input>-->
+                        <div class="tips">*截止日期时，标的已筹金额占目标金额的最低比率</div>
                       </div>
 
                     </el-form-item>
@@ -67,25 +71,27 @@
                     <hr>
 
                     <div class="title">资金去向</div>
-                    <el-form-item label="资金用途分类">
+                    <el-form-item label="资金用途分类" prop="selectedOptions2">
                       <el-cascader
                         expand-trigger="hover"
-                        :options="options"
-                        v-model="selectedOptions2"
-                        @change="handleChange">
+                        :options="form1.options"
+                        v-model="form1.selectedOptions2"
+                        @change="handleChange"
+                      >
                       </el-cascader>
 
                     </el-form-item>
 
-                    <el-form-item label="资金用途详述">
+                    <el-form-item label="资金用途详述" prop="textarea1">
                       <div>
                         <el-input
                           type="textarea"
                           :rows="4"
                           placeholder="请输入内容"
-                          v-model="form2.textarea1">
+                          v-model="form1.textarea1"
+                        >
                         </el-input>
-                        <div style="color:red;font-size: 12px;">*不超过100字</div>
+                        <div class="tips">*不超过100字</div>
                       </div>
                     </el-form-item>
                     <el-form-item label="上传凭证">
@@ -100,6 +106,8 @@
                         <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
                       </el-upload>
                     </el-form-item>
+
+                   <!-- <el-button @click="next">test</el-button>-->
 
                    <!-- <el-alert
                       title="设置了回调的 alert"
@@ -192,34 +200,29 @@
                   <el-row id="test" >
 
                     <el-col :span="12">
-                      <el-form id="small_loan" ref="form3" :model="form3" label-width="100px" class="primary_info" style="display: none">
+                      <el-form id="small_loan" :rules="rules3" ref="form3" :model="form3" label-width="130px" class="primary_info" style="display: none">
                         <div class="title">关于贷款</div>
-                        <el-form-item
-                          label="拆借金额"
-                          :rules="[
-                            { required: true, message: '金额不能为空'},
-                            { type: 'number', message: '金额必须为数字值'}
-                         ]">
+                        <el-form-item label="拆借金额" prop="money">
                           <div>
                             <el-input placeholder="请填写拆借金额" v-model="form3.money"></el-input>
                             <!--<div style="color:red;font-size: 12px;">*借款额度剩余{{limit}}</div>-->
                           </div>
                         </el-form-item>
-                        <el-form-item label="还款期数">
+                        <el-form-item label="还款期数" prop="period">
                           <div>
                             <el-input placeholder="请填写还款期数(一期时长为一个月)" v-model="form3.period"></el-input>
-                            <div style="color:red;font-size: 12px;">*小额贷款最长期限为1年，建议范围为[{{form3.lowerPeriod}},{{form3.upperPeriod}}]</div>
+                            <div class="tips">*小额贷款最长期限为1年，建议范围为[{{form3.lowerPeriod}},{{form3.upperPeriod}}]</div>
                           </div>
 
                         </el-form-item>
-                        <el-form-item label="基准还款利率">
+                        <el-form-item label="基准还款利率(%)" prop="rate">
                           <div>
-                            <el-input placeholder="请设置还款利率" v-model="form3.rate"></el-input>
-                            <div style="color:red;font-size: 12px;">*利率上下限为[{{form3.lowerRate}},{{form3.upperRate}}],建议设置为{{form3.recommendRate}}</div>
+                            <el-input-number v-model="form3.rate" @change="handleChange" :min="1" :max="100" label="描述文字"></el-input-number>
+                            <div class="tips">*利率上下限为[{{form3.lowerRate}},{{form3.upperRate}}],建议设置为{{form3.recommendRate}}</div>
                           </div>
                         </el-form-item>
 
-                        <el-form-item label="还款方式">
+                        <el-form-item label="还款方式" prop="activeName">
                           <el-collapse v-model="form3.activeName" accordion>
 
                             <div @click="get_scheme(1)">
@@ -270,8 +273,8 @@
 
                         <div style="padding-top: 30px">
                           <el-form-item style="padding-left: 20%;">
-                            <el-button type="primary" @click="onSubmit">确定贷款</el-button>
-                            <el-button @click="clean_form3">清空重写</el-button>
+                            <el-button type="primary" @click="checkValid">确定贷款</el-button>
+                            <el-button @click="clean_form">清空重写</el-button>
                           </el-form-item>
                         </div>
 
@@ -350,6 +353,19 @@
             alert("HELLO");
           },
 
+          checkValid(){
+            this.$refs['form3'].validate((valid) => {
+              if (valid) {
+                //this.onSubmit();
+              } else {
+                this.$message({
+                  message:"请填写完整！",
+                  type:'error',
+                });
+              }
+            });
+          },
+
           uploadSuccess(response, file, fileList) {
             console.log("uploadSuccess");
             this.proof += 'http://'+ this.url_config +   ':8000/';
@@ -372,14 +388,14 @@
             var name = this.form1.name;
             var start_time = this.form1.date1;
             var money = this.form3.money;
-            var description = this.form2.textarea1;
+            var description = this.form1.textarea1;
             var username = "test";
             var targetType = "SMALL";
             var proof = this.proof;
-            var completoinRate = this.form1.least_rate;
+            var completoinRate = this.form1.least_rate*100;
             var interestRate = this.form3.rate;
             var duration = this.form3.period;
-            var useOfFonds = this.selectedOptions2[1];
+            var useOfFonds = this.form1.selectedOptions2[1];
             var identityOption = this.layer;
             var repaymentType = this.form3.repaymentType;
 
@@ -391,14 +407,14 @@
               function (response) {
                 console.log(response.data);
                 if (response.data.success === true) {
-                  /*self.$message({
+                  self.$message({
                     message:'提交成功！',
                     type:'success',
-                  });*/
-                  alert("提交成功！");
+                  });
+                  /*alert("提交成功！");*/
                   this.$router.push({name:'homepage'});
                 }else{
-                  _this.$message({
+                  self.$message({
                     message:'提交失败！',
                     type:'error',
                   });
@@ -411,8 +427,21 @@
 
 
           },
-          clean_form3() {
-            this.form3.activeName = '';
+          clean_form() {
+            this.$refs['form3'].resetFields();
+            this.$refs['form1'].resetFields();
+            this.form2.isClicked = false;
+            this.form2.layer1 = true;
+            this.form2.layer2 = true;
+            this.form2.layer3 = true;
+            this.form2.layer4 = true;
+
+            this.active = 0;
+            document.getElementById("primary").style.display = "block";
+            document.getElementById("information").style.display = "none";
+            document.getElementById("small_loan").style.display = "none";
+            this.show_evaluate = false;
+            document.getElementById("evaluate").style.display = "none";
           },
 
           get_scheme(num) {
@@ -689,26 +718,55 @@
               this.active++;
             }
 
+            console.log("this.active:"+this.active);
+
             if (this.active === 0) {
               document.getElementById("primary").style.display = "block";
               document.getElementById("information").style.display = "none";
               document.getElementById("small_loan").style.display = "none";
             } else if (this.active === 1) {
-              document.getElementById("primary").style.display = "none";
-              document.getElementById("information").style.display = "block";
-              document.getElementById("small_loan").style.display = "none";
+
+              this.$refs['form1'].validate((valid) => {
+                if (valid) {
+                  document.getElementById("primary").style.display = "none";
+                  document.getElementById("information").style.display = "block";
+                  document.getElementById("small_loan").style.display = "none";
+                } else {
+                  console.log('error submit!!');
+                  this.active--;
+                  this.$message({
+                    message:"请填写完整！",
+                    type:'error',
+                  });
+                  return false;
+                }
+              });
+
             } else if (this.active === 2) {
-              document.getElementById("primary").style.display = "none";
-              document.getElementById("information").style.display = "none";
-              document.getElementById("small_loan").style.display = "block";
-              if (this.show_evaluate) {
-                document.getElementById("evaluate").style.display = "block";
+
+              console.log("isClicked:"+this.form2.isClicked);
+
+              if(this.form2.isClicked){
+                document.getElementById("primary").style.display = "none";
+                document.getElementById("information").style.display = "none";
+                document.getElementById("small_loan").style.display = "block";
+                if (this.show_evaluate) {
+                  document.getElementById("evaluate").style.display = "block";
+                }
+              }else{
+                this.$message({
+                  message:"请选择信息披露层级！",
+                  type:'error',
+                });
+                this.active--;
               }
+
             }
 
           },
           get_layer(num) {
             console.log(num);
+            this.form2.isClicked = true;
             if (num === 1) {
               this.layer = "ONE";
               this.form2.layer1 = true;
@@ -828,30 +886,103 @@
               name: '',
               date1: '',
               date2: '',
-              least_rate: ''
+              least_rate: 0.8,
+              textarea1:'',
+
+              options: [{
+                value: 'shop',
+                label: '购物',
+                children: [{
+                  value: '鞋帽服饰',
+                  label: '鞋帽服饰',
+                }, {
+                  value: '生活用品',
+                  label: '生活用品'
+                }, {
+                  value: '护肤美妆',
+                  label: '护肤美妆'
+                }, {
+                  value: '游戏动漫',
+                  label: '游戏动漫',
+                }, {
+                  value: '电子产品',
+                  label: '电子产品',
+                }]
+              }, {
+                value: '学习',
+                label: '学习',
+                children: [{
+                  value: '学习用品',
+                  label: '学习用品',
+                }, {
+                  value: '书籍报刊',
+                  label: '书籍报刊',
+                }, {
+                  value: '培训考证',
+                  label: '培训考证',
+                }, {
+                  value: '校际交换',
+                  label: '校际交换',
+                }]
+              }, {
+                value: '娱乐',
+                label: '娱乐',
+                children: [{
+                  value: '聚餐轰趴',
+                  label: '聚餐轰趴'
+                }, {
+                  value: '运动健身',
+                  label: '运动健身'
+                }, {
+                  value: '观看演出',
+                  label: '观看演出'
+                }, {
+                  value: '外出旅游',
+                  label: '外出旅游'
+                }]
+              }, {
+                value: '医疗',
+                label: '医疗',
+                children: [{
+                  value: '诊断治疗',
+                  label: '诊断治疗'
+                }, {
+                  value: '保健养生',
+                  label: '保健养生'
+                }]
+              }],
+              selectedOptions2: [],
             },
             rules1:{
               name:[
-
+                {required: true, message:"请输入项目名称", trigger:"blur"},
+                {min:0, max:20, message:"长度不超过20个字符", trigger:"blur"}
               ],
               date1:[
-
+                { type: 'date', required: true, message: '请选择日期', trigger: 'change'}
               ],
               date2:[
-
+                { type: 'date', required: true, message: '请选择日期', trigger: 'change'}
               ],
               least_rate:[
-
+                {required: true, message:"请填写最低达标率", trigger:"change"},
+              ],
+              selectedOptions2:[
+                {required: true, message:"请选择资金用途分类", trigger:"change"},
+              ],
+              textarea1:[
+                {required: true, message:"请填写资金用途详述", trigger:"blur"},
+                {min:0, max:100, message:"长度不超过100个字符", trigger:"blur"}
               ]
             },
             form2: {
               user: '',
               region: '',
-              textarea1: '',
               layer1: true,
               layer2: true,
               layer3: true,
               layer4: true,
+              isClicked:false
             },
             form3: {
               money: '',
@@ -865,6 +996,20 @@
               lowerPeriod: 0,
               upperPeriod: 0,
               repaymentType: '',
+            },
+            rules3:{
+              money:[
+                {required: true, message:"请输入借款金额", trigger:"blur"},
+              ],
+              period:[
+                {required: true, message:"请选择还款期数", trigger:"blur"},
+              ],
+              rate:[
+                {required: true, message:"请填写还款利率", trigger:"change"},
+              ],
+              activeName:[
+                {required: true, message:"请选择还款方式", trigger:"change"},
+              ],
 
             },
 
@@ -898,69 +1043,6 @@
 
             layer: 'ONE',
 
-            options: [{
-              value: 'shop',
-              label: '购物',
-              children: [{
-                value: '鞋帽服饰',
-                label: '鞋帽服饰',
-              }, {
-                value: '生活用品',
-                label: '生活用品'
-              }, {
-                value: '护肤美妆',
-                label: '护肤美妆'
-              }, {
-                value: '游戏动漫',
-                label: '游戏动漫',
-              }, {
-                value: '电子产品',
-                label: '电子产品',
-              }]
-            }, {
-              value: '学习',
-              label: '学习',
-              children: [{
-                value: '学习用品',
-                label: '学习用品',
-              }, {
-                value: '书籍报刊',
-                label: '书籍报刊',
-              }, {
-                value: '培训考证',
-                label: '培训考证',
-              }, {
-                value: '校际交换',
-                label: '校际交换',
-              }]
-            }, {
-              value: '娱乐',
-              label: '娱乐',
-              children: [{
-                value: '聚餐轰趴',
-                label: '聚餐轰趴'
-              }, {
-                value: '运动健身',
-                label: '运动健身'
-              }, {
-                value: '观看演出',
-                label: '观看演出'
-              }, {
-                value: '外出旅游',
-                label: '外出旅游'
-              }]
-            }, {
-              value: '医疗',
-              label: '医疗',
-              children: [{
-                value: '诊断治疗',
-                label: '诊断治疗'
-              }, {
-                value: '保健养生',
-                label: '保健养生'
-              }]
-            }],
-            selectedOptions2: [],
             scrollReveal: scrollReveal(),
             show_evaluate: false,
 
@@ -1033,13 +1115,19 @@
       border:2px #d6d6d6 solid;
       border-radius:20px;
       padding:30px 20px 20px 20px;
-      width:94%;
+      width:93%;
       height: 850px;
+    }
+
+    .tips{
+      color:#6c9ab7;
+      font-size: 12px;
     }
 
     .test{
       opacity: 0.5;
     }
+
 
 
 </style>
