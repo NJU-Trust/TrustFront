@@ -30,36 +30,40 @@
 
               <div class="primary_panel" style="margin-top: 20px">
 
-                <el-form id="primary" ref="form1" :model="form1" label-width="100px" class="primary_info " >
+                <el-form id="primary" :rules="rules1" ref="form1" :model="form1" label-width="100px" class="primary_info " >
+                  <el-form>
+
+                  </el-form>
                   <div class="title">基本信息</div>
 
-                  <el-form-item label="项目名称">
+                  <el-form-item label="项目名称" prop="name">
                     <div>
-                      <el-input placeholder="请填写项目名称" v-model="form1.name"></el-input>
-                      <div style="color:red;font-size: 12px;">*项目名称不超过20字 例：2018年9月16号Jessie J演唱会</div>
+                      <el-input placeholder="请填写项目名称" v-model="form1.name" ></el-input>
+                      <div class="tips">*项目名称不超过20字 例：2018年9月16号Jessie J演唱会</div>
                     </div>
 
                   </el-form-item>
 
-                  <el-form-item label="开始日期">
+                  <el-form-item label="开始日期" prop="date1">
                     <div>
-                      <el-date-picker type="date" placeholder="选择开始日期" v-model="form1.date1" style="width: 100%;"></el-date-picker>
-                      <div style="color:red;font-size: 12px;">*标的审核通过后的发布时间</div>
+                      <el-date-picker type="date" placeholder="选择开始日期" v-model="form1.date1"  style="width: 100%;"></el-date-picker>
+                      <div class="tips">*标的审核通过后的发布时间</div>
                     </div>
 
                   </el-form-item>
-                  <el-form-item label="截止日期">
+                  <el-form-item label="截止日期" prop="date2">
                     <div>
-                      <el-date-picker type="date" placeholder="选择截止日期" v-model="form1.date2" style="width: 100%;"></el-date-picker>
-                      <div style="color:red;font-size: 12px;">*标的发布后筹资结束时间</div>
+                      <el-date-picker type="date" placeholder="选择截止日期" v-model="form1.date2"  style="width: 100%;"></el-date-picker>
+                      <div class="tips">*标的发布后筹资结束时间</div>
                     </div>
 
                   </el-form-item>
 
-                  <el-form-item label="最低达标率">
+                  <el-form-item label="最低达标率" prop="least_rate">
                     <div>
-                      <el-input placeholder="请填写项目最低达标率" v-model="form1.least_rate"></el-input>
-                      <div style="color:red;font-size: 12px;">*截止日期时，标的已筹金额占目标金额的最低比率</div>
+                      <el-input-number v-model="form1.least_rate" :precision="2" :step="0.01" :max="1" ></el-input-number>
+                      <!--<el-input placeholder="请填写项目最低达标率" prop="least_rate" v-model="form1.least_rate"></el-input>-->
+                      <div class="tips">*截止日期时，标的已筹金额占目标金额的最低比率</div>
                     </div>
 
                   </el-form-item>
@@ -67,25 +71,27 @@
                   <hr>
 
                   <div class="title">资金去向</div>
-                  <el-form-item label="资金用途分类">
+                  <el-form-item label="资金用途分类" prop="selectedOptions2">
                     <el-cascader
                       expand-trigger="hover"
-                      :options="options"
-                      v-model="selectedOptions2"
-                      @change="handleChange">
+                      :options="form1.options"
+                      v-model="form1.selectedOptions2"
+                      @change="handleChange"
+                    >
                     </el-cascader>
 
                   </el-form-item>
 
-                  <el-form-item label="资金用途详述">
+                  <el-form-item label="资金用途详述" prop="textarea1">
                     <div>
                       <el-input
                         type="textarea"
                         :rows="4"
                         placeholder="请输入内容"
-                        v-model="form2.textarea1">
+                        v-model="form1.textarea1"
+                      >
                       </el-input>
-                      <div style="color:red;font-size: 12px;">*不超过100字</div>
+                      <div class="tips">*不超过100字</div>
                     </div>
                   </el-form-item>
                   <el-form-item label="上传凭证">
@@ -100,6 +106,8 @@
                       <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
                     </el-upload>
                   </el-form-item>
+
+                  <!-- <el-button @click="next">test</el-button>-->
 
                   <!-- <el-alert
                      title="设置了回调的 alert"
@@ -189,95 +197,98 @@
 
                 </el-form>
 
-                <div id="test" style="display: flex">
-                  <el-form id="small_loan" ref="form3" :model="form3" label-width="100px" class="primary_info" style="display: none">
-                    <div class="title">关于贷款</div>
-                    <el-form-item
-                      label="拆借金额"
-                      :rules="[
-                            { required: true, message: '金额不能为空'},
-                            { type: 'number', message: '金额必须为数字值'}
-                         ]">
-                      <div>
-                        <el-input placeholder="请填写拆借金额" v-model="form3.money"></el-input>
-                        <!--<div style="color:red;font-size: 12px;">*借款额度剩余{{limit}}</div>-->
-                      </div>
-                    </el-form-item>
-                    <el-form-item label="还款期数">
-                      <div>
-                        <el-input placeholder="请填写还款期数(一期时长为一个月)" v-model="form3.period"></el-input>
-                        <div style="color:red;font-size: 12px;">*小额贷款最长期限为1年，建议范围为[{{form3.lowerPeriod}},{{form3.upperPeriod}}]</div>
-                      </div>
+                <el-row id="test" >
 
-                    </el-form-item>
-                    <el-form-item label="基准还款利率">
-                      <div>
-                        <el-input placeholder="请设置还款利率" v-model="form3.rate"></el-input>
-                        <div style="color:red;font-size: 12px;">*利率上下限为[{{form3.lowerRate}},{{form3.upperRate}}],建议设置为{{form3.recommendRate}}</div>
-                      </div>
-                    </el-form-item>
-
-                    <el-form-item label="还款方式">
-                      <el-collapse v-model="form3.activeName" accordion>
-
-                        <div @click="get_scheme(1)">
-                          <el-collapse-item title="等额本息" name="1">
-                            <div>每月偿还等同数额的贷款；</div>
-                            <div>还款期限内压力平分，总利息高于等额本金。</div>
-                          </el-collapse-item>
+                  <el-col :span="12">
+                    <el-form id="small_loan" :rules="rules3" ref="form3" :model="form3" label-width="130px" class="primary_info" style="display: none">
+                      <div class="title">关于贷款</div>
+                      <el-form-item label="拆借金额" prop="money">
+                        <div>
+                          <el-input placeholder="请填写拆借金额" v-model="form3.money"></el-input>
+                          <!--<div style="color:red;font-size: 12px;">*借款额度剩余{{limit}}</div>-->
                         </div>
-
-                        <div @click="get_scheme(2)">
-                          <el-collapse-item title="等额本金" name="2" >
-                            <div>贷款数总额等分，每月的还款本金额固定，利息越来越少；</div>
-                            <div>起初还款压力较大，但是随着时间的推移每月的还款数也越来越少。</div>
-                          </el-collapse-item>
-                        </div>
-
-                        <div @click="get_scheme(3)">
-                          <el-collapse-item title="一次性还本付息" name="3">
-                            <div>贷款到期后一次性归还本金和利息；</div>
-                            <div>还款期压力大，操作间大，借款人资金调整弹性大，资金利用时间长</div>
-                          </el-collapse-item>
-                        </div>
-
-                        <div @click="get_scheme(4)">
-                          <el-collapse-item title="先息后本" name="4">
-                            <div>每月只需支付利息，期末还清本金；</div>
-                            <div>资金利用时间长。</div>
-                          </el-collapse-item>
-                        </div>
-
-                      </el-collapse>
-                    </el-form-item>
-
-                    <!--<el-form-item>
-                      <div v-if="this.form3.activeName==='1'">
-                        <evaluate :scheme="scheme"></evaluate>
-                      </div>
-                      <div v-else-if="this.form3.activeName==='2'">
-                        <evaluate :scheme="scheme"></evaluate>
-                      </div>
-                      <div v-else-if="this.form3.activeName==='3'">
-                        C
-                      </div>
-                      <div v-else-if="this.form3.activeName==='4'">
-                        <evaluate :scheme="scheme"></evaluate>
-                      </div>
-                    </el-form-item>-->
-
-                    <div style="padding-top: 30px">
-                      <el-form-item style="padding-left: 20%;">
-                        <el-button type="primary" @click="onSubmit">确定贷款</el-button>
-                        <el-button @click="clean_form3">清空重写</el-button>
                       </el-form-item>
-                    </div>
+                      <el-form-item label="还款期数" prop="period">
+                        <div>
+                          <el-input placeholder="请填写还款期数(一期时长为一个月)" v-model="form3.period"></el-input>
+                          <div class="tips">*小额贷款最长期限为1年，建议范围为[{{form3.lowerPeriod}},{{form3.upperPeriod}}]</div>
+                        </div>
 
-                  </el-form>
-                  <el-form id="evaluate" class="evaluate" style="background-color: white">
-                    <evaluate ref="evaluate" :scheme="scheme" v-on:getSchemeEvent="getScheme"></evaluate>
-                  </el-form>
-                </div>
+                      </el-form-item>
+                      <el-form-item label="基准还款利率(%)" prop="rate">
+                        <div>
+                          <el-input-number v-model="form3.rate" @change="handleChange" :min="1" :max="100" label="描述文字"></el-input-number>
+                          <div class="tips">*利率上下限为[{{form3.lowerRate}},{{form3.upperRate}}],建议设置为{{form3.recommendRate}}</div>
+                        </div>
+                      </el-form-item>
+
+                      <el-form-item label="还款方式" prop="activeName">
+                        <el-collapse v-model="form3.activeName" accordion>
+
+                          <div @click="get_scheme(1)">
+                            <el-collapse-item title="等额本息" name="1">
+                              <div>每月偿还等同数额的贷款；</div>
+                              <div>还款期限内压力平分，总利息高于等额本金。</div>
+                            </el-collapse-item>
+                          </div>
+
+                          <div @click="get_scheme(2)">
+                            <el-collapse-item title="等额本金" name="2" >
+                              <div>贷款数总额等分，每月的还款本金额固定，利息越来越少；</div>
+                              <div>起初还款压力较大，但是随着时间的推移每月的还款数也越来越少。</div>
+                            </el-collapse-item>
+                          </div>
+
+                          <div @click="get_scheme(3)">
+                            <el-collapse-item title="一次性还本付息" name="3">
+                              <div>贷款到期后一次性归还本金和利息；</div>
+                              <div>还款期压力大，操作间大，借款人资金调整弹性大，资金利用时间长</div>
+                            </el-collapse-item>
+                          </div>
+
+                          <div @click="get_scheme(4)">
+                            <el-collapse-item title="先息后本" name="4">
+                              <div>每月只需支付利息，期末还清本金；</div>
+                              <div>资金利用时间长。</div>
+                            </el-collapse-item>
+                          </div>
+
+                        </el-collapse>
+                      </el-form-item>
+
+                      <!--<el-form-item>
+                        <div v-if="this.form3.activeName==='1'">
+                          <evaluate :scheme="scheme"></evaluate>
+                        </div>
+                        <div v-else-if="this.form3.activeName==='2'">
+                          <evaluate :scheme="scheme"></evaluate>
+                        </div>
+                        <div v-else-if="this.form3.activeName==='3'">
+                          C
+                        </div>
+                        <div v-else-if="this.form3.activeName==='4'">
+                          <evaluate :scheme="scheme"></evaluate>
+                        </div>
+                      </el-form-item>-->
+
+                      <div style="padding-top: 30px">
+                        <el-form-item style="padding-left: 20%;">
+                          <el-button type="primary" @click="checkValid">确定贷款</el-button>
+                          <el-button @click="clean_form">清空重写</el-button>
+                        </el-form-item>
+                      </div>
+
+                    </el-form>
+                  </el-col>
+
+                  <el-col :span="12">
+                    <el-form id="evaluate" class="evaluate" style="background-color: white">
+                      <evaluate ref="evaluate" :scheme="scheme" v-on:getSchemeEvent="getScheme"></evaluate>
+                    </el-form>
+                  </el-col>
+
+
+                </el-row>
               </div>
 
               <div style="margin: auto;width: 210px;padding-top: 40px;padding-bottom: 20px">
@@ -313,7 +324,7 @@
   import scrollReveal from 'scrollreveal'
 
   export default {
-    name: "large-loan",
+    name: "loan",
     components:{
       ElCard,
       navi,
@@ -342,6 +353,19 @@
         alert("HELLO");
       },
 
+      checkValid(){
+        this.$refs['form3'].validate((valid) => {
+          if (valid) {
+            //this.onSubmit();
+          } else {
+            this.$message({
+              message:"请填写完整！",
+              type:'error',
+            });
+          }
+        });
+      },
+
       uploadSuccess(response, file, fileList) {
         console.log("uploadSuccess");
         this.proof += 'http://'+ this.url_config +   ':8000/';
@@ -364,14 +388,14 @@
         var name = this.form1.name;
         var start_time = this.form1.date1;
         var money = this.form3.money;
-        var description = this.form2.textarea1;
+        var description = this.form1.textarea1;
         var username = "test";
-        var targetType = "LARGE";
+        var targetType = "SMALL";
         var proof = this.proof;
-        var completoinRate = this.form1.least_rate;
+        var completoinRate = this.form1.least_rate*100;
         var interestRate = this.form3.rate;
         var duration = this.form3.period;
-        var useOfFonds = this.selectedOptions2[1];
+        var useOfFonds = this.form1.selectedOptions2[1];
         var identityOption = this.layer;
         var repaymentType = this.form3.repaymentType;
 
@@ -383,14 +407,14 @@
           function (response) {
             console.log(response.data);
             if (response.data.success === true) {
-              /*self.$message({
+              self.$message({
                 message:'提交成功！',
                 type:'success',
-              });*/
-              alert("提交成功！");
+              });
+              /*alert("提交成功！");*/
               this.$router.push({name:'homepage'});
             }else{
-              _this.$message({
+              self.$message({
                 message:'提交失败！',
                 type:'error',
               });
@@ -403,8 +427,21 @@
 
 
       },
-      clean_form3() {
-        this.form3.activeName = '';
+      clean_form() {
+        this.$refs['form3'].resetFields();
+        this.$refs['form1'].resetFields();
+        this.form2.isClicked = false;
+        this.form2.layer1 = true;
+        this.form2.layer2 = true;
+        this.form2.layer3 = true;
+        this.form2.layer4 = true;
+
+        this.active = 0;
+        document.getElementById("primary").style.display = "block";
+        document.getElementById("information").style.display = "none";
+        document.getElementById("small_loan").style.display = "none";
+        this.show_evaluate = false;
+        document.getElementById("evaluate").style.display = "none";
       },
 
       get_scheme(num) {
@@ -412,6 +449,7 @@
         this.visible = true;
 
         this.scheme.show_table = true;
+        document.getElementById("steps").style.paddingLeft = "14.5%";
 
         var money = parseFloat(this.form3.money);
         var period = parseInt(this.form3.period);
@@ -665,6 +703,7 @@
           document.getElementById("small_loan").style.display = "none";
           document.getElementById("evaluate").style.display = "none";
         } else if (this.active === 1) {
+          document.getElementById("steps").style.paddingLeft = "5.5%";
           document.getElementById("primary").style.display = "none";
           document.getElementById("information").style.display = "block";
           document.getElementById("small_loan").style.display = "none";
@@ -681,26 +720,56 @@
           this.active++;
         }
 
+        console.log("this.active:"+this.active);
+
         if (this.active === 0) {
           document.getElementById("primary").style.display = "block";
           document.getElementById("information").style.display = "none";
           document.getElementById("small_loan").style.display = "none";
         } else if (this.active === 1) {
-          document.getElementById("primary").style.display = "none";
-          document.getElementById("information").style.display = "block";
-          document.getElementById("small_loan").style.display = "none";
+
+          this.$refs['form1'].validate((valid) => {
+            if (valid) {
+              document.getElementById("primary").style.display = "none";
+              document.getElementById("information").style.display = "block";
+              document.getElementById("small_loan").style.display = "none";
+            } else {
+              console.log('error submit!!');
+              this.active--;
+              this.$message({
+                message:"请填写完整！",
+                type:'error',
+              });
+              return false;
+            }
+          });
+
         } else if (this.active === 2) {
-          document.getElementById("primary").style.display = "none";
-          document.getElementById("information").style.display = "none";
-          document.getElementById("small_loan").style.display = "block";
-          if (this.show_evaluate) {
-            document.getElementById("evaluate").style.display = "block";
+
+          console.log("isClicked:"+this.form2.isClicked);
+
+          if(this.form2.isClicked){
+            document.getElementById("primary").style.display = "none";
+            document.getElementById("information").style.display = "none";
+            document.getElementById("small_loan").style.display = "block";
+            if (this.show_evaluate) {
+              document.getElementById("evaluate").style.display = "block";
+              document.getElementById("steps").style.paddingLeft = "12.5%";
+            }
+          }else{
+            this.$message({
+              message:"请选择信息披露层级！",
+              type:'error',
+            });
+            this.active--;
           }
+
         }
 
       },
       get_layer(num) {
         console.log(num);
+        this.form2.isClicked = true;
         if (num === 1) {
           this.layer = "ONE";
           this.form2.layer1 = true;
@@ -820,16 +889,57 @@
           name: '',
           date1: '',
           date2: '',
-          least_rate: ''
+          least_rate: 0.8,
+          textarea1:'',
+
+          options: [{
+            value: '交换生',
+            label: '交换生'
+          }, {
+            value: 'GMAT',
+            label: 'GMAT'
+          }, {
+            value: 'TOEFL',
+            label: 'TOEFL',
+          }, {
+            value: 'IELTS',
+            label: 'IELTS',
+          }, {
+            value: '大额考证',
+            label: '大额考证'
+          }],
+          selectedOptions2: [],
+        },
+        rules1:{
+          name:[
+            {required: true, message:"请输入项目名称", trigger:"blur"},
+            {min:0, max:20, message:"长度不超过20个字符", trigger:"blur"}
+          ],
+          date1:[
+            { type: 'date', required: true, message: '请选择日期', trigger: 'change'}
+          ],
+          date2:[
+            { type: 'date', required: true, message: '请选择日期', trigger: 'change'}
+          ],
+          least_rate:[
+            {required: true, message:"请填写最低达标率", trigger:"change"},
+          ],
+          selectedOptions2:[
+            {required: true, message:"请选择资金用途分类", trigger:"change"},
+          ],
+          textarea1:[
+            {required: true, message:"请填写资金用途详述", trigger:"blur"},
+            {min:0, max:100, message:"长度不超过100个字符", trigger:"blur"}
+          ]
         },
         form2: {
           user: '',
           region: '',
-          textarea1: '',
           layer1: true,
           layer2: true,
           layer3: true,
           layer4: true,
+          isClicked:false
         },
         form3: {
           money: '',
@@ -843,6 +953,20 @@
           lowerPeriod: 0,
           upperPeriod: 0,
           repaymentType: '',
+        },
+        rules3:{
+          money:[
+            {required: true, message:"请输入借款金额", trigger:"blur"},
+          ],
+          period:[
+            {required: true, message:"请选择还款期数", trigger:"blur"},
+          ],
+          rate:[
+            {required: true, message:"请填写还款利率", trigger:"change"},
+          ],
+          activeName:[
+            {required: true, message:"请选择还款方式", trigger:"change"},
+          ],
 
         },
 
@@ -876,23 +1000,6 @@
 
         layer: 'ONE',
 
-        options: [{
-          value: '交换生',
-          label: '交换生'
-        }, {
-          value: 'GMAT',
-          label: 'GMAT'
-        }, {
-          value: 'TOEFL',
-          label: 'TOEFL',
-        }, {
-          value: 'IELTS',
-          label: 'IELTS',
-        }, {
-          value: '大额考证',
-          label: '大额考证'
-        }],
-        selectedOptions2: [],
         scrollReveal: scrollReveal(),
         show_evaluate: false,
 
@@ -950,24 +1057,43 @@
     -webkit-animation-fill-mode:forwards;
   }
 
-  @-webkit-keyframes move_left /* Safari and Chrome */
+  .animation_left{
+    -webkit-animation:move_left 0.5s;
+    -webkit-animation-iteration-count:1;
+    -webkit-animation-fill-mode:forwards;
+    margin-left: 2%;
+    width: 95%;
+    height: 850px;
+  }
+
+  /*@-webkit-keyframes move_left !* Safari and Chrome *!
   {
     0%   {left:0;  width:750px;}
-    100% {left:-150px; width:500px;}
-  }
+    100% {left:-10%; width:85%;height: 850px}
+  }*/
+
+
 
   .evaluate{
     display: none;
     margin-top: 50px;
-    margin-left: -80px;
+    margin-left: 3%;
     border:2px #d6d6d6 solid;
     border-radius:20px;
     padding:30px 20px 20px 20px;
+    width:95%;
+    height: 850px;
+  }
+
+  .tips{
+    color:#6c9ab7;
+    font-size: 12px;
   }
 
   .test{
     opacity: 0.5;
   }
+
 
 
 </style>
