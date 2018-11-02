@@ -449,6 +449,7 @@
         this.visible = true;
 
         this.scheme.show_table = true;
+        document.getElementById("steps").style.paddingLeft = "14.5%";
 
         var money = parseFloat(this.form3.money);
         var period = parseInt(this.form3.period);
@@ -702,6 +703,7 @@
           document.getElementById("small_loan").style.display = "none";
           document.getElementById("evaluate").style.display = "none";
         } else if (this.active === 1) {
+          document.getElementById("steps").style.paddingLeft = "5.5%";
           document.getElementById("primary").style.display = "none";
           document.getElementById("information").style.display = "block";
           document.getElementById("small_loan").style.display = "none";
@@ -752,6 +754,7 @@
             document.getElementById("small_loan").style.display = "block";
             if (this.show_evaluate) {
               document.getElementById("evaluate").style.display = "block";
+              document.getElementById("steps").style.paddingLeft = "12.5%";
             }
           }else{
             this.$message({
@@ -1054,22 +1057,31 @@
     -webkit-animation-fill-mode:forwards;
   }
 
-  @-webkit-keyframes move_left /* Safari and Chrome */
+  .animation_left{
+    -webkit-animation:move_left 0.5s;
+    -webkit-animation-iteration-count:1;
+    -webkit-animation-fill-mode:forwards;
+    margin-left: 2%;
+    width: 95%;
+    height: 850px;
+  }
+
+  /*@-webkit-keyframes move_left !* Safari and Chrome *!
   {
     0%   {left:0;  width:750px;}
     100% {left:-10%; width:85%;height: 850px}
-  }
+  }*/
 
 
 
   .evaluate{
     display: none;
     margin-top: 50px;
-    margin-left: -8%;
+    margin-left: 3%;
     border:2px #d6d6d6 solid;
     border-radius:20px;
     padding:30px 20px 20px 20px;
-    width:93%;
+    width:95%;
     height: 850px;
   }
 
