@@ -232,6 +232,7 @@
     },
     data() {
       return {
+        currentPeriod:0,
         targetState:'已完成',
         targetId:0,
         targetName:'',
@@ -415,6 +416,8 @@
 
             var data = res.data;
 
+            self.currentPeriod = data.currentPeriod;
+            console.log("currentPeriod:"+self.currentPeriod);
 
             if(data.repaymentType === "PRE_INTEREST"){
               self.return_scheme.return_way = "先息后本";
@@ -482,12 +485,7 @@
 
       repay(){
         const self = this;
-        var periods = 0;
-        for(var i = 0; i < self.recordList.length; i++){
-          if(self.recordList[i].state = 'A'){
-            periods++;
-          }
-        }
+        var periods = this.currentPeriod ;
 
         this.$axios.get('/loan/repayment/repay',
           {
