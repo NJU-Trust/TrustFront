@@ -1021,8 +1021,10 @@
     @-webkit-keyframes move_left /* Safari and Chrome */
     {
       0%   {left:0;  width:750px;}
-      100% {left:-10%; width:60%;}
+      100% {left:-10%; width:85%;height: 850px}
     }
+
+
 
     .evaluate{
       display: none;
@@ -1031,6 +1033,8 @@
       border:2px #d6d6d6 solid;
       border-radius:20px;
       padding:30px 20px 20px 20px;
+      width:94%;
+      height: 850px;
     }
 
     .test{
