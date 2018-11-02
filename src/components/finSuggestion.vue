@@ -224,15 +224,15 @@
             console.log(response);
             console.log(response.data);
             let res = response.data;
-            this.nextRepayAmount = res.nextPayment;
+            this.nextRepayAmount = res.nextPayment.toFixed(2);
             this.nextRepayTime = res.nextPayTime;
-            this.user.solvency = res.user.solvency;
-            this.user.engel = res.user.engel;
-            this.user.leverage = res.user.leverage;
-            this.user.rigid = res.user.rigid;
-            this.user.monthCusumptionRatio = res.user.monthConsumptionRatio;
-            this.user.assetLiabilityRatio = res.user.assetLiabilityRatio;
-            this.user.monthSavingRatio = res.user.monthSavingRatio;
+            this.user.solvency = res.user.solvency.toFixed(2);
+            this.user.engel = res.user.engel.toFixed(2);
+            this.user.leverage = res.user.leverage.toFixed(2);
+            this.user.rigid = res.user.rigid.toFixed(2);
+            this.user.monthCusumptionRatio = res.user.monthConsumptionRatio.toFixed(2);
+            this.user.assetLiabilityRatio = res.user.assetLiabilityRatio.toFixed(2);
+            this.user.monthSavingRatio = res.user.monthSavingRatio.toFixed(2);
 
             //this.NextpayList = res.nextPayList; Some bugs,try another method
             let List  = [];

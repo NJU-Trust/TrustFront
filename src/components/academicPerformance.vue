@@ -254,7 +254,7 @@
       }
     },
     mounted() {
-      // this.getRadar();
+      this.getRadar();
       this.getSchoolTable();
       this.drawRadar();
       this.drawGraph();
@@ -458,9 +458,11 @@
                 data: [
                   {
                     value: value1,
+                    name: '您的表现'
                   },
                   {
                     value: value2,
+                    name: '注册用户平均表现'
                   }
                 ]
               }]
