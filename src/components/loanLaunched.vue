@@ -82,7 +82,7 @@
             a:{
               targetId:0,
               targetName:'',
-              state:''
+              targetState:''
             },
             currentPage1:1
           }// end return
@@ -143,10 +143,11 @@
 
        },
 
-       getRepayDetail(targetId,targetName){
+       getRepayDetail(targetId,targetName,targetState){
          console.log("targetId in loanUnderway:"+targetId);
          this.a.targetId = targetId;
-         this.a.targetName = targetName
+         this.a.targetName = targetName;
+         this.a.targetState = targetState;
          //console.log("a in loanUnderway:"+this.a.targetId);
          this.$router.push({name:'repay',params:this.a});
        }

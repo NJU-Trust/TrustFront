@@ -30,7 +30,7 @@
             <div class="content">
               下次应还： <span>{{info2.money}}</span>元
             </div>
-            <el-button type="primary" style="margin-top: 20px">立即还款</el-button>
+            <el-button type="primary" style="margin-top: 20px" @click="repay">立即还款</el-button>
           </el-card>
 
             <el-card shadow="always" class="chart" align="center">
@@ -226,7 +226,7 @@
       this.targetId = this.$route.params.targetId;
       this.targetName = this.$route.params.targetName;
       console.log("targetId in repay:"+this.targetId);
-
+      this.targetState = this.$route.params.targetState
 
       this.getRepayInfo();
     },
