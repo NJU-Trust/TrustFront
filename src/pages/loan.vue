@@ -469,7 +469,6 @@
             }
 
             document.getElementById('small_loan').className += ' animation_left';
-            document.getElementById('small_loan').setAttribute('width', '550px');
             document.getElementById('evaluate').style.display = 'block';
             this.show_evaluate = true;
           },
