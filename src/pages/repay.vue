@@ -501,14 +501,16 @@
             console.log("data in repay");
             console.log(res.data);
 
-            /*if(true){
+            if(true){
               var now = new Date();
               var nowYear = now.getFullYear();
               var nowMonth = self.getCompleteNum(now.getMonth());
               var nowDate = self.getCompleteNum(now.getDate());
               var nowDate = nowYear+"-"+nowMonth+"-"+nowDate;
               alert("您已于"+nowDate+"成功还款"+self.info2.money+元);
-            }*/
+            }
+
+            self.getRepayInfo();
 
           }
         ).catch(function (error) {
