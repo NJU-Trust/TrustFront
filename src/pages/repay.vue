@@ -30,7 +30,7 @@
             <div class="content">
               下次应还： <span>{{info2.money}}</span>元
             </div>
-            <el-button type="primary" style="margin-top: 20px">立即还款</el-button>
+            <el-button type="primary" style="margin-top: 20px" @click="repay">立即还款</el-button>
           </el-card>
 
             <el-card shadow="always" class="chart" align="center">
@@ -226,12 +226,13 @@
       this.targetId = this.$route.params.targetId;
       this.targetName = this.$route.params.targetName;
       console.log("targetId in repay:"+this.targetId);
-
+      this.targetState = this.$route.params.targetState
 
       this.getRepayInfo();
     },
     data() {
       return {
+        currentPeriod:0,
         targetState:'已完成',
         targetId:0,
         targetName:'',
@@ -415,6 +416,8 @@
 
             var data = res.data;
 
+            self.currentPeriod = data.currentPeriod;
+            console.log("currentPeriod:"+self.currentPeriod);
 
             if(data.repaymentType === "PRE_INTEREST"){
               self.return_scheme.return_way = "先息后本";
@@ -482,12 +485,7 @@
 
       repay(){
         const self = this;
-        var periods = 0;
-        for(var i = 0; i < self.recordList.length; i++){
-          if(self.recordList[i].state = 'A'){
-            periods++;
-          }
-        }
+        var periods = this.currentPeriod ;
 
         this.$axios.get('/loan/repayment/repay',
           {
@@ -501,14 +499,16 @@
             console.log("data in repay");
             console.log(res.data);
 
-            /*if(true){
+            if(true){
               var now = new Date();
               var nowYear = now.getFullYear();
               var nowMonth = self.getCompleteNum(now.getMonth());
               var nowDate = self.getCompleteNum(now.getDate());
               var nowDate = nowYear+"-"+nowMonth+"-"+nowDate;
               alert("您已于"+nowDate+"成功还款"+self.info2.money+元);
-            }*/
+            }
+
+            self.getRepayInfo();
 
           }
         ).catch(function (error) {

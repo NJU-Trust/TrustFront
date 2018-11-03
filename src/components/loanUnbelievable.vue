@@ -92,7 +92,8 @@
           return{
             a:{
               targetId:0,
-              targetName:''
+              targetName:'',
+              targetState:''
             },
             tableData:[{
               name:'ACCA考试借款项目',
@@ -145,10 +146,11 @@
 
         },
 
-        getRepayDetail(targetId,targetName){
+        getRepayDetail(targetId,targetName,targetState){
           console.log("targetId in loanUnderway:"+targetId);
           this.a.targetId = targetId;
           this.a.targetName = targetName;
+          this.a.targetState = targetState;
           //console.log("a in loanUnderway:"+this.a.targetId);
           this.$router.push({name:'repay',params:this.a});
         }
