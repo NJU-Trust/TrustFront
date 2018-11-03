@@ -262,7 +262,7 @@
             //console.log("response:")
             var data = response.data
             //console.log(data)
-            self.percentage = data.progress * 100;
+            self.percentage = (data.progress * 100).toFixed(2);
             self.leftTime = data.leftDays * 24 * 60 * 60 * 1000;
             // self.revenueRate = data.interestRate
             self.lifeOfLoan = data.lifeOfLoan

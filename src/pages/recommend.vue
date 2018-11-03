@@ -73,19 +73,24 @@
       },
       mounted() {
         let self = this;
+        let recommendInvestDown = this.$route.params.recommendInvestDown
+        let recommendInvestUp = this.$route.params.recommendInvestUp
+        let recommendInterestDown = this.$route.params.recommendInterestDown
+        let recommendInterestUp = this.$route.params.recommendInterestUp
+        console.log(recommendInterestUp)
         let small_data = {
           page: 0,
           size: 8,
           properties: 'targetRatingScore',
-          money: [self.$route.query.recommendInvestDown, self.$route.query.recommendInvestUp],
+          money: [recommendInvestDown, recommendInvestUp],
           time: [null, null],
-          interestRate: [self.$route.query.recommendInterestDown, self.$route.query.recommendInterestUp],
+          interestRate: [recommendInterestDown, recommendInterestUp],
           repaymentDuration: [null, null],
           userCreditRating: [] ,
           targetRating: [],
           useOfFunds: []
         }
-
+        console.log(small_data)
         this.$axios.post("/loan/recommendSmall",small_data )
           .then(res => {
             console.log(res)
@@ -94,7 +99,7 @@
               invests.push({
                 id: i.id,
                 name: i.name,
-                profit: (i.interestRate + "%"),
+                profit: (i.interestRate.toFixed(2) + "%"),
                 money: i.money,
                 remainMoney: (i.money-i.collectedMoney),
                 type: i.classification,

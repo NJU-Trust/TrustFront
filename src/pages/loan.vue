@@ -354,11 +354,12 @@
           },
 
           checkValid(){
+            const self = this;
             this.$refs['form3'].validate((valid) => {
               if (valid) {
-                //this.onSubmit();
+                self.onSubmit();
               } else {
-                this.$message({
+                self.$message({
                   message:"请填写完整！",
                   type:'error',
                 });
@@ -398,7 +399,7 @@
             var useOfFonds = this.form1.selectedOptions2[1];
             var identityOption = this.layer;
             var repaymentType = this.form3.repaymentType;
-
+            const self = this;
             this.$axios.post('/loan/new/small', {
               name: name, startTime: start_time, money: money, projectDescription: description, proof: proof,
               completionRate: completoinRate, interestRate: interestRate, duration: duration, useOfFunds: useOfFonds,
@@ -412,7 +413,7 @@
                     type:'success',
                   });
                   /*alert("提交成功！");*/
-                  this.$router.push({name:'homepage'});
+                  self.$router.push({name:'invest'});
                 }else{
                   self.$message({
                     message:'提交失败！',

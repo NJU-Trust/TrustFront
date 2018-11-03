@@ -156,11 +156,11 @@
             invests.push({
               id: i.id,
               name: i.name,
-              profit: (i.interestRate + "%"),
+              profit: (i.interestRate.toFixed(2) + "%"),
               money: i.money,
               remainMoney: (i.money-i.collectedMoney),
               type: i.classification,
-              finishProgress: i.collectedMoney* 100/i.money ,
+              finishProgress:(i.collectedMoney* 1.0/i.money).toFixed(2)  ,
               range: i.riskRating,
               beginTime: i.startTime,
             })
@@ -261,11 +261,11 @@
               invests.push({
                 id: i.id,
                 name: i.name,
-                profit: (i.interestRate + "%"),
+                profit: (i.interestRate.toFixed(2) + "%"),
                 money: i.money,
                 remainMoney: (i.money-i.collectedMoney),
                 type: i.classification,
-                finishProgress: i.collectedMoney* 100/i.money ,
+                finishProgress:(i.collectedMoney* 1.0/i.money).toFixed(2) ,
                 range: i.riskRating,
                 beginTime: i.startTime,
               })
@@ -299,11 +299,11 @@
               invests.push({
                 id: i.id,
                 name: i.name,
-                profit: (i.interestRate + "%"),
+                profit: (i.interestRate.toFixed(2) + "%"),
                 money: i.money,
                 remainMoney: (i.money-i.collectedMoney),
                 type: i.classification,
-                finishProgress: i.collectedMoney* 100/i.money ,
+                finishProgress:(i.collectedMoney* 1.0/i.money).toFixed(2)  ,
                 range: i.riskRating,
                 beginTime: i.startTime,
               })
